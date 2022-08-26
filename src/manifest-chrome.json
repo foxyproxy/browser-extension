@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
@@ -17,7 +17,8 @@
   },
 
   "background": {
-    "page": "content/background.html"
+    "service_worker": "content/background.js",
+    "type": "module"
   },
 
   "options_ui": {
@@ -26,7 +27,7 @@
     "page": "content/options.html"
   },
 
-  "browser_action": {
+  "action": {
     "browser_style": true,
     "default_icon": "image/icon.svg",
     "default_popup": "content/popup.html",
@@ -38,14 +39,12 @@
     "downloads",
     "notifications",
     "proxy",
-    "storage",
+    "storage"
+  ],
+
+  "host_permissions": [
     "<all_urls>"
   ],
 
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "foxyproxy-beta@eric.h.jung",
-      "strict_min_version": "74.0"
-    }
-  }
+  "minimum_chrome_version": "104"
 }
