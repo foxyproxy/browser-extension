@@ -6,6 +6,8 @@ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based 
 FoxyProxy is being updated for manifest V3.  
 Please post all features requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).
 
+#### [FoxyProxy Help](https://foxyproxy.github.io/browser-extension/content/help.html)
+
 #### Previous Versions
 - [Firefox Extension 7.5](https://github.com/foxyproxy/firefox-extension)
 - [Chrome Extension 3.0](https://github.com/foxyproxy/Foxyproxy_Chrome)
