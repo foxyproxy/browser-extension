@@ -66,7 +66,7 @@ dt {
 }
 
 dd + dt {
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 dd > dl {
@@ -124,6 +124,11 @@ table {
   border: 1px solid var(--border);
   margin-bottom: 1em;
   width: calc(100% - 2.5rem);
+  font-size: 0.9em;
+}
+
+caption {
+  padding: 0.5em;
 }
 
 th,

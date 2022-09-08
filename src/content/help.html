@@ -193,39 +193,42 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <h3>Individual Proxy</h3>
     <dl>
       <dt>Title</dt>
-      <dd>Set/change the proxy title</dd>
+      <dd>Set the proxy title</dd>
 
       <dt>Type</dt>
       <dd>HTTP/HTTPS/SOCKS/SOCKS4 to be used with hostname & port</dd>
       <dd>PAC to be used with PAC URL</dd>
 
       <dt>Country</dt>
-      <dd>Set/change the proxy country flag</dd>
+      <dd>Set the proxy country flag</dd>
 
       <dt>City</dt>
-      <dd>Set/change the proxy city</dd>
+      <dd>Set the proxy city</dd>
 
       <dt>Color</dt>
-      <dd>Set/change the proxy color</dd>
+      <dd>Set the proxy color</dd>
 
       <dt>hostname & Port</dt>
-      <dd>Required for HTTP/HTTPS/SOCKS/SOCKS4 types</dd>
+      <dd>Required for HTTP/HTTPS/SOCKS/SOCKS4 type</dd>
 
       <dt>Username & Password</dt>
-      <dd>To be used for HTTP/HTTPS/SOCKS types</dd>
+      <dd>To be used for HTTP/HTTPS/SOCKS type</dd>
       <dd>If not set, authentication will be handled by the browser</dd>
 
       <dt>PAC URL</dt>
-      <dd>Required for PAC types</dd>
+      <dd>Required for PAC type</dd>
+
+      <dt>Enable</dt>
+      <dd>Enable/disable the proxy and its patterns</dd>
+
+      <dt>Delete</dt>
+      <dd>Delete the proxy and its patterns</dd>
     </dl>
-
-    <h3></h3>
-
 
 
     <h3 id="patterns">Patterns</h3>
     <p>Patterns can be full or partial match which means it can match the entire URL or only part of it.</p>
-    <p>Patterns can be Wildcard or Regular Expression.</p>
+
 
     <p>When FoxyProxy is set to <i>Proxy by Patterns</i> and there are existing patterns:</p>
     <ul>
@@ -235,15 +238,38 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     </ul>
 
     <dl>
-      <dt>Wildcard Patterns</dt>
-      <dd>Wildcard <code>*</code> is translated to Regular Expression <code>.*</code> which means 0 or more characters</dd>
-      <dd>Character <code>?</code> is translated to Regular Expression <code>.</code> which means a single character</dd>
+      <dt>Add</dt>
+      <dd>Quick add ready-made patterns</dd>
 
-      <dt>Regular Expression</dt>
-      <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
-      <dd>There is no need to double escape special characters (already happens when saved to storage).</dd>
-      <dd>Regex pasterns must start and end with forward slash e.g. <code>/....../</code></dd>
+      <dt>Include/Exclude</dt>
+      <dd>Select to include or exclude URL that matches the pattern</dd>
 
+      <dt>Type</dt>
+      <dd>Patterns can be Wildcard or Regular Expression</dd>
+      <dd>
+        <dl>
+          <dt>Wildcard Patterns</dt>
+          <dd>Wildcard <code>*</code> is translated to Regular Expression <code>.*</code> which means 0 or more characters</dd>
+          <dd>Character <code>?</code> is translated to Regular Expression <code>.</code> which means a single character</dd>
+
+          <dt>Regular Expression</dt>
+          <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
+          <dd>There is no need to double escape special characters (already happens when saved to storage).</dd>
+          <dd>Regex pasterns must start and end with forward slash e.g. <code>/....../</code></dd>
+        </dl>
+      </dd>
+
+      <dt>Title</dt>
+      <dd>Set the pattern title</dd>
+
+      <dt>Pattern</dt>
+      <dd>Set the pattern</dd>
+
+      <dt>Enable</dt>
+      <dd>Enable/disable the pattern</dd>
+
+      <dt>Delete</dt>
+      <dd>Delete the pattern</dd>
     </dl>
 
 
