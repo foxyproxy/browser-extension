@@ -33,6 +33,7 @@
     <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
 
+    <!-- Error: proxy.settings requires private browsing permission. -->
     <h4>Private Browsing Permission</h4>
     <blockquote>
       <p>Note: The ability to change proxy settings requires private window access because proxy settings affect both private and non-private windows. Therefore, if an extension has not been granted private window permission, calls to <code>proxy.settings.set()</code> will throw an exception.</p>
@@ -79,7 +80,7 @@
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
       Sync will be turned off automatically to avoid repeated errors.</p>
 
-    <!-- Error: proxy.settings requires private browsing permission. -->
+
     <blockquote>
       <p>For Firefox a user must have Add-ons checked under the "Sync Settings" options in "about:preferences".</p>
 
@@ -103,15 +104,8 @@
 
     <h3 id="global-exclude">Global Exclude</h3>
     <p>Patterns entered here will never be proxied.</p>
-    <dl>
-      <dt>Wildcard Patterns</dt>
-      <dd>Same as individual include/exclude wildcard pattern</dd>
+    <p>Wildcard/Regular Expression Patterns are the same as individual include/exclude <a href="#patterns">patterns</a>.</p>
 
-      <dt>Regular Expression</dt>
-      <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
-      <dd>There is no need to double escape special characters (already happens when saved to storage).</dd>
-      <dd>Regex pasterns must start and end with forward slash e.g. <code>/....../</code></dd>
-    </dl>
 
 
     <h3 id="import-export">Settings Import/Export</h3>
@@ -258,7 +252,6 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
           <dt>Regular Expression</dt>
           <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
           <dd>There is no need to double escape special characters (already happens when saved to storage).</dd>
-          <dd>Regex pasterns must start and end with forward slash e.g. <code>/....../</code></dd>
         </dl>
       </dd>
 
@@ -341,15 +334,6 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li><a href="https://support.getfoxyproxy.org/" target="_blank">Open a Support Ticket</a> <i>(no registration required)</i></li>
       <li><a href="mailto:support@getfoxyproxy.org">Email Support</a></li>
     </ul>
-
-<!--
-    <p>
-      <span class="notForBasic"><a href="/pattern-tester.html"><i class="fa fa-flask"></i>Pattern Test</a> &amp; <a
-          href="/pattern-help.html"><i class="fa fa-question-circle"></i>Pattern Help</a> <i>(no internet connection
-          required)</i><br></span>
-      <a href="https://getfoxyproxy.org/geoip/" target="_blank">🌎 What's my IP Address?</a>
-    </p>
- -->
 
   </article>
 </body>
