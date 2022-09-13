@@ -25,6 +25,11 @@
 
     <p>FoxyProxy has been around since 2007. If you're upgrading from a legacy version, and your proxy settings are missing, please import them.</p>
 
+
+    <h3>FoxyProxy Basic</h3>
+    <p>FoxyProxy Basic is a simple on/off proxy switcher without ability to use patterns. FoxyProxy v8.0+ is a unified extension. If there are no patterns, it behaves like FoxyProxy Basic.</p>
+    <p class="warning">FoxyProxy Basic v8.0 will be the last release for FoxyProxy Basic. It has been released to facilitate transition to the unified extension. Please export your settings, install FoxyProxy and then import your settings.</p>
+
     <h3>Firefox</h3>
 
     <h4>Proxy Authentication</h4>
@@ -49,16 +54,11 @@
       <li>Authentication is domain-specific (not port-specific)</li>
     </ul>
 
-
-    <h3>FoxyProxy Basic</h3>
-    <p>FoxyProxy Basic is a simple on/off proxy switcher without ability to use patterns. FoxyProxy v8.0+ is a unifeid extension. If there are no patterns, it behaves like FoxyProxy Basic.</p>
-
-
     <h2 id="how-to">How to Use</h2>
 
     <h3 id="toolbar-icon">Toolbar Icon</h3>
 
-    <p>Select the proxy option</p>
+    <h4>Proxy Option Selection</h4>
 
     <dl>
       <dt>Proxy by Patterns</dt>
@@ -71,6 +71,56 @@
       <dt>Individual Proxy/PAC</dt>
       <dd>Network connections are passed through the selected Proxy or PAC</dd>
     </dl>
+
+    <h3>Page Context Menu</h3>
+
+    <dl>
+      <dt>Add Host Pattern to ...</dt>
+      <dd>Quickly create and add a patter based on current page URL to the selected proxy</dd>
+      <dd>Only top 10 proxies are listed</dd>
+
+    </dl>
+
+
+
+    <h3>Keyboard Shortcut</h3>
+    <p>You can change/set keyboard shortcuts</p>
+
+    <h4>Firefox</h4>
+
+    <blockquote><b>Manage extension shortcuts in Firefox</b><br><br>
+
+    You can now change your extensions' keyboard shortcuts on the add-ons page.
+
+    <ol>
+      <li>Click the menu button <code>&#x2630</code>;, click <code>Add-ons and Themes</code> and select <code>Extensions</code>.</li>
+      <li>Click the <i>Tools</i> for all <i>add-ons</i> cogwheel.<br><img src="../image/keyboard-shortcut.png" alt=""></li>
+      <li>Click <code>Manage Extension Shortcuts</code> in the menu.</li>
+      <li>You will see the shortcut options (if available) for your installed add-ons.</li>
+    </ol>
+
+    <cite><a href="https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox" target="_blank">Manage extension shortcuts in Firefox</a></cite>
+    </blockquote>
+
+    <h4>Chrome</h4>
+    <p>Open a new tab and type chrome://extensions/shortcuts</p>
+
+    <h4>Edge</h4>
+    <p>Open a new tab and type edge://extensions/shortcuts</p>
+
+    <h4>Opera</h4>
+    <p>Open a new tab and type opera://settings/keyboardShortcuts</p>
+
+
+
+
+
+
+
+
+
+    <h3>Light/Dark Theme</h3>
+    <p>Default scheme is based on <a href="https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme" target="_blank">prefers-color-scheme</a>.</p>
 
     <h3 id="">Local Server</h3>
     <p>FoxyProxy can be used  with local proxy servers:</p>
@@ -133,6 +183,9 @@
     <h3>Restore Defaults</h3>
     <p>Restore all settings to their defaults</p>
 
+    <h3>Limit WebRTC (Reset WebRTC)</h3>
+    <p>WebRTC has been known to leak real IP. You can toggle limit WebRTC. This function requires "privacy" permission.</p>
+
     <h3 id="import">Import</h3>
 
     <dl>
@@ -168,15 +221,6 @@ https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
 https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
 http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
           </dd>
-
-          <!-- <dt>Extended v8.0</dt>
-          <dd>All applicable parameters can be passed as search parameters <i>(case-insensitive)</i><br>
-            e.g. <i>active, title, color, type (http, https , socks, socks4, pac), username, password, cc, city, proxyDNS</i>
-<pre>https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
-
-// for PAC types
-http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
-          </dd> -->
         </dl>
       </dd>
       <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd>
@@ -193,12 +237,15 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
 
     <h2 id="proxy">Proxy</h2>
+    <h3>Add</h3>
+    <p>Add a new proxy entry</p>
+
+    <h3>Filter Proxies</h3>
+    <p>Proxy Title & Hostname are searched and display filtered based on the input value (case-insensitive)</p>
 
     <h3>Get Location</h3>
     <p>Get domain/IP ger-location from FoxyProxy Servers.</p>
 
-    <h3>Add</h3>
-    <p>Add a new proxy entry</p>
 
     <h3>Individual Proxy</h3>
     <dl>
