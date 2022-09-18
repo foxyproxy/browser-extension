@@ -36,10 +36,16 @@
 
   "permissions": [
     "browsingData",
+    "contextMenus",
+    "declarativeNetRequest",
     "downloads",
     "notifications",
     "proxy",
     "storage"
+  ],
+
+  "optional_permissions": [
+    "privacy"
   ],
 
   "host_permissions": [

@@ -35,11 +35,16 @@
 
   "permissions": [
     "browsingData",
+    "contextMenus",
     "downloads",
     "notifications",
     "proxy",
     "storage",
     "<all_urls>"
+  ],
+
+  "optional_permissions": [
+    "privacy"
   ],
 
   "browser_specific_settings": {
