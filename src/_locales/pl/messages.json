@@ -1,0 +1,102 @@
+{
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionDescription": { "message": "Łatwe w użyciu zaawansowane narzędzie do zarządzania proxy dla każdego" },
+
+
+  "proxyByPatterns": { "message": "Proxy według wzorców" },
+  "disable": { "message": "Wyłącz" },
+  "ip": { "message": "IP" },
+  "location": { "message": "Lokalizacja" },
+
+  "options": { "message": "Opcje" },
+  "proxy": { "message": "Proxy" },
+  "tester": { "message": "Tester" },
+  "log": { "message": "Dziennik" },
+  "help": { "message": "Pomoc" },
+  "about": { "message": "O aplikacji" },
+  "import": { "message": "Importuj" },
+  "export": { "message": "Eksportuj" },
+  "save": { "message": "Zapisz" },
+
+  "enableSync": { "message": "Włącz synchronizację" },
+  "enableSyncDescription": { "message": "Synchronizacja globalnych wykluczeń, proxy i wzorców" },
+  "syncError": { "message": "Błąd synchronizacji" },
+
+  "globalExclude": { "message": "Globalne wykluczenia" },
+  "globalExcludeDescription": { "message": "Wzorce wprowadzone tutaj nigdy nie będą pośredniczyć" },
+  "globalExcludeError": { "message": "Błąd globalnego wzorca wykluczeń" },
+
+  "deleteBrowserData": { "message": "Usuń dane przeglądarki" },
+  "confirmDeleteBrowserData": { "message": "Czy na pewno chcesz usunąć ciasteczka, magazyn indexedDB, lokalny magazyn DOM?" },
+  "restoreDefaults": { "message": "Przywróć ustawienia domyślne" },
+  "restoreDefaultsConfirm": { "message": "Czy na pewno chcesz przywrócić wszystkie ustawienia do wartości domyślnych?" },
+  "limitWebRTC": { "message": "Ogranicz WebRTC" },
+  "resetWebRTC": { "message": "Zresetuj WebRTC" },
+
+
+  "foxyProxyAccount": { "message": "Konto FoxyProxy" },
+  "username": { "message": "Nazwa użytkownika" },
+  "password": { "message": "Hasło" },
+  "togglePW": { "message": "Przełącz hasło" },
+  "importAs": { "message": "Zaimportuj jako" },
+  "domain": { "message": "Domena" },
+  "errorUserPass": { "message": "Proszę wpisać nazwę użytkownika oraz hasło." },
+
+  "proxyList": { "message": "Lista Proxy" },
+  "proxyTypeError": { "message": "Nieznany typ" },
+  "proxyPortError": { "message": "Brak portu" },
+  "regexError": { "message": "Błąd tworzenia regexp dla wzorca" },
+
+  "addHostTo": { "message": "Dodaj wzorzec hosta do ..." },
+
+  "incognitoAccess": { "message": "Ustawienia proxy wymagają zezwolenia do trybu prywatnego." },
+
+
+
+
+  "fromOlderVersions": { "message": "Ze starszych wersji" },
+
+  "getLocation": { "message": "Uzyskaj lokalizację" },
+  "add": { "message": "Dodaj" },
+  "title": { "message": "Nazwa" },
+  "type": { "message": "Typ" },
+  "color": { "message": "Kolor" },
+  "random": { "message": "Losowo" },
+  "hostname": { "message": "Nazwa hosta" },
+  "port": { "message": "Port" },
+  "city": { "message": "Miasto" },
+  "country": { "message": "Kraj" },
+  "proxyDNS": { "message": "Proxy DNS (tylko SOCKS 5)" },
+  "pacUrlError": { "message": "Brak adresu URl dla typu PAC" },
+  "hostnamePortError": { "message": "Brak nazwy hosta - portu" },
+
+  "pattern": { "message": "Wzorzec" },
+  "quickAdd": { "message": "Szybko dodaj" },
+  "include": { "message": "Uwzględnij" },
+  "exclude": { "message": "Wyklucz" },
+  "all": { "message": "Wszystko" },
+  "plainHost": { "message": "Zwykły host" },
+  "wildcard": { "message": "Wildcard" },
+  "patternError": { "message": "Błąd wzorca" },
+
+
+  "delete": { "message": "Usuń" },
+  "deleteConfirm": { "message": "Czy na pewno chcesz usunąć?" },
+
+  "result": { "message": "Wynik" },
+  "test": { "message": "Testuj" },
+
+  "documentURL": { "message": "URL dokumentu" },
+  "method": { "message": "Metoda" },
+  "time": { "message": "Czas" },
+
+  "selectCountry": { "message": "Wybierz kraj" },
+  "cancel": { "message": "Anuluj" },
+  "ok": { "message": "OK" },
+
+  "error": { "message": "Wystąpił błąd podczas realizacji zadania." },
+  "fileParseError": { "message": "Wystąpił błąd podczas przetwarzania pliku" },
+  "fileReadError": { "message": "Wystąpił błąd w odczycie pliku" },
+  "fileSizeError": { "message": "Rozmiar pliku jest większy niż dozwolony $1kb" },
+  "fileTypeError": { "message": "Nieobsługiwany format pliku" }
+}
