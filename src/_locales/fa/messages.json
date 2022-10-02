@@ -71,6 +71,7 @@
   "hostnamePortError": { "message": "نام میزبان یا درگاه مشخص نشده" },
 
   "pattern": { "message": "الگو" },
+  "patterns": { "message": "الگوها" },
   "quickAdd": { "message": "افزودن سریع" },
   "include": { "message": "شامل" },
   "exclude": { "message": "بجز" },
