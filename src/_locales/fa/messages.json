@@ -42,7 +42,7 @@
   "domain": { "message": "دامنه" },
   "errorUserPass": { "message": "لطفاً نام کاربری و گذرواژه را تکمیل کنید." },
 
-  "proxyList": { "message": "فهرسا پیشکار" },
+  "proxyList": { "message": "فهرست پیشکار" },
   "proxyTypeError": { "message": "گونهٔ ناشناخته" },
   "proxyPortError": { "message": "درگاه مشخص نشده" },
   "regexError": { "message": "خطا در ایجاد عبارت باقاعده برای الگو" },
@@ -98,6 +98,6 @@
   "error": { "message": "هنگام انجام عملیات خطایی رخ داد" },
   "fileParseError": { "message": "هنگام تجزیهٔ پرونده خطایی رخ داد" },
   "fileReadError": { "message": "هنگام خواندن پرونده خطایی رخ داد" },
-  "fileSizeError": { "message": "پرونده با اندازهٔ بزرگتر از 1$کیلوبایت مجاز نیست" },
+  "fileSizeError": { "message": "پرونده با اندازهٔ بزرگتر از 1$ کیلوبایت مجاز نیست" },
   "fileTypeError": { "message": "قالب پرونده پشتیبانی نشده" }
 }
