@@ -1,1 +1,102 @@
+{
+  "extensionName": { "message": "فاکسی پروکسی" },
+  "extensionDescription": { "message": "ابزاری آسان و پیشرفتهٔ مدیریت پیشکار برای همه" },
 
+
+  "proxyByPatterns": { "message": "پیشکار بر اساس الگو‌ها" },
+  "disable": { "message": "از کار انداختن" },
+  "ip": { "message": "آی‌پی" },
+  "location": { "message": "مکان" },
+
+  "options": { "message": "گزینه‌ها" },
+  "proxy": { "message": "پیشکار" },
+  "tester": { "message": "آزمایشگر" },
+  "log": { "message": "گزارشات" },
+  "help": { "message": "راهنما" },
+  "about": { "message": "درباره" },
+  "import": { "message": "درون‌ریزی" },
+  "export": { "message": "برون‌ریزی" },
+  "save": { "message": "ذخیره" },
+
+  "enableSync": { "message": "به کار انداختن همگام‌سازی" },
+  "enableSyncDescription": { "message": "همگام‌سازی استثناهای عمومی، پیشکارها و الگوها" },
+  "syncError": { "message": "خطای همگام‌سازی" },
+
+  "globalExclude": { "message": "استثناهای عمومی" },
+  "globalExcludeDescription": { "message": "الگوهایی که اینجا وارد می‌کنید، از پیشکار رد نخواهند شد." },
+  "globalExcludeError": { "message": "خطای الگوی استثناهای عمومی" },
+
+  "deleteBrowserData": { "message": "حذف دادهٔ مرورگر" },
+  "confirmDeleteBrowserData": { "message": "آیا مطمئنید که می‌خواهید کوکی‌ها، فضای ذخیره‌سازی indexedDB و فضای ذخیره‌سازی محلی DOM را حذف کنید؟" },
+  "restoreDefaults": { "message": "بازگردانی به پیش‌گزیده‌ها" },
+  "restoreDefaultsConfirm": { "message": "آیا مطمئنید که می‌خواهید همه تنظیمات را به حالت پیش‌گزیده بازگردانید؟" },
+  "limitWebRTC": { "message": "محدود کردن WebRTC" },
+  "resetWebRTC": { "message": "بازنشانی WebRTC" },
+
+
+  "foxyProxyAccount": { "message": "حساب فاکسی پروکسی" },
+  "username": { "message": "نام کاربری" },
+  "password": { "message": "گذرواژه" },
+  "togglePW": { "message": "تغییر حالت گذرواژه" },
+  "importAs": { "message": "درون‌ریزی به عنوان" },
+  "domain": { "message": "دامنه" },
+  "errorUserPass": { "message": "لطفاً نام کاربری و گذرواژه را تکمیل کنید." },
+
+  "proxyList": { "message": "فهرسا پیشکار" },
+  "proxyTypeError": { "message": "گونهٔ ناشناخته" },
+  "proxyPortError": { "message": "درگاه مشخص نشده" },
+  "regexError": { "message": "خطا در ایجاد عبارت باقاعده برای الگو" },
+
+  "addHostTo": { "message": "افزودن الگوی میزبان به ..." },
+
+  "incognitoAccess": { "message": "تنظیمات پیشکار به مجوز مرور خصوصی نیاز دارد." },
+
+
+
+
+  "fromOlderVersions": { "message": "از نگارش‌های قدیمی‌تر" },
+
+  "getLocation": { "message": "دریافت مکان" },
+  "add": { "message": "افزودن" },
+  "title": { "message": "عنوان" },
+  "type": { "message": "گونه" },
+  "color": { "message": "رنگ" },
+  "random": { "message": "تصادفی" },
+  "hostname": { "message": "نام میزبان" },
+  "port": { "message": "درگاه" },
+  "city": { "message": "شهر" },
+  "country": { "message": "کشور" },
+  "proxyDNS": { "message": "پیشکار ساناد (فقط ساکس۵)" },
+  "pacUrlError": { "message": "نشانی PAC برای گونهٔ PAC مشخص نشده" },
+  "hostnamePortError": { "message": "نام میزبان یا درگاه مشخص نشده" },
+
+  "pattern": { "message": "الگو" },
+  "quickAdd": { "message": "افزودن سریع" },
+  "include": { "message": "شامل" },
+  "exclude": { "message": "بجز" },
+  "all": { "message": "همه" },
+  "plainHost": { "message": "میزبان ساده" },
+  "wildcard": { "message": "نویسهٔ همگانی" },
+  "patternError": { "message": "خطای الگو" },
+
+
+  "delete": { "message": "حذف" },
+  "deleteConfirm": { "message": "آیا مطمئنید که می‌خواهید حذفش کنید؟" },
+
+  "result": { "message": "نتیجه" },
+  "test": { "message": "آزمودن" },
+
+  "documentURL": { "message": "نشانی مستندات" },
+  "method": { "message": "شیوه" },
+  "time": { "message": "زمان" },
+
+  "selectCountry": { "message": "گزینش کشور" },
+  "cancel": { "message": "لغو" },
+  "ok": { "message": "قبول" },
+
+  "error": { "message": "هنگام انجام عملیات خطایی رخ داد" },
+  "fileParseError": { "message": "هنگام تجزیهٔ پرونده خطایی رخ داد" },
+  "fileReadError": { "message": "هنگام خواندن پرونده خطایی رخ داد" },
+  "fileSizeError": { "message": "پرونده با اندازهٔ بزرگتر از 1$کیلوبایت مجاز نیست" },
+  "fileTypeError": { "message": "قالب پرونده پشتیبانی نشده" }
+}
