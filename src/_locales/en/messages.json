@@ -71,6 +71,7 @@
   "hostnamePortError": { "message": "Missing Hostname - Port" },
 
   "pattern": { "message": "Pattern" },
+  "patterns": { "message": "Patterns" },
   "quickAdd": { "message": "Quick Add" },
   "include": { "message": "Include" },
   "exclude": { "message": "Exclude" },
