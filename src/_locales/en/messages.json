@@ -22,6 +22,9 @@
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
   "syncError": { "message": "Sync Error" },
 
+  "proxyDNS": { "message": "Proxy DNS" },
+  "proxyDnsDescription": { "message": "Use the proxy server to resolve certain DNS queries (only for SOCKS in Firefox)" },
+
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
   "globalExcludeError": { "message": "Global Exclude Pattern Error" },
@@ -45,6 +48,10 @@
   "proxyList": { "message": "Proxy List" },
   "proxyTypeError": { "message": "Unknown Type" },
   "proxyPortError": { "message": "Missing Port" },
+  "importURL": { "message": "Import From URL" },
+
+  "fromOlderVersions": { "message": "From older versions" },
+
   "regexError": { "message": "Error creating regexp for pattern" },
 
   "addHostTo": { "message": "Add Host Pattern to ..." },
@@ -54,7 +61,7 @@
 
 
 
-  "fromOlderVersions": { "message": "From older versions" },
+
 
   "getLocation": { "message": "Get Location" },
   "add": { "message": "Add" },
@@ -66,7 +73,7 @@
   "port": { "message": "Port" },
   "city": { "message": "City" },
   "country": { "message": "Country" },
-  "proxyDNS": { "message": "Proxy DNS (SOCKS 5 only)" },
+
   "pacUrlError": { "message": "Missing PAC URl for PAC type" },
   "hostnamePortError": { "message": "Missing Hostname - Port" },
 
