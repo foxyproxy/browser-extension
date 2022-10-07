@@ -23,7 +23,7 @@
 
     <h2 id="preamble">Preamble</h2>
 
-    <p>FoxyProxy has been around since 2007. If you are upgrading from a legacy version, and your proxy settings are missing, please import them.</p>
+    <p>Since 2006, FoxyProxy has been the trusted source in VPN and proxy services. Used by millions daily! If you are upgrading from a legacy version, and your proxy settings are missing, please import them.</p>
 
     <h4>FoxyProxy v8.0+</h4>
     <p>FoxyProxy has been re-written to comply with manifest v3 requirements. There are some updates to the interface and functions. Please take time to have a quick look over this Help document.</p>
@@ -43,6 +43,8 @@
 
     <!-- Error: proxy.settings requires private browsing permission. -->
     <h4>Private Browsing Permission</h4>
+    <p>ⓘ <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p>
+
     <blockquote>
       <p>Note: The ability to change proxy settings requires private window access because proxy settings affect both private and non-private windows. Therefore, if an extension has not been granted private window permission, calls to <code>proxy.settings.set()</code> will throw an exception.</p>
       <cite><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings" target="_blank">proxy.settings</a></cite>
@@ -53,8 +55,7 @@
 
     <h4>Proxy Authentication</h4>
     <ul>
-      <li class="experimental">Experimental authentication for http/https only</li>
-      <li>Authentication is domain-specific (not port-specific)</li>
+      <li>Authentication by FoxyProxy is not possible in manifest v3 and it is passed to the browser</li>
     </ul>
 
     <h2 id="how-to">How to Use</h2>
@@ -73,6 +74,15 @@
 
       <dt>Individual Proxy/PAC</dt>
       <dd>Network connections are passed through the selected Proxy or PAC</dd>
+
+      <dt>Options</dt>
+      <dd>Open the Options page</dd>
+
+      <dt>IP</dt>
+      <dd>Get IP from FoxyProxy Servers</dd>
+
+      <dt>Location</dt>
+      <dd>Open FoxyProxy site in a new tab to show location as well as WebRTC leak</dd>
     </dl>
 
     <h3>Page Context Menu <span>(not available on Android)</span></h3>
@@ -88,17 +98,7 @@
     <h3>Light/Dark Theme</h3>
     <p>Default scheme is based on <a href="https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme" target="_blank">prefers-color-scheme</a>.</p>
 
-    <h3 id="">Local Server</h3>
-    <p>FoxyProxy can be used  with local proxy servers:</p>
 
-    <ul>
-      <li>Go to Proxy tab ➤ Add a new proxy</li>
-      <li>Fill the details according to own preference e.g. Title: TOR</li>
-      <li>Type: SOCKS</li>
-      <li>TOR ➤ Hostname: 127.0.0.1 — Port: 9050</li>
-      <li>Psiphon ➤ Hostname: 127.0.0.1 — Port: 60351</li>
-      <li>Add patterns, if wanted to use for some locations only</li>
-    </ul>
 
 
 
@@ -135,6 +135,8 @@
     <p>Patterns entered here will never be proxied.</p>
     <p>Pattern rules are the same as include/exclude <a href="#patterns">patterns</a>.</p>
     <p>Use the drop down menu to add ready-made patterns.</p>
+    <p>Duplicates will be removed.</p>
+    <p>In Firefox you can also use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></p>
 
 
 
@@ -151,16 +153,15 @@
 
     <h3>Limit/reset WebRTC <span>(requires "privacy" permission)</span></h3>
     <p>Toggle WebRTC browser settings</p>
-    <p>WebRTC has been known to leak real IP.</p>
+    <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
 
     <h3 id="import">Import</h3>
+      <p>Imported content will be added to existing proxies.</p>
 
     <dl>
-
       <dt>FoxyProxy Account</dt>
       <dd>Import proxies from  <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
-        <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd>
-
+      <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd>
 
       <dt>Proxy List</dt>
       <dd>
@@ -175,13 +176,13 @@ example.com:3128:user:pass</pre>
 
           <dt>Extended</dt>
           <dd>All applicable parameters can be passed as search parameters <i>(case-insensitive) (v8.0+)</i><br>
-            e.g. <i>active, title, color, type (http, https , socks, socks4, pac), username, password, cc, city, proxyDNS</i></dd>
+            e.g. <i>active, title, color, type (http, https , socks4, socks5, pac), username, password, cc, city</i></dd>
           <dd>
 <pre>http://1.2.3.4:1080
 https://example.com:443
 http://user:pass@1.2.3.4?color=663300
-socks://12.999.51.81?title=China&cc=CN&city=Beijing&proxyDns=false
-socks://12.999.51.81:331?patternExcludesIntranet=false
+socks5://12.999.51.81?title=China&cc=CN&city=Beijing
+socks5://12.999.51.81:331?patternExcludesIntranet=false
 https://192.168.100.9:5192?patternIncludesAll=false
 https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
 
@@ -204,6 +205,17 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
 
     <h2 id="proxy">Proxy</h2>
+    <p>Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.</p>
+      <ul>
+        <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/en-US/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li>
+        <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
+        <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
+      </ul>
+
+    <p>Some options are not available in Chrome, but has been left for when sharing preferences between Chrome & Firefox.</p>
+
+
+
     <h3>Add</h3>
     <p>Add a new proxy entry</p>
 
@@ -215,8 +227,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
 
     <h3>Individual Proxy</h3>
-    <dl>
+    <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, will result in a mismatch and FoxyProxy will be set to Disable.</p>
 
+    <dl>
       <dt>Toggle Button</dt>
       <dd>Toggle proxy active or inactive</dd>
       <dd>Inactive proxies do not show in toolbar popup select</dd>
@@ -226,10 +239,6 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
       <dt>Up/Down Triangle</dt>
       <dd>Move the proxy up or down</dd>
-
-
-      <dt>Left Panel</dt>
-      <dd>Click to toggle between Proxy & Pattern</dd>
 
       <dt>Title</dt>
       <dd>Set the proxy title</dd>
@@ -276,8 +285,8 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
     <dl>
       <dt>Quick Add</dt>
-      <dd>Quick add ready-made patterns</dd>
-      <dd><code>Plain Host</code> matches hostnames that contain no dots, e.g. <code>http://localhost/</code></dd>
+      <dd>Add ready-made patterns</dd>
+      <dd><code>Plain Host</code> matches hostnames that contain no dots, e.g. <code>http://intranet/</code></dd>
 
       <dt>Include/Exclude</dt>
       <dd>Select to include or exclude URL that matches the pattern</dd>
@@ -356,6 +365,19 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       </tbody>
     </table>
 
+    <h3 id="">Local Server</h3>
+    <p>FoxyProxy can be used  with local proxy servers:</p>
+
+    <ul>
+      <li>Go to Proxy tab ➤ Add a new proxy</li>
+      <li>Fill the details according to own preference e.g. Title: TOR</li>
+      <li>Type: SOCKS</li>
+      <li>TOR ➤ Hostname: 127.0.0.1 — Port: 9050</li>
+      <li>Psiphon ➤ Hostname: 127.0.0.1 — Port: 60351</li>
+      <li>Add patterns, if wanted to use for some locations only</li>
+    </ul>
+
+
     <h2 id="tester">Tester</h2>
     <ol>
       <li>Enter URL to test</li>
@@ -365,8 +387,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Result will be match ✅ or fail ❌</li>
     </ol>
 
-    <h2 id="log">Log</h2>
+    <h2 id="log">Log <span>(Firefox only)</span></h2>
     <p>Live Log displays the last 100 proxied web requests in reversed order (new one on top). It will continue to display while the Options page is open and will stop logging as soon as the page is closed. Log data is not stored.</p>
+    <p>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> webRequest API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a>.</p>
 
     <h2 id="support">Support</h2>
     <ul>
