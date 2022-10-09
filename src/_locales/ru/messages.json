@@ -1,1 +1,111 @@
 
+{
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionDescription": { "message": "Простой инструмент управления прокси" },
+
+
+  "proxyByPatterns": { "message": "Прокси из шаблона" },
+  "disable": { "message": "Отключить" },
+  "ip": { "message": "IP" },
+  "location": { "message": "Расположение" },
+
+  "options": { "message": "Настройки" },
+  "proxy": { "message": "Список прокси" },
+  "tester": { "message": "Проверить" },
+  "log": { "message": "Журнал" },
+  "help": { "message": "Помощь" },
+  "about": { "message": "О программе" },
+  "import": { "message": "Импортировать настройки" },
+  "export": { "message": "Экспортировать настройки" },
+  "save": { "message": "Сохранить" },
+
+  "enableSync": { "message": "Включить синхронизацию" },
+  "enableSyncDescription": { "message": "Синхронизировать исключения, список прокси и шаблоны" },
+  "syncError": { "message": "Ошибка синхронизации" },
+
+  "proxyDNS": { "message": "Прокси DNS" },
+  "proxyDnsDescription": { "message": "Использовать прокси для разрешения DNS-запросов (только для SOCKS в Firefox)" },
+
+  "globalExclude": { "message": "Глобальные исключения" },
+  "globalExcludeDescription": { "message": "Шаблоны, которые не будут проксироваться" },
+  "globalExcludeError": { "message": "Ошибка шаблона-исключения" },
+
+  "deleteBrowserData": { "message": "Удалить данные браузера" },
+  "confirmDeleteBrowserData": { "message": "Вы уверены, что хотите удалить cookies, хранилище IndexedDB и хранилище DOM?" },
+  "restoreDefaults": { "message": "Восстановить настройки по умолчанию" },
+  "restoreDefaultsConfirm": { "message": "Вы уверены, что хотите восстановить все настройки по умолчанию?" },
+  "limitWebRTC": { "message": "Ограничить WebRTC" },
+  "resetWebRTC": { "message": "Сбросить WebRTC" },
+
+
+  "foxyProxyAccount": { "message": "Учетная запись FoxyProxy" },
+  "username": { "message": "Имя пользователя" },
+  "password": { "message": "Пароль пользователя" },
+  "togglePW": { "message": "Показать пароль" },
+  "importAs": { "message": "Импортировать как" },
+  "domain": { "message": "Домен" },
+  "errorUserPass": { "message": "Введите имя пользователя и пароль." },
+
+  "proxyList": { "message": "Список прокси" },
+  "proxyTypeError": { "message": "Неизвестный тип" },
+  "proxyPortError": { "message": "Отсутствует порт" },
+  "importURL": { "message": "Импорт из URL-адреса" },
+
+  "fromOlderVersions": { "message": "Импорт из предыдущей версии" },
+
+  "regexError": { "message": "Ошибка регулярного выражения для шаблона" },
+
+  "addHostTo": { "message": "Добавить шаблон хоста в ..." },
+
+  "incognitoAccess": { "message": "Для настройки прокси требуется разрешение." },
+
+
+
+
+
+
+  "getLocation": { "message": "Узнать местонахождение" },
+  "add": { "message": "Добавить" },
+  "title": { "message": "Название" },
+  "type": { "message": "Тип прокси" },
+  "color": { "message": "Цвет" },
+  "random": { "message": "Случайный" },
+  "hostname": { "message": "Прокси IP адрес или имя DNS" },
+  "port": { "message": "Порт" },
+  "city": { "message": "Город" },
+  "country": { "message": "Страна" },
+
+  "pacUrlError": { "message": "Отсутствует URL-адрес PAC нужного типа PAC" },
+  "hostnamePortError": { "message": "Отсутствует IP адрес или порт" },
+
+  "pattern": { "message": "Шаблон" },
+  "patterns": { "message": "Шаблоны" },
+  "quickAdd": { "message": "Быстрое добавление" },
+  "include": { "message": "Включить" },
+  "exclude": { "message": "Исключить" },
+  "all": { "message": "Все" },
+  "plainHost": { "message": "Обычный хост" },
+  "wildcard": { "message": "Шаблон хоста" },
+  "patternError": { "message": "Ошибка шаблона" },
+
+
+  "delete": { "message": "Удалить" },
+  "deleteConfirm": { "message": "Действительно хотите удалить?" },
+
+  "result": { "message": "Результат" },
+  "test": { "message": "Тест" },
+
+  "documentURL": { "message": "URL-адрес" },
+  "method": { "message": "Метод" },
+  "time": { "message": "Время" },
+
+  "selectCountry": { "message": "Выбор страны" },
+  "cancel": { "message": "Отмена" },
+  "ok": { "message": "OK" },
+
+  "error": { "message": "Ошибка выполнения операции" },
+  "fileParseError": { "message": "Ошибка содержимого файла" },
+  "fileReadError": { "message": "Ошибка чтения файла" },
+  "fileSizeError": { "message": "Размер файла больше допустимого размера в $1kb" },
+  "fileTypeError": { "message": "Неподдерживаемый формат файла" }
+}
