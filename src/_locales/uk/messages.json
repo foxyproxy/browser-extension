@@ -1,0 +1,110 @@
+{
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionDescription": { "message": "Простий у використанні просунутий засіб керування проксі для кожного" },
+
+
+  "proxyByPatterns": { "message": "Проксіювання згідно з шаблонами" },
+  "disable": { "message": "Вимкнути" },
+  "ip": { "message": "IP" },
+  "location": { "message": "Місцезнаходження" },
+
+  "options": { "message": "Опції" },
+  "proxy": { "message": "Проксі-сервер" },
+  "tester": { "message": "Тестувальник" },
+  "log": { "message": "Журнал" },
+  "help": { "message": "Допомога" },
+  "about": { "message": "Про" },
+  "import": { "message": "Імпортувати" },
+  "export": { "message": "Експортувати" },
+  "save": { "message": "Зберегти" },
+
+  "enableSync": { "message": "Увімкнути синхронізацію" },
+  "enableSyncDescription": { "message": "Синхронізувати глобальні винятки, проксі-сервери та шаблони" },
+  "syncError": { "message": "Помилка синхронізації" },
+
+  "proxyDNS": { "message": "Проксіювати DNS" },
+  "proxyDnsDescription": { "message": "Використовувати цей проксі-сервер, щоб здійснювати певні DNS-запити (лише для SOCKS у Firefox)" },
+
+  "globalExclude": { "message": "Глобальні винятки" },
+  "globalExcludeDescription": { "message": "Вказані тут шаблони ніколи не проксіюватимуться" },
+  "globalExcludeError": { "message": "Помилка в шаблоні-винятку" },
+
+  "deleteBrowserData": { "message": "Видалити дані з браузера" },
+  "confirmDeleteBrowserData": { "message": "Ви точно бажаєте видалити файли-куки, сховище індексованої БД, локальне сховище DOM?" },
+  "restoreDefaults": { "message": "Відновити налаштування за замовчуванням" },
+  "restoreDefaultsConfirm": { "message": "Ви точно хочете відновити усі налаштування до їх типових значень?" },
+  "limitWebRTC": { "message": "Обмежити WebRTC" },
+  "resetWebRTC": { "message": "Скинути WebRTC" },
+
+
+  "foxyProxyAccount": { "message": "Обліковий запис FoxyProxy" },
+  "username": { "message": "Ім’я користувача" },
+  "password": { "message": "Пароль" },
+  "togglePW": { "message": "Показати/сховати пароль" },
+  "importAs": { "message": "Імпортувати як" },
+  "domain": { "message": "Домен" },
+  "errorUserPass": { "message": "Будь ласка, введіть і ім’я користувача, і пароль." },
+
+  "proxyList": { "message": "Перелік проксі-серверів" },
+  "proxyTypeError": { "message": "Невідомий тип" },
+  "proxyPortError": { "message": "Бракує порту" },
+  "importURL": { "message": "Імпортувати за URL-адресою" },
+
+  "fromOlderVersions": { "message": "Зі старіших версій" },
+
+  "regexError": { "message": "Помилка створення регулярного виразу для шаблону" },
+
+  "addHostTo": { "message": "Додати шаблон хосту до ..." },
+
+  "incognitoAccess": { "message": "Для налаштування проксі-сервера необхідний дозвіл приватного перегляду." },
+
+
+
+
+
+
+  "getLocation": { "message": "З’ясувати місцезнаходження" },
+  "add": { "message": "Додати" },
+  "title": { "message": "Заголовок" },
+  "type": { "message": "Тип" },
+  "color": { "message": "Колір" },
+  "random": { "message": "Випадковий" },
+  "hostname": { "message": "Ім’я хоста" },
+  "port": { "message": "Порт" },
+  "city": { "message": "Місто" },
+  "country": { "message": "Країна" },
+
+  "pacUrlError": { "message": "Бракує URL-адреси PAC для типу PAC" },
+  "hostnamePortError": { "message": "Бракує імені хоста чи порта" },
+
+  "pattern": { "message": "Шаблон" },
+  "patterns": { "message": "Шаблони" },
+  "quickAdd": { "message": "Швидке додавання" },
+  "include": { "message": "Включити" },
+  "exclude": { "message": "Виключити" },
+  "all": { "message": "Усі" },
+  "plainHost": { "message": "Звичайний хост" },
+  "wildcard": { "message": "Шаблон" },
+  "patternError": { "message": "Помилка в шаблоні" },
+
+
+  "delete": { "message": "Видалити" },
+  "deleteConfirm": { "message": "Ви справді хочете це видалити?" },
+
+  "result": { "message": "Результат" },
+  "test": { "message": "Тестувати" },
+
+  "documentURL": { "message": "URL-адреса документу" },
+  "method": { "message": "Метод" },
+  "time": { "message": "Час" },
+
+  "selectCountry": { "message": "Оберіть країну" },
+  "cancel": { "message": "Скасувати" },
+  "ok": { "message": "Гаразд" },
+
+  "error": { "message": "Трапилася помилка із цією дією" },
+  "fileParseError": { "message": "Сталася помилка під час розбору вмісту файлу" },
+  "fileReadError": { "message": "Сталася помилка читання файлу" },
+  "fileSizeError": { "message": "Розмір файлу перевищує дозволені $1кб" },
+  "fileTypeError": { "message": "Непідтримуваний формат файлу" }
+}
