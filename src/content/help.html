@@ -163,6 +163,10 @@
       <dd>Import proxies from  <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
       <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd>
 
+      <dt>Import from URL</dt>
+      <dd>Import preferences (valid JSON) from a remote URL</dd>
+
+
       <dt>Proxy List</dt>
       <dd>
         <dl>
@@ -211,8 +215,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
         <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
       </ul>
+    <p class="note">In Chrome FoxyProxy uses PAC and above rule is fully enforced. In Firefox API, it requires further testing.</p>
 
-    <p>Some options are not available in Chrome, but has been left for when sharing preferences between Chrome & Firefox.</p>
+    <!-- <p>Some options are not available in Chrome, but has been left for when sharing preferences between Chrome & Firefox.</p> -->
 
 
 
@@ -256,7 +261,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dt>Color</dt>
       <dd>Set the proxy color</dd>
 
-      <dt>hostname & Port</dt>
+      <dt>Hostname & Port</dt>
       <dd>Required for HTTP/HTTPS/SOCKS/SOCKS4 type</dd>
 
       <dt>Username & Password</dt>
@@ -366,7 +371,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     </table>
 
     <h3 id="">Local Server</h3>
-    <p>FoxyProxy can be used  with local proxy servers:</p>
+    <p>FoxyProxy can be used with local proxy servers:</p>
 
     <ul>
       <li>Go to Proxy tab ➤ Add a new proxy</li>
@@ -374,7 +379,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Type: SOCKS</li>
       <li>TOR ➤ Hostname: 127.0.0.1 — Port: 9050</li>
       <li>Psiphon ➤ Hostname: 127.0.0.1 — Port: 60351</li>
-      <li>Add patterns, if wanted to use for some locations only</li>
+      <li>Add patterns to limit to some URLs only</li>
     </ul>
 
 
@@ -393,8 +398,8 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
     <h2 id="support">Support</h2>
     <ul>
-      <li>Please use the GitHub Community <a href="https://github.com/foxyproxy/firefox-extension" target="_blank">Support</a>.</li>
-      <li><a href="https://github.com/foxyproxy/firefox-extension" target="_blank">Source Code</a></li>
+      <li>GitHub Community <a href="https://github.com/foxyproxy/browser-extension" target="_blank">Support</a></li>
+      <li><a href="https://github.com/foxyproxy/browser-extension" target="_blank">Source Code</a></li>
       <li><a href="https://support.getfoxyproxy.org/" target="_blank">Open a Support Ticket</a> <i>(no registration required)</i></li>
       <li><a href="mailto:support@getfoxyproxy.org">Email Support</a></li>
     </ul>

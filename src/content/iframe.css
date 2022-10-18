@@ -1,17 +1,4 @@
 @import 'default.css';
-/* ----- Light Theme ----- */
-:root {
-  --dim: #777;
-}
-
-/* ----- Dark Theme ----- */
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --dim: #ccc;
-  }
-}
-
-
 
 /* ----- General ----- */
 :root {
@@ -19,7 +6,12 @@
 }
 
 html {
-  scroll-padding-top: var(--nav-height);
+  scroll-padding-top: calc(var(--nav-height) + 0.5rem);
+}
+
+body {
+  /* Chrome sets font-size to 75% (16px x 75% = 12px) */
+  font-size: unset;
 }
 
 img {
@@ -53,13 +45,22 @@ h3 {
   font-size: 1.4em;
 }
 
+h2 span,
+h3 span {
+  color: var(--dim);
+  font-size: 0.8em;
+  font-style: italic;
+  font-weight: normal;
+  margin-left: 0.5em;
+}
+
 h4 {
   margin-bottom: 0;
   font-size: 1.2em;
 }
 
 dt {
-  color: var(--nav-bg);
+  /* color: var(--nav-bg); */
   background-color: var(--alt-bg);
   display: table;
   padding: 0.2em 0.5em;
@@ -78,6 +79,7 @@ dt span {
   color: var(--dim);
   font-style: italic;
   font-weight: normal;
+  letter-spacing: normal;
   font-size: 0.9em;
 }
 
@@ -95,19 +97,18 @@ dd dl dt {
 
 /* ----- Navigation ----- */
 nav {
-  color: var(--bg);
   background-color: var(--bg);
   height: var(--nav-height);
   position: sticky;
   top: 0;
   z-index: 1;
-  box-shadow: 0px 3px 6px var(--shadow);
+  box-shadow: 0px 3px 6px #0004;
   display: flex;
   align-items: center;
 }
 
 nav a {
-  color: var(--nav-bg);
+  color: var(--color);
   padding: 0.5em 1em;
   transition: 0.5s;
 }
@@ -155,6 +156,10 @@ td {
 }
 
 /* ----- /Table ----- */
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
 
 pre {
   border-left: 2px solid #ccc;
@@ -162,7 +167,6 @@ pre {
 }
 
 code {
-  font-size: 1.2em;
   padding: 0 0.3em;
   background-color: var(--hover);
 }
@@ -232,20 +236,16 @@ figcaption {
   margin-top: 0.3em;
   border-radius: 4px;
   display: table;
-  padding-left: 2em;
   position: relative;
 }
 
 .note::before,
 .warning::before {
-  content: '📌';
-  position: absolute;
-  top: 0.2em;
-  left: 0.8em;
+  content: '📌 ';
 }
 
 .warning::before {
-  content: '⚠️';
+  content: '⚠️ ';
 }
 
 
