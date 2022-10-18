@@ -15,18 +15,17 @@
     --btn-bg: #f90;
     --btn-hover: #e70;
 
+    --link: #f90;
     --border: #ddd;
-    --link: #08f;
-
     --shadow: #0004;
-
+    --dim: #777;
 }
 
 /* ----- Dark Theme ----- */
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --color: #fff;
-    --bg: #310;
+    --bg: #420;
     --alt-bg: #666;
     --hover: #888;
 
@@ -36,11 +35,9 @@
     --btn-bg: #f90;
     --btn-hover: #e70;
 
-
     --border: #777;
-    --link: #0ef;
-
     --shadow: #fff8;
+    --dim: #ccc;
   }
 }
 
@@ -74,7 +71,7 @@ input[type="password"],
 input[type="url"] {
   width: 100%;
   color: inherit;
-  /* background: var(--alt-bg); */
+  background-color: var(--alt-bg);
   border: 1px solid var(--border);
   border-radius: 0.3em;
 }
@@ -86,6 +83,7 @@ a {
 
 ::placeholder {
   opacity: 0.5;
+  color: inherit;
   font-style: italic;
 }
 
@@ -100,21 +98,6 @@ button {
 button:hover {
   background: var(--btn-hover);
 }
-
-
-
-/*
-.flex, .flex-display {
-  display: flex;
-}
-
-.flex > * {
-  flex: 1;
-}
-
-.spacer {
-  flex-grow: 1;
-} */
 
 .invalid, input:invalid {
   box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
