@@ -26,9 +26,6 @@
   "proxyDNS": { "message": "Proxy DNS" },
   "proxyDnsDescription": { "message": "Use the proxy server to resolve certain DNS queries (only for SOCKS in Firefox)" },
 
-  "domain": { "message": "FoxyProxy Query Domain" },
-  "domainDescription": { "message": "Toggle querying domain in case one is blocked" },
-
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
 
@@ -44,7 +41,7 @@
   "password": { "message": "Password" },
   "togglePW": { "message": "Toggle Password" },
   "importAs": { "message": "Import as" },
-  "errorUserPass": { "message": "Missing Username or Password" },
+  "userPassError": { "message": "Missing Username or Password" },
 
   "proxyList": { "message": "Proxy List" },
   "proxyTypeError": { "message": "Unknown Type" },
