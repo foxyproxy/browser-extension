@@ -2,7 +2,6 @@
   "extensionName": { "message": "FoxyProxy" },
   "extensionDescription": { "message": "Easy to use advanced Proxy Management tool for everyone" },
 
-
   "proxyByPatterns": { "message": "Proxy by Patterns" },
   "disable": { "message": "Disable" },
   "ip": { "message": "IP" },
@@ -17,6 +16,8 @@
   "import": { "message": "Import" },
   "export": { "message": "Export" },
   "save": { "message": "Save" },
+  "addHostTo": { "message": "Add host pattern to ..." },
+  "incognitoAccess": { "message": "Proxy settings requires private browsing permission." },
 
   "enableSync": { "message": "Enable Sync" },
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
@@ -25,9 +26,11 @@
   "proxyDNS": { "message": "Proxy DNS" },
   "proxyDnsDescription": { "message": "Use the proxy server to resolve certain DNS queries (only for SOCKS in Firefox)" },
 
+  "domain": { "message": "FoxyProxy Query Domain" },
+  "domainDescription": { "message": "Toggle querying domain in case one is blocked" },
+
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
-  "globalExcludeError": { "message": "Global Exclude Pattern Error" },
 
   "deleteBrowserData": { "message": "Delete Browser Data" },
   "confirmDeleteBrowserData": { "message": "Are you sure you want to delete cookies, indexedDB storage, DOM local storage?" },
@@ -36,32 +39,19 @@
   "limitWebRTC": { "message": "Limit WebRTC" },
   "resetWebRTC": { "message": "Reset WebRTC" },
 
-
   "foxyProxyAccount": { "message": "FoxyProxy Account" },
   "username": { "message": "Username" },
   "password": { "message": "Password" },
   "togglePW": { "message": "Toggle Password" },
   "importAs": { "message": "Import as" },
-  "domain": { "message": "Domain" },
-  "errorUserPass": { "message": "Please fill both Username & Password." },
+  "errorUserPass": { "message": "Missing Username or Password" },
 
   "proxyList": { "message": "Proxy List" },
   "proxyTypeError": { "message": "Unknown Type" },
   "proxyPortError": { "message": "Missing Port" },
-  "importURL": { "message": "Import From URL" },
 
+  "fromURL": { "message": "From URL" },
   "fromOlderVersions": { "message": "From older versions" },
-
-  "regexError": { "message": "Error creating regexp for pattern" },
-
-  "addHostTo": { "message": "Add Host Pattern to ..." },
-
-  "incognitoAccess": { "message": "Proxy settings requires private browsing permission." },
-
-
-
-
-
 
   "getLocation": { "message": "Get Location" },
   "add": { "message": "Add" },
@@ -85,8 +75,7 @@
   "all": { "message": "All" },
   "plainHost": { "message": "Plain Host" },
   "wildcard": { "message": "Wildcard" },
-  "patternError": { "message": "Pattern Error" },
-
+  "regexError": { "message": "Error creating regexp for pattern" },
 
   "delete": { "message": "Delete" },
   "deleteConfirm": { "message": "Are you sure you want to delete?" },
@@ -97,10 +86,6 @@
   "documentURL": { "message": "Document URL" },
   "method": { "message": "Method" },
   "time": { "message": "Time" },
-
-  "selectCountry": { "message": "Select Country" },
-  "cancel": { "message": "Cancel" },
-  "ok": { "message": "OK" },
 
   "error": { "message": "There was an error with the operation" },
   "fileParseError": { "message": "There was an error parsing the file" },
