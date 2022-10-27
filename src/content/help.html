@@ -20,6 +20,7 @@
   </nav>
 
   <article>
+    <section>
 
     <h2 id="preamble">Preamble</h2>
 
@@ -27,35 +28,37 @@
 
     <h4>FoxyProxy v8.0+</h4>
     <p>FoxyProxy has been re-written to comply with manifest v3 requirements. There are some updates to the interface and functions. Please take time to have a quick look over this Help document.</p>
-    <p class="note">Editing is non-destructive. Click <b>Save</b> to apply the changes.</p>
-
 
     <h4>FoxyProxy Basic</h4>
     <p>FoxyProxy Basic is a simple on/off proxy switcher without ability to use patterns. FoxyProxy v8.0+ is a unified extension. If there are no patterns, it behaves like FoxyProxy Basic. Users of FoxyProxy Basic are advised to export their settings and migrate to FoxyProxy.</p>
+
+
+    <h3>Non-Destructive Editing</h3>
+    <p>Editing & importing is non-destructive. Click <b>Save</b> to apply the changes.</p>
 
     <h3>Firefox</h3>
 
     <h4>Proxy Authentication</h4>
     <ul>
-    <li>Authentication for http/https/socks</li>
-    <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
+      <li>Authentication for http/https/socks</li>
+      <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
 
     <!-- Error: proxy.settings requires private browsing permission. -->
     <h4>Private Browsing Permission</h4>
-    <p>ⓘ <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p>
-
     <blockquote>
       <p>Note: The ability to change proxy settings requires private window access because proxy settings affect both private and non-private windows. Therefore, if an extension has not been granted private window permission, calls to <code>proxy.settings.set()</code> will throw an exception.</p>
       <cite><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings" target="_blank">proxy.settings</a></cite>
     </blockquote>
+
+    <p>ⓘ <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p>
 
 
     <h3>Chrome/Chromium</h3>
 
     <h4>Proxy Authentication</h4>
     <ul>
-      <li>Authentication by FoxyProxy is not possible in manifest v3 and it is passed to the browser</li>
+      <li>Authentication for http/https <i>(Chrome 108+)</i></li>
     </ul>
 
     <h2 id="how-to">How to Use</h2>
@@ -280,6 +283,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
     <h3 id="patterns">Patterns</h3>
     <p>Patterns can be full or partial match which means it can match the entire URL or only part of it.</p>
+    <p>Ending with * for wildcard patterns is not necessary.</p>
 
     <p>When FoxyProxy is set to <i>Proxy by Patterns</i> and there are existing patterns:</p>
     <ul>
@@ -323,7 +327,6 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dd>Delete the pattern</dd>
     </dl>
 
-
     <table>
       <caption>Examples</caption>
       <thead>
@@ -361,7 +364,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         </tr>
 
         <tr>
-          <td>^https://(www|mail).google.com/\d+/</td>
+          <td>^https://(www|mail)\.google\.com/\d+/</td>
           <td>https://www.google.com/123/abc<br>
             https://mail.google.com/123/abc</td>
           <td>https://google.com/</td>
@@ -404,6 +407,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li><a href="mailto:support@getfoxyproxy.org">Email Support</a></li>
     </ul>
 
+    </section>
   </article>
 </body>
 

@@ -1,0 +1,110 @@
+@import 'default.css';
+
+/* ----- General ----- */
+body {
+  opacity: 0;
+  width: 25em;
+  background-color: var(--bg);
+  transition: opacity 0.5s;
+}
+
+body.android {
+  width: auto;
+}
+
+/*
+article {
+
+} */
+
+h1 {
+  color: var(--nav-color);
+  background: var(--body-bg);
+  font-weight: normal;
+  margin: 0;
+  padding: 0.5em;
+}
+
+h1 img {
+  width: 1.5em;
+  vertical-align: text-bottom;
+}
+
+.display {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  padding: 2em;
+  column-gap: 1em;
+}
+
+.display span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flag{
+  display: grid;
+  grid-row-start: 1;
+  grid-row-end: 5;
+  justify-content: center;
+  font-size: 2em;
+}
+
+.title {
+  color: var(--header);
+  font-size: 2em;
+  margin-bottom: 0.2em;
+}
+
+.location {
+  color: #999;
+  white-space: pre;
+  min-height: 5em;
+}
+
+.flag.on::before,
+.flag.off::before {
+  content: '';
+  background-image: url('../image/power.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 1em;
+  height: 1em;
+}
+
+.flag.off::before {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+
+select {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 1em;
+  padding: 0.3em 0.5em;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+option span {
+  width: 1em;
+}
+
+/* ----- Buttons ----- */
+div.button {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 1fr;
+  column-gap: 0.1em;
+}
+
+button {
+  color: #fff;
+  border: 0;
+  padding: 0.8em;
+  font-weight: bold;
+}
+
+button:hover {
+  background: var(--btn-hover);
+}
+/* ----- /Buttons ----- */

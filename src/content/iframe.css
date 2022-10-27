@@ -32,7 +32,7 @@ h2,
 h3,
 h4 {
   letter-spacing: 1px;
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 h2 {
