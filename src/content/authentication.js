@@ -14,8 +14,7 @@ class Authentication {
     this.data = {};
     this.pending = {};                                      // prevent bad authentication loop
     const urls = ['*://*/*'];                               // limit to HTTP, HTTPS and WebSocket URLs
-    // temporarily disabled on chrome until Chrome 108
-    browser.runtime.getManifest().manifest_version == 2 && browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']); // Chrome 108
+    browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']); // Chrome 108
     browser.webRequest.onCompleted.addListener(e => this.clearPending(e), {urls});
     browser.webRequest.onErrorOccurred.addListener(e => this.clearPending(e), {urls});
   }
