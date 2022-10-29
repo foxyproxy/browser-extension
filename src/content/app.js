@@ -33,7 +33,36 @@ export class App {
     });
   }
 
-  static importExport(callback) {
+  // ----------------- Helper functions --------------------
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=478654
+  // Add support for SVG images in Web Notifications API -> CH107
+  static notify(message, title = browser.i18n.getMessage('extensionName'), id = '') {
+    browser.notifications.create(id, {
+      type: 'basic',
+      iconUrl: '/image/icon.svg',
+      title,
+      message
+    });
+  }
+
+  static equal(a, b) {                                      // bg 2 options 1
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+
+  static getFlag(cc) {
+    cc = /^[A-Z]{2}$/i.test(cc) && cc.toUpperCase();
+    return cc ? String.fromCodePoint(...[...cc].map(i => i.charCodeAt() + 127397)) : '🌎';
+  }
+
+  static getTitle(item) {
+    return item.title || (item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`);
+  }
+}
+
+// ----------------- Import/Export Preferences -------------
+export class ImportExport {
+
+  static init(callback) {
     this.callback = callback;
     document.getElementById('file').addEventListener('change', (e) => this.import(e));
     document.getElementById('export').addEventListener('click', () => this.export());
@@ -42,22 +71,22 @@ export class App {
   static import(e) {
     const file = e.target.files[0];
     switch (true) {
-      case !file: this.notify(browser.i18n.getMessage('error')); return;
+      case !file: App.notify(browser.i18n.getMessage('error')); return;
       case !['text/plain', 'application/json'].includes(file.type): // check file MIME type
-        this.notify(browser.i18n.getMessage('fileTypeError'));
+        App.notify(browser.i18n.getMessage('fileTypeError'));
         return;
     }
 
     const reader  = new FileReader();
     reader.onloadend = () => this.readData(reader.result);
-    reader.onerror = () => this.notify(browser.i18n.getMessage('fileReadError'));
+    reader.onerror = () => App.notify(browser.i18n.getMessage('fileReadError'));
     reader.readAsText(file);
   }
 
   static async readData(data) {
     try { data = JSON.parse(data); }
     catch(e) {
-      this.notify(browser.i18n.getMessage('fileParseError')); // display the error
+      App.notify(browser.i18n.getMessage('fileParseError')); // display the error
       return;
     }
 
@@ -89,30 +118,5 @@ export class App {
       saveAs,
       conflictAction: 'uniquify'
     });
-  }
-
-  // ----------------- Helper functions --------------------
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=478654
-  // Add support for SVG images in Web Notifications API -> CH107
-  static notify(message, title = browser.i18n.getMessage('extensionName'), id = '') {
-    browser.notifications.create(id, {
-      type: 'basic',
-      iconUrl: '/image/icon.svg',
-      title,
-      message
-    });
-  }
-
-  static equal(a, b) {                                      // bg 2 options 1
-    return JSON.stringify(a) === JSON.stringify(b);
-  }
-
-  static getFlag(cc) {
-    cc = /^[A-Z]{2}$/i.test(cc) && cc.toUpperCase();
-    return cc ? String.fromCodePoint(...[...cc].map(i => i.charCodeAt() + 127397)) : '🌎';
-  }
-
-  static getTitle(item) {
-    return item.title || (item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`);
   }
 }

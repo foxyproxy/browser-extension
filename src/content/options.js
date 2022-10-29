@@ -1,4 +1,4 @@
-import {pref, App} from './app.js';
+import {pref, App, ImportExport} from './app.js';
 import {Pattern} from './pattern.js';
 import {Migrate} from './migrate.js';
 import {Location} from './location.js';
@@ -955,7 +955,7 @@ new Nav();
 // ----------------- /Navigation ---------------------------
 
 // ----------------- Import/Export Preferences -------------
-App.importExport(() => {
+ImportExport.init(() => {
   options.process();                                        // set options after the pref update
   deleteProxies();
   options.processProxy();                                   // update page display
