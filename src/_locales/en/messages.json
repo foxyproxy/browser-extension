@@ -4,6 +4,7 @@
 
   "proxyByPatterns": { "message": "Proxy by Patterns" },
   "disable": { "message": "Disable" },
+  "disabled": { "message": "Disabled" },
   "ip": { "message": "IP" },
   "location": { "message": "Location" },
 
