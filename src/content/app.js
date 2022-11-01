@@ -23,7 +23,7 @@ export let pref = {
 export class App {
 
   static firefox = navigator.userAgent.includes('Firefox'); // options 1 pac 6
-  static chrome = navigator.userAgent.includes('Chrome');   // options 2 pac 4 app 1
+  static chrome = navigator.userAgent.includes('Chrome');   // options 2 pac 4
 
   // ----------------- User Preference ---------------------
   static getPref() {
@@ -77,7 +77,7 @@ export class ImportExport {
         return;
     }
 
-    const reader  = new FileReader();
+    const reader = new FileReader();
     reader.onloadend = () => this.readData(reader.result);
     reader.onerror = () => App.notify(browser.i18n.getMessage('fileReadError'));
     reader.readAsText(file);
