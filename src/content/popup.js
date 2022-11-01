@@ -71,7 +71,7 @@ class Popup {
         flag.classList.remove('on');
         flag.classList.add('off');
         flag.textContent = '';
-        title.textContent = browser.i18n.getMessage('disable');
+        title.textContent = browser.i18n.getMessage('disabled');
         location.textContent = '';
         break;
 
