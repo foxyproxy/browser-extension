@@ -47,6 +47,7 @@
   "proxyList": { "message": "Proxy List" },
   "proxyTypeError": { "message": "Unknown Type" },
   "proxyPortError": { "message": "Missing Port" },
+  "proxyDuplicateError": { "message": "Duplicate hostname:port or PAC url" },
 
   "fromURL": { "message": "From URL" },
   "fromOlderVersions": { "message": "From older versions" },
