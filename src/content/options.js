@@ -6,14 +6,36 @@ import {Color} from './color.js';
 import {Menus} from './menus.js';
 import './i18n.js';
 
+// ----------------- Spinner -------------------------------
+class Spinner {
+  static spinner = document.querySelector('.spinner');
+
+  static on() {
+    this.spinner.classList.add('on');
+  }
+
+  static off() {
+    this.spinner.classList.remove('on');
+  }
+}
+
+// ----------------- Progress Bar --------------------------
+class ProgressBar {
+
+  static bar = document.querySelector('.progressBar');
+
+  static show() {
+    this.bar.classList.toggle('on');
+    setTimeout(() => this.bar.classList.toggle('on'), 2000);
+  }
+}
+
 // ----------------- Options -------------------------------
 class Options {
 
   constructor(keys = Object.keys(pref)) {
     this.prefNode = document.querySelectorAll('#' + keys.join(',#')); // defaults to pref keys
     document.querySelectorAll('button[type="submit"]').forEach(item => item.addEventListener('click', () => this.check())); // submit button
-    this.pBar = document.querySelector('.progressBar');
-    this.spinner = document.querySelector('.spinner');
 
     this.sync = document.getElementById('sync');
     this.proxyDNS = document.getElementById('proxyDNS');
@@ -73,12 +95,7 @@ class Options {
       save ? pref[node.id] = node[attr] : node[attr] = pref[node.id];
     });
 
-    save && !this.progressBar() && browser.storage.local.set(pref); // update saved pref
-  }
-
-  progressBar() {
-    this.pBar.classList.toggle('on');
-    setTimeout(() => this.pBar.classList.toggle('on'), 2000);
+    save && !ProgressBar.show() && browser.storage.local.set(pref); // update saved pref
   }
 
   check() {
@@ -89,6 +106,7 @@ class Options {
       pref.globalExcludeRegex !== this.globalExcludeRegex.value;
 
     // --- check and build proxies & patterns
+    const ids = [];
     const data = [];
     for (const item of this.proxyFieldset.children) {
       if (item.nodeName !== 'DETAILS') { continue; }
@@ -101,6 +119,17 @@ class Options {
         return;
       }
 
+      // check for duplicate
+      const id = pxy.type === 'pac' ? pxy.pac : `${pxy.hostname}:${pxy.port}`;
+      if (ids.includes(id)) {
+        item.open = true;                                   // open the proxy details
+        item.classList.add('invalid');
+        item.scrollIntoView({behavior: 'smooth', block: 'center'});
+        alert(browser.i18n.getMessage('proxyDuplicateError'));
+        return;
+      }
+
+      ids.push(id);
       data.push(pxy);
     }
     const dataChanged = !App.equal(pref.data, data);        // check if proxies & patterns have changed
@@ -412,17 +441,18 @@ class Options {
     parent.appendChild(div);
   }
 
-  getLocationData() {
+  getLocationData() {console.log('called');Spinner.on();
     const hosts = pref.data.filter(i => !i.cc || !i.city).map(i => i.hostname);
     if (!hosts[0]) { return; }
 
-    this.spinner.classList.add('on');
+    Spinner.on();
+
     // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
     fetch('https://bilestoad.com/webservices/lookup.php?' + hosts.join('&'))
     .then(response => response.json())
     .then(json => this.updateLocation(json))
     .catch(error => {
-      this.spinner.classList.remove('on');
+      Spinner.off();
       alert(error);
     });
   }
@@ -435,7 +465,7 @@ class Options {
         city && (item.city = city);
       }
     });
-    this.spinner.classList.remove('on');
+    Spinner.off();
   }
 
   filterProxy(e) {
@@ -537,7 +567,7 @@ class ImportAcc {
       return;
     }
 
-    options.spinner.classList.add('on');
+    Spinner.on();
 
     // --- fetch data
     // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
@@ -552,7 +582,7 @@ class ImportAcc {
     .then(response => {
       if (!Array.isArray(response) || !response[0] || !response[0].hostname) {
         App.notify(browser.i18n.getMessage('error'));
-        options.spinner.classList.remove('on');
+        Spinner.off();
         return;
       }
 
@@ -564,12 +594,12 @@ class ImportAcc {
         this.ip.checked && this.https.checked && this.makeProxy(item, {ip: true, https: true});
       });
 
-      options.spinner.classList.remove('on');
+      Spinner.off();
       options.navProxy.checked = true;                      // show Proxy tab
     })
     .catch(error => {
       App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message);
-      options.spinner.classList.remove('on');
+      Spinner.off();
     });
   }
 
@@ -590,7 +620,7 @@ class ImportAcc {
       pac: ''
     };
     pxy.title += (ip ? '.ip' : '') + '.' + pxy.port;        // adding ip & port
-    // pref.data.push(pxy);
+
     options.addProxy(pxy);
   }
 }
@@ -607,7 +637,7 @@ class ImportURL {
     this.input.value = this.input.value.trim();
     if (!this.input.value) { return; }
 
-    options.spinner.classList.add('on');
+    Spinner.on();
 
     // --- fetch data
     fetch(this.input.value)
@@ -618,12 +648,12 @@ class ImportURL {
 
       options.process();                                    // set options after the pref update
       options.processProxy();                               // update page display
-      options.spinner.classList.remove('on');
+      Spinner.off();
       options.navProxy.checked = true;                      // show Proxy tab
     })
     .catch(error => {
       App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message);
-      options.spinner.classList.remove('on');
+      Spinner.off();
     });
   }
 }
@@ -643,7 +673,7 @@ class ImportList {
     this.textarea.value.split(/\n+/).forEach(item => {
       // simple vs Extended format
       const pxy = item.includes('://') ? this.parseExtended(item) : this.parseSimple(item);
-      pxy && pref.data.push(pxy);
+      pxy & options.addProxy(pxy);
     });
   }
 
@@ -722,14 +752,21 @@ class ImportList {
     }
 
     // check type
-    const type = url.searchParams.get('type').toLowerCase();
+    const type = url.searchParams.get('type')?.toLowerCase();
     if (type && !['http', 'https ', 'socks', 'socks4', 'pac'].includes(type)) {
       alert(browser.i18n.getMessage('proxyTypeError') + '\n\n' + item);
       return;
     }
 
+    // new URL() missing port: http -> 80 | https -> 433
+    let port = url.port;
+    if (!port) {
+      pxy.type === 'http' && (port = '80');
+      pxy.type === 'https' && (port = '443');
+    }
+
     // check port
-    if (type !== 'pac' && !url.port) {
+    if (type !== 'pac' && !port) {
       alert(browser.i18n.getMessage('proxyPortError') + '\n\n' + item);
       return;
     }
@@ -752,13 +789,12 @@ class ImportList {
           pxy.cc = value;
           break;
 
-//        case 'proxydns': pxy.proxyDNS = value === 'true'; break;
         default:
           !['include', 'exclude'].includes(key) && pxy.hasOwnProperty(key) && (pxy[key] = value);
       }
     });
 
-    pxy.port = url.port;
+    pxy.port = port;
     pxy.hostname = url.hostname;
     pxy.cc = pxy.cc.toUpperCase();                          // fix case issue
     type === 'pac' && (pxy.pac = url.origin + url.pathname);
@@ -957,7 +993,7 @@ new Nav();
 // ----------------- Import/Export Preferences -------------
 ImportExport.init(() => {
   options.process();                                        // set options after the pref update
-  deleteProxies();
+  options.deleteProxies();
   options.processProxy();                                   // update page display
 });
 // ----------------- /Import/Export Preferences ------------

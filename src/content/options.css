@@ -325,6 +325,7 @@ div.spinner {
   border-color: #ddd4 #ddd8 #ddd var(--btn-bg);
   border-radius: 50%;
   animation: spin 3s linear infinite;
+  margin-left: -2em;
 }
 
 .spinner::after {

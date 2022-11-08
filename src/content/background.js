@@ -21,7 +21,7 @@ class ProcessPref {
     if (pref.sync) {
       const syncPref = await browser.storage.sync.get();
 
-      // convert object to array & filter null newValue (deleted) & map to newValue
+      // convert object to array & filter proxies
       const data = Object.values(syncPref).filter(i => i.hasOwnProperty('hostname'));
 
       const obj = {};
