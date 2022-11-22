@@ -1,26 +1,26 @@
 {
   "extensionName": { "message": "FoxyProxy Padrão" },
-  "extensionDescription": { "message": "Ferramenta avançada de gerenciamento de proxy fácil de usar para todos" },
+  "extensionDescription": { "message": "Ferramenta avançada de Gerenciamento de Proxy fácil de usar para todos" },
 
   "extensionNameBasic": { "message": "FoxyProxy Básico" },
 
 
-  "error": { "message": "Falha" },
+  "error": { "message": "Ocorreu uma falha!" },
   "erroNoSettings": { "message": "Nenhuma configuração foi encontrada. Reinstale o FoxyProxy." },
 
   "deleteAll": { "message": "Excluir tudo" },
   "export": { "message": "Exportar configurações" },
   "import": { "message": "Configurações de Importação" },
   "importProxyList": { "message": "Importar lista de proxy" },
-  "log": { "message": "Registro" },
+  "log": { "message": "Registro de Alterações" },
   "myIP": { "message": "Qual é o meu IP?" },
-  "deleteAllmessage": { "message": "Todos os dados excluídos" },
+  "deleteAllmessage": { "message": "Todos os dados foram excluídos." },
 
   "authError": { "message": "$1 está recusando conexões\nVerifique o nome de usuário/senha do proxy" },
 
 
   "delete": { "message": "Excluir" },
-  "deleteNot": { "message": "Não apague" },
+  "deleteNot": { "message": "Não delete!" },
   "deleteBrowserData": { "message": "Excluir dados do navegador" },
   "deleteBrowserDataDescription": { "message": "Cache, cookies, armazenamento indexedDB, armazenamento local DOM, dados de plug-in, dados de service worker." },
   "deleteBrowserDataNotDescription": { "message": "Senhas armazenadas, histórico de navegação e formulário, histórico de download, webSQL e certificados vinculados ao servidor." },
@@ -29,9 +29,8 @@
   "about": { "message": "Sobre" },
   "syncSettings": { "message": "Sincronizar configurações" },
   "syncSettingsHelp": { "message": "Ative para usar o Firefox Sync (as configurações são sincronizadas em todos os seus navegadores Firefox). Desligue para armazenar as configurações localmente. Observe que você pode ter duas instâncias diferentes de configurações, uma de sincronização e uma local." },
-//  "onOff": { "message": "Ligar/Desligar" },
-  "on": { "message": "Ligar" },
-  "off": { "message": "Desligar" },
+  "on": { "message": "Habilitar" },
+  "off": { "message": "Desabilitar" },
   "confirmTransferToLocal": { "message": "Deseja transferir as configurações sincronizadas para seu perfil local?\nOs dados existentes serão mesclados." },
   "confirmTransferToSync": { "message": "Deseja transferir as configurações locais para seu perfil sincronizado?\nOs dados existentes serão mesclados." },
 
@@ -174,7 +173,5 @@
   "overwritProxiesHelp2": { "message": "Desmarque para anexar proxies nesta lista a proxies existentes." },
   "confirmOverwrite": { "message": "Tem certeza de que deseja substituir os proxies existentes?" },
   "importsSkipped": { "message": "$1 linhas ignoradas porque não puderam ser analisadas:\n\n$2" },
-  "importSucceeded": {
-    "message": "Ler e armazenar proxies de $1."
-  }
+  "importSucceeded": { "message": "Ler e armazenar proxies de $1." }
 }
