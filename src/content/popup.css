@@ -20,7 +20,6 @@ article {
 h1 {
   color: var(--nav-color);
   background: var(--body-bg);
-  font-weight: normal;
   margin: 0;
   padding: 0.5em;
 }
@@ -42,7 +41,7 @@ h1 img {
   text-overflow: ellipsis;
 }
 
-.flag{
+.flag {
   display: grid;
   grid-row-start: 1;
   grid-row-end: 5;

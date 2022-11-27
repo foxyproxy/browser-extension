@@ -26,7 +26,7 @@ body::after {
   background-size: contain;
   position: absolute;
   bottom: 0.5em;
-  right: 0.5em;
+  right: 0;
   display: inline-block;
   width: 128px;
   height: 128px;
