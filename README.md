@@ -9,10 +9,18 @@ FoxyProxy is being updated for manifest V3. The current source is **beta** for *
 Please post all features requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).  
 
 
-#### [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
-#### [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
+- [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
+- [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
 
 
-#### Previous Versions
-- [Firefox Extension 7.5](https://github.com/foxyproxy/firefox-extension)
-- [Chrome Extension 3.0](https://github.com/foxyproxy/Foxyproxy_Chrome)
+### Previous Versions
+
+### Firefox
+- Extnsion: [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
+- Extnsion: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
+- Source Code: [Firefox Extension 7.5](https://github.com/foxyproxy/firefox-extension)
+
+#### Chrome
+- Extnsion: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
+- Extnsion: [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
+- Source Code:[Chrome Extension 3.0](https://github.com/foxyproxy/Foxyproxy_Chrome)
