@@ -16,11 +16,11 @@ Please post all features requests to the [issues](https://github.com/foxyproxy/b
 ### Previous Versions
 
 ### Firefox
-- Extnsion: [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
-- Extnsion: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
+- Extension: [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
+- Extension: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
 - Source Code: [Firefox Extension 7.5](https://github.com/foxyproxy/firefox-extension)
 
 #### Chrome
-- Extnsion: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
-- Extnsion: [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
-- Source Code:[Chrome Extension 3.0](https://github.com/foxyproxy/Foxyproxy_Chrome)
+- Extension: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
+- Extension: [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
+- Source Code: [Chrome Extension 3.0](https://github.com/foxyproxy/Foxyproxy_Chrome)
