@@ -6,7 +6,7 @@ FoxyProxy is being updated for manifest V3. The current source is **beta** for *
 - Chrome minimum version 108 
 - Firefox minimum version 74
 
-Please post all features requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).  
+Please post all feature requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).  
 
 
 - [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
