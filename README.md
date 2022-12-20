@@ -4,7 +4,8 @@ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based 
 
 FoxyProxy is being updated for manifest V3. The current source is **beta** for **beta-testing only**.
 - Chrome minimum version 108 
-- Firefox minimum version 74
+- Firefox minimum version 91.1  
+  *Although the code is compatible with Firefox version 74.0+, AMO has requested min v91.1 as per [Securing the proxy API for Firefox add-ons](https://blog.mozilla.org/security/2021/10/25/securing-the-proxy-api-for-firefox-add-ons/)*
 
 Please post all feature requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).  
 
