@@ -21,7 +21,7 @@
   "incognitoAccess": { "message": "Proxy settings requires private browsing permission." },
 
   "enableSync": { "message": "Enable Sync" },
-  "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
+  "enableSyncDescription": { "message": "Synchronize global exclude, proxies & patterns" },
   "syncError": { "message": "Sync Error" },
 
   "proxyDNS": { "message": "Proxy DNS" },
