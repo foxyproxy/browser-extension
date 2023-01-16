@@ -1,0 +1,94 @@
+{
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionDescription": { "message": "Einfach zu bedienendes, fortschrittliches Proxy-Management-Tool für jedermann" },
+
+  "proxyByPatterns": { "message": "Proxy by Patterns" },
+  "disable": { "message": "Deaktivieren" },
+  "disabled": { "message": "Deaktiviert" },
+  "ip": { "message": "IP" },
+  "location": { "message": "Ort" },
+
+  "options": { "message": "Optionen" },
+  "proxy": { "message": "Proxy" },
+  "tester": { "message": "Tester" },
+  "log": { "message": "Log" },
+  "help": { "message": "Hilfe" },
+  "about": { "message": "Über" },
+  "import": { "message": "Import" },
+  "export": { "message": "Export" },
+  "save": { "message": "Speichern" },
+  "addHostTo": { "message": "Host Muster hinzufügen zu..." },
+  "incognitoAccess": { "message": "Proxy-Einstellungen erfordern die Erlaubnis zur Verwendung beim privaten Surfen." },
+
+  "enableSync": { "message": "Synchronisation einschalten" },
+  "enableSyncDescription": { "message": "Synchronisieren globaler Ausnahmen, Proxys & Muster" },
+  "syncError": { "message": "Synchronisationsfehler" },
+
+  "proxyDNS": { "message": "Proxy DNS" },
+  "proxyDnsDescription": { "message": "Verwenden Sie den Proxy-Server, um bestimmte DNS-Anfragen aufzulösen (nur für SOCKS in Firefox)" },
+
+  "globalExclude": { "message": "Globale Ausnahmen" },
+  "globalExcludeDescription": { "message": "Die hier eingegebenen Muster werden nicht weitergegeben." },
+
+  "deleteBrowserData": { "message": "Browserdaten löschen" },
+  "confirmDeleteBrowserData": { "message": "Sind Sie sicher, dass Sie Cookies, indexedDB-Speicher und lokalen DOM-Speicher löschen möchten?" },
+  "restoreDefaults": { "message": "Standardeinstellungen wiederherstellen" },
+  "restoreDefaultsConfirm": { "message": "Sind Sie sicher, dass Sie alle Einstellungen auf die Standardwerte zurücksetzen wollen?" },
+  "limitWebRTC": { "message": "WebRTC einschränken" },
+  "resetWebRTC": { "message": "WebRTC zurücksetzen" },
+
+  "foxyProxyAccount": { "message": "FoxyProxy Konto" },
+  "username": { "message": "Benutzername" },
+  "password": { "message": "Passwort" },
+  "togglePW": { "message": "Passwortsichtbarkeit umschalten" },
+  "importAs": { "message": "Importieren als" },
+  "userPassError": { "message": "Fehlender Benutzername oder Passwort" },
+
+  "proxyList": { "message": "Proxy Liste" },
+  "proxyTypeError": { "message": "Unbekannter Typ" },
+  "proxyPortError": { "message": "Fehlender Port" },
+  "proxyDuplicateError": { "message": "Doppelter Hostname:Port oder PAC URL" },
+
+  "fromURL": { "message": "Von URL" },
+  "fromOlderVersions": { "message": "Von alten Versionen" },
+
+  "getLocation": { "message": "Standort ermitteln" },
+  "add": { "message": "Hinzufügen" },
+  "title": { "message": "Titel" },
+  "type": { "message": "Typ" },
+  "color": { "message": "Farbe" },
+  "random": { "message": "Zufällig" },
+  "hostname": { "message": "Hostname" },
+  "port": { "message": "Port" },
+  "city": { "message": "Stadt" },
+  "country": { "message": "Land" },
+
+  "pacUrlError": { "message": "Fehlende PAC-URL für PAC-Typ" },
+  "hostnamePortError": { "message": "Fehlender Hostname - Port" },
+
+  "pattern": { "message": "Muster" },
+  "patterns": { "message": "Muster" },
+  "quickAdd": { "message": "Schnelles Hinzufügen" },
+  "include": { "message": "Einbeziehen" },
+  "exclude": { "message": "Ausschließen" },
+  "all": { "message": "Alle" },
+  "plainHost": { "message": "Einfacher Host" },
+  "wildcard": { "message": "Wildcard" },
+  "regexError": { "message": "Fehler beim Erstellen eines regulären Ausdrucks für ein Muster" },
+
+  "delete": { "message": "Löschen" },
+  "deleteConfirm": { "message": "Sind Sie sicher, dass Sie löschen wollen?" },
+
+  "result": { "message": "Ergebnis" },
+  "test": { "message": "Test" },
+
+  "documentURL": { "message": "Dokumenten-URL" },
+  "method": { "message": "Methode" },
+  "time": { "message": "Zeit" },
+
+  "error": { "message": "Bei dem Vorgang ist ein Fehler aufgetreten" },
+  "fileParseError": { "message": "Es gab einen Fehler beim Parsen der Datei" },
+  "fileReadError": { "message": "Es gab einen Fehler beim Lesen der Datei" },
+  "fileSizeError": { "message": "Die Dateigröße ist größer als die erlaubten $1kb" },
+  "fileTypeError": { "message": "Nicht unterstütztes Dateiformat" }
+}
