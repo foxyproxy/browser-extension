@@ -33,11 +33,11 @@
 
   "permissions": [
     "browsingData",
-    "contextMenus",
     "downloads",
     "notifications",
     "proxy",
     "storage",
+    "tabs",
     "webRequest",
     "webRequestAuthProvider"
   ],

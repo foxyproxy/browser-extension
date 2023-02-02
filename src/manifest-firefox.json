@@ -35,11 +35,11 @@
 
   "permissions": [
     "browsingData",
-    "contextMenus",
     "downloads",
     "notifications",
     "proxy",
     "storage",
+    "tabs",
     "webRequest",
     "webRequestBlocking",
     "<all_urls>"
@@ -52,7 +52,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "foxyproxy-beta@eric.h.jung",
-      "strict_min_version": "74.0"
+      "strict_min_version": "91.1.0"
     }
   }
 }
