@@ -22,19 +22,18 @@ class Popup {
     // check if there are patterns
     if (!pref.data.some(item => item.include[0] || item.exclude[0])) {
       this.ul.children[0].style.display = 'none';           // hide option if there are no patterns
-      pref.mode === 'pattern' && (pref.mode = '');          // show as disable
+      pref.mode === 'pattern' && (pref.mode = 'disable');   // show as disable
     }
 
     // --- show proxies
     [...this.ul.children].forEach((item, index) => index > 1 && item.remove()); // reset ul
-    this.ul.children[1].children[2].checked = true;         // select disable
+    this.ul.children[pref.mode === 'pattern' ? 0 : 1].children[2].checked = true; // pre-select pattern/disable
 
     const docFrag = document.createDocumentFragment();
     const data = pref.data.filter(i => i.active);           // filter out inactive
     data.forEach(item => {
        const li = this.liTemplate.cloneNode(true);
       li.id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
-      // li.style.borderLeftColor = item.color;
 
       const [flag, title, radio, data] = li.children;
       flag.textContent = App.getFlag(item.cc);
@@ -74,12 +73,12 @@ class Popup {
     pref.mode = mode;
     browser.storage.local.set({mode});
     localStorage.setItem('mode', mode);                     // keep a copy for options page
-    browser.runtime.sendMessage({id: 'setProxy', pref}).catch(console.error);
+    browser.runtime.sendMessage({id: 'setProxy', pref});
   }
 
   addHost() {
     const host = this.select.value;
-    browser.runtime.sendMessage({id: 'addHost', pref, host}).catch(console.error);
+    browser.runtime.sendMessage({id: 'addHost', pref, host});
     this.select.selectedIndex = 0;                          // reset select option
   }
 

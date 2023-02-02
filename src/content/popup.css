@@ -42,7 +42,6 @@ li {
   padding: 0.2em 0.5em;
   column-gap: 0.5em;
   cursor: pointer;
-  /* border-left: 5px solid transparent; */
 }
 
 li:hover {
