@@ -36,6 +36,8 @@ export class App {
   // ----------------- Helper functions --------------------
   // https://bugs.chromium.org/p/chromium/issues/detail?id=478654
   // Add support for SVG images in Web Notifications API -> CH107
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=1353252
+  // svg broken from bg service worker
   static notify(message, title = browser.i18n.getMessage('extensionName'), id = '') {
     browser.notifications.create(id, {
       type: 'basic',

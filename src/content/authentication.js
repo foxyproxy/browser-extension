@@ -1,5 +1,5 @@
 // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired
-// webRequest.onAuthRequired on Firefox only applies to HTTP/HTTPS/WS/WSS (not SOCKS)
+// webRequest.onAuthRequired on Firefox applies to HTTP/HTTPS/WS/WSS (not SOCKS)
 
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1135492
 // webRequest.onAuthRequired on Chrome mv3 is not usable due to removal of 'blocking'
@@ -14,7 +14,7 @@ class Authentication {
     this.data = {};
     this.pending = {};                                      // prevent bad authentication loop
     const urls = ['*://*/*'];                               // limit to HTTP, HTTPS and WebSocket URLs
-    browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']); // Chrome 108
+    browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']);
     browser.webRequest.onCompleted.addListener(e => this.clearPending(e), {urls});
     browser.webRequest.onErrorOccurred.addListener(e => this.clearPending(e), {urls});
   }
@@ -25,7 +25,6 @@ class Authentication {
       item.hostname && item.username && item.password &&
         (this.data[`${item.hostname}:${item.port}`] = {username: item.username, password: item.password});
     });
-    console.log(this.data);
   }
 
   process(e) {
@@ -41,7 +40,7 @@ class Authentication {
   }
 
   clearPending(e) {
-    !e.error && delete this.pending[e.requestId];
+    delete this.pending[e.requestId];
   }
 }
 export const authentication = new Authentication();

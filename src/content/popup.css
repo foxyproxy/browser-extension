@@ -6,16 +6,12 @@ body {
   width: 25em;
   background-color: var(--bg);
   transition: opacity 0.5s;
+  font-size: 12px;
 }
 
 body.android {
   width: auto;
 }
-
-/*
-article {
-
-} */
 
 h1 {
   color: var(--nav-color);
@@ -29,70 +25,77 @@ h1 img {
   vertical-align: text-bottom;
 }
 
-.display {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  padding: 2em;
-  column-gap: 1em;
+/* ----- Main Display ----- */
+ul {
+  list-style: none;
+  padding: 0.1em;
+  margin: 0;
+  min-height: 15em;
+  max-height: 20em;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox only */
 }
 
-.display span {
-  overflow: hidden;
-  text-overflow: ellipsis;
+li {
+  display: grid;
+  grid-template-columns: 3em 1fr auto;
+  padding: 0.2em 0.5em;
+  column-gap: 0.5em;
+  cursor: pointer;
+  /* border-left: 5px solid transparent; */
+}
+
+li:hover {
+  background-color: var(--hover);
+}
+
+.flag img {
+  width: 1em;
+}
+
+li#disable .flag img {
+  filter: opacity(0.5) grayscale(1);
 }
 
 .flag {
   display: grid;
-  grid-row-start: 1;
-  grid-row-end: 5;
+  grid-row: span 2;
   justify-content: center;
   font-size: 2em;
 }
 
 .title {
   color: var(--header);
-  font-size: 2em;
-  margin-bottom: 0.2em;
+  font-size: 1.4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.location {
-  color: #999;
-  white-space: pre;
-  min-height: 5em;
+.data {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.flag.on::before,
-.flag.off::before {
-  content: '';
-  background-image: url('../image/power.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 1em;
-  height: 1em;
+input[name="server"] {
+  grid-row: span 2;
 }
 
-.flag.off::before {
-  filter: grayscale(1);
-  opacity: 0.6;
+input[name="server"]:not(:checked) {
+  opacity: 0.3;
 }
 
-select {
-  display: block;
-  font-size: 1.2em;
-  margin-top: 1em;
-  padding: 0.3em 0.5em;
-  grid-column-start: 1;
-  grid-column-end: 3;
-}
-
-option span {
-  width: 1em;
+.addHost {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0.2em 0.5em;
+  column-gap: 0.5em;
+  align-items: center;
 }
 
 /* ----- Buttons ----- */
 div.button {
   display: grid;
-  grid-template-columns: 1fr 0.5fr 1fr;
+  grid-template-columns: auto auto auto;
   column-gap: 0.1em;
 }
 

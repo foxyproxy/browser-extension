@@ -15,7 +15,6 @@ body {
   margin: 0;
   overflow: hidden;
   transition: opacity 0.5s;
-  /* Chrome sets font-size to 75% (16px x 75% = 12px) */
   font-size: initial;
 }
 
@@ -563,11 +562,6 @@ details.proxyPattern ~ .proxyBox{
   row-gap: 0.5em;
   column-gap: 1em;
 }
-/*
-.proxyBox label:last-of-type {
-  grid-column-start: 1;
-  grid-column-end: 5;
-} */
 
 .proxyBox button.country {
   background: none;
@@ -599,9 +593,7 @@ details.proxyPattern ~ .proxyBox{
 .patternBox {
   height: 12em;
   grid-template-rows: auto 1fr;
-  /* padding: 0.1em; */
   overflow: hidden;
-  /* padding-top: 0.5em; */
 }
 
 .patternRowHead {
@@ -642,7 +634,6 @@ details.proxyPattern ~ .proxyBox{
   margin-bottom: 0.5em;
 }
 
-
 .import summary::marker {
   color: var(--header);
 }
@@ -664,26 +655,13 @@ details.proxyPattern ~ .proxyBox{
   column-gap: 0.5em;
 }
 
-.import details.importAccount div.importAs {
-  display: grid;
-  grid-column-start: 2;
-  grid-column-end: 4;
-  grid-template-columns: repeat(4, max-content);
-  grid-column-gap: 0.5em;
-}
-
 .import details.importAccount button.flat {
   justify-self: start;
 }
 
 .import details .flat {
   margin-top: 0.5em;
-  /* padding: 0.2em; */
 }
-
-/* details.import > summary::before {
-  content: '⚙️ ';
-} */
 /* ----- /import ----- */
 
 /* ----- Tester ----- */
@@ -793,7 +771,3 @@ details.proxyPattern ~ .proxyBox{
   font-size: 6em;
 }
 /* ----- /Log ----- */
-
-/*
-list-style-type: '⚙ ⚙️ ';
-*/

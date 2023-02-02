@@ -72,7 +72,7 @@
             <option data-type="regex" value="^https://.+">HTTPS</option>
             <option data-type="regex" value="^[^:]+://[^.]+/" data-i18n="plainHost">Plain Host</option>
             <option data-type="regex" value="^[^:]+://10(\.\d+){3}/">10.*.*.*</option>
-            <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option>
+            <!-- <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option> -->
             <option data-type="regex" value="^[^:]+://172\.16(\.\d+){2}/">172.16.*.*</option>
             <option data-type="regex" value="^[^:]+://192\.168(\.\d+){2}/">192.168.*.*</option>
           </select>
@@ -449,7 +449,7 @@
             <option data-type="regex" value="^https://.+">HTTPS</option>
             <option data-type="regex" value="^[^:]+://[^.]+/" data-i18n="plainHost"></option>
             <option data-type="regex" value="^[^:]+://10(\.\d+){3}/">10.*.*.*</option>
-            <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option>
+            <!-- <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option> -->
             <option data-type="regex" value="^[^:]+://172\.16(\.\d+){2}/">172.16.*.*</option>
             <option data-type="regex" value="^[^:]+://192\.168(\.\d+){2}/">192.168.*.*</option>
           </select>
@@ -486,15 +486,6 @@
             <label data-i18n="password"></label>
             <input id="password" type="password" spellcheck="false" placeholder="*****">
             <button type="button" class="plain" data-i18n="togglePW|title">👁</button>
-
-            <label data-i18n="importAs"></label>
-            <div class="importAs">
-              <label data-i18n="hostname"><input type="checkbox" id="hostname" checked></label>
-              <label data-i18n="ip"><input type="checkbox" id="ip"></label>
-              <label><input type="checkbox" id="http" checked>HTTP</label>
-              <label><input type="checkbox" id="https">HTTPS</label>
-            </div>
-
             <button type="button" class="flat" data-i18n="import"></button>
           </div>
 

@@ -10,25 +10,47 @@
   <body>
     <article>
       <section>
-
         <h1 data-i18n="extensionName"><img src="../image/icon.svg" alt=""> </h1>
 
-        <div class="display">
-          <span class="flag"></span>
-          <span class="title"></span>
-          <span class="location"></span>
+        <!-- main display -->
+        <ul>
+          <li id="pattern">
+            <span class="flag"><img src="../image/power.svg" alt=""></span>
+            <span class="title" data-i18n="proxyByPatterns"></span>
+            <input type="radio" name="server">
+          </li>
+
+          <li id="disable">
+            <span class="flag"><img src="../image/power.svg" alt=""></span>
+            <span class="title" data-i18n="disable"></span>
+            <input type="radio" name="server" checked>
+          </li>
+        </ul>
+
+        <div class="addHost">
+          <label data-i18n="addHost"></label>
           <select>
             <option disabled selected>&nbsp;</option>
-            <option value="pattern" data-i18n="proxyByPatterns">🔵 </option>
-            <option value="disable" data-i18n="disable">⚪ </option>
           </select>
         </div>
 
+        <!-- /main display -->
+
         <div class="button">
           <button type="button" data-i18n="options"></button>
-          <button type="button" data-i18n="ip"></button>
           <button type="button" data-i18n="location"></button>
+          <button type="button" data-i18n="ip"></button>
         </div>
+
+        <!-- template -->
+        <template>
+          <li>
+            <span class="flag">🌎</span>
+            <span class="title"></span>
+            <input type="radio" name="server">
+            <span class="data"></span>
+          </li>
+        </template>
 
       </section>
     </article>

@@ -25,7 +25,7 @@ class OnRequest {
   constructor() {
     if (typeof browser === 'undefined' || !browser.proxy.onRequest) { return; } // Firefox Only
 
-    // values will be set in PAC in pac.js
+    // values will be set in PAC in proxy.js
     this.mode = 'disable';                                  // default start
     this.proxy = null;                                      // needed only in Single Proxy
     this.data = [];                                         // needed only in Proxy by Pattern

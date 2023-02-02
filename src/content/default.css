@@ -1,24 +1,24 @@
 /* ----- Light Theme ----- */
 :root {
-    --color: #000;
-    --bg: #fff;
-    --alt-bg: #f5f5f5;
-    --hover: #eaeaea;
+  --color: #000;
+  --bg: #fff;
+  --alt-bg: #f5f5f5;
+  --hover: #eaeaea;
 
-    --body-bg: #630;
-    --header: #c60;
+  --body-bg: #630;
+  --header: #c60;
 
-    --nav-bg: #420;
-    --nav-hover: #851;
-    --nav-color: cornsilk;
+  --nav-bg: #420;
+  --nav-hover: #851;
+  --nav-color: cornsilk;
 
-    --btn-bg: #f90;
-    --btn-hover: #e70;
+  --btn-bg: #f90;
+  --btn-hover: #e70;
 
-    --link: #f90;
-    --border: #ddd;
-    --shadow: #0004;
-    --dim: #777;
+  --link: #e70;
+  --border: #ddd;
+  --shadow: #0004;
+  --dim: #777;
 }
 
 /* ----- Dark Theme ----- */
@@ -30,11 +30,12 @@
     --hover: #888;
 
     --body-bg: #630;
-    --header: #c60;
+    --header: #e70;
 
     --btn-bg: #f90;
     --btn-hover: #e70;
 
+    --link: #f90;
     --border: #777;
     --shadow: #fff8;
     --dim: #ccc;
@@ -43,24 +44,24 @@
 
 /* ----- General ----- */
 body {
-  color: var(--color);
-  background-color: var(--body-bg);
-  padding: 0;
-  margin: 0;
-  font-family: sans-serif;
+color: var(--color);
+background-color: var(--body-bg);
+padding: 0;
+margin: 0;
+font-family: sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+box-sizing: border-box;
 }
 
 article {
-  padding: 0;
-  margin: 0;
+padding: 0;
+margin: 0;
 }
 
 section {
-  padding: 0;
+padding: 0;
 }
 
 select,
@@ -69,36 +70,36 @@ input[type="number"],
 input[type="text"],
 input[type="password"],
 input[type="url"] {
-  width: 100%;
-  color: inherit;
-  background-color: var(--alt-bg);
-  border: 1px solid var(--border);
-  border-radius: 0.3em;
+width: 100%;
+color: inherit;
+background-color: var(--alt-bg);
+border: 1px solid var(--border);
+border-radius: 0.3em;
 }
 
 a {
-  color: var(--link);
-  text-decoration: none;
+color: var(--link);
+text-decoration: none;
 }
 
 ::placeholder {
-  opacity: 0.5;
-  color: inherit;
-  font-style: italic;
+opacity: 0.5;
+color: inherit;
+font-style: italic;
 }
 
 button {
-  background: var(--btn-bg);
-  color: inherit;
-  cursor: pointer;
-  text-align: center;
-  transition: 0.5s;
+background: var(--btn-bg);
+color: inherit;
+cursor: pointer;
+text-align: center;
+transition: 0.5s;
 }
 
 button:hover {
-  background: var(--btn-hover);
+background: var(--btn-hover);
 }
 
 .invalid, input:invalid {
-  box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
+box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
 }

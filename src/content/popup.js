@@ -6,106 +6,114 @@ import './i18n.js';
 class Popup {
 
   constructor() {
-    document.querySelectorAll('button').forEach(item => item.addEventListener('click', this.processButtons));
+    document.querySelectorAll('button').forEach(item => item.addEventListener('click', e => this.processButtons(e)));
+
+    this.ul = document.querySelector('ul');
+    this.ul.addEventListener('click', e => this.processSelect(e));
+    this.liTemplate = document.querySelector('template').content.firstElementChild;
+
     this.select = document.querySelector('select');
-    this.select.addEventListener('change', () => this.setMode());
-    this.display = document.querySelector('.display');
+    this.select.addEventListener('change', () => this.addHost());
+
     this.process();
-  }
-
-  processButtons() {
-    switch (this.dataset.i18n) {
-      case 'options':
-        browser.runtime.openOptionsPage();
-        window.close();
-        break;
-
-      case 'ip':
-        browser.runtime.sendMessage({id: 'ip'});
-        break;
-
-      case 'location':
-        browser.tabs.create({url: 'https://getfoxyproxy.org/geoip/'});
-        window.close();
-        break;
-    }
   }
 
   process() {
     // check if there are patterns
     if (!pref.data.some(item => item.include[0] || item.exclude[0])) {
-      this.select.options[1].style.display = 'none';        // hide option if there are no patterns
-      pref.mode === 'pattern' && (pref.mode = 'disable');   // show as disable
+      this.ul.children[0].style.display = 'none';           // hide option if there are no patterns
+      pref.mode === 'pattern' && (pref.mode = '');          // show as disable
     }
 
-    this.setDisplay();
+    // --- show proxies
+    [...this.ul.children].forEach((item, index) => index > 1 && item.remove()); // reset ul
+    this.ul.children[1].children[2].checked = true;         // select disable
 
-    // add proxies to select
     const docFrag = document.createDocumentFragment();
-    pref.data.forEach((item, index) => {
-      if (!item.active) { return; }                         // filter out inactive
+    const data = pref.data.filter(i => i.active);           // filter out inactive
+    data.forEach(item => {
+       const li = this.liTemplate.cloneNode(true);
+      li.id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
+      // li.style.borderLeftColor = item.color;
+
+      const [flag, title, radio, data] = li.children;
+      flag.textContent = App.getFlag(item.cc);
+      title.textContent = item.title || li.id;
+      radio.checked = pref.mode === li.id;
+      data.textContent = item.city;
+      docFrag.appendChild(li);
+    });
+
+    this.ul.appendChild(docFrag);
+
+    // --- Add Hosts to select
+    // filter out PAC, limit to 10
+    data.filter(i => i.type !== 'pac').forEach((item, index) => {
+      if (index > 10) { return; }
 
       const flag = App.getFlag(item.cc);
-      const value = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
+      const value = `${item.hostname}:${item.port}`;
       const opt = new Option(flag + ' ' + (item.title || value), value);
-      opt.id = index;
       opt.style.color = item.color;                         // supported on Chrome, not on Firefox
       docFrag.appendChild(opt);
     });
+
     this.select.appendChild(docFrag);
   }
 
-  setDisplay(proxy) {console.log(pref.mode);
-    this.select.selectedIndex = 0;                          // reset select option
-    const [flag, title, location] = this.display.children;
-    switch (pref.mode) {
-      case 'pattern':
-        flag.classList.remove('off');
-        flag.classList.add('on');
-        flag.textContent = '';
-        title.textContent = browser.i18n.getMessage('proxyByPatterns');
-        location.textContent = '';
-        break;
+  processSelect(e) {
+    const li = e.target.closest('li');
+    if(!li) { return; }
 
-      case 'disable':
-        flag.classList.remove('on');
-        flag.classList.add('off');
-        flag.textContent = '';
-        title.textContent = browser.i18n.getMessage('disabled');
-        location.textContent = '';
-        break;
+    li.children[2].checked = true;
 
-      default:
-        const pac = pref.mode.includes('://');
-        proxy = proxy || pref.data.find(item => pref.mode === (pac ? item.pac : `${item.hostname}:${item.port}`));
-        if (!proxy) {
-          // set to disable
-          this.select.value = 'disable';
-          this.setMode();
-          return;
-        }
-
-        flag.classList.remove('on', 'off');
-        flag.textContent = App.getFlag(proxy.cc);
-        title.textContent =  App.getTitle(proxy);
-        location.textContent = Location.get(proxy);
-    }
-  }
-
-  setMode() {
     // mode can only be change in the popup
-    const mode = this.select.value;
+    const mode = li.id;
     if (mode === pref.mode) { return; }                     // no change
 
     pref.mode = mode;
     browser.storage.local.set({mode});
     localStorage.setItem('mode', mode);                     // keep a copy for options page
+    browser.runtime.sendMessage({id: 'setProxy', pref}).catch(console.error);
+  }
 
-    const id = this.select.options[this.select.selectedIndex].id;
-    const proxy = id && pref.data[id];                      // id is only set for proxies
-    this.setDisplay(proxy);                                 // update display
+  addHost() {
+    const host = this.select.value;
+    browser.runtime.sendMessage({id: 'addHost', pref, host}).catch(console.error);
+    this.select.selectedIndex = 0;                          // reset select option
+  }
 
-    browser.runtime.sendMessage({id: 'setPAC', pref, proxy});
+  processButtons(e) {
+    switch (e.target.dataset.i18n) {
+      case 'options':
+        browser.runtime.openOptionsPage();
+        break;
+
+      case 'location':
+        browser.tabs.create({url: 'https://getfoxyproxy.org/geoip/'});
+        break;
+
+      case 'ip':
+        this.getIP();
+        break;
+    }
+  }
+
+  getIP() {
+    // Network Request Timeout: Chrome 300 sec, Firefox 90 sec
+    fetch('https://getfoxyproxy.org/webservices/lookup.php')
+    .then(response => response.json())
+    .then(data => {
+      if (!Object.keys(data)) {
+        App.notify(browser.i18n.getMessage('error'));
+        return;
+      }
+
+      const [ip, {cc, city}] = Object.entries(data)[0];
+      const text = [ip, Location.get({cc, city})].filter(Boolean).join('\n\n');
+      App.notify(text);
+    })
+    .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
   }
 }
 // ----------------- /Popup --------------------------------

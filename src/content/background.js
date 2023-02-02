@@ -1,15 +1,13 @@
 import {App} from './app.js';
-import {PAC} from './pac.js';
+import {Proxy} from './proxy.js';
 import {Migrate} from './migrate.js';
 import {authentication} from './authentication.js';
-import {Menus} from './menus.js';
 
 // ----------------- Process Preference --------------------
 class ProcessPref {
 
   constructor() {
-    browser.runtime.onMessage.addListener(this.onMessage);  // from popup options
-    browser.contextMenus && browser.contextMenus.onClicked.addListener(this.onClicked); // not available on Android
+    browser.runtime.onMessage.addListener((...e) => this.onMessage(...e)); // from popup options
     this.showHelp = false;
     this.init();
   }
@@ -47,16 +45,13 @@ class ProcessPref {
     }
 
     // add listener after migrate
-    browser.storage.onChanged.addListener(this.onChanged);
+    browser.storage.onChanged.addListener((...e) => this.onChanged(...e));
 
     // proxy authentication
     authentication.init(pref.data);
 
-    // set PAC in pac.js
-    PAC.setPAC(pref);
-
-    // create contextMenus
-    Menus.create(pref);
+    // set PAC in proxy.js
+    Proxy.set(pref);
 
     // show help with additional info (after migrate & sync)
     if (this.showHelp) {
@@ -75,7 +70,7 @@ class ProcessPref {
         break;
 
       case area === 'sync':
-        ProcessPref.syncIn(changes);
+        this.syncIn(changes);
         break;
     }
   }
@@ -97,8 +92,11 @@ class ProcessPref {
     pref.sync && browser.storage.local.set({obj});
   }
 
-  onClicked(info, tab) {
-    const url = new URL(tab.url);
+  async addHost(pref, host) {console.log(host);
+    const tab = await browser.tabs.query({currentWindow: true, active: true});
+    const url = new URL(tab[0].url);
+    if (!['http:', 'https:', 'file:'].includes(url.protocol)) { return; } // acceptable URLs
+
     const pat = {
       active: true,
       pattern: `^${url.origin}/`,
@@ -106,24 +104,27 @@ class ProcessPref {
       type: 'regex',
     };
 
-    browser.storage.local.get()
-    .then(pref => {
-      const proxy = pref.data.find(item => info.menuItemId === `${item.hostname}:${item.port}`)
-      if (!proxy) { return; }
+    const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
+    if (!pxy) { return; }
 
-      proxy.include.push(pat);
-      browser.storage.local.set({data});
-      pref.mode === 'pattern' && pref.data[info.menuItemId].active && PAC.setPAC(pref); // update PAC
-    });
+    pxy.include.push(pat);
+    browser.storage.local.set({data: pref.data});
+    pref.mode === 'pattern' && pxy.active && Proxy.set(pref); // update Proxy
   }
 
   onMessage(message) {
-    const {id, pref, proxy} = message;
+    const {id, pref, host} = message;
     switch (id) {
-      case 'setPAC':
-        PAC.setPAC(pref, proxy);
+      case 'setProxy':
+        Proxy.set(pref);
         break;
 
+      case 'addHost':
+        this.addHost(pref, host);
+        break;
+
+
+        /*
       case 'ip':
         // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
         // fetch('https://bilestoad.com/geoip/?raw=1')
@@ -131,7 +132,7 @@ class ProcessPref {
         .then(res => res.text())
         .then(text => App.notify(text))
         .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
-        break;
+        break; */
     }
   }
 }

@@ -3,11 +3,11 @@ import {Pattern} from './pattern.js';
 import {Migrate} from './migrate.js';
 import {Location} from './location.js';
 import {Color} from './color.js';
-import {Menus} from './menus.js';
 import './i18n.js';
 
 // ----------------- Spinner -------------------------------
 class Spinner {
+
   static spinner = document.querySelector('.spinner');
 
   static on() {
@@ -84,7 +84,7 @@ class Options {
     // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings
     // Changing proxy settings requires private browsing window access because proxy settings affect private and non-private windows.
     App.firefox && browser.extension.isAllowedIncognitoAccess()
-    .then(response => !response && alert(browser.i18n.getMessage('incognitoAccess')));
+    .then(response => !response && alert(browser.i18n.getMessage('incognitoAccessError')));
   }
 
   process(save) {
@@ -153,9 +153,6 @@ class Options {
         .catch(error => App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message));
     }
 
-    // --- create contextMenus
-    Menus.create(pref);
-
     // check mode in case it was changed while options page has been open
     const mode = localStorage.getItem('mode');
     mode && (pref.mode = mode);
@@ -164,7 +161,7 @@ class Options {
     const isPattern = pref.mode === 'pattern';
     const isProxy = /^[^:]+:\d+$/.test(pref.mode);
     if ((globalExcludeChanged && (isPattern || isProxy)) || (dataChanged && isPattern)) {
-      browser.runtime.sendMessage({id: 'setPAC', pref});
+      browser.runtime.sendMessage({id: 'setProxy', pref});
     }
 
     // --- save options
@@ -447,8 +444,7 @@ class Options {
 
     Spinner.on();
 
-    // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
-    fetch('https://bilestoad.com/webservices/lookup.php?' + hosts.join('&'))
+    fetch('https://getfoxyproxy.org/webservices/lookup.php?' + hosts.join('&'))
     .then(response => response.json())
     .then(json => this.updateLocation(json))
     .catch(error => {
@@ -570,30 +566,30 @@ class ImportAcc {
     Spinner.on();
 
     // --- fetch data
-    // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
-    fetch('https://bilestoad.com/webservices/get-accounts.php', {
+    fetch('https://getfoxyproxy.org/webservices/get-accounts.php', {
       method: 'POST',
-      body:  `username=${encodeURIComponent(username)}&password=${(encodeURIComponent(password))}`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      }
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body:  `username=${encodeURIComponent(username)}&password=${(encodeURIComponent(password))}`
     })
     .then(response => response.json())
-    .then(response => {
-      if (!Array.isArray(response) || !response[0] || !response[0].hostname) {
+    .then(data => {
+      if (!Array.isArray(data) || !data[0]?.hostname) {
         App.notify(browser.i18n.getMessage('error'));
         Spinner.off();
         return;
       }
 
-      response.forEach(item => {
-        this.hostname.checked && this.http.checked && this.makeProxy(item, {});
-        this.hostname.checked && this.https.checked && this.makeProxy(item, {https: true});
+      data = data.filter(i => i.active === 'true');         // remove inactive
 
-        this.ip.checked && this.http.checked && this.makeProxy(item, {ip: true});
-        this.ip.checked && this.https.checked && this.makeProxy(item, {ip: true, https: true});
-      });
+      // data.forEach(item => {
+      //   this.hostname.checked && this.http.checked && this.makeProxy(item, {});
+      //   this.hostname.checked && this.https.checked && this.makeProxy(item, {https: true});
 
+      //   this.ip.checked && this.http.checked && this.makeProxy(item, {ip: true});
+      //   this.ip.checked && this.https.checked && this.makeProxy(item, {ip: true, https: true});
+      // });
+
+      data.forEach(i => this.makeProxy(i));
       Spinner.off();
       options.navProxy.checked = true;                      // show Proxy tab
     })
@@ -603,23 +599,23 @@ class ImportAcc {
     });
   }
 
-  makeProxy(item, {ip, https}) {
+  makeProxy(item) {
     const pxy = {
       active: true,
       title: item.hostname.split('.')[0],
       color: '',                                            // random color will be set
-      type: https ? 'https' : 'http',
-      hostname: ip ? item.ip : item.hostname,
-      port: https ? item.ssl_port : item.port[0],
+      type: 'http',
+      hostname: item.hostname,
+      port: item.port[0],
       username: item.username,
       password: item.password,
-      cc: item.country_code,
+      cc: item.country_code === 'UK' ? 'GB' : item.country_code, // convert UK to ISO 3166-1 GB
       city: item.city,
       include: [],
       exclude: [],
       pac: ''
     };
-    pxy.title += (ip ? '.ip' : '') + '.' + pxy.port;        // adding ip & port
+    // pxy.title += (ip ? '.ip' : '') + '.' + pxy.port;        // adding ip & port
 
     options.addProxy(pxy);
   }
@@ -882,58 +878,11 @@ const tester = new Tester();
 // ----------------- Log -----------------------------------
 class ShowLog {
 
-  // no proxy info on chrome
- /*
-{
-  "documentLifecycle": "active",
-  "frameId": 0,
-  "frameType": "outermost_frame",
-  "initiator": "https://www.google.com",
-  "method": "GET",
-  "parentFrameId": -1,
-  "requestId": "288",
-  "tabId": 1767457250,
-  "timeStamp": 1663995940557.429,
-  "type": "main_frame",
-  "url": "https://www.google.com/search?q=my+ip&oq=&aqs=chrome.0.69i59i450l8.636329j0j15&client=ubuntu&sourceid=chrome&ie=UTF-8"
-}
-
-{
-  "requestId": "25484",
-  "url": "https://greasyfork.org/scripts/4294-antiadware/code/AntiAdware.user.js",
-  "originUrl": "https://greasyfork.org/de/scripts/4294-antiadware",
-  "method": "GET",
-  "type": "main_frame",
-  "timeStamp": 1573050075868,
-  "frameId": 0,
-  "parentFrameId": -1,
-  "thirdParty": false,
-  "proxyInfo": {
-    "connectionIsolationKey": "",
-    "failoverTimeout": 5,
-    "hostname": "209.208.63.172",
-    "port": 4443,
-    "proxyAuthorizationHeader": "",
-    "proxyDNS": false,
-    "type": "https",
-    "username": ""
-  },
-  "ip": null,
-  "frameAncestors": [],
-  "urlClassification": {
-    "firstParty": [],
-    "thirdParty": []
-  },
-  "requestSize": 0,
-  "responseSize": 0,
-  "tabId": 237,
-  "incognito": false
-}
- */
   constructor() {
     this.trTemplate = document.querySelector('.log template').content.firstElementChild;
     this.tbody = document.querySelector('.log tbody');
 
+    // no proxy info on chrome
     App.chrome ? this.notAvailable() : browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
   }
 
