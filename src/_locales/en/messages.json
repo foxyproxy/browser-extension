@@ -1,25 +1,92 @@
 {
-  "extensionName": { "message": "GeoShift" },
-  "extensionDescription": { "message": "Proxy switcher for FoxyProxy account holders" },
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionDescription": { "message": "Easy to use advanced Proxy Management tool for everyone" },
 
+  "proxyByPatterns": { "message": "Proxy by Patterns" },
+  "disable": { "message": "Disable" },
+  "ip": { "message": "IP" },
+  "location": { "message": "Location" },
+
+  "options": { "message": "Options" },
+  "proxy": { "message": "Proxy" },
+  "tester": { "message": "Tester" },
+  "log": { "message": "Log" },
+  "help": { "message": "Help" },
+  "about": { "message": "About" },
+  "import": { "message": "Import" },
+  "export": { "message": "Export" },
+  "save": { "message": "Save" },
+  "addHost": { "message": "Add host pattern to" },
   "incognitoAccessError": { "message": "Proxy settings requires private browsing permission." },
 
+  "enableSync": { "message": "Enable Sync" },
+  "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
+  "syncError": { "message": "Sync Error" },
+
+  "proxyDNS": { "message": "Proxy DNS" },
+  "proxyDnsDescription": { "message": "Use the proxy server to resolve certain DNS queries (only for SOCKS in Firefox)" },
+
+  "globalExclude": { "message": "Global Exclude" },
+  "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
+
+  "deleteBrowserData": { "message": "Delete Browser Data" },
+  "confirmDeleteBrowserData": { "message": "Are you sure you want to delete cookies, indexedDB storage, DOM local storage?" },
+  "restoreDefaults": { "message": "Restore Defaults" },
+  "restoreDefaultsConfirm": { "message": "Are you sure you want to restore all settings to Defaults?" },
+  "limitWebRTC": { "message": "Limit WebRTC" },
+  "resetWebRTC": { "message": "Reset WebRTC" },
+
+  "foxyProxyAccount": { "message": "FoxyProxy Account" },
   "username": { "message": "Username" },
   "password": { "message": "Password" },
   "togglePW": { "message": "Toggle Password" },
   "userPassError": { "message": "Missing Username or Password" },
-  "login": { "message": "Login" },
-  "order": { "message": "Order Account" },
-  "forgot": { "message": "Forgot Username/Password" },
-  "wait": { "message": "Please wait ..." },
 
-  "options": { "message": "Options" },
-  "location": { "message": "Location" },
-  "help": { "message": "Help" },
+  "proxyList": { "message": "Proxy List" },
+  "proxyTypeError": { "message": "Unknown Type" },
+  "proxyPortError": { "message": "Missing Port" },
+  "proxyDuplicateError": { "message": "Duplicate hostname:port or PAC url" },
 
-  "disable": { "message": "Disable" },
-  "renew": { "message": "Inactive: Renew" },
-  "ssl": { "message": "Encrypted SSL Server" },
+  "fromURL": { "message": "From URL" },
+  "fromOlderVersions": { "message": "From older versions" },
 
-  "error": { "message": "There was an error with the operation" }
+  "getLocation": { "message": "Get Location" },
+  "add": { "message": "Add" },
+  "title": { "message": "Title" },
+  "type": { "message": "Type" },
+  "color": { "message": "Color" },
+  "random": { "message": "Random" },
+  "hostname": { "message": "Hostname" },
+  "port": { "message": "Port" },
+  "city": { "message": "City" },
+  "country": { "message": "Country" },
+
+  "pacUrlError": { "message": "Missing PAC URl for PAC type" },
+  "hostnamePortError": { "message": "Missing Hostname - Port" },
+
+  "pattern": { "message": "Pattern" },
+  "patterns": { "message": "Patterns" },
+  "quickAdd": { "message": "Quick Add" },
+  "include": { "message": "Include" },
+  "exclude": { "message": "Exclude" },
+  "all": { "message": "All" },
+  "plainHost": { "message": "Plain Host" },
+  "wildcard": { "message": "Wildcard" },
+  "regexError": { "message": "Error creating regexp for pattern" },
+
+  "delete": { "message": "Delete" },
+  "deleteConfirm": { "message": "Are you sure you want to delete?" },
+
+  "result": { "message": "Result" },
+  "test": { "message": "Test" },
+
+  "documentURL": { "message": "Document URL" },
+  "method": { "message": "Method" },
+  "time": { "message": "Time" },
+
+  "error": { "message": "There was an error with the operation" },
+  "fileParseError": { "message": "There was an error parsing the file" },
+  "fileReadError": { "message": "There was an error with reading the file" },
+  "fileSizeError": { "message": "File size is larger than the $1kb allowed" },
+  "fileTypeError": { "message": "Unsupported File Format" }
 }
