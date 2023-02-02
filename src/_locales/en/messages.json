@@ -4,7 +4,6 @@
 
   "proxyByPatterns": { "message": "Proxy by Patterns" },
   "disable": { "message": "Disable" },
-  "disabled": { "message": "Disabled" },
   "ip": { "message": "IP" },
   "location": { "message": "Location" },
 
@@ -17,8 +16,8 @@
   "import": { "message": "Import" },
   "export": { "message": "Export" },
   "save": { "message": "Save" },
-  "addHostTo": { "message": "Add host pattern to ..." },
-  "incognitoAccess": { "message": "Proxy settings requires private browsing permission." },
+  "addHost": { "message": "Add host pattern to ..." },
+  "incognitoAccessError": { "message": "Proxy settings requires private browsing permission." },
 
   "enableSync": { "message": "Enable Sync" },
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
@@ -41,7 +40,6 @@
   "username": { "message": "Username" },
   "password": { "message": "Password" },
   "togglePW": { "message": "Toggle Password" },
-  "importAs": { "message": "Import as" },
   "userPassError": { "message": "Missing Username or Password" },
 
   "proxyList": { "message": "Proxy List" },
