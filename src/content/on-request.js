@@ -53,7 +53,7 @@ class OnRequest {
   processPattern(url)  {
     if (!this.data[0]) { return {type: 'direct'}; }
 
-    const match = array => array.some(i => new RegExp(i.regex, 'i').test(url));
+    const match = array => array.some(i => new RegExp(i, 'i').test(url));
     for (const proxy of this.data) {
       if (!match(proxy.exclude) && match(proxy.include)) { return this.processProxy(proxy); }
     }
@@ -80,7 +80,7 @@ class OnRequest {
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
       // Allow HTTP authentication in proxy.onRequest
       // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.jsm#173
-      type === 'https' (res.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
+      type === 'https' && (res.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
     }
 
     console.log(res);

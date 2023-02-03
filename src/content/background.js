@@ -76,6 +76,9 @@ class ProcessPref {
   }
 
   async syncIn(changes) {
+    const pref = await browser.storage.local.get('sync');
+    if (!pref.sync) { return; }
+
     // convert object to array + filter null newValue (deleted) + map to newValue
     const data = Object.values(changes).filter(i => i.newValue?.hasOwnProperty('hostname')).map(i => i.newValue);
 
@@ -86,16 +89,20 @@ class ProcessPref {
       changes.hasOwnProperty(item) && (obj[item] = changes[item].newValue);
     });
 
-    if (!Object.keys(obj)[0]) { return; }
-
-    const pref = await browser.storage.local.get('sync');
-    pref.sync && browser.storage.local.set({obj});
+    Object.keys(obj)[0] && browser.storage.local.set({obj});
   }
 
-  async addHost(pref, host) {console.log(host);
+  async getTabURL() {
     const tab = await browser.tabs.query({currentWindow: true, active: true});
     const url = new URL(tab[0].url);
     if (!['http:', 'https:', 'file:'].includes(url.protocol)) { return; } // acceptable URLs
+
+    return url;
+  }
+
+  async addHost(pref, host) {console.log(host);
+    const url = await this.getTabURL();
+    if (!url) { return; }
 
     const pat = {
       active: true,
@@ -112,6 +119,15 @@ class ProcessPref {
     pref.mode === 'pattern' && pxy.active && Proxy.set(pref); // update Proxy
   }
 
+  async excludeHost(pref) {
+    const url = await this.getTabURL();
+    if (!url) { return; }
+
+    pref.globalExcludeRegex  = [pref.globalExcludeRegex, `^${url.origin}/`].join('\n').trim();
+    browser.storage.local.set({globalExcludeRegex: pref.globalExcludeRegex});
+    Proxy.set(pref);                                        // update Proxy
+  }
+
   onMessage(message) {
     const {id, pref, host} = message;
     switch (id) {
@@ -123,7 +139,9 @@ class ProcessPref {
         this.addHost(pref, host);
         break;
 
-
+      case 'excludeHost':
+        this.excludeHost(pref);
+        break;
         /*
       case 'ip':
         // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
