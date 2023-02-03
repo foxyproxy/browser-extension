@@ -91,6 +91,10 @@ input[name="server"]:not(:checked) {
   align-items: center;
 }
 
+.excludeHost {
+  padding: 0.2em 0.5em;
+}
+
 /* ----- Buttons ----- */
 div.button {
   display: grid;

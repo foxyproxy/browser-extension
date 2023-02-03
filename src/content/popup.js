@@ -15,6 +15,8 @@ class Popup {
     this.select = document.querySelector('select');
     this.select.addEventListener('change', () => this.addHost());
 
+    document.querySelector('div.excludeHost').addEventListener('click', () => this.excludeHost());
+
     this.process();
   }
 
@@ -80,6 +82,10 @@ class Popup {
     const host = this.select.value;
     browser.runtime.sendMessage({id: 'addHost', pref, host});
     this.select.selectedIndex = 0;                          // reset select option
+  }
+
+  excludeHost() {
+    browser.runtime.sendMessage({id: 'excludeHost', pref, host});
   }
 
   processButtons(e) {
