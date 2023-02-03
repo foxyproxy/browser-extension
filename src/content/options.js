@@ -78,7 +78,7 @@ class Options {
     // --- navigation
     this.navOptions = document.getElementById('nav3');
     this.navProxy = document.getElementById('nav4');
-    this.navTester = document.getElementById('nav5');
+    this.navTester = document.getElementById('nav6');
 
     // --- Incognito Access
     // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings
