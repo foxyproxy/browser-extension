@@ -17,6 +17,8 @@
   "export": { "message": "Export" },
   "save": { "message": "Save" },
   "addHost": { "message": "Add host pattern to" },
+  "excludeHost": { "message": "Exclude host" },
+
   "incognitoAccessError": { "message": "Proxy settings requires private browsing permission." },
 
   "enableSync": { "message": "Enable Sync" },
