@@ -123,7 +123,13 @@ class ProcessPref {
     const url = await this.getTabURL();
     if (!url) { return; }
 
-    pref.globalExcludeRegex  = [pref.globalExcludeRegex, `^${url.origin}/`].join('\n').trim();
+    // add host pattern, remove duplicates
+    const pat = `^${url.origin}/`;
+    const exclude = pref.globalExcludeRegex.split(/\n+/);
+    if (exclude.includes(pat)) { return; }
+
+    exclude.push(pat);
+    pref.globalExcludeRegex  = [...new Set(exclude)].join('\n').trim();
     browser.storage.local.set({globalExcludeRegex: pref.globalExcludeRegex});
     Proxy.set(pref);                                        // update Proxy
   }

@@ -93,6 +93,7 @@ input[name="server"]:not(:checked) {
 
 .excludeHost {
   padding: 0.2em 0.5em;
+  cursor: pointer;
 }
 
 /* ----- Buttons ----- */

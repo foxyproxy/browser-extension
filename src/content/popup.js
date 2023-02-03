@@ -85,7 +85,7 @@ class Popup {
   }
 
   excludeHost() {
-    browser.runtime.sendMessage({id: 'excludeHost', pref, host});
+    browser.runtime.sendMessage({id: 'excludeHost', pref});
   }
 
   processButtons(e) {
