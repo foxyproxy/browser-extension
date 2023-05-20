@@ -1,7 +1,7 @@
 import {App} from './app.js';
 import {Location} from './location.js';
 import {Pattern} from './pattern.js';
-import {onRequest} from './on-request.js';
+import {OnRequest} from './on-request.js';
 
 export class Proxy {
 
@@ -23,7 +23,7 @@ export class Proxy {
         }
     }
 
-    App.firefox && (onRequest.mode = pref.mode);            // Firefox only
+    App.firefox && (OnRequest.mode = pref.mode);            // Firefox only
     this.setProxySettings(pref, config);
   }
 
@@ -49,12 +49,12 @@ export class Proxy {
     ].filter(Boolean);
 
     if (App.firefox) {
-      onRequest.globalExclude = globalExclude;
-      onRequest.proxy = proxy;
-      onRequest.proxyDNS = pref.proxyDNS;
+      OnRequest.globalExclude = globalExclude;
+      OnRequest.proxy = proxy;
+      OnRequest.proxyDNS = pref.proxyDNS;
       // --- proxy by pattern
       if (!proxy) {
-        onRequest.data = pref.data.filter(i => i.active && i.hostname && (i.include[0] || i.exclude[0])).map(item => {
+        OnRequest.data = pref.data.filter(i => i.active && i.hostname && (i.include[0] || i.exclude[0])).map(item => {
           return {
             type: item.type,
             hostname: item.hostname,
@@ -66,7 +66,7 @@ export class Proxy {
           }
         });
       }
-      console.log(onRequest);
+      console.log(OnRequest);
       return;
     }
 

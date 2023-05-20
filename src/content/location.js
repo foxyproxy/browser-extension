@@ -1,11 +1,11 @@
 export class Location {
 
   static get(item) {
-    const {country = '', continent = ''} = this.countryCode[item.cc] || {};
+    const {country = '', continent = ''} = this.#countryCode[item.cc] || {};
     return [item.city, country, continent].filter(Boolean).join('\n');
   }
 
-  static countryCode = {
+  static #countryCode = {
     AA: {country: "", continent: 'Asia'},
     AD: {country: "Andorra", continent: 'Europe'},
     AE: {country: "United Arab Emirates", continent: 'Asia'},

@@ -8,18 +8,18 @@
 
 import './app.js';
 
-class Authentication {
+export class Authentication {
 
-  constructor() {
+  static {
     this.data = {};
     this.pending = {};                                      // prevent bad authentication loop
     const urls = ['*://*/*'];                               // limit to HTTP, HTTPS and WebSocket URLs
-    browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']);
-    browser.webRequest.onCompleted.addListener(e => this.clearPending(e), {urls});
-    browser.webRequest.onErrorOccurred.addListener(e => this.clearPending(e), {urls});
+    browser.webRequest.onAuthRequired.addListener(e => this.#process(e), {urls}, ['blocking']);
+    browser.webRequest.onCompleted.addListener(e => this.#clearPending(e), {urls});
+    browser.webRequest.onErrorOccurred.addListener(e => this.#clearPending(e), {urls});
   }
 
-  init(data) {
+  static init(data) {
     this.data = {};                                         // reset data
     data.forEach(item => {                                  // filter out no user/pass or host
       item.hostname && item.username && item.password &&
@@ -27,7 +27,7 @@ class Authentication {
     });
   }
 
-  process(e) {
+  static #process(e) {
     if (!e.isProxy) { return; }                             // true for Proxy-Authenticate, false for WWW-Authenticate
     if (this.pending[e.requestId]) { return {cancel: true}; } // already sent once and pending
 
@@ -39,8 +39,7 @@ class Authentication {
     }
   }
 
-  clearPending(e) {
+  static #clearPending(e) {
     delete this.pending[e.requestId];
   }
 }
-export const authentication = new Authentication();

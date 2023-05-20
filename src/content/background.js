@@ -1,21 +1,21 @@
 import {App} from './app.js';
 import {Proxy} from './proxy.js';
 import {Migrate} from './migrate.js';
-import {authentication} from './authentication.js';
+import {Authentication} from './authentication.js';
 
-// ----------------- Process Preference --------------------
+// ---------- Process Preference ---------------------------
 class ProcessPref {
 
-  constructor() {
+  static {
     browser.runtime.onMessage.addListener((...e) => this.onMessage(...e)); // from popup options
     this.showHelp = false;
     this.init();
   }
 
-  async init() {
+  static async init() {
     let pref = await browser.storage.local.get();
 
-    // ----------------- Sync Data -------------------------
+    // ---------- Sync Data --------------------------------
     if (pref.sync) {
       const syncPref = await browser.storage.sync.get();
 
@@ -37,7 +37,7 @@ class ProcessPref {
 
       Object.keys(obj)[0] && await browser.storage.local.set({obj}); // update saved pref
     }
-    // ----------------- /Sync Data ------------------------
+    // ---------- /Sync Data -------------------------------
 
     // v8.0 migrate (after storage sync check)
     if (!pref.data) {
@@ -48,7 +48,7 @@ class ProcessPref {
     browser.storage.onChanged.addListener((...e) => this.onChanged(...e));
 
     // proxy authentication
-    authentication.init(pref.data);
+    Authentication.init(pref.data);
 
     // set PAC in proxy.js
     Proxy.set(pref);
@@ -60,13 +60,13 @@ class ProcessPref {
     }
   }
 
-  onChanged(changes, area) {
+  static onChanged(changes, area) {
     // no newValue on storage.local.clear()
     if (!Object.values(changes)[0]?.hasOwnProperty('newValue')) { return; }
 
     switch (true) {
       case area === 'local':
-        changes.data && authentication.init(changes.data.newValue); // update authentication data
+        changes.data && Authentication.init(changes.data.newValue); // update authentication data
         break;
 
       case area === 'sync':
@@ -75,7 +75,7 @@ class ProcessPref {
     }
   }
 
-  async syncIn(changes) {
+  static async syncIn(changes) {
     const pref = await browser.storage.local.get('sync');
     if (!pref.sync) { return; }
 
@@ -92,7 +92,7 @@ class ProcessPref {
     Object.keys(obj)[0] && browser.storage.local.set({obj});
   }
 
-  async getTabURL() {
+  static async getTabURL() {
     const tab = await browser.tabs.query({currentWindow: true, active: true});
     const url = new URL(tab[0].url);
     if (!['http:', 'https:', 'file:'].includes(url.protocol)) { return; } // acceptable URLs
@@ -100,7 +100,7 @@ class ProcessPref {
     return url;
   }
 
-  async addHost(pref, host) {console.log(host);
+  static async addHost(pref, host) {console.log(host);
     const url = await this.getTabURL();
     if (!url) { return; }
 
@@ -119,7 +119,7 @@ class ProcessPref {
     pref.mode === 'pattern' && pxy.active && Proxy.set(pref); // update Proxy
   }
 
-  async excludeHost(pref) {
+  static async excludeHost(pref) {
     const url = await this.getTabURL();
     if (!url) { return; }
 
@@ -134,7 +134,7 @@ class ProcessPref {
     Proxy.set(pref);                                        // update Proxy
   }
 
-  onMessage(message) {
+  static onMessage(message) {
     const {id, pref, host} = message;
     switch (id) {
       case 'setProxy':
@@ -160,10 +160,9 @@ class ProcessPref {
     }
   }
 }
-new ProcessPref();
-// ----------------- /Process Preference -------------------
+// ---------- /Process Preference --------------------------
 
-// ----------------- Initialisation ------------------------
+// ---------- Initialisation -------------------------------
 browser.runtime.onInstalled.addListener(details => {
   ['install', 'update'].includes(details.reason) && (ProcessPref.showHelp = true);
 });

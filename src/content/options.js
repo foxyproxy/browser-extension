@@ -1,11 +1,15 @@
 import {pref, App, ImportExport} from './app.js';
+import {ProgressBar} from './progress-bar.js';
 import {Pattern} from './pattern.js';
 import {Migrate} from './migrate.js';
 import {Location} from './location.js';
 import {Color} from './color.js';
 import './i18n.js';
 
-// ----------------- Spinner -------------------------------
+// ---------- User Preference ------------------------------
+await App.getPref();
+
+// ---------- Spinner --------------------------------------
 class Spinner {
 
   static spinner = document.querySelector('.spinner');
@@ -19,24 +23,10 @@ class Spinner {
   }
 }
 
-// ----------------- Progress Bar --------------------------
-class ProgressBar {
-
-  static bar = document.querySelector('.progressBar');
-
-  static show() {
-    this.bar.classList.toggle('on');
-    setTimeout(() => this.bar.classList.toggle('on'), 2000);
-  }
-}
-
-// ----------------- Options -------------------------------
+// ---------- Options --------------------------------------
 class Options {
 
-  constructor(keys = Object.keys(pref)) {
-    this.prefNode = document.querySelectorAll('#' + keys.join(',#')); // defaults to pref keys
-    document.querySelectorAll('button[type="submit"]').forEach(item => item.addEventListener('click', () => this.check())); // submit button
-
+  static {
     this.sync = document.getElementById('sync');
     this.proxyDNS = document.getElementById('proxyDNS');
 
@@ -85,9 +75,19 @@ class Options {
     // Changing proxy settings requires private browsing window access because proxy settings affect private and non-private windows.
     App.firefox && browser.extension.isAllowedIncognitoAccess()
     .then(response => !response && alert(browser.i18n.getMessage('incognitoAccessError')));
+
+    this.init(['sync', 'proxyDNS', 'globalExcludeWildcard', 'globalExcludeRegex']);
   }
 
-  process(save) {
+  static init(keys = Object.keys(pref)) {
+    this.prefNode = document.querySelectorAll('#' + keys.join(',#')); // defaults to pref keys
+    document.querySelectorAll('button[type="submit"]').forEach(item => item.addEventListener('click', () => this.check())); // submit button
+
+    this.process();
+    this.processProxy();
+  }
+
+  static process(save) {
     // 'save' is only set when clicking the button to save options
     this.prefNode.forEach(node => {
       // value: 'select-one', 'textarea', 'text', 'number'
@@ -98,7 +98,7 @@ class Options {
     save && !ProgressBar.show() && browser.storage.local.set(pref); // update saved pref
   }
 
-  check() {
+  static check() {
     // --- global exclude
     if (!this.checkGlobalExclude(this.globalExcludeWildcard)) { return; };
     if (!this.checkGlobalExclude(this.globalExcludeRegex)) { return; };
@@ -168,7 +168,7 @@ class Options {
     this.process(true);
   }
 
-  checkGlobalExclude(elem) {
+  static checkGlobalExclude(elem) {
     elem.classList.remove('invalid');                       // reset
     // --- clean up global exclude, remove duplicates
     const arr = [...new Set(elem.value.trim().split(/\n+/))];
@@ -186,7 +186,7 @@ class Options {
     return true;
   }
 
-  getProxyDetails(node) {
+  static getProxyDetails(node) {
     const pxy = {
       active: true,
       title: '',
@@ -259,7 +259,7 @@ class Options {
     return pxy;
   }
 
-  deleteBrowserData() {
+  static deleteBrowserData() {
      if (!confirm(browser.i18n.getMessage('deleteBrowserDataConfirm'))) { return; }
     browser.browsingData.remove({}, {
       cookies: true,
@@ -269,7 +269,7 @@ class Options {
     .catch(error => App.notify(browser.i18n.getMessage('deleteBrowserData') + '\n\n' + error.message));
   }
 
-  restoreDefaults() {
+  static restoreDefaults() {
     const defaultPref = {
       mode: 'disable',
       sync: false,
@@ -298,17 +298,17 @@ class Options {
    */
   }
 
-  processProxy() {
+  static processProxy() {
     const docFrag = document.createDocumentFragment();
     pref.data.forEach(item => docFrag.appendChild(this.makeProxy(item)));
     this.proxyFieldset.insertBefore(docFrag, this.proxyFieldset.lastElementChild);
   }
 
-  addProxy(pxy) {
+  static addProxy(pxy) {
     this.proxyFieldset.insertBefore(this.makeProxy(pxy), this.proxyFieldset.lastElementChild);
   }
 
-  makeProxy(item) {
+  static makeProxy(item) {
     // --- make a blank proxy with all event listeners
     const pxy = this.proxyTemplate.cloneNode(true);
 
@@ -407,7 +407,7 @@ class Options {
   }
 
   // make a blank pattern with all event listeners
-  makePattern() {
+  static makePattern() {
     const div = this.patternTemplate.cloneNode(true);
     const elem = div.children;
 
@@ -419,15 +419,15 @@ class Options {
       this.selectedIndex = 0;                               // reset select option
     });
     elem[6].addEventListener('click', () => {
-      tester.select.value = elem[2].value;
-      tester.pattern.value = elem[4].value;
+      Tester.select.value = elem[2].value;
+      Tester.pattern.value = elem[4].value;
       this.navTester.checked = true;                        // navigate to Tester tab
     });
     elem[7].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && div.remove());
     return div;
   }
 
-  addPattern(parent, item, inc) {
+  static addPattern(parent, item, inc) {
     const div = this.makePattern();
     const elem = div.children;
     elem[1].value = inc;
@@ -438,7 +438,7 @@ class Options {
     parent.appendChild(div);
   }
 
-  getLocationData() {console.log('called');Spinner.on();
+  static getLocationData() {console.log('called');Spinner.on();
     const hosts = pref.data.filter(i => !i.cc || !i.city).map(i => i.hostname);
     if (!hosts[0]) { return; }
 
@@ -453,7 +453,7 @@ class Options {
     });
   }
 
-  updateLocation(json) {
+  static updateLocation(json) {
     pref.data.forEach(item => {
       if (json[item.hostname]) {
         const {cc, city} = json[item.hostname];
@@ -464,7 +464,7 @@ class Options {
     Spinner.off();
   }
 
-  filterProxy(e) {
+  static filterProxy(e) {
     const str = e.target.value.toLowerCase().trim();
     if (!str) { return; }
     this.proxyFieldset.querySelectorAll('input[data-id="title"]').forEach(item => {
@@ -474,7 +474,7 @@ class Options {
     });
   }
 
-  async setWebRTC(btn) {
+  static async setWebRTC(btn) {
 /*
     {
       "levelOfControl": "controllable_by_this_extension",
@@ -491,7 +491,7 @@ class Options {
     }
   }
 
-  async toggleWebRTC() {
+  static async toggleWebRTC() {
     // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request
     // Any permissions granted are retained by the extension, even over upgrade and disable/enable cycling.
     // check if permission is granted
@@ -525,33 +525,31 @@ class Options {
     browser.privacy.network.webRTCIPHandlingPolicy.set({value});
   }
 
-  togglePassword() {
+  static togglePassword() {
     this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password';
   }
 
-  deleteProxies() {
+  static deleteProxies() {
     document.querySelectorAll('.proxySection details.proxy').forEach(i => i.remove()); // reset proxies display
   }
 }
+// ---------- /Options -------------------------------------
 
-const options = new Options(['sync', 'proxyDNS', 'globalExcludeWildcard', 'globalExcludeRegex']);
-// ----------------- /Options ------------------------------
-
-// ----------------- Import FP Account ---------------------
+// ---------- Import FP Account ----------------------------
 class ImportAcc {
 
-  constructor() {
+  static {
     this.username = document.querySelector('.importAccount #username');
     this.password = document.querySelector('.importAccount #password');
     this.hostname = document.querySelector('.importAccount #hostname');
     this.ip = document.querySelector('.importAccount #ip');
     this.https = document.querySelector('.importAccount #https');
     this.http = document.querySelector('.importAccount #http');
-    document.querySelector('.importAccount button[data-i18n="togglePW|title"]').addEventListener('click', options.togglePassword);
+    document.querySelector('.importAccount button[data-i18n="togglePW|title"]').addEventListener('click', Options.togglePassword);
     document.querySelector('.importAccount button[data-i18n="import"]').addEventListener('click', () => this.process());
   }
 
-  process() {
+  static process() {
     // fix unchecked
     !this.hostname.checked && !this.ip.checked && (this.hostname.checked = true); // default hostname
     !this.http.checked && !this.https.checked && (this.http.checked = true); // default http
@@ -591,7 +589,7 @@ class ImportAcc {
 
       data.forEach(i => this.makeProxy(i));
       Spinner.off();
-      options.navProxy.checked = true;                      // show Proxy tab
+      Options.navProxy.checked = true;                      // show Proxy tab
     })
     .catch(error => {
       App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message);
@@ -599,7 +597,7 @@ class ImportAcc {
     });
   }
 
-  makeProxy(item) {
+  static makeProxy(item) {
     const pxy = {
       active: true,
       title: item.hostname.split('.')[0],
@@ -617,19 +615,20 @@ class ImportAcc {
     };
     // pxy.title += (ip ? '.ip' : '') + '.' + pxy.port;        // adding ip & port
 
-    options.addProxy(pxy);
+    Options.addProxy(pxy);
   }
 }
-new ImportAcc();
-// ----------------- /Import FP Account --------------------
+// ---------- /Import FP Account ---------------------------
 
+// ---------- Import URL -----------------------------------
 class ImportURL {
-  constructor() {
+
+  static {
     this.input = document.querySelector('.importURL input');
     document.querySelector('.importURL button').addEventListener('click', () => this.process());
   }
 
-  process() {
+  static process() {
     this.input.value = this.input.value.trim();
     if (!this.input.value) { return; }
 
@@ -642,10 +641,10 @@ class ImportURL {
       // update pref with the saved version
       Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
 
-      options.process();                                    // set options after the pref update
-      options.processProxy();                               // update page display
+      Options.process();                                    // set options after the pref update
+      Options.processProxy();                               // update page display
       Spinner.off();
-      options.navProxy.checked = true;                      // show Proxy tab
+      Options.navProxy.checked = true;                      // show Proxy tab
     })
     .catch(error => {
       App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message);
@@ -653,27 +652,28 @@ class ImportURL {
     });
   }
 }
+// ---------- /Import URL ----------------------------------
 
-// ----------------- Import List ---------------------------
+// ---------- Import List ----------------------------------
 class ImportList {
 
-  constructor() {
+  static {
     this.textarea = document.querySelector('.importList textarea');
     document.querySelector('.importList button').addEventListener('click', () => this.process());
   }
 
-  process() {
+  static process() {
     this.textarea.value = this.textarea.value.trim();
     if (!this.textarea.value) { return; }
 
     this.textarea.value.split(/\n+/).forEach(item => {
       // simple vs Extended format
       const pxy = item.includes('://') ? this.parseExtended(item) : this.parseSimple(item);
-      pxy & options.addProxy(pxy);
+      pxy & Options.addProxy(pxy);
     });
   }
 
-  parseSimple(item) {
+  static parseSimple(item) {
     const [hostname, port, username = '', password = ''] = item.split(':');
     if (!hostname || !port || !(port*1)) {
       alert(`Error: ${item}`);
@@ -698,7 +698,7 @@ class ImportList {
     return pxy;
   }
 
-  parseExtended(item) {
+  static parseExtended(item) {
       const pxy = {
       active: true,
       title: '',
@@ -797,17 +797,16 @@ class ImportList {
     return pxy;
   }
 }
-new ImportList();
-// ----------------- /Import List --------------------------
+// ---------- /Import List ---------------------------------
 
-// ----------------- Import Older Export -------------------
+// ---------- Import Older Export --------------------------
 class ImportOlder {
 
-  constructor() {
+  static {
     document.querySelector('.importOlder input').addEventListener('change', e => this.process(e));
   }
 
-  process(e) {
+  static process(e) {
     const file = e.target.files[0];
     switch (true) {
       case !file: App.notify(browser.i18n.getMessage('error')); return;
@@ -822,7 +821,7 @@ class ImportOlder {
     reader.readAsText(file);
   }
 
-  parseJSON(data) {
+  static parseJSON(data) {
     try { data = JSON.parse(data); }
     catch(e) {
       App.notify(browser.i18n.getMessage('fileParseError')); // display the error
@@ -832,14 +831,12 @@ class ImportOlder {
     pref = Migrate.convert7(data);
   }
 }
-new ImportOlder();
+// ---------- /Import Older Export -------------------------
 
-// ----------------- /Import Older Export ------------------
-
-// ----------------- Tester --------------------------------
+// ---------- Tester ---------------------------------------
 class Tester {
 
-  constructor() {
+  static {
     this.url = document.querySelector('.tester input[type="url"]');
     this.select = document.querySelector('.tester select');
     this.pattern = document.querySelector('.tester input[type="text"]');
@@ -847,7 +844,7 @@ class Tester {
     document.querySelector('.tester button').addEventListener('click', () => this.process());
   }
 
-  process() {
+  static process() {
     this.result.textContent = '';                           // reset
     this.url.value = this.url.value.trim();
     this.pattern.value = this.pattern.value.trim();
@@ -872,21 +869,22 @@ class Tester {
     this.result.textContent = regex.test(this.url.value) ? '✅' : '❌';
   }
 }
-const tester = new Tester();
-// ----------------- /Tester -------------------------------
+// ---------- /Tester --------------------------------------
 
-// ----------------- Log -----------------------------------
+// ---------- Log ------------------------------------------
 class ShowLog {
 
-  constructor() {
+  static {
     this.trTemplate = document.querySelector('.log template').content.firstElementChild;
     this.tbody = document.querySelector('.log tbody');
 
     // no proxy info on chrome
     App.chrome ? this.notAvailable() : browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
+
+    this.process();
   }
 
-  notAvailable() {
+  static notAvailable() {
     const tr = this.trTemplate.cloneNode(true);
     [...tr.children].forEach((item, index) => index > 0 && item.remove());
     const td = tr.children[0];
@@ -895,7 +893,7 @@ class ShowLog {
     this.tbody.appendChild(tr);
   }
 
-  process(e) {
+  static process(e) {
     if (!e?.proxyInfo) { return; }
 
     const tr = this.tbody.children[99] || this.trTemplate.cloneNode(true);
@@ -913,7 +911,7 @@ class ShowLog {
     this.tbody.prepend(tr);                                 // in reverse order, new on top
   }
 
-  formatInt(d) {
+  static formatInt(d) {
     return new Intl.DateTimeFormat(navigator.language,
               {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).format(new Date(d));
   }
@@ -921,36 +919,27 @@ class ShowLog {
 const showLog = new ShowLog();
 // ---------------- /Log -----------------------------------
 
-// ----------------- Navigation ----------------------------
+// ---------- Navigation -----------------------------------
 class Nav {
 
-  constructor() {
+  static {
     this.navHelp = document.getElementById('nav1');
     this.help = document.querySelector('iframe[src="help.html"]').contentWindow.document;
     window.addEventListener('hashchange', this.process);
     this.process();                                         // check on load
   }
 
-  process() {
+  static process() {
     location.search === '?help' && (this.navHelp.checked = true); // show Help tab
     location.hash && (this.help.location.hash = location.hash);
   }
 }
-new Nav();
-// ----------------- /Navigation ---------------------------
+// ---------- /Navigation ----------------------------------
 
-// ----------------- Import/Export Preferences -------------
+// ---------- Import/Export Preferences --------------------
 ImportExport.init(() => {
-  options.process();                                        // set options after the pref update
-  options.deleteProxies();
-  options.processProxy();                                   // update page display
+  Options.process();                                        // set options after the pref update
+  Options.deleteProxies();
+  Options.processProxy();                                   // update page display
 });
-// ----------------- /Import/Export Preferences ------------
-
-// ----------------- User Preference -----------------------
-App.getPref().then(() => {
-  options.process();
-  options.processProxy();
-  showLog.process();
-});
-// ----------------- /User Preference ----------------------
+// ---------- /Import/Export Preferences -------------------

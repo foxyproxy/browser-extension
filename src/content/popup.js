@@ -2,10 +2,13 @@ import {pref, App} from './app.js';
 import {Location} from './location.js';
 import './i18n.js';
 
-// ----------------- Popup ---------------------------------
+// ---------- User Preference ------------------------------
+await App.getPref();
+
+// ---------- Popup ----------------------------------------
 class Popup {
 
-  constructor() {
+  static {
     document.querySelectorAll('button').forEach(item => item.addEventListener('click', e => this.processButtons(e)));
 
     this.ul = document.querySelector('ul');
@@ -20,7 +23,7 @@ class Popup {
     this.process();
   }
 
-  process() {
+  static process() {
     // check if there are patterns
     if (!pref.data.some(item => item.include[0] || item.exclude[0])) {
       this.ul.children[0].style.display = 'none';           // hide option if there are no patterns
@@ -62,7 +65,7 @@ class Popup {
     this.select.appendChild(docFrag);
   }
 
-  processSelect(e) {
+  static processSelect(e) {
     const li = e.target.closest('li');
     if(!li) { return; }
 
@@ -78,17 +81,17 @@ class Popup {
     browser.runtime.sendMessage({id: 'setProxy', pref});
   }
 
-  addHost() {
+  static addHost() {
     const host = this.select.value;
     browser.runtime.sendMessage({id: 'addHost', pref, host});
     this.select.selectedIndex = 0;                          // reset select option
   }
 
-  excludeHost() {
+  static excludeHost() {
     browser.runtime.sendMessage({id: 'excludeHost', pref});
   }
 
-  processButtons(e) {
+  static processButtons(e) {
     switch (e.target.dataset.i18n) {
       case 'options':
         browser.runtime.openOptionsPage();
@@ -104,7 +107,7 @@ class Popup {
     }
   }
 
-  getIP() {
+  static getIP() {
     // Network Request Timeout: Chrome 300 sec, Firefox 90 sec
     fetch('https://getfoxyproxy.org/webservices/lookup.php')
     .then(response => response.json())
@@ -121,7 +124,4 @@ class Popup {
     .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
   }
 }
-// ----------------- /Popup --------------------------------
-
-// ----------------- User Preference -----------------------
-App.getPref().then(() => new Popup());
+// ---------- /Popup ---------------------------------------

@@ -248,7 +248,6 @@ figcaption {
   content: '⚠️ ';
 }
 
-
 .experimental::after {
   content: '';
   background: url('../image/beaker.svg') no-repeat center / contain;

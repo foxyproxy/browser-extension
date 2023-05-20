@@ -1,4 +1,4 @@
-// ----------------- Polyfill (Side Effect) ----------------
+// ---------- Polyfill (Side Effect) -----------------------
 // Promise based 'browser' namespace is used to avoid conflict between
 // callback 'chrome' API in MV2 & promise 'chrome' API in MV3
 // In case of callback 'chrome' API in MV3, 'chrome' namespace is used
@@ -8,7 +8,7 @@ typeof globalThis.browser === 'undefined' && (globalThis.browser = globalThis.ch
 // MV3 action API
 !browser.action && (browser.action = browser.browserAction);
 
-// ----------------- Default Preference --------------------
+// ---------- Default Preference ---------------------------
 export let pref = {
   mode: 'disable',
   sync: false,
@@ -17,15 +17,15 @@ export let pref = {
   globalExcludeRegex: '',
   data: []
 };
-// ----------------- /Default Preference -------------------
+// ---------- /Default Preference --------------------------
 
-// ----------------- App -----------------------------------
+// ---------- App ------------------------------------------
 export class App {
 
   static firefox = navigator.userAgent.includes('Firefox'); // options 1 pac 6
   static chrome = navigator.userAgent.includes('Chrome');   // options 2 pac 4
 
-  // ----------------- User Preference ---------------------
+  // ---------- User Preference ----------------------------
   static getPref() {
     // update pref with the saved version
     return browser.storage.local.get().then(result => {
@@ -33,7 +33,7 @@ export class App {
     });
   }
 
-  // ----------------- Helper functions --------------------
+  // ---------- Helper functions ---------------------------
   // https://bugs.chromium.org/p/chromium/issues/detail?id=478654
   // Add support for SVG images in Web Notifications API -> CH107
   // https://bugs.chromium.org/p/chromium/issues/detail?id=1353252
@@ -61,7 +61,7 @@ export class App {
   }
 }
 
-// ----------------- Import/Export Preferences -------------
+// ---------- Import/Export Preferences --------------------
 export class ImportExport {
 
   static init(callback) {

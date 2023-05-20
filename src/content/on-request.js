@@ -19,22 +19,24 @@
   }
 */
 
-// ----------------- Firefox Proxy Process -----------------
-class OnRequest {
+// ---------- Firefox Proxy Process ------------------------
+export class OnRequest {
 
-  constructor() {
-    if (typeof browser === 'undefined' || !browser.proxy.onRequest) { return; } // Firefox Only
-
+  static {
     // values will be set in PAC in proxy.js
     this.mode = 'disable';                                  // default start
     this.proxy = null;                                      // needed only in Single Proxy
     this.data = [];                                         // needed only in Proxy by Pattern
     this.globalExclude = [];
     this.proxyDNS = true;                                   // default true
-    browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
+
+    // Firefox Only
+    if (typeof browser !== 'undefined' && browser.proxy.onRequest) {
+      browser.proxy.onRequest.addListener(e => this.#process(e), {urls: ['<all_urls>']});
+    }
   }
 
-  process(e) {
+  static #process(e) {
     // --- check mode
     switch (true) {
       case this.mode === 'disable':                         // pass direct
@@ -43,25 +45,25 @@ class OnRequest {
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns
-        return this.processPattern(e.url);
+        return this.#processPattern(e.url);
 
       default:                                              // get the proxy for all
-        return this.processProxy(this.proxy);
+        return this.#processProxy(this.proxy);
     }
   }
 
-  processPattern(url)  {
+  static #processPattern(url)  {
     if (!this.data[0]) { return {type: 'direct'}; }
 
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
     for (const proxy of this.data) {
-      if (!match(proxy.exclude) && match(proxy.include)) { return this.processProxy(proxy); }
+      if (!match(proxy.exclude) && match(proxy.include)) { return this.#processProxy(proxy); }
     }
 
     return {type: 'direct'};                                // no match
   }
 
-  processProxy(proxy) {
+  static #processProxy(proxy) {
     if (!proxy) { return {type: 'direct'}; }
 
     const {type, hostname: host, port, username, password} = proxy;
@@ -87,4 +89,3 @@ class OnRequest {
     return res;
   }
 }
-export const onRequest = new OnRequest();
