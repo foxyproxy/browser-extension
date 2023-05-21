@@ -21,13 +21,13 @@
   },
 
   "options_ui": {
-    "browser_style": true,
+    "browser_style": false,
     "open_in_tab": true,
     "page": "content/options.html"
   },
 
   "browser_action": {
-    "browser_style": true,
+    "browser_style": false,
     "default_icon": "image/icon.svg",
     "default_popup": "content/popup.html",
     "default_title": "__MSG_extensionName__"
@@ -52,7 +52,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "foxyproxy-beta@eric.h.jung",
-      "strict_min_version": "91.1.0"
+      "strict_min_version": "93.0"
     }
   }
 }
