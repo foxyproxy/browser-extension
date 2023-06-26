@@ -6,16 +6,6 @@
   "disable": { "message": "Disable" },
   "ip": { "message": "IP" },
   "location": { "message": "Location" },
-
-  "options": { "message": "Options" },
-  "proxy": { "message": "Proxy" },
-  "tester": { "message": "Tester" },
-  "log": { "message": "Log" },
-  "help": { "message": "Help" },
-  "about": { "message": "About" },
-  "import": { "message": "Import" },
-  "export": { "message": "Export" },
-  "save": { "message": "Save" },
   "addHost": { "message": "Add host pattern to" },
   "excludeHost": { "message": "Exclude host" },
 
@@ -31,29 +21,18 @@
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
 
-  "deleteBrowserData": { "message": "Delete Browser Data" },
-  "confirmDeleteBrowserData": { "message": "Are you sure you want to delete cookies, indexedDB storage, DOM local storage?" },
+  "deleteBrowsingData": { "message": "Delete Browsing Data" },
+  "deleteBrowsingDataConfirm": { "message": "Are you sure you want to delete cookies, indexedDB storage, DOM local storage?" },
   "restoreDefaults": { "message": "Restore Defaults" },
   "restoreDefaultsConfirm": { "message": "Are you sure you want to restore all settings to Defaults?" },
   "limitWebRTC": { "message": "Limit WebRTC" },
   "resetWebRTC": { "message": "Reset WebRTC" },
 
-  "foxyProxyAccount": { "message": "FoxyProxy Account" },
-  "username": { "message": "Username" },
-  "password": { "message": "Password" },
-  "togglePW": { "message": "Toggle Password" },
-  "userPassError": { "message": "Missing Username or Password" },
-
-  "proxyList": { "message": "Proxy List" },
-  "proxyTypeError": { "message": "Unknown Type" },
-  "proxyPortError": { "message": "Missing Port" },
-  "proxyDuplicateError": { "message": "Duplicate hostname:port or PAC url" },
-
-  "fromURL": { "message": "From URL" },
-  "fromOlderVersions": { "message": "From older versions" },
-
-  "getLocation": { "message": "Get Location" },
+  "proxy": { "message": "Proxy" },
   "add": { "message": "Add" },
+  "getLocation": { "message": "Get Location" },
+
+
   "title": { "message": "Title" },
   "type": { "message": "Type" },
   "color": { "message": "Color" },
@@ -62,8 +41,6 @@
   "port": { "message": "Port" },
   "city": { "message": "City" },
   "country": { "message": "Country" },
-
-  "pacUrlError": { "message": "Missing PAC URl for PAC type" },
   "hostnamePortError": { "message": "Missing Hostname - Port" },
 
   "pattern": { "message": "Pattern" },
@@ -74,21 +51,41 @@
   "all": { "message": "All" },
   "plainHost": { "message": "Plain Host" },
   "wildcard": { "message": "Wildcard" },
-  "regexError": { "message": "Error creating regexp for pattern" },
+  "regexError": { "message": "Error creating RegExp for pattern" },
 
   "delete": { "message": "Delete" },
   "deleteConfirm": { "message": "Are you sure you want to delete?" },
 
-  "result": { "message": "Result" },
+  "importFoxyProxyAccount": { "message": "Import FoxyProxy Account" },
+  "username": { "message": "Username" },
+  "password": { "message": "Password" },
+  "togglePassword": { "message": "Toggle Password" },
+  "userPassError": { "message": "Missing Username or Password" },
+
+  "importProxyList": { "message": "Import Proxy List" },
+  "importFromURL": { "message": "Import from URL" },
+  "importFromOlderVersions": { "message": "Import from older versions" },
+
+  "tester": { "message": "Tester" },
   "test": { "message": "Test" },
+  "result": { "message": "Result" },
+  "back": { "message": "Back" },
 
-  "documentURL": { "message": "Document URL" },
+  "log": { "message": "Log" },
+  "documentUrl": { "message": "Document URL" },
+  "url": { "message": "URL" },
   "method": { "message": "Method" },
-  "time": { "message": "Time" },
+  "timeStamp": { "message": "Time" },
 
+  "about": { "message": "About" },
   "error": { "message": "There was an error with the operation" },
+  "export": { "message": "Export" },
   "fileParseError": { "message": "There was an error parsing the file" },
   "fileReadError": { "message": "There was an error with reading the file" },
   "fileSizeError": { "message": "File size is larger than the $1kb allowed" },
-  "fileTypeError": { "message": "Unsupported File Format" }
+  "fileTypeError": { "message": "Unsupported File Format" },
+  "help": { "message": "Help" },
+  "import": { "message": "Import" },
+  "options": { "message": "Options" },
+  "saveOptions": { "message": "Save" }
 }
