@@ -22,8 +22,8 @@ export let pref = {
 // ---------- App ------------------------------------------
 export class App {
 
-  static firefox = navigator.userAgent.includes('Firefox'); // options 1 pac 6
-  static chrome = navigator.userAgent.includes('Chrome');   // options 2 pac 4
+  static firefox = navigator.userAgent.includes('Firefox');
+  // static chrome = navigator.userAgent.includes('Chrome');
 
   // ---------- User Preference ----------------------------
   static getPref() {
@@ -41,7 +41,7 @@ export class App {
   static notify(message, title = browser.i18n.getMessage('extensionName'), id = '') {
     browser.notifications.create(id, {
       type: 'basic',
-      iconUrl: '/image/icon.svg',
+      iconUrl: '/image/icon48.png',
       title,
       message
     });
@@ -56,69 +56,18 @@ export class App {
     return cc ? String.fromCodePoint(...[...cc].map(i => i.charCodeAt() + 127397)) : '🌎';
   }
 
-  static getTitle(item) {
-    return item.title || (item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`);
-  }
-}
-
-// ---------- Import/Export Preferences --------------------
-export class ImportExport {
-
-  static init(callback) {
-    this.callback = callback;
-    document.getElementById('file').addEventListener('change', (e) => this.import(e));
-    document.getElementById('export').addEventListener('click', () => this.export());
-  }
-
-  static import(e) {
-    const file = e.target.files[0];
-    switch (true) {
-      case !file: App.notify(browser.i18n.getMessage('error')); return;
-      case !['text/plain', 'application/json'].includes(file.type): // check file MIME type
-        App.notify(browser.i18n.getMessage('fileTypeError'));
-        return;
+  static parseURL(url) {
+    try { url = new URL(url); }
+    catch (error) {
+      alert(`${url} ➜ ${error.message}`);
+      return {};
     }
 
-    const reader = new FileReader();
-    reader.onloadend = () => this.readData(reader.result);
-    reader.onerror = () => App.notify(browser.i18n.getMessage('fileReadError'));
-    reader.readAsText(file);
-  }
-
-  static async readData(data) {
-    try { data = JSON.parse(data); }
-    catch(e) {
-      App.notify(browser.i18n.getMessage('fileParseError')); // display the error
-      return;
+    // check protocol
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      alert(`${url} ➜ Unsupported Protocol ${url.protocol}`);
+      return {};
     }
-
-    // update pref with the saved version
-    Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
-
-    this.callback();                                        // successful import
-  }
-
-  static export() {
-    const data = JSON.stringify(pref, null, 2);
-    const filename = `${browser.i18n.getMessage('extensionName')}_${new Date().toISOString().substring(0, 10)}.json`;
-    this.saveFile({data, filename, type: 'application/json'});
-  }
-
-  static saveFile({data, filename, saveAs = true, type = 'text/plain'}) {
-    if (!browser.downloads) {
-      const a = document.createElement('a');
-      a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(data);
-      a.setAttribute('download', filename);
-      a.dispatchEvent(new MouseEvent('click'));
-      return;
-    }
-
-    const blob = new Blob([data], {type});
-    browser.downloads.download({
-      url: URL.createObjectURL(blob),
-      filename,
-      saveAs,
-      conflictAction: 'uniquify'
-    });
+    return url;
   }
 }

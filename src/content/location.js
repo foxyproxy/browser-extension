@@ -1,10 +1,11 @@
 export class Location {
 
-  static get(item) {
-    const {country = '', continent = ''} = this.#countryCode[item.cc] || {};
-    return [item.city, country, continent].filter(Boolean).join('\n');
+  static get(cc = '') {
+    const {country, continent} = this.#countryCode[cc] || {};
+    return [country, continent];
   }
 
+  // ISO 3166-1 country code
   static #countryCode = {
     AA: {country: "", continent: 'Asia'},
     AD: {country: "Andorra", continent: 'Europe'},

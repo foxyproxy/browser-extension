@@ -1,27 +1,37 @@
-import {pref, App, ImportExport} from './app.js';
+import {pref, App} from './app.js';
 import {ProgressBar} from './progress-bar.js';
+import {ImportExport} from './import-export.js';
 import {Pattern} from './pattern.js';
 import {Migrate} from './migrate.js';
-import {Location} from './location.js';
 import {Color} from './color.js';
+import {Nav} from './nav.js';
+import {Spinner} from './spinner.js';
+import './log.js';
 import './i18n.js';
 
 // ---------- User Preference ------------------------------
 await App.getPref();
 
-// ---------- Spinner --------------------------------------
-class Spinner {
+// ---------- Incognito Access -----------------------------
+class IncognitoAccess{
 
-  static spinner = document.querySelector('.spinner');
-
-  static on() {
-    this.spinner.classList.add('on');
-  }
-
-  static off() {
-    this.spinner.classList.remove('on');
+  static {
+    // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings
+    // Changing proxy settings requires private browsing window access because proxy settings affect private and non-private windows.
+    App.firefox && browser.extension.isAllowedIncognitoAccess()
+    .then(response => !response && alert(browser.i18n.getMessage('incognitoAccessError')));
   }
 }
+// ---------- /Incognito Access ----------------------------
+
+// ---------- Toggle ---------------------------------------
+class Toggle {
+
+  static password() {
+    this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password';
+  }
+}
+// ---------- /Toggle --------------------------------------
 
 // ---------- Options --------------------------------------
 class Options {
@@ -42,39 +52,7 @@ class Options {
     });
 
     // --- buttons
-    document.querySelector('.options button[data-i18n="deleteBrowserData"]').addEventListener('click', () => this.deleteBrowserData());
     document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
-
-    // --- webRTC
-    const webRTC = document.querySelector('.options button[data-i18n="limitWebRTC"]');
-    webRTC.addEventListener('click', this.toggleWebRTC);
-    this.setWebRTC(webRTC);
-
-    // --- proxy
-    const temp = document.querySelector('.proxySection template').content;
-    this.proxyTemplate = temp.firstElementChild;
-    this.patternTemplate = temp.lastElementChild;
-    this.proxyFieldset = document.querySelector('.proxySection fieldset');
-
-    // --- buttons
-    document.querySelector('.proxySection .proxyTop button[data-i18n="getLocation"]').addEventListener('click', () => this.getLocationData());
-    document.querySelector('.proxySection .proxyTop button[data-i18n="add"]').addEventListener('click', () => this.addProxy());
-
-    // --- proxy filter
-    const filter = document.querySelector('.proxySection .proxyTop input');
-    filter.value = '';                                      // reset after reload
-    filter.addEventListener('input', e => this.filterProxy(e));
-
-    // --- navigation
-    this.navOptions = document.getElementById('nav3');
-    this.navProxy = document.getElementById('nav4');
-    this.navTester = document.getElementById('nav6');
-
-    // --- Incognito Access
-    // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings
-    // Changing proxy settings requires private browsing window access because proxy settings affect private and non-private windows.
-    App.firefox && browser.extension.isAllowedIncognitoAccess()
-    .then(response => !response && alert(browser.i18n.getMessage('incognitoAccessError')));
 
     this.init(['sync', 'proxyDNS', 'globalExcludeWildcard', 'globalExcludeRegex']);
   }
@@ -84,7 +62,6 @@ class Options {
     document.querySelectorAll('button[type="submit"]').forEach(item => item.addEventListener('click', () => this.check())); // submit button
 
     this.process();
-    this.processProxy();
   }
 
   static process(save) {
@@ -108,31 +85,16 @@ class Options {
     // --- check and build proxies & patterns
     const ids = [];
     const data = [];
-    for (const item of this.proxyFieldset.children) {
-      if (item.nodeName !== 'DETAILS') { continue; }
-      item.classList.remove('invalid');                     // reset
+    // using for loop to be able to break early
+    for (const item of document.querySelectorAll('div.proxyDiv details')) {
       const pxy = this.getProxyDetails(item);
-      if (!pxy) {
-        item.open = true;                                   // open the proxy details
-        item.classList.add('invalid');
-        item.scrollIntoView({behavior: 'smooth', block: 'center'});
-        return;
-      }
+      if (!pxy) { return; }
 
-      // check for duplicate
-      const id = pxy.type === 'pac' ? pxy.pac : `${pxy.hostname}:${pxy.port}`;
-      if (ids.includes(id)) {
-        item.open = true;                                   // open the proxy details
-        item.classList.add('invalid');
-        item.scrollIntoView({behavior: 'smooth', block: 'center'});
-        alert(browser.i18n.getMessage('proxyDuplicateError'));
-        return;
-      }
-
-      ids.push(id);
       data.push(pxy);
     }
     const dataChanged = !App.equal(pref.data, data);        // check if proxies & patterns have changed
+
+    // no errors, update pref.data
     pref.data = data;
 
     // --- check sync
@@ -178,7 +140,7 @@ class Options {
     const type = elem.id.endsWith('Wildcard') ? 'wildcard' : 'regex';
     for(const item of arr) {                                // using for loop to be able to break early
       if (!Pattern.validate(item, type, true)) {
-        this.navOptions.checked = true;                     // show Options tab
+        Nav.get('options');                                 // show Options tab
         elem.classList.add('invalid');
         return;
       }
@@ -186,8 +148,9 @@ class Options {
     return true;
   }
 
-  static getProxyDetails(node) {
-    const pxy = {
+  static getProxyDetails(elem) {
+    // blank proxy
+    const obj = {
       active: true,
       title: '',
       color: '',
@@ -203,35 +166,46 @@ class Options {
       pac: ''
     };
 
-    node.querySelectorAll('.proxyBox [data-id]').forEach(item => {
-      const id = item.dataset.id;
-      switch (item.type) {
-        case 'checkbox':
-          pxy[id] = item.checked;
-          break;
-
-        case 'text':
-        case 'password':
-          item.value = item.value.trim();
-          pxy[id] = item.value;
-          break;
-
-        default:
-          pxy[id] = item.value;
-      }
+    // --- populate values
+    elem.querySelectorAll('[data-id]').forEach(i => {
+      i.classList.remove('invalid');                        // reset
+      obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim()
     });
 
-    if (pxy.type === 'pac' && !pxy.pac) {
-      alert(browser.i18n.getMessage('pacUrlError'));
-      return;
-    }
-    else if (!pxy.type === 'pac' && (!pxy.hostname || pxy.port)) {
-      alert(browser.i18n.getMessage('hostnamePortError'));
-      return;
+
+    // --- check type: http | https | socks4 | socks5 | pac | direct
+    switch (true) {
+      // DIRECT
+      case obj.type === 'direct':
+        obj.hostname = 'DIRECT';
+        break;
+
+      // PAC
+      case obj.type === 'pac':
+        const {hostname, port} = App.parseURL(obj.pac);
+        if (!hostname) {
+          this.setInvalid(elem, 'pac');
+          // alert(browser.i18n.getMessage('pacUrlError'));
+          return;
+        }
+        obj.hostname = hostname;
+        obj.port = port;
+        break;
+
+      // http | https | socks4 | socks5
+      case !obj.hostname:
+        this.setInvalid(elem, 'hostname');
+        alert(browser.i18n.getMessage('hostnamePortError'));
+        return;
+
+      case !obj.port:
+        this.setInvalid(elem, 'port');
+        alert(browser.i18n.getMessage('hostnamePortError'));
+        return;
     }
 
-    // check & build patterns
-    for (const item of node.querySelectorAll('.patternBox .patternRow')) {
+    // --- check & build patterns
+    for (const item of elem.querySelectorAll('.patternBox .patternRow')) {
       const elem = item.children;
       elem[4].classList.remove('invalid');                  // reset
       const pat = {
@@ -245,46 +219,29 @@ class Options {
       if (!pat.pattern) { continue; }                       // blank pattern
 
       if (!Pattern.validate(pat.pattern, pat.type, true)) {
-        this.navProxy.checked = true;                       // show Proxy tab
-        const detailsProxy = item.closest('details');
-        detailsProxy.open = true;                           // open proxy
-        detailsProxy.children[1].children[0].open = true;   // open pattern
-        item.parentElement.parentElement.firstElementChild.open = true; // show patterns
+        Nav.get('proxy');                                   // show Proxy tab
+        const details = item.closest('details');
+        details.open = true;                                // open proxy
         elem[4].classList.add('invalid');
+        elem[4].scrollIntoView({behavior: 'smooth'});
         return;
       }
 
-      pxy[elem[1].value].push(pat);
+      obj[elem[1].value].push(pat);
     }
-    return pxy;
+    return obj;
   }
 
-  static deleteBrowserData() {
-     if (!confirm(browser.i18n.getMessage('deleteBrowserDataConfirm'))) { return; }
-    browser.browsingData.remove({}, {
-      cookies: true,
-      indexedDB: true,
-      localStorage: true
-    })
-    .catch(error => App.notify(browser.i18n.getMessage('deleteBrowserData') + '\n\n' + error.message));
+  static setInvalid(parent, id) {
+    parent.open = true;
+    const elem = parent.querySelector(`[data-id="${id}"]`);
+    elem.classList.add('invalid');
+    parent.scrollIntoView({behavior: 'smooth'});
   }
 
   static restoreDefaults() {
-    const defaultPref = {
-      mode: 'disable',
-      sync: false,
-      proxyDNS: true,
-      globalExcludeWildcard: '',
-      globalExcludeRegex: '',
-      data: []
-    };
-    this.prefNode.forEach(node => {
-      const attr = node.type === 'checkbox' ? 'checked' : 'value';
-      node[attr] = defaultPref[node.id];
-    });
-    this.deleteProxies();
-/*
     if (!confirm(browser.i18n.getMessage('restoreDefaultsConfirm'))) { return; }
+
     const defaultPref = {
       mode: 'disable',
       sync: false,
@@ -293,46 +250,135 @@ class Options {
       globalExcludeRegex: '',
       data: []
     };
-    browser.storage.local.set(defaultPref)
-    .then(() => location.reload());
-   */
+    Object.keys(defaultPref).forEach(i => pref[i] = defaultPref[i]);
+    this.process();
+    Proxies.process();
+  }
+}
+// ---------- /Options -------------------------------------
+
+// ---------- browsingData ---------------------------------
+class BrowsingData {
+
+  static {
+    document.querySelector('.options button[data-i18n="deleteBrowsingData"]').addEventListener('click', () => this.deleteBrowsingData());
   }
 
-  static processProxy() {
-    const docFrag = document.createDocumentFragment();
-    pref.data.forEach(item => docFrag.appendChild(this.makeProxy(item)));
-    this.proxyFieldset.insertBefore(docFrag, this.proxyFieldset.lastElementChild);
+  static deleteBrowsingData() {
+    if (!confirm(browser.i18n.getMessage('deleteBrowsingDataConfirm'))) { return; }
+
+   browser.browsingData.remove({}, {
+     cookies: true,
+     indexedDB: true,
+     localStorage: true
+   })
+   .catch(error => App.notify(browser.i18n.getMessage('deleteBrowsingData') + '\n\n' + error.message));
+ }
+}
+// ---------- /browsingData --------------------------------
+
+// ---------- WebRTC ---------------------------------------
+class WebRTC {
+
+  static {
+    this.webRTC = document.querySelector('.options button.webRTC');
+    this.webRTC.addEventListener('click', () => this.setWebRTC());
+    this.init();
   }
 
-  static addProxy(pxy) {
-    this.proxyFieldset.insertBefore(this.makeProxy(pxy), this.proxyFieldset.lastElementChild);
+  static async init() {
+    // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request
+    // Any permissions granted are retained by the extension, even over upgrade and disable/enable cycling.
+    // check if permission is granted
+    this.permission = await browser.permissions.contains({permissions: ['privacy']});
+
+    // check webRTCIPHandlingPolicy
+    if (this.permission) {
+      this.result = await browser.privacy.network.webRTCIPHandlingPolicy.get({});
+      if (this.result.value !== 'default') {
+        this.webRTC.classList.add('reset');
+      }
+    }
   }
 
-  static makeProxy(item) {
+  static async setWebRTC() {
+    if (!this.permission) {
+      // request permission
+      this.permission = await browser.permissions.request({permissions: ['privacy']});
+      if (!this.permission) { return; }
+    }
+
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1790270
+    // WebRTC bypasses Network settings & proxy.onRequest
+    // { "levelOfControl": "controllable_by_this_extension", "value": "default" }
+    this.result ||= await browser.privacy.network.webRTCIPHandlingPolicy.get({});
+    const def = this.result.value === 'default'
+    let value = def ? 'default_public_interface_only' : 'default';
+    this.result.value = value;
+    this.webRTC.classList.toggle('reset', def);
+    browser.privacy.network.webRTCIPHandlingPolicy.set({value});
+  }
+}
+// ---------- /WebRTC --------------------------------------
+
+// ---------- Proxies --------------------------------------
+class Proxies {
+
+  static {
+    this.docFrag = document.createDocumentFragment();
+    this.proxyDiv = document.querySelector('div.proxyDiv');
+    // this.proxyTemplate = document.querySelector('.proxySection template').content.firstElementChild;
+    const temp = document.querySelector('.proxySection template').content;
+    this.proxyTemplate = temp.firstElementChild;
+    this.patternTemplate = temp.lastElementChild;
+    // this.proxyFieldset = document.querySelector('.proxySection fieldset');
+
+    // --- buttons
+    document.querySelector('.proxySection .proxyTop button[data-i18n="getLocation"]').addEventListener('click', () => this.getLocation());
+    document.querySelector('.proxySection .proxyTop button[data-i18n="add"]').addEventListener('click', () => this.addProxy());
+
+    // --- proxy filter
+    const filter = document.querySelector('.proxySection .proxyTop input');
+    filter.value = '';                                      // reset after reload
+    filter.addEventListener('input', e => this.filterProxy(e));
+
+    this.process();
+  }
+
+  static process() {
+    this.proxyDiv.textContent = '';                         // reset
+    pref.data.forEach(i => this.addProxy(i));
+    this.proxyDiv.appendChild(this.docFrag);
+  }
+
+  static addProxy(item) {
+
     // --- make a blank proxy with all event listeners
     const pxy = this.proxyTemplate.cloneNode(true);
+    const proxyBox = pxy.children[1].children[0];
+    const patternBox = pxy.children[1].children[2];
 
-    // summary
+    // --- summary
     const sum = pxy.children[0].children;
     sum[3].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && pxy.remove());
-    sum[4].addEventListener('click', () => pxy.previousElementSibling.nodeName === 'DETAILS' && pxy.previousElementSibling.before(pxy));
-    sum[5].addEventListener('click', () => pxy.nextElementSibling.nodeName === 'DETAILS' && pxy.nextElementSibling.after(pxy));
+    sum[4].addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
+    sum[5].addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
     // proxy details
-    const elem = pxy.children[1].children[1].children;      // proxyBox
-    elem[1].addEventListener('change', function() {
+    const elem = proxyBox.children;
+    elem[1].addEventListener('change', function () {
       sum[1].textContent = this.value;
     });
 
-    elem[5].addEventListener('change', function() {
+    elem[5].addEventListener('change', function () {
       // hide/show elements
-      this.parentElement.dataset.type = this.value;
-      this.parentElement.previousElementSibling.dataset.type = this.value;
+      // this.parentElement.dataset.type = this.value;
+      // this.parentElement.previousElementSibling.dataset.type = this.value;
 
       switch (this.options[this.selectedIndex].textContent) {
         case 'TOR':
           sum[0].textContent = '🌎';
-          sum[1].textContent = 'TOR'
+          sum[1].textContent = 'TOR';
           elem[1].value = 'TOR';
           elem[3].value = '127.0.0.1';
           elem[7].value = '9050';
@@ -340,45 +386,79 @@ class Options {
 
         case 'Psiphon':
           sum[0].textContent = '🌎';
-          sum[1].textContent = 'Psiphon'
+          sum[1].textContent = 'Psiphon';
           elem[1].value = 'Psiphon';
           elem[3].value = '127.0.0.1';
           elem[7].value = '60351';
           break;
-      }
+
+        case 'Privoxy':
+          sum[0].textContent = '🌎';
+          sum[1].textContent = 'Privoxy';
+          elem[1].value = 'Privoxy';
+          elem[3].value = '127.0.0.1';
+          elem[7].value = '8118';
+          break;
+
+        case 'PAC':
+          sum[0].textContent = '🌎';
+          sum[1].textContent = 'PAC';
+          elem[1].value = 'PAC';
+          break;
+
+        case 'DIRECT':
+          sum[0].textContent = '⮕';
+          sum[1].textContent = 'DIRECT';
+          elem[1].value = 'DIRECT';
+          elem[3].value = 'DIRECT';
+          break;
+        }
     });
-    elem[9].addEventListener('change', function() {
+    elem[9].addEventListener('change', function () {
       sum[0].textContent = App.getFlag(this.value);
     });
-    elem[15].children[1].addEventListener('click', this.togglePassword);
+    elem[15].children[1].addEventListener('click', Toggle.password);
 
     // random color
     const color = item?.color || Color.getRandom();
     pxy.children[0].style.borderLeftColor = color;
     elem[17].children[0].value = color;
-    elem[17].children[0].addEventListener('change', function() {
+    elem[17].children[0].addEventListener('change', function () {
       pxy.children[0].style.borderLeftColor = this.value;
     });
 
-    elem[17].children[1].addEventListener('click', function() {
+    elem[17].children[1].addEventListener('click', function () {
       this.previousElementSibling.value = Color.getRandom();
       pxy.children[0].style.borderLeftColor = this.previousElementSibling.value;
     });
 
-    // patterns
-    const patDiv = pxy.querySelector('.patternRowBox');
-    pxy.querySelector('button[data-i18n="add"]').addEventListener('click', () =>
-      patDiv.appendChild(this.makePattern()));
+    elem[19].addEventListener('change', function () {
+      const {hostname, port} = App.parseURL(this.value);
+      if (!hostname) {
+        this.classList.add('invalid');
+        return;
+      }
+      elem[3].value = hostname;
+      port && (elem[7].value = port);
+    });
 
-    if (!item) { return pxy; }                              // return blank proxy
+    // patterns
+    pxy.querySelector('button[data-i18n="add"]').addEventListener('click', () => this.addPattern(patternBox));
+
+    // from add button
+    if (!item) {
+      this.proxyDiv.appendChild(pxy);                       // insert blank proxy
+      pxy.open = true;                                      // open the proxy details
+      elem[1].focus();
+      pxy.scrollIntoView({behavior: 'smooth'});
+      return;
+    }
 
     // --- populate with data
-    const title = App.getTitle(item);
+    const title = item.title || (item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`);
 
-    // summary
-    // pxy.children[0].style.borderLeftColor = item.color;
+    // --- summary
     sum[0].textContent = App.getFlag(item.cc);
-    sum[0].title = Location.get(item);
     sum[1].textContent = title;
     sum[2].checked = item.active;
 
@@ -389,29 +469,29 @@ class Options {
     elem[1].value = title;
     elem[3].value = item.hostname;
     elem[5].value = item.type;
-    elem[5].parentElement.dataset.type = item.type;         // hide/show elements
     elem[7].value = item.port;
     elem[9].value = item.cc;
+    elem[9].dataset.hostname = item.hostname;               // for Get Location
     elem[11].value = item.username;
     elem[13].value = item.city;
+    elem[13].dataset.hostname = item.hostname;              // for Get Location
     elem[15].children[0].value = item.password;
-    // elem[17].value = item.color;
     elem[19].value = item.pac;
-//    elem[20].firstElementChild.checked = item.proxyDNS;
 
     // patterns
-    item.include.forEach(i => this.addPattern(patDiv, i, 'include'));
-    item.exclude.forEach(i => this.addPattern(patDiv, i, 'exclude'));
+    item.include.forEach(i => this.addPattern(patternBox, i, 'include'));
+    item.exclude.forEach(i => this.addPattern(patternBox, i, 'exclude'));
 
-    return pxy;
+    // return pxy;
+    this.docFrag.appendChild(pxy);
   }
 
-  // make a blank pattern with all event listeners
-  static makePattern() {
+  static addPattern(parent, item, inc) {
+    // --- make a blank pattern with all event listeners
     const div = this.patternTemplate.cloneNode(true);
     const elem = div.children;
 
-    elem[0].addEventListener('change', function() {
+    elem[0].addEventListener('change', function () {
       const opt = this.options[this.selectedIndex];
       elem[2].value = opt.dataset.type;
       elem[3].value = opt.textContent;
@@ -421,139 +501,82 @@ class Options {
     elem[6].addEventListener('click', () => {
       Tester.select.value = elem[2].value;
       Tester.pattern.value = elem[4].value;
-      this.navTester.checked = true;                        // navigate to Tester tab
+      Tester.target = elem[4];
+      Nav.get('tester');                                    // navigate to Tester tab
     });
-    elem[7].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && div.remove());
-    return div;
-  }
+    // elem[7].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && div.remove());
+    elem[7].addEventListener('click', () => div.remove());
 
-  static addPattern(parent, item, inc) {
-    const div = this.makePattern();
-    const elem = div.children;
-    elem[1].value = inc;
-    elem[2].value = item.type;
-    elem[3].value = item.title;
-    elem[4].value = item.pattern;
-    elem[5].checked = item.active;
+    if (item) {
+      elem[1].value = inc;
+      elem[2].value = item.type;
+      elem[3].value = item.title;
+      elem[4].value = item.pattern;
+      elem[5].checked = item.active;
+    }
+
     parent.appendChild(div);
   }
 
-  static getLocationData() {console.log('called');Spinner.on();
-    const hosts = pref.data.filter(i => !i.cc || !i.city).map(i => i.hostname);
+  static getLocation() {
+    // filter & remove duplicates
+    const ignore = ['DIRECT', '127.0.0.1', 'localhost'];
+    const list = pref.data.filter(i => !ignore.includes(i.hostname)).map(i => i.hostname);
+    const hosts = [...new Set(list)];
     if (!hosts[0]) { return; }
 
-    Spinner.on();
+    Spinner.show();
 
     fetch('https://getfoxyproxy.org/webservices/lookup.php?' + hosts.join('&'))
     .then(response => response.json())
     .then(json => this.updateLocation(json))
     .catch(error => {
-      Spinner.off();
+      Spinner.hide();
       alert(error);
     });
   }
 
   static updateLocation(json) {
-    pref.data.forEach(item => {
-      if (json[item.hostname]) {
-        const {cc, city} = json[item.hostname];
-        cc && (item.cc = cc);
-        city && (item.city = city);
-      }
+    // update display
+    this.proxyDiv.querySelectorAll('[data-id="cc"], [data-id="city"]').forEach(item => {
+      const {hostname, id} = item.dataset;
+      const value = item.value;                             // cache old value to compare
+      json[hostname]?.[id] && (item.value = json[hostname][id]);
+      id === 'cc' && item.value !== value && item.dispatchEvent(new Event('change')); // dispatch change event
     });
-    Spinner.off();
+
+    Spinner.hide();
   }
+
 
   static filterProxy(e) {
     const str = e.target.value.toLowerCase().trim();
-    if (!str) { return; }
-    this.proxyFieldset.querySelectorAll('input[data-id="title"]').forEach(item => {
-      const details = item.parentElement.parentElement;
-      const hostname = item.nextElementSibling.nextElementSibling;
-      details.classList.toggle('off', ![item, hostname].some(i => i.value.toLowerCase().includes(str)));
+    if (!str) {
+      [...this.proxyDiv.children].forEach(i => i.classList.remove('off'));
+      return;
+    }
+
+    [...this.proxyDiv.children].forEach(item => {
+      const title = item.children[1].children[0].children[1];
+      const hostname = item.children[1].children[0].children[3];
+      item.classList.toggle('off', ![title, hostname].some(i => i.value.toLowerCase().includes(str)));
     });
   }
-
-  static async setWebRTC(btn) {
-/*
-    {
-      "levelOfControl": "controllable_by_this_extension",
-      "value": "default"
-    }
-*/
-    const permission = await browser.permissions.contains({permissions: ['privacy']});
-    if (!permission) { return; }
-
-    const result = await browser.privacy.network.webRTCIPHandlingPolicy.get({});
-    if (result.value !== 'default') {
-      btn.dataset.i18n = 'resetWebRTC';
-      btn.textContent = browser.i18n.getMessage('resetWebRTC');
-    }
-  }
-
-  static async toggleWebRTC() {
-    // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request
-    // Any permissions granted are retained by the extension, even over upgrade and disable/enable cycling.
-    // check if permission is granted
-    let permission = await browser.permissions.contains({permissions: ['privacy']});
-    if (!permission) {
-      // request permission
-      permission = await browser.permissions.request({permissions: ['privacy']});
-      if (!permission) { return; }
-    }
-/*
-    https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-privacy.js#148
-    default
-    default_public_and_private_interfaces
-    default_public_interface_only
-    disable_non_proxied_udp
-    proxy_only (only connections using TURN on a TCP connection through a proxy are allowed) // Firefox only
-
-    config media.peerconnection.ice.
-
-    media.peerconnection.enabled -> false
-
-
-    Chrome
-    WebRTC Leak Prevent -> <option value="disable_non_proxied_udp">Disable non-proxied UDP (force proxy)</option>
-    WebRTC Network Limiter -> doesnt work
-*/
-    const reset = this.dataset.i18n === 'resetWebRTC'
-    const value = reset ? 'default' : App.chrome ? 'default_public_interface_only' : 'proxy_only';
-    this.dataset.i18n = reset? 'limitWebRTC' : 'resetWebRTC';
-    this.textContent = browser.i18n.getMessage(this.dataset.i18n);
-    browser.privacy.network.webRTCIPHandlingPolicy.set({value});
-  }
-
-  static togglePassword() {
-    this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password';
-  }
-
-  static deleteProxies() {
-    document.querySelectorAll('.proxySection details.proxy').forEach(i => i.remove()); // reset proxies display
-  }
 }
-// ---------- /Options -------------------------------------
+// ---------- /Proxies -------------------------------------
 
 // ---------- Import FP Account ----------------------------
-class ImportAcc {
+class ImportFoxyProxyAccount {
 
   static {
     this.username = document.querySelector('.importAccount #username');
     this.password = document.querySelector('.importAccount #password');
-    this.hostname = document.querySelector('.importAccount #hostname');
-    this.ip = document.querySelector('.importAccount #ip');
-    this.https = document.querySelector('.importAccount #https');
-    this.http = document.querySelector('.importAccount #http');
-    document.querySelector('.importAccount button[data-i18n="togglePW|title"]').addEventListener('click', Options.togglePassword);
+    document.querySelector('.importAccount button[data-i18n="togglePassword|title"]').addEventListener('click', Toggle.password);
     document.querySelector('.importAccount button[data-i18n="import"]').addEventListener('click', () => this.process());
   }
 
-  static process() {
-    // fix unchecked
-    !this.hostname.checked && !this.ip.checked && (this.hostname.checked = true); // default hostname
-    !this.http.checked && !this.https.checked && (this.http.checked = true); // default http
-
+  static async process() {
+    // --- check username/password
     const username = this.username.value.trim();
     const password = this.password.value.trim();
     if (!username || !password) {
@@ -561,10 +584,50 @@ class ImportAcc {
       return;
     }
 
-    Spinner.on();
+    Spinner.show();
 
     // --- fetch data
-    fetch('https://getfoxyproxy.org/webservices/get-accounts.php', {
+    const data = await this.getAccount(username, password);
+    if (data) {
+      data.forEach(item => {
+        // proxy template
+        const pxy = {
+          active: true,
+          title: '',
+          color: '',                                            // random color will be set
+          type: 'http',
+          hostname: item.hostname,
+          port: '443',
+          username: item.username,
+          password: item.password,
+          cc: item.country_code === 'UK' ? 'GB' : item.country_code, // convert UK to ISO 3166-1 GB
+          city: item.city,
+          include: [],
+          exclude: [],
+          pac: ''
+        };
+
+        const title = item.hostname.split('.')[0];
+        // add http port
+        pxy.title = title + '.' + item.port[0];
+        pxy.port = item.port[0];
+        Proxies.addProxy(pxy);
+        // add SSL port
+        pxy.title = title + '.' + item.ssl_port;
+        pxy.port = item.ssl_port;
+        Proxies.addProxy(pxy);
+      });
+
+      Proxies.proxyDiv.appendChild(Proxies.docFrag);
+      Nav.get('proxy');
+    }
+
+    Spinner.hide();
+  }
+
+  static async getAccount(username, password) {
+    // --- fetch data
+    return fetch('https://getfoxyproxy.org/webservices/get-accounts.php', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body:  `username=${encodeURIComponent(username)}&password=${(encodeURIComponent(password))}`
@@ -573,66 +636,31 @@ class ImportAcc {
     .then(data => {
       if (!Array.isArray(data) || !data[0]?.hostname) {
         App.notify(browser.i18n.getMessage('error'));
-        Spinner.off();
         return;
       }
 
-      data = data.filter(i => i.active === 'true');         // remove inactive
-
-      // data.forEach(item => {
-      //   this.hostname.checked && this.http.checked && this.makeProxy(item, {});
-      //   this.hostname.checked && this.https.checked && this.makeProxy(item, {https: true});
-
-      //   this.ip.checked && this.http.checked && this.makeProxy(item, {ip: true});
-      //   this.ip.checked && this.https.checked && this.makeProxy(item, {ip: true, https: true});
-      // });
-
-      data.forEach(i => this.makeProxy(i));
-      Spinner.off();
-      Options.navProxy.checked = true;                      // show Proxy tab
+      data = data.filter(i => i.active === 'true');         // import active accounts only
+      data.sort((a, b) => a.country.localeCompare(b.country)); // sort by country
+      return data;
     })
-    .catch(error => {
-      App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message);
-      Spinner.off();
-    });
-  }
-
-  static makeProxy(item) {
-    const pxy = {
-      active: true,
-      title: item.hostname.split('.')[0],
-      color: '',                                            // random color will be set
-      type: 'http',
-      hostname: item.hostname,
-      port: item.port[0],
-      username: item.username,
-      password: item.password,
-      cc: item.country_code === 'UK' ? 'GB' : item.country_code, // convert UK to ISO 3166-1 GB
-      city: item.city,
-      include: [],
-      exclude: [],
-      pac: ''
-    };
-    // pxy.title += (ip ? '.ip' : '') + '.' + pxy.port;        // adding ip & port
-
-    Options.addProxy(pxy);
+    .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
   }
 }
 // ---------- /Import FP Account ---------------------------
 
-// ---------- Import URL -----------------------------------
-class ImportURL {
+// ---------- Import From URL ------------------------------
+class importFromUrl {
 
   static {
-    this.input = document.querySelector('.importURL input');
-    document.querySelector('.importURL button').addEventListener('click', () => this.process());
+    this.input = document.querySelector('.importFromUrl input');
+    document.querySelector('.importFromUrl button').addEventListener('click', () => this.process());
   }
 
   static process() {
     this.input.value = this.input.value.trim();
     if (!this.input.value) { return; }
 
-    Spinner.on();
+    Spinner.show();
 
     // --- fetch data
     fetch(this.input.value)
@@ -642,44 +670,55 @@ class ImportURL {
       Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
 
       Options.process();                                    // set options after the pref update
-      Options.processProxy();                               // update page display
-      Spinner.off();
-      Options.navProxy.checked = true;                      // show Proxy tab
+      Proxies.process();                                    // update page display
+      Nav.get('proxy');                                     // show Proxy tab
+      Spinner.hide();
     })
     .catch(error => {
       App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message);
-      Spinner.off();
+      Spinner.hide();
     });
   }
 }
-// ---------- /Import URL ----------------------------------
+// ---------- /Import From URL -----------------------------
 
 // ---------- Import List ----------------------------------
-class ImportList {
+class ImportProxyList{
 
   static {
-    this.textarea = document.querySelector('.importList textarea');
-    document.querySelector('.importList button').addEventListener('click', () => this.process());
+    this.textarea = document.querySelector('.importProxyList textarea');
+    document.querySelector('.importProxyList button').addEventListener('click', () => this.process());
   }
 
   static process() {
     this.textarea.value = this.textarea.value.trim();
     if (!this.textarea.value) { return; }
 
-    this.textarea.value.split(/\n+/).forEach(item => {
+   for (const item of this.textarea.value.split(/\n+/)) {
       // simple vs Extended format
       const pxy = item.includes('://') ? this.parseExtended(item) : this.parseSimple(item);
-      pxy & Options.addProxy(pxy);
-    });
+      if (!pxy) {
+        // end on error
+        Proxies.docFrag.textContent = '';
+        return;
+      }
+
+      Proxies.addProxy(pxy);
+    }
+
+    Proxies.proxyDiv.appendChild(Proxies.docFrag);
+    Nav.get('proxy');
   }
 
   static parseSimple(item) {
+    // example.com:3128:user:pass
     const [hostname, port, username = '', password = ''] = item.split(':');
     if (!hostname || !port || !(port*1)) {
       alert(`Error: ${item}`);
       return;
     }
 
+    // proxy template
     const pxy = {
       active: true,
       title: '',
@@ -695,115 +734,74 @@ class ImportList {
       exclude: [],
       pac: ''
     };
+
     return pxy;
   }
 
   static parseExtended(item) {
-      const pxy = {
-      active: true,
-      title: '',
-      color: '',
-      type: 'http',
-      hostname: '',
-      port: '',
-      username: '',
-      password: '',
-      cc: '',
-      city: '',
-      include: [],
-      exclude: [],
-      pac: ''
-    };
+    // https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
+    // https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
 
-    // https://user:passw0rd@78.205.12.1:21?color=ff00bc&title=work%20proxy
-    const [scheme] = item.toLowerCase().split('://');
+    // convert old schemes to type
     let url;
-
-    // fix type
-    switch (scheme) {
-      case 'proxy':
-        pxy.type = 'http';
-        url = 'http' + item.substring(scheme.length);
-        break;
-
-      case 'ssl':
-        pxy.type = 'https';
-        url = 'http' + item.substring(scheme.length);
-        break;
-
-      case 'socks5':
-        pxy.type = 'socks';
-        url = 'http' + item.substring(scheme.length);
-        break;
-
-      default:
-        pxy.type = scheme;
-        url = item;
-    }
-
-    try { url = new URL(url); }
+    try { url = new URL(item); }
     catch (error) {
       alert(`${error}\n\n${item}`);
       return;
     }
 
-    // check type
-    const type = url.searchParams.get('type')?.toLowerCase();
-    if (type && !['http', 'https ', 'socks', 'socks4', 'pac'].includes(type)) {
-      alert(browser.i18n.getMessage('proxyTypeError') + '\n\n' + item);
-      return;
+    // convert old schemes to type
+    let type = url.protocol.slice(0, -1);
+    if (!['http', 'https'].includes(type)) {
+      const scheme = {
+        proxy: 'http',
+        ssl: 'https',
+        socks4: 'socks4',
+        socks5: 'socks5',
+        socks: 'socks5',
+      };
+
+      scheme[type] && (type = scheme[type]);
+      url.protocol = 'http:';
+      url = new URL(url);
     }
 
-    // new URL() missing port: http -> 80 | https -> 433
-    let port = url.port;
-    if (!port) {
-      pxy.type === 'http' && (port = '80');
-      pxy.type === 'https' && (port = '443');
+    const {hostname, port, username, password} = url;
+    // set to pram, can be overridden in searchParams
+    const pram = {type, hostname, port, username, password};
+
+    // prepare object, make parameter keys case-insensitive
+    for (let [key, value] of url.searchParams) {
+      pram[key.toLowerCase()] = value;
     }
 
-    // check port
-    if (type !== 'pac' && !port) {
-      alert(browser.i18n.getMessage('proxyPortError') + '\n\n' + item);
-      return;
-    }
+    // proxy template
+    const pxy = {
+      active: pram.active !== 'false',                      // defaults to true
+      title: pram.title || '',
+      color: pram.color ? '#' + pram.color : '',
+      type: pram.type.toLowerCase(),
+      hostname: pram.hostname,
+      port: pram.port,
+      username: decodeURIComponent(pram.username),
+      password: decodeURIComponent(pram.password),
+      cc: (pram.cc || pram.countrycode || '').toUpperCase(),
+      city: pram.city || '',
+      include: [],
+      exclude: [],
+      pac: pram.pac || (pram.type === 'pac' && url.origin + url.pathname) || ''
+    };
 
-    url.username && (pxy.username = decodeURIComponent(url.username));
-    url.password && (pxy.password = decodeURIComponent(url.password));
-
-    url.searchParams.forEach((value, key) => {
-      key = key.toLowerCase();
-      switch (key) {
-        case 'active':
-          pxy.active = value === 'true';
-          break;
-
-        case 'color':
-          pxy.color = '#' + value;
-          break;
-
-        case 'countrycode':
-          pxy.cc = value;
-          break;
-
-        default:
-          !['include', 'exclude'].includes(key) && pxy.hasOwnProperty(key) && (pxy[key] = value);
-      }
-    });
-
-    pxy.port = port;
-    pxy.hostname = url.hostname;
-    pxy.cc = pxy.cc.toUpperCase();                          // fix case issue
-    type === 'pac' && (pxy.pac = url.origin + url.pathname);
     return pxy;
   }
 }
 // ---------- /Import List ---------------------------------
 
 // ---------- Import Older Export --------------------------
-class ImportOlder {
+class importFromOlder {
 
   static {
-    document.querySelector('.importOlder input').addEventListener('change', e => this.process(e));
+    document.querySelector('.importFromOlder input').addEventListener('change', e => this.process(e));
   }
 
   static process(e) {
@@ -828,7 +826,13 @@ class ImportOlder {
       return;
     }
 
-    pref = Migrate.convert7(data);
+    data = Migrate.convert7(data);
+    // update pref with the saved version
+    Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
+
+    Options.process();                                      // set options after the pref update
+    Proxies.process();                                      // update page display
+    Nav.get('proxy');                                       // show Proxy tab
   }
 }
 // ---------- /Import Older Export -------------------------
@@ -841,11 +845,15 @@ class Tester {
     this.select = document.querySelector('.tester select');
     this.pattern = document.querySelector('.tester input[type="text"]');
     this.result = document.querySelector('.tester .testResult');
-    document.querySelector('.tester button').addEventListener('click', () => this.process());
+    document.querySelector('.tester button[data-i18n="back"]').addEventListener('click', () => this.back());
+    document.querySelector('.tester button[data-i18n="test"]').addEventListener('click', () => this.process());
   }
 
   static process() {
-    this.result.textContent = '';                           // reset
+    // --- reset
+    this.pattern.classList.remove('invalid');
+    this.result.textContent = '';
+
     this.url.value = this.url.value.trim();
     this.pattern.value = this.pattern.value.trim();
     if(!this.url.value  || !this.pattern.value ) {
@@ -862,84 +870,32 @@ class Tester {
       regex = new RegExp(str, 'i');
     }
     catch (error) {
+      this.pattern.classList.add('invalid');
       this.result.textContent = error;
       return;
     }
 
     this.result.textContent = regex.test(this.url.value) ? '✅' : '❌';
   }
+
+  static back() {
+    if (!this.target) { return; }
+
+    Nav.get('proxy');                                       // show Proxy tab
+    const details = this.target.closest('details');
+    details.open = true;                                    // open proxy
+    this.target.scrollIntoView({behavior: 'smooth'});
+    this.target.focus();
+  }
 }
 // ---------- /Tester --------------------------------------
 
-// ---------- Log ------------------------------------------
-class ShowLog {
-
-  static {
-    this.trTemplate = document.querySelector('.log template').content.firstElementChild;
-    this.tbody = document.querySelector('.log tbody');
-
-    // no proxy info on chrome
-    App.chrome ? this.notAvailable() : browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
-
-    this.process();
-  }
-
-  static notAvailable() {
-    const tr = this.trTemplate.cloneNode(true);
-    [...tr.children].forEach((item, index) => index > 0 && item.remove());
-    const td = tr.children[0];
-    td.colSpan = '5';
-    td.classList.add('unavailable');
-    this.tbody.appendChild(tr);
-  }
-
-  static process(e) {
-    if (!e?.proxyInfo) { return; }
-
-    const tr = this.tbody.children[99] || this.trTemplate.cloneNode(true);
-    const td = tr.children;
-
-    td[0].title = e.documentUrl || '';
-    td[0].textContent = e.documentUrl || '';
-    td[1].title = e.url;
-    td[1].textContent = e.url;
-    td[2].textContent = e.method;
-    td[3].children[0].textContent = e.proxyInfo.hostname;
-    td[3].children[1].textContent = `:${e.proxyInfo.port}`;
-    td[4].textContent = this.formatInt(e.timeStamp);
-
-    this.tbody.prepend(tr);                                 // in reverse order, new on top
-  }
-
-  static formatInt(d) {
-    return new Intl.DateTimeFormat(navigator.language,
-              {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).format(new Date(d));
-  }
-}
-const showLog = new ShowLog();
-// ---------------- /Log -----------------------------------
-
-// ---------- Navigation -----------------------------------
-class Nav {
-
-  static {
-    this.navHelp = document.getElementById('nav1');
-    this.help = document.querySelector('iframe[src="help.html"]').contentWindow.document;
-    window.addEventListener('hashchange', this.process);
-    this.process();                                         // check on load
-  }
-
-  static process() {
-    location.search === '?help' && (this.navHelp.checked = true); // show Help tab
-    location.hash && (this.help.location.hash = location.hash);
-  }
-}
-// ---------- /Navigation ----------------------------------
-
 // ---------- Import/Export Preferences --------------------
-ImportExport.init(() => {
+ImportExport.init(pref, () => {
   Options.process();                                        // set options after the pref update
-  Options.deleteProxies();
-  Options.processProxy();                                   // update page display
+  Proxies.process();                                        // update page display
 });
 // ---------- /Import/Export Preferences -------------------
+
+// ---------- Navigation -----------------------------------
+Nav.get();

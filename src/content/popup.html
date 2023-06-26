@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Popup</title>
-    <link rel="stylesheet" href="popup.css">
+    <link href="popup.css" rel="stylesheet">
     <script type="module" src="popup.js"></script>
   </head>
   <body>
@@ -12,48 +12,45 @@
       <section>
         <h1 data-i18n="extensionName"><img src="../image/icon.svg" alt=""> </h1>
 
-        <!-- main display -->
-        <ul>
-          <li id="pattern">
+        <div class="list">
+          <label>
             <span class="flag"><img src="../image/power.svg" alt=""></span>
             <span class="title" data-i18n="proxyByPatterns"></span>
-            <input type="radio" name="server">
-          </li>
+            <input type="radio" name="server" value="pattern">
+          </label>
 
-          <li id="disable">
-            <span class="flag"><img src="../image/power.svg" alt=""></span>
+          <label>
+            <span class="flag"><img class="off" src="../image/power.svg" alt=""></span>
             <span class="title" data-i18n="disable"></span>
-            <input type="radio" name="server" checked>
-          </li>
-        </ul>
+            <input type="radio" name="server" value="disable" checked>
+          </label>
+        </div>
 
-        <div class="addHost">
+        <div class="host">
           <label data-i18n="addHost"></label>
           <select>
             <option disabled selected>&nbsp;</option>
           </select>
         </div>
 
-        <div class="excludeHost" data-i18n="excludeHost"></div>
-
-        <!-- /main display -->
-
-        <div class="button">
+        <div class="buttons">
           <button type="button" data-i18n="options"></button>
+          <button type="button" data-i18n="excludeHost"></button>
           <button type="button" data-i18n="location"></button>
           <button type="button" data-i18n="ip"></button>
         </div>
 
         <!-- template -->
         <template>
-          <li>
-            <span class="flag">🌎</span>
+          <label>
+            <span class="flag"></span>
             <span class="title"></span>
+            <span class="port"></span>
             <input type="radio" name="server">
             <span class="data"></span>
-          </li>
+          </label>
         </template>
-
+        <!-- /template -->
       </section>
     </article>
   </body>

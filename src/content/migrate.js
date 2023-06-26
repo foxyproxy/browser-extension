@@ -5,9 +5,8 @@ import {Color} from './color.js';
   Chrome v3 (current) encrypts username/passwords using CryptoJS 3.1.2
   CryptoJS library is used to migrate preferences to v8.0 but will be removed in future upgrades
   Original CryptoJS 3.1.2 aes.js  https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js
-  `export {CryptoJS};` was added to be able to import as ES6 module
 */
-import {CryptoJS} from '../lib/aes.3.1.2.js';
+import '../lib/aes.3.1.2.js';
 
 /*
   ----- Patterns -----
@@ -153,16 +152,14 @@ export class Migrate {
     };
 
     const data = Object.values(pref).filter(i => i.hasOwnProperty('address'));
-    data.sort((a, b) => a.index - b.index);                 // sort by index and tidy
+    data.sort((a, b) => a.index - b.index);                 // sort by index
 
     data.forEach(item => {
-      if (!item.hasOwnProperty('address')) { return; }
-
       const pxy = {
         active: item.active === 'true',                     // convert to boolean
         title: item.title || '',
         color: item.color || Color.getRandom(),             // random color
-        type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | (direct) + add PAC
+        type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
         hostname: item.address,                             // rename to hostname
         port: item.port,
         username: item.username,
@@ -174,11 +171,9 @@ export class Migrate {
         pac: ''                                             // add PAC option
       };
 
-      // --- disable type 'direct', use 'http' temporarily
-      if (pxy.type === 'direct') {
-        pxy.type = 'http';
-        pxy.active = false;
-      }
+      // --- type 'direct'
+      pxy.type === 'direct' && (pxy.hostname = 'DIRECT');
+
 /*
       {
         "active": true,
@@ -205,11 +200,10 @@ export class Migrate {
   }
 
 /*
-    .bbc.co.uk      exact domain and all subdomains
-    *.bbc.co.uk     exact domain and all subdomains
-    **.bbc.co.uk    subdomains only (not bbc.co.uk)
+  .bbc.co.uk      exact domain and all subdomains
+  *.bbc.co.uk     exact domain and all subdomains
+  **.bbc.co.uk    subdomains only (not bbc.co.uk)
 */
-
   static convertPattern(pat, protocol) {
     const protocolSet = {
       1: '*://',            // all

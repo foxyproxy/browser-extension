@@ -1,39 +1,55 @@
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1198822
 // Dynamic import is not available yet in MV3 service worker
 // Once implemented, module will be dynamically imported for Firefox only
-
-// https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
-// proxyAuthorizationHeader on Firefox only applies to HTTPS (not HTTP and it breaks the API and sends DIRECT)
-// proxy.onRequest user/pass on Firefox only applies to SOCKS (not HTTP/HTTPS)
-/*
-  proxy.onRequest
-  {
-    type: direct | http | https | socks | socks4
-    host:
-    port:
-    username:
-    password:
-    failoverTimeout:
-    proxyAuthorizationHeader:
-    connectionIsolationKey:
-  }
-*/
+import {Pattern} from './pattern.js';
 
 // ---------- Firefox Proxy Process ------------------------
 export class OnRequest {
 
   static {
-    // values will be set in PAC in proxy.js
+    // --- default values
     this.mode = 'disable';                                  // default start
     this.proxy = null;                                      // needed only in Single Proxy
     this.data = [];                                         // needed only in Proxy by Pattern
     this.globalExclude = [];
     this.proxyDNS = true;                                   // default true
 
-    // Firefox Only
-    if (typeof browser !== 'undefined' && browser.proxy.onRequest) {
-      browser.proxy.onRequest.addListener(e => this.#process(e), {urls: ['<all_urls>']});
+    // --- Firefox Only
+    browser?.proxy?.onRequest?.addListener(e => this.#process(e), {urls: ['<all_urls>']});
+  }
+
+  static init(pref) {
+    // --- used in mode pattern or single proxy
+    this.globalExclude = globalExclude;
+    this.proxyDNS = pref.proxyDNS;
+    const globalExclude = [
+      ...pref.globalExcludeWildcard.split(/\n+/).map(i => Pattern.get(i, 'wildcard')),
+      ...pref.globalExcludeRegex.split(/\n+/)
+    ].filter(Boolean);
+
+    // filter data
+    const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
+
+    // --- single proxy
+    if (pref.mode !== 'pattern') {
+      this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`);
+      this.data = [];
+      return;
     }
+
+    // --- proxy by pattern
+    this.proxy = null;
+    this.data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
+      return {
+        type: item.type,
+        hostname: item.hostname,
+        port: item.port,
+        username: item.username,
+        password: item.password,
+        include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
+        exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
+      }
+    });
   }
 
   static #process(e) {
@@ -53,9 +69,8 @@ export class OnRequest {
   }
 
   static #processPattern(url)  {
-    if (!this.data[0]) { return {type: 'direct'}; }
-
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
+
     for (const proxy of this.data) {
       if (!match(proxy.exclude) && match(proxy.include)) { return this.#processProxy(proxy); }
     }
@@ -64,28 +79,29 @@ export class OnRequest {
   }
 
   static #processProxy(proxy) {
-    if (!proxy) { return {type: 'direct'}; }
-
     const {type, hostname: host, port, username, password} = proxy;
-    const res = {type, host, port};
+    if (type === 'direct') { return {type: 'direct'}; }
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.jsm#49
+    const response = {type, host, port};
+
+    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#49
     // API uses socks for socks5
-    res.type === 'socks5' && (res.type = 'socks');
+    response.type === 'socks5' && (response.type = 'socks');
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.jsm#141
-    type.startsWith('socks') && (res.proxyDNS = this.proxyDNS);
+    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#141
+    type.startsWith('socks') && (response.proxyDNS = this.proxyDNS);
 
     if (username && password) {
-      res.username = username;
-      res.password = password;
+      response.username = username;
+      response.password = password;
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
       // Allow HTTP authentication in proxy.onRequest
-      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.jsm#173
-      type === 'https' && (res.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#173
+      // proxyAuthorizationHeader on Firefox only applies to HTTPS (not HTTP and it breaks the API and sends DIRECT)
+      // proxyAuthorizationHeader added to reduce the authentication request in webRequest.onAuthRequired
+      type === 'https' && (response.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
     }
 
-    console.log(res);
-    return res;
+    return response;
   }
 }

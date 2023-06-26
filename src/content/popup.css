@@ -1,12 +1,24 @@
 @import 'default.css';
 
+/* ----- Light Theme ----- */
+:root {
+  --filter: opacity(0.4) grayscale(1);
+}
+
+/* ----- Dark Theme ----- */
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --filter: opacity(1) grayscale(1);
+  }
+}
+
 /* ----- General ----- */
 body {
   opacity: 0;
+  font-size: 12px;
   width: 25em;
   background-color: var(--bg);
   transition: opacity 0.5s;
-  font-size: 12px;
 }
 
 body.android {
@@ -26,25 +38,23 @@ h1 img {
 }
 
 /* ----- Main Display ----- */
-ul {
-  list-style: none;
-  padding: 0.1em;
-  margin: 0;
+div.list {
   min-height: 15em;
-  max-height: 20em;
+  max-height: 30em;
   overflow-y: auto;
-  scrollbar-width: thin; /* Firefox only */
+  scrollbar-width: thin;
 }
 
-li {
+div.list label {
   display: grid;
-  grid-template-columns: 3em 1fr auto;
-  padding: 0.2em 0.5em;
+  grid-template-columns: 3em 1fr auto auto;
   column-gap: 0.5em;
+  padding: 0.2em 0.5em;
   cursor: pointer;
+  transition: 0.5s ease-in-out;
 }
 
-li:hover {
+div.list label:hover {
   background-color: var(--hover);
 }
 
@@ -52,8 +62,8 @@ li:hover {
   width: 1em;
 }
 
-li#disable .flag img {
-  filter: opacity(0.5) grayscale(1);
+.flag img.off {
+  filter: var(--filter);
 }
 
 .flag {
@@ -65,29 +75,41 @@ li#disable .flag img {
 
 .title {
   color: var(--header);
-  font-size: 1.4em;
+  font-size: 1.2em;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.port {
+  color: var(--dim);
+  text-align: right;
 }
 
 .data {
+  grid-column: span 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: pre;
+  color: var(--dim);
 }
 
 input[name="server"] {
   grid-row: span 2;
+  transition: 0.5s ease-in-out;
+  align-self: center;
+  cursor: pointer;
 }
 
 input[name="server"]:not(:checked) {
-  opacity: 0.3;
+  opacity: 0;
 }
 
-.addHost {
+div.host {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 0.2em 0.5em;
-  column-gap: 0.5em;
+  padding: 0.5em;
+  gap: 0.5em;
   align-items: center;
 }
 
@@ -97,9 +119,9 @@ input[name="server"]:not(:checked) {
 }
 
 /* ----- Buttons ----- */
-div.button {
+div.buttons {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
   column-gap: 0.1em;
 }
 

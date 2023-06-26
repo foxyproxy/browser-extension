@@ -9,52 +9,48 @@ await App.getPref();
 class Popup {
 
   static {
-    document.querySelectorAll('button').forEach(item => item.addEventListener('click', e => this.processButtons(e)));
-
-    this.ul = document.querySelector('ul');
-    this.ul.addEventListener('click', e => this.processSelect(e));
-    this.liTemplate = document.querySelector('template').content.firstElementChild;
-
-    this.select = document.querySelector('select');
-    this.select.addEventListener('change', () => this.addHost());
-
-    document.querySelector('div.excludeHost').addEventListener('click', () => this.excludeHost());
-
+    document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
     this.process();
   }
 
   static process() {
+    const list = document.querySelector('div.list');
+    const labelTemplate = document.querySelector('template').content.firstElementChild;
+    const docFrag = document.createDocumentFragment();
+
     // check if there are patterns
-    if (!pref.data.some(item => item.include[0] || item.exclude[0])) {
-      this.ul.children[0].style.display = 'none';           // hide option if there are no patterns
+    if (!pref.data.some(i => i.include[0])) {
+      list.children[0].style.display = 'none';              // hide option if there are no patterns
       pref.mode === 'pattern' && (pref.mode = 'disable');   // show as disable
     }
 
-    // --- show proxies
-    [...this.ul.children].forEach((item, index) => index > 1 && item.remove()); // reset ul
-    this.ul.children[pref.mode === 'pattern' ? 0 : 1].children[2].checked = true; // pre-select pattern/disable
+    pref.mode === 'pattern' && (list.children[0].children[2].checked = true);
 
-    const docFrag = document.createDocumentFragment();
-    const data = pref.data.filter(i => i.active);           // filter out inactive
-    data.forEach(item => {
-       const li = this.liTemplate.cloneNode(true);
-      li.id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
-
-      const [flag, title, radio, data] = li.children;
+    pref.data.filter(i => i.active).forEach(item => {
+      const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
+      const label = labelTemplate.cloneNode(true);
+      const [flag, title, portNo, radio, data] = label.children;
       flag.textContent = App.getFlag(item.cc);
-      title.textContent = item.title || li.id;
-      radio.checked = pref.mode === li.id;
-      data.textContent = item.city;
-      docFrag.appendChild(li);
+      title.textContent = item.title || id;
+      portNo.textContent = item.port;
+      radio.value = id;
+      radio.checked = id === pref.mode;
+      data.textContent = [item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
+      docFrag.appendChild(label);
     });
 
-    this.ul.appendChild(docFrag);
+    list.appendChild(docFrag);
+    list.addEventListener('click', e =>
+      // fires twice (click & label -> input)
+      e.target.name === 'server' && this.processSelect(e.target.value)
+    );
 
     // --- Add Hosts to select
-    // filter out PAC, limit to 10
-    data.filter(i => i.type !== 'pac').forEach((item, index) => {
-      if (index > 10) { return; }
+    const select = document.querySelector('select');
+    select.addEventListener('change', this.addHost);
 
+    // filter out PAC, limit to 10
+    pref.data.filter(i => i.active && i.type !== 'pac').filter((i, idx) => idx < 10).forEach(item => {
       const flag = App.getFlag(item.cc);
       const value = `${item.hostname}:${item.port}`;
       const opt = new Option(flag + ' ' + (item.title || value), value);
@@ -62,47 +58,41 @@ class Popup {
       docFrag.appendChild(opt);
     });
 
-    this.select.appendChild(docFrag);
+    select.appendChild(docFrag);
   }
 
-  static processSelect(e) {
-    const li = e.target.closest('li');
-    if(!li) { return; }
-
-    li.children[2].checked = true;
-
-    // mode can only be change in the popup
-    const mode = li.id;
-    if (mode === pref.mode) { return; }                     // no change
+  static processSelect(mode) {
+    if (mode === pref.mode) { return; }                     // disregard re-click
 
     pref.mode = mode;
-    browser.storage.local.set({mode});
-    localStorage.setItem('mode', mode);                     // keep a copy for options page
+    browser.storage.local.set({mode});                      // save mode
     browser.runtime.sendMessage({id: 'setProxy', pref});
+    localStorage.setItem('mode', mode);                     // keep a copy for options page ???
   }
 
   static addHost() {
-    const host = this.select.value;
-    browser.runtime.sendMessage({id: 'addHost', pref, host});
-    this.select.selectedIndex = 0;                          // reset select option
-  }
-
-  static excludeHost() {
-    browser.runtime.sendMessage({id: 'excludeHost', pref});
+    browser.runtime.sendMessage({id: 'addHost', pref, host: this.value});
+    this.selectedIndex = 0;                                 // reset select option
   }
 
   static processButtons(e) {
     switch (e.target.dataset.i18n) {
       case 'options':
         browser.runtime.openOptionsPage();
+        window.close();
         break;
 
       case 'location':
         browser.tabs.create({url: 'https://getfoxyproxy.org/geoip/'});
+        window.close();
         break;
 
       case 'ip':
         this.getIP();
+        break;
+
+      case 'excludeHost':
+        browser.runtime.sendMessage({id: 'excludeHost', pref});
         break;
     }
   }
@@ -118,7 +108,7 @@ class Popup {
       }
 
       const [ip, {cc, city}] = Object.entries(data)[0];
-      const text = [ip, Location.get({cc, city})].filter(Boolean).join('\n\n');
+      const text = [ip, , city, ...Location.get(cc)].filter(Boolean).join('\n');
       App.notify(text);
     })
     .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));

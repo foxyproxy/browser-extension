@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-i18n="options">FoxyProxy </title>
-  <link rel="icon" type="image/png" href="../image/icon.svg">
-  <link rel="stylesheet" href="options.css">
+  <link href="../image/icon.svg" rel="icon" type="image/png">
+  <link href="options.css" rel="stylesheet">
   <script type="module" src="options.js"></script>
 </head>
 
@@ -49,8 +49,8 @@
 
       <fieldset>
         <div class="buttonTop">
-          <button type="button" class="flat" data-i18n="deleteBrowserData"></button>
-          <button type="button" class="flat" data-i18n="limitWebRTC"></button>
+          <button type="button" class="flat" data-i18n="deleteBrowsingData"></button>
+          <button type="button" class="flat webRTC"><span data-i18n="limitWebRTC"></span><span data-i18n="resetWebRTC"></span></button>
         </div>
 
         <label class="pointer" data-i18n="enableSync"><input type="checkbox" id="sync"></label>
@@ -66,27 +66,29 @@
           <label>Reg Exp</label>
           <textarea id="globalExcludeWildcard"></textarea>
           <textarea id="globalExcludeRegex"></textarea>
+
+          <!-- proxy.onRequest bypasses "Connections to localhost, 127.0.0.1/8, and ::1 are never proxied." restrictions -->
           <select>
             <option disabled selected>&nbsp;</option>
             <option data-type="regex" value="^http://.+">HTTP</option>
             <option data-type="regex" value="^https://.+">HTTPS</option>
-            <option data-type="regex" value="^[^:]+://[^.]+/" data-i18n="plainHost">Plain Host</option>
+            <option data-type="regex" value="^[^:]+://[^.]+/" data-i18n="plainHost"></option>
             <option data-type="regex" value="^[^:]+://10(\.\d+){3}/">10.*.*.*</option>
-            <!-- <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option> -->
+            <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option>
             <option data-type="regex" value="^[^:]+://172\.16(\.\d+){2}/">172.16.*.*</option>
             <option data-type="regex" value="^[^:]+://192\.168(\.\d+){2}/">192.168.*.*</option>
           </select>
         </div>
 
 
-        <div class="button">
+        <div class="buttons">
           <label class="flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
           <button type="button" id="export" class="flat" data-i18n="export"></button>
           <span></span>
           <button type="button" class="flat" data-i18n="restoreDefaults"></button>
         </div>
 
-        <button type="submit" data-i18n="save"></button>
+        <button type="submit" data-i18n="saveOptions"></button>
       </fieldset>
 
 
@@ -96,7 +98,8 @@
     <!-- proxy -->
     <section class="proxySection">
 
-      <fieldset>
+      <fieldset class="proxySection">
+
         <div class="proxyTop">
           <button type="button" class="flat" data-i18n="add"></button>
           <input type="text" spellcheck="false" placeholder="filter">
@@ -104,7 +107,9 @@
           <button type="button" class="flat" data-i18n="getLocation"></button>
         </div>
 
-        <button type="submit" data-i18n="save"></button>
+        <div class="proxyDiv"></div>
+
+        <button type="submit" data-i18n="saveOptions"></button>
       </fieldset>
 
       <!-- template -->
@@ -120,17 +125,13 @@
           </summary>
 
           <div class="content">
-            <details class="proxyPattern" data-type="http">
-              <summary class="flat"><span data-i18n="proxy"></span><span data-i18n="patterns"></span> ▷</summary>
-            </details>
 
-            <div class="proxyBox" data-type="http">
-
+            <div class="proxyBox">
               <label data-i18n="title"></label>
               <input type="text" data-id="title" spellcheck="false" placeholder="title">
 
-              <label data-type="http" data-i18n="hostname"></label>
-              <input data-type="http" type="text" data-id="hostname" spellcheck="false" placeholder="1.2.3.4, www.example.com">
+              <label data-i18n="hostname"></label>
+              <input type="text" data-id="hostname" spellcheck="false" placeholder="1.2.3.4, www.example.com">
 
               <label data-i18n="type"></label>
               <select data-id="type">
@@ -138,17 +139,19 @@
                 <option value="https">HTTPS</option>
                 <option value="socks4">SOCKS4</option>
                 <option value="socks5">SOCKS5</option>
-                <option value="pac">PAC</option>
                 <option value="socks5">TOR</option>
                 <option value="socks5">Psiphon</option>
+                <option value="http">Privoxy</option>
+                <option value="pac">PAC</option>
+                <option value="direct">DIRECT</option>
               </select>
 
-              <label data-type="http" data-i18n="port"></label>
-              <input data-type="http" type="text" data-id="port" placeholder="3128">
+              <label data-i18n="port"></label>
+              <input type="text" data-id="port" placeholder="3128">
 
               <label data-i18n="country"></label>
               <select data-id="cc">
-                <option value="" disabled selected></option>
+                <option value="" disabled selected>&nbsp;</option>
                 <option value="AF">🇦🇫 Afghanistan</option>
                 <option value="AL">🇦🇱 Albania</option>
                 <option value="DZ">🇩🇿 Algeria</option>
@@ -402,16 +405,16 @@
                 <option value="ZW">🇿🇼 Zimbabwe</option>
               </select>
 
-              <label data-type="http" data-i18n="username"></label>
-              <input type="text" data-type="http" data-id="username" spellcheck="false" placeholder="username">
+              <label data-i18n="username"></label>
+              <input type="text" data-id="username" spellcheck="false" placeholder="username">
 
               <label data-i18n="city"></label>
               <input type="text" data-id="city" spellcheck="false" placeholder="city">
 
-              <label data-type="http" data-i18n="password"></label>
-              <span data-type="http" class="password">
+              <label data-i18n="password"></label>
+              <span class="password">
                 <input type="password" data-id="password" spellcheck="false" placeholder="****">
-                <button type="button" class="plain" data-i18n="togglePW|title">👁</button>
+                <button type="button" class="plain" data-i18n="togglePassword|title">👁</button>
               </span>
 
               <label data-i18n="color"></label>
@@ -425,19 +428,16 @@
               <input type="url" data-id="pac" data-type="pac" placeholder="PAC URL">
             </div>
 
-            <div class="patternBox">
-
-              <div class="patternRowHead">
-                <span data-i18n="quickAdd"></span>
-                <span>+ / -</span>
-                <span data-i18n="type"></span>
-                <span data-i18n="title"></span>
-                <span data-i18n="pattern"></span>
-                <button type="button" class="flat" data-i18n="add"></button>
-              </div>
-
-              <div class="patternRowBox"></div>
+            <div class="patternHead">
+              <span data-i18n="quickAdd"></span>
+              <span>+ / -</span>
+              <span data-i18n="type"></span>
+              <span data-i18n="title"></span>
+              <span data-i18n="pattern"></span>
+              <button type="button" class="flat" data-i18n="add"></button>
             </div>
+
+            <div class="patternBox"></div>
           </div>
         </details>
 
@@ -449,7 +449,7 @@
             <option data-type="regex" value="^https://.+">HTTPS</option>
             <option data-type="regex" value="^[^:]+://[^.]+/" data-i18n="plainHost"></option>
             <option data-type="regex" value="^[^:]+://10(\.\d+){3}/">10.*.*.*</option>
-            <!-- <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option> -->
+            <option data-type="regex" value="^[^:]+://127\.0\.0\.1/">127.0.0.1</option>
             <option data-type="regex" value="^[^:]+://172\.16(\.\d+){2}/">172.16.*.*</option>
             <option data-type="regex" value="^[^:]+://192\.168(\.\d+){2}/">192.168.*.*</option>
           </select>
@@ -477,7 +477,7 @@
       <fieldset>
 
         <details class="importAccount">
-          <summary data-i18n="foxyProxyAccount"></summary>
+          <summary data-i18n="importFoxyProxyAccount"></summary>
           <div class="content">
             <label data-i18n="username"></label>
             <input id="username" type="text" spellcheck="false" placeholder="username">
@@ -485,36 +485,35 @@
 
             <label data-i18n="password"></label>
             <input id="password" type="password" spellcheck="false" placeholder="*****">
-            <button type="button" class="plain" data-i18n="togglePW|title">👁</button>
-            <button type="button" class="flat" data-i18n="import"></button>
-          </div>
-
-        </details>
-
-        <details class="importList">
-          <summary data-i18n="proxyList"></summary>
-          <div class="content">
-            <textarea></textarea>
+            <button type="button" class="plain" data-i18n="togglePassword|title">👁</button>
             <button type="button" class="flat" data-i18n="import"></button>
           </div>
         </details>
 
-        <details class="importURL">
-          <summary data-i18n="fromURL"></summary>
+        <details class="importFromUrl">
+          <summary data-i18n="importFromURL"></summary>
           <div class="content">
             <input type="url" placeholder="https://example.com/settings.json">
             <button type="button" class="flat" data-i18n="import"></button>
           </div>
         </details>
 
-        <details class="importOlder">
-          <summary data-i18n="fromOlderVersions"></summary>
+        <details class="importProxyList">
+          <summary data-i18n="importProxyList"></summary>
+          <div class="content">
+            <textarea></textarea>
+            <button type="button" class="flat" data-i18n="import"></button>
+          </div>
+        </details>
+
+        <details class="importFromOlder">
+          <summary data-i18n="importFromOlderVersions"></summary>
           <div class="content">
             <label class="flat" data-i18n="import"><input type="file" accept=".json, .xml"></label>
           </div>
         </details>
 
-        <button type="submit" data-i18n="save"></button>
+        <button type="submit" data-i18n="saveOptions"></button>
       </fieldset>
     </section>
     <!-- /import -->
@@ -526,18 +525,17 @@
         <input type="url" placeholder="URL to test ...">
 
         <label data-i18n="pattern"></label>
-        <div>
-          <select name="type">
-            <option value="wildcard" data-i18n="wildcard"></option>
-            <option value="regex">Reg Exp</option>
-          </select>
-          <input type="text" placeholder="*://*.example.com/">
-        </div>
+        <select name="type">
+          <option value="wildcard" data-i18n="wildcard"></option>
+          <option value="regex">Reg Exp</option>
+        </select>
+        <input type="text" placeholder="*://*.example.com/">
 
         <label data-i18n="result"></label>
         <span class="testResult"></span>
 
         <button type="button" class="flat" data-i18n="test"></button>
+        <button type="button" class="flat" data-i18n="back">◁ </button>
       </fieldset>
     </section>
     <!-- /tester -->
@@ -549,7 +547,7 @@
         <thead>
           <tr>
             <th data-i18n="documentURL"></th>
-            <th>URL</th>
+            <th data-i18n="url"></th>
             <th data-i18n="method"></th>
             <th data-i18n="proxy"></th>
             <th data-i18n="time"></th>

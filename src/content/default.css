@@ -44,24 +44,24 @@
 
 /* ----- General ----- */
 body {
-color: var(--color);
-background-color: var(--body-bg);
-padding: 0;
-margin: 0;
-font-family: sans-serif;
+  color: var(--color);
+  background-color: var(--body-bg);
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
 }
 
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 article {
-padding: 0;
-margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 section {
-padding: 0;
+  padding: 0;
 }
 
 select,
@@ -70,36 +70,37 @@ input[type="number"],
 input[type="text"],
 input[type="password"],
 input[type="url"] {
-width: 100%;
-color: inherit;
-background-color: var(--alt-bg);
-border: 1px solid var(--border);
-border-radius: 0.3em;
+  width: 100%;
+  color: inherit;
+  background-color: var(--alt-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.3em;
 }
 
 a {
-color: var(--link);
-text-decoration: none;
+  color: var(--link);
+  text-decoration: none;
 }
 
 ::placeholder {
-opacity: 0.5;
-color: inherit;
-font-style: italic;
+  opacity: 0.5;
+  color: inherit;
+  font-style: italic;
 }
 
 button {
-background: var(--btn-bg);
-color: inherit;
-cursor: pointer;
-text-align: center;
-transition: 0.5s;
+  background: var(--btn-bg);
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.5s;
 }
 
 button:hover {
-background: var(--btn-hover);
+  background: var(--btn-hover);
 }
 
-.invalid, input:invalid {
-box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
+.invalid,
+input:invalid {
+  box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
 }

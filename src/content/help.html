@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="iframe.css">
+  <link href="iframe.css" rel="stylesheet">
   <title>Help</title>
 </head>
 
@@ -14,6 +14,7 @@
     <a href="#how-to">How to Use</a>
     <a href="#options">Options</a>
     <a href="#proxy">Proxy</a>
+    <a href="#import">Import</a>
     <a href="#tester">Tester</a>
     <a href="#log">Log</a>
     <a href="#support">Support</a>
@@ -22,50 +23,58 @@
   <article>
     <section>
 
-    <h2 id="preamble">Preamble</h2>
+    <h1 id="preamble">Preamble</h1>
 
     <p>Since 2006, FoxyProxy has been the trusted source in VPN and proxy services. Used by millions daily! If you are upgrading from a legacy version, and your proxy settings are missing, please import them.</p>
 
-    <h4>FoxyProxy v8.0+</h4>
-    <p>FoxyProxy has been re-written to comply with manifest v3 requirements. There are some updates to the interface and functions. Please take time to have a quick look over this Help document.</p>
+    <dl>
+      <dt>FoxyProxy v8.0</dt>
+      <dd>FoxyProxy has been re-written to comply with manifest v3 requirements. There are some updates to the interface and functions. Please take time to have a quick look over this Help document.</dd>
 
-    <h4>FoxyProxy Basic</h4>
-    <p>FoxyProxy Basic is a simple on/off proxy switcher without ability to use patterns. FoxyProxy v8.0+ is a unified extension. If there are no patterns, it behaves like FoxyProxy Basic. Users of FoxyProxy Basic are advised to export their settings and migrate to FoxyProxy.</p>
+      <dt>FoxyProxy Basic</h4>
+      <dd>FoxyProxy Basic is a simple on/off proxy switcher without ability to use patterns. FoxyProxy v8.0+ is a unified extension. If there are no patterns, it behaves like FoxyProxy Basic. Users of FoxyProxy Basic are encouraged to export their settings and migrate to FoxyProxy.</dd>
+    </dl>
 
 
     <h3>Non-Destructive Editing</h3>
     <p>Editing & importing is non-destructive. Click <b>Save</b> to apply the changes.</p>
 
-    <h3>Firefox</h3>
 
-    <h4>Proxy Authentication</h4>
+    <h3>Proxy Authentication</h3>
     <ul>
-      <li>Authentication for http/https/socks</li>
+      <li>Authentication for http/https & socks (firefox only)</li>
       <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
 
     <!-- Error: proxy.settings requires private browsing permission. -->
-    <h4>Private Browsing Permission</h4>
+    <h3>Private Browsing Permission</h3>
     <blockquote>
       <p>Note: The ability to change proxy settings requires private window access because proxy settings affect both private and non-private windows. Therefore, if an extension has not been granted private window permission, calls to <code>proxy.settings.set()</code> will throw an exception.</p>
       <cite><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings" target="_blank">proxy.settings</a></cite>
     </blockquote>
 
-    <p>ⓘ <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p>
+    <p>See also: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p>
+
+    <h1 id="how-to">How to Use</h1>
+
+    <h4>Light/Dark Theme</h4>
+    <p>Default scheme is based on <a href="https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme" target="_blank">prefers-color-scheme</a>.</p>
 
 
-    <h3>Chrome/Chromium</h3>
 
-    <h4>Proxy Authentication</h4>
+    <h2 id="toolbar-icon">Toolbar Icon</h2>
+
+
+
+    <h4>Toolbar Icon</h4>
     <ul>
-      <li>Authentication for http/https <i>(Chrome 108+)</i></li>
+      <li>Icons badge indicates selection</li>
+      <li>Mouse-over title displays selection details</li>
+       <li class="note">Grey icon indicates that the network settings are not controlled by the extension. In that case, after finding the reason (often another extension which needs to be disabled), restart the browser or the extension.</li>
     </ul>
 
-    <h2 id="how-to">How to Use</h2>
 
-    <h3 id="toolbar-icon">Toolbar Icon</h3>
-
-    <h4>Proxy Option Selection</h4>
+    <h4>Toolbar Popup</h4>
 
     <dl>
       <dt>Proxy by Patterns</dt>
@@ -78,37 +87,29 @@
       <dt>Individual Proxy/PAC</dt>
       <dd>Network connections are passed through the selected Proxy or PAC</dd>
 
+      <dt>Add Host Pattern to ...</dt>
+      <dd>Quickly create and add a pattern based on the current page URL to the selected proxy</dd>
+      <dd>Only top 10 proxies are listed</dd>
+
       <dt>Options</dt>
       <dd>Open the Options page</dd>
 
+      <dt>Exclude Host</dt>
+      <dd>Adds host (with its protocol) to the Global Exclude</dd>
+
       <dt>IP</dt>
-      <dd>Get IP from FoxyProxy Servers</dd>
+      <dd>Get IP from FoxyProxy servers</dd>
 
       <dt>Location</dt>
       <dd>Open FoxyProxy site in a new tab to show location as well as WebRTC leak</dd>
     </dl>
 
-    <h3>Page Context Menu <span>(not available on Android)</span></h3>
-
-    <dl>
-      <dt>Add Host Pattern to ...</dt>
-      <dd>Quickly create and add a pattern based on the current page URL to the selected proxy</dd>
-      <dd>Only top 10 proxies are listed</dd>
-    </dl>
 
 
 
-    <h3>Light/Dark Theme</h3>
-    <p>Default scheme is based on <a href="https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme" target="_blank">prefers-color-scheme</a>.</p>
+    <h1 id="options">Options</h1>
 
-
-
-
-
-
-    <h2 id="options">Options</h2>
-
-    <h3 id="enable-storage-sync">Enable Storage Sync</h3>
+    <h2 id="enable-storage-sync">Enable Storage Sync</h2>
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
       Sync will be turned off automatically to avoid repeated errors.</p>
 
@@ -133,85 +134,44 @@
       <li>Maximum number of items 512</li>
     </ul>
 
-
-    <h3 id="global-exclude">Global Exclude</h3>
-    <p>Patterns entered here will never be proxied.</p>
-    <p>Pattern rules are the same as include/exclude <a href="#patterns">patterns</a>.</p>
-    <p>Use the drop down menu to add ready-made patterns.</p>
-    <p>Duplicates will be removed.</p>
-    <p>In Firefox you can also use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></p>
+    <p class="note">There is a discussion to increase the storage sync quota to 1MB (<a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a>).</p>
 
 
+    <h2>Proxy DNS <span>(SOCKS 5 & Firefox only)</span></h2>
+    <p>Option to pass DNS to the SOCKS proxy</p>
 
-    <h3 id="import-export">Settings Import/Export</h3>
-    <p>You can import/export the entire settings (for backup or share) from/to a local file on your computer.</p>
-    <p class="note">Import is non-destructive. Click <b>Save</b> to apply the changes.</p>
+    <h2 id="global-exclude">Global Exclude</h2>
+    <ul>
+      <li>Patterns entered here will never be proxied.</li>
+      <li>Pattern rules are the same as include/exclude <a href="#patterns">patterns</a>.</li>
+      <pli>Use the drop down menu to add ready-made patterns.</pli>
+      <li>Duplicates will be removed.</li>
+      <li>In Firefox you can also use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></li>
+    </ul>
 
 
-    <h3>Delete Browser Data</h3>
+
+
+    <h2>Delete Browser Data</h2>
     <p>Delete cookies, indexedDB storage, DOM local storage</p>
+
+    <h2>Limit WebRTC (or reset) <span>(requires "privacy" permission)</span></h2>
+    <p>Toggle WebRTC browser settings</p>
+    <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
 
     <h3>Restore Defaults</h3>
     <p>Restore all settings to their defaults</p>
 
-    <h3>Limit/reset WebRTC <span>(requires "privacy" permission)</span></h3>
-    <p>Toggle WebRTC browser settings</p>
-    <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
+    <h2 id="import-export">Preferences: Import/Export</h2>
+    <p>You can import/export Preferences (for backup or share) from/to a local file on your computer.</p>
+    <p class="note">Import is non-destructive. Click <b>Save</b> to apply the changes.</p>
 
-    <h3 id="import">Import</h3>
-      <p>Imported content will be added to existing proxies.</p>
-
-    <dl>
-      <dt>FoxyProxy Account</dt>
-      <dd>Import proxies from  <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
-      <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd>
-
-      <dt>Import from URL</dt>
-      <dd>Import preferences (valid JSON) from a remote URL</dd>
-
-
-      <dt>Proxy List</dt>
-      <dd>
-        <dl>
-          <dt>Simple</dt>
-          <dd>
-<pre>1.2.3.4:1080
-example.com:443
-example.com:3128:user:pass</pre>
-          </dd>
-
-
-          <dt>Extended</dt>
-          <dd>All applicable parameters can be passed as search parameters <i>(case-insensitive) (v8.0+)</i><br>
-            e.g. <i>active, title, color, type (http, https , socks4, socks5, pac), username, password, cc, city</i></dd>
-          <dd>
-<pre>http://1.2.3.4:1080
-https://example.com:443
-http://user:pass@1.2.3.4?color=663300
-socks5://12.999.51.81?title=China&cc=CN&city=Beijing
-socks5://12.999.51.81:331?patternExcludesIntranet=false
-https://192.168.100.9:5192?patternIncludesAll=false
-https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
-
-https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
-http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
-          </dd>
-        </dl>
-      </dd>
-      <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd>
-
-
-      <dt>From earlier versions</dt>
-      <dd>Import v6-7 settings JSON (e.g. <i>FoxyProxy_YYYY-MM-DD.json</i>)</dd>
-      <dd>Old <i>foxyproxy.xml</i> format can be imported in FoxyProxy v7.5 and then exported as JSON</dd>
-    </dl>
-
-
-    <h3 id="save">Save</h3>
+    <h2 id="save">Save</h2>
     <p>Please note that changes will not take effect until they are saved.</p>
 
 
-    <h2 id="proxy">Proxy</h2>
+
+    <h1 id="proxy">Proxy</h1>
     <p>Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.</p>
       <ul>
         <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/en-US/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li>
@@ -222,20 +182,19 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
     <!-- <p>Some options are not available in Chrome, but has been left for when sharing preferences between Chrome & Firefox.</p> -->
 
+    <dl>
+      <dt>Add</dt>
+      <dd>Add a new proxy entry</dd>
 
+      <dt>Filter Proxies</dt>
+      <dd>Proxy <i>Title</i> & <i>Hostname</i> are searched and display filtered based on the input value (case-insensitive)</dd>
 
-    <h3>Add</h3>
-    <p>Add a new proxy entry</p>
-
-    <h3>Filter Proxies</h3>
-    <p>Proxy <i>Title</i> & <i>Hostname</i> are searched and display filtered based on the input value (case-insensitive)</p>
-
-    <h3>Get Location</h3>
-    <p>Get domain/IP ger-location from FoxyProxy Servers.</p>
-
+      <dt>Get Location <span>(optional)</span></dt>
+      <dd>Get location details for proxies from FoxyProxy Servers</dd>
+  </dl>
 
     <h3>Individual Proxy</h3>
-    <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, will result in a mismatch and FoxyProxy will be set to Disable.</p>
+    <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, will result in a mismatch until it is set again.</p>
 
     <dl>
       <dt>Toggle Button</dt>
@@ -268,15 +227,11 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dd>Required for HTTP/HTTPS/SOCKS/SOCKS4 type</dd>
 
       <dt>Username & Password</dt>
-      <dd>To be used for HTTP/HTTPS/SOCKS type</dd>
+      <dd>To be used for HTTP/HTTPS/SOCKS types</dd>
       <dd>If not set, authentication will be handled by the browser</dd>
 
       <dt>PAC URL</dt>
       <dd>Required for PAC type</dd>
-
-      <dt>Proxy DNS (SOCKS 5 only) <span>(Firefox only)</span></dt>
-      <dd>Option to pass DNS to the SOCKS proxy</dd>
-
 
     </dl>
 
@@ -310,7 +265,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
           <dt>Regular Expression</dt>
           <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
-          <dd>There is no need to double escape special characters (already happens when saved to storage).</dd>
+          <dd>There is no need to double escape special characters (already happens when saved to storage)</dd>
         </dl>
       </dd>
 
@@ -379,14 +334,64 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <ul>
       <li>Go to Proxy tab ➤ Add a new proxy</li>
       <li>Fill the details according to own preference e.g. Title: TOR</li>
-      <li>Type: SOCKS</li>
-      <li>TOR ➤ Hostname: 127.0.0.1 — Port: 9050</li>
-      <li>Psiphon ➤ Hostname: 127.0.0.1 — Port: 60351</li>
+      <li>TOR ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 9050</li>
+      <li>Psiphon ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 60351</li>
+      <li>Privoxy ➤ Type: HTTPS, Hostname: 127.0.0.1, Port: 8118</li>
       <li>Add patterns to limit to some URLs only</li>
     </ul>
 
 
-    <h2 id="tester">Tester</h2>
+
+    <h2 id="import">Import</h2>
+      <p>Imported content will be added to existing proxies.</p>
+
+    <dl>
+      <dt>FoxyProxy Account</dt>
+      <dd>Import proxies from  <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
+      <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd>
+
+      <dt>Import from URL</dt>
+      <dd>Import preferences (valid JSON) from a remote URL</dd>
+
+
+      <dt>Proxy List</dt>
+      <dd>
+        <dl>
+          <dt>Simple</dt>
+          <dd>
+<pre>1.2.3.4:1080
+example.com:443
+example.com:3128:user:pass</pre>
+          </dd>
+
+
+          <dt>Extended</dt>
+          <dd>All applicable parameters can be passed as search parameters <i>(case-insensitive) (v8.0+)</i><br>
+            e.g. <i>active, title, color, type (http, https , socks4, socks5, pac), username, password, cc, city</i></dd>
+          <dd>
+<pre>http://1.2.3.4:1080
+https://example.com:443
+http://user:pass@1.2.3.4?color=663300
+socks5://100.10.11.12:1080?title=China&cc=CN&city=Beijing
+https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
+
+https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
+http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
+          </dd>
+        </dl>
+      </dd>
+      <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd>
+
+
+      <dt>From earlier versions</dt>
+      <dd>Import v6-7 settings JSON (e.g. <i>FoxyProxy_YYYY-MM-DD.json</i>)</dd>
+      <dd>Old <i>foxyproxy.xml</i> format can be imported in FoxyProxy v7.5 and then exported as JSON</dd>
+    </dl>
+
+
+
+
+    <h1 id="tester">Tester</h1>
     <ol>
       <li>Enter URL to test</li>
       <li>Select the pattern type</li>
@@ -395,11 +400,11 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Result will be match ✅ or fail ❌</li>
     </ol>
 
-    <h2 id="log">Log <span>(Firefox only)</span></h2>
+    <h1 id="log">Log <span>(Firefox only)</span></h1>
     <p>Live Log displays the last 100 proxied web requests in reversed order (new one on top). It will continue to display while the Options page is open and will stop logging as soon as the page is closed. Log data is not stored.</p>
     <p>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> webRequest API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a>.</p>
 
-    <h2 id="support">Support</h2>
+    <h1 id="support">Support</h1>
     <ul>
       <li>GitHub Community <a href="https://github.com/foxyproxy/browser-extension" target="_blank">Support</a></li>
       <li><a href="https://github.com/foxyproxy/browser-extension" target="_blank">Source Code</a></li>

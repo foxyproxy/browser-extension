@@ -1,7 +1,7 @@
 import {App} from './app.js';
-import {Proxy} from './proxy.js';
 import {Migrate} from './migrate.js';
 import {Authentication} from './authentication.js';
+import {Proxy} from './proxy.js';
 
 // ---------- Process Preference ---------------------------
 class ProcessPref {
@@ -65,10 +65,6 @@ class ProcessPref {
     if (!Object.values(changes)[0]?.hasOwnProperty('newValue')) { return; }
 
     switch (true) {
-      case area === 'local':
-        changes.data && Authentication.init(changes.data.newValue); // update authentication data
-        break;
-
       case area === 'sync':
         this.syncIn(changes);
         break;
@@ -89,18 +85,28 @@ class ProcessPref {
       changes.hasOwnProperty(item) && (obj[item] = changes[item].newValue);
     });
 
-    Object.keys(obj)[0] && browser.storage.local.set({obj});
+    Object.keys(obj)[0] && browser.storage.local.set({obj}); // update local storage
   }
 
-  static async getTabURL() {
-    const tab = await browser.tabs.query({currentWindow: true, active: true});
-    const url = new URL(tab[0].url);
-    if (!['http:', 'https:', 'file:'].includes(url.protocol)) { return; } // acceptable URLs
+  static onMessage(message) {
+    const {id, pref, host} = message;
+    switch (id) {
+      case 'setProxy':
+        Authentication.init(pref.data);                     // update authentication data
+        Proxy.set(pref);
+        break;
 
-    return url;
+      case 'addHost':
+        this.addHost(pref, host);
+        break;
+
+      case 'excludeHost':
+        this.excludeHost(pref);
+        break;
+    }
   }
 
-  static async addHost(pref, host) {console.log(host);
+  static async addHost(pref, host) {
     const url = await this.getTabURL();
     if (!url) { return; }
 
@@ -134,30 +140,12 @@ class ProcessPref {
     Proxy.set(pref);                                        // update Proxy
   }
 
-  static onMessage(message) {
-    const {id, pref, host} = message;
-    switch (id) {
-      case 'setProxy':
-        Proxy.set(pref);
-        break;
+  static async getTabURL() {
+    const tab = await browser.tabs.query({currentWindow: true, active: true});
+    const url = new URL(tab[0].url);
+    if (!['http:', 'https:', 'file:'].includes(url.protocol)) { return; } // acceptable URLs
 
-      case 'addHost':
-        this.addHost(pref, host);
-        break;
-
-      case 'excludeHost':
-        this.excludeHost(pref);
-        break;
-        /*
-      case 'ip':
-        // Alternative bilestoad.com (also belonging to FoxyProxy) is used since getfoxyproxy.org is blocked in some locations
-        // fetch('https://bilestoad.com/geoip/?raw=1')
-        fetch('https://getfoxyproxy.org/geoip/?raw=1')
-        .then(res => res.text())
-        .then(text => App.notify(text))
-        .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
-        break; */
-    }
+    return url;
   }
 }
 // ---------- /Process Preference --------------------------

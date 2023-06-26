@@ -1,4 +1,6 @@
 @import 'default.css';
+@import 'progress-bar.css';
+@import 'spinner.css';
 
 /* ----- General ----- */
 :root {
@@ -234,30 +236,6 @@ button[type="submit"]:active {
 }
 /* ----- /Submit Button ----- */
 
-/* ----- Progress Bar ----- */
-.progressBar {
-  opacity: 0;
-  height: 2px;
-  width: 0;
-  background: #3bb3e0 linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
-  background-size: 900% 900%;
-  transition: opacity 1s ease-in-out, width 0s ease-in-out 1s;
-  animation: rainbow 3s ease infinite;
-}
-
-.progressBar.on {
-  width: 100%;
-  opacity: 1;
-  transition: opacity 1s ease-in-out, width 2s ease-in-out;
-}
-
-@keyframes rainbow {
-    0%  { background-position: 0% 100%; }
-   50%  { background-position: 100% 200%; }
-  100%  { background-position: 0% 100%; }
-}
-/* ----- /Progress Bar ----- */
-
 /* ----- Toggle Switch ----- */
 .toggle {
   -webkit-appearance: none;
@@ -269,10 +247,6 @@ button[type="submit"]:active {
   border-radius: 50px;
   background-color: #ccc;
   transition: background-color 0.5s;
-  /* display: inline-block;
-  overflow: hidden;
-  outline: none;
-  border: none; */
 }
 
 .toggle:before {
@@ -298,56 +272,6 @@ button[type="submit"]:active {
   left: 16px;
 }
 /* ----- /Toggle Switch ----- */
-
-/* ----- Spinner ----- */
-div.spinner {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background-color: #0003;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  z-index: 1;
-  transition: all 0.5s ease-in-out;
-}
-
-.spinner::before {
-  content: '';
-  width: 8em;
-  height: 8em;
-  border: 1em dotted #ddd;
-  border-color: #ddd4 #ddd8 #ddd var(--btn-bg);
-  border-radius: 50%;
-  animation: spin 3s linear infinite;
-  margin-left: -2em;
-}
-
-.spinner::after {
-  content: '';
-  background-image: url('../image/icon.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 6em;
-  height: 6em;
-  margin-left: -8em;
-  opacity: 0.6;
-}
-
-.spinner.on {
-  display: flex;
-  opacity: 1;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-/* ----- /Spinner ----- */
 
 /* ----- Button ----- */
 button.plain {
@@ -405,7 +329,6 @@ button.random {
 }
 /* ----- /Button ----- */
 
-
 /* ----- Options ----- */
 /*
 input[type="text"],
@@ -447,11 +370,16 @@ input[type="color"] {
   text-align: right;
 }
 
-.options div.button {
+.options div.buttons {
   display: grid;
   grid-template-columns: auto auto 1fr auto;
   column-gap: 0.5em;
   margin-top: 0.5em;
+}
+
+.options button.webRTC.reset span:nth-of-type(1),
+.options button.webRTC:not(.reset) span:nth-of-type(2) {
+  display: none;
 }
 /* ----- /Options ----- */
 
@@ -483,6 +411,12 @@ details.proxy {
 details.proxy > summary {
   border-radius: 5px;
   padding: 0.5em;
+  list-style: none;
+  border-left: 1.5em solid var(--btn-bg);
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  column-gap: 0.2em;
+  align-items: center;
 }
 
 details.proxy > summary:hover,
@@ -490,22 +424,12 @@ details.proxy[open] > summary {
   background-color: var(--hover);
 }
 
-details.proxy > summary {
-  font-size: 1.2em;
-  list-style: none;
-  border-left: 2rem solid var(--btn-bg);
-  display: grid;
-  grid-template-columns: auto 1fr auto auto auto auto;
-  column-gap: 0.2em;
-  align-items: center;
-}
-
 details.proxy.off {
   display: none;
 }
 
 details.proxy > summary span:first-of-type {
-  margin-right: 0.5em;
+  margin-right: 0.3em;
 }
 
 details.proxy > summary span:nth-of-type(2):empty::before {
@@ -513,54 +437,13 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   font-style: italic;
   opacity: 0.2;
 }
-/*
-details.proxy > div {
-  padding-top: 0.5em;
-}
-*/
-details.proxyPattern {
-  /* padding: 0.5em 0.5em 0; */
-  margin-bottom: 0.5em;
-  /* opacity: 1;
-  transition: opacity 0.3s ease-in-out; */
-}
-
-details.proxyPattern[data-type="pac"] {
-  visibility: hidden;
-  opacity: 0;
-}
-
-details.proxyPattern summary {
-  list-style: none;
-  display: inline-block;
-}
-
-details.proxyPattern summary span:nth-of-type(1),
-details.proxyPattern[open] summary span:nth-of-type(2) {
-  display: none;
-}
-
-details.proxyPattern[open] summary span:nth-of-type(1),
-details.proxyPattern summary span:nth-of-type(2) {
-  display: unset;
-}
-
-details.proxyPattern ~ .patternBox,
-details.proxyPattern[open] ~ .proxyBox {
-  display: none;
-}
-
-details.proxyPattern[open] ~ .patternBox ,
-details.proxyPattern ~ .proxyBox{
-  display: grid;
-}
 
 .proxyBox {
-  height: 12em;
+  display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr;
-  grid-auto-rows: min-content;
-  row-gap: 0.5em;
-  column-gap: 1em;
+  /* grid-auto-rows: min-content; */
+  gap: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 .proxyBox button.country {
@@ -570,62 +453,46 @@ details.proxyPattern ~ .proxyBox{
   padding: 0;
 }
 
-.proxyBox span.password {
+.password {
   display: grid;
   grid-template-columns: 1fr 1em;
   column-gap: 0.5em;
 }
-
-/* ----- Hide/Show ----- */
-.proxyBox > [data-type] {
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.proxyBox[data-type^="http"] > [data-type="pac"],
-.proxyBox[data-type^="socks"] > [data-type="pac"],
-.proxyBox[data-type="pac"] > [data-type="http"] {
-  visibility: hidden;
-  opacity: 0;
-}
-
 /* ----- Pattern ----- */
 .patternBox {
-  height: 12em;
-  grid-template-rows: auto 1fr;
-  overflow: hidden;
+  max-height: 10em;
+  overflow-y: auto;
+  padding: 0 0.5em;
 }
 
-.patternRowHead {
+.patternHead {
   display: grid;
   grid-template-columns: 6em 5em 5em 1fr 2fr 4em;
   column-gap: 0.2em;
+  align-items: center;
+  justify-items: center;
   background-color: var(--bg);
   padding: 0.2em 0.5em;
 }
 
-.patternRowHead button {
+.patternHead button {
   padding: 0.2em 1em;
   min-width: unset;
-}
-
-.patternRowBox {
-  overflow-y: auto;
-  /* max-height: 10em; */
-  padding: 0 0.5em;
 }
 
 .patternRow {
   display: grid;
   grid-template-columns: 6em 5em 5em 1fr 2fr 2em 1em 1em;
   column-gap: 0.2em;
+  align-items: center;
   margin-top: 0.3em;
 }
-/* ----- /Proxy ----- */
+/* ----- /Pattern ----- */
 
 /* ----- Import ----- */
 .import textarea {
   height: 10em;
+  resize: vertical;
 }
 
 .import details {
@@ -668,23 +535,30 @@ details.proxyPattern ~ .proxyBox{
 .tester fieldset,
 .tester fieldset div {
   display: grid;
-  grid-template-columns: 10em 1fr;
-  row-gap: 0.8em;
-  column-gap: 0.5em;
+  grid-template-columns: 10em 10em 1fr;
+  gap: 0.8em 0.5em;
 }
 
 .tester input {
   font-size: 1em;
 }
 
-.tester .testResult {
-  min-height: 4em;
+.tester input[type="url"] {
+  grid-column: span 2;
 }
 
-.tester button.flat {
-  justify-self: center;
-  grid-column-start: 1;
-  grid-column-end: 3;
+.tester .testResult {
+  min-height: 4em;
+  grid-column: span 2;
+}
+
+.tester button:nth-of-type(1) {
+  justify-self: start;
+}
+
+.tester button:nth-of-type(2) {
+  justify-self: end;
+  grid-column: span 2;
 }
 /* ----- /Tester ----- */
 

@@ -1,96 +1,125 @@
 import {App} from './app.js';
-import {Location} from './location.js';
 import {Pattern} from './pattern.js';
 import {OnRequest} from './on-request.js';
+import {Action} from './action.js';
 
 export class Proxy {
 
+  static async getSettings() {
+    const conf = await browser.proxy.settings.get({});
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
+    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
+    // SVG is not supported by Chrome
+
+    // check if proxy.settings is controlled_by_this_extension
+    if (conf.levelOfControl !== 'controlled_by_this_extension') {
+      const path = App.firefox ? '/image/icon-off.svg' : '/image/icon-off.png;'
+      browser.browserAction.setIcon({path});
+    }
+
+    return conf;
+  }
+
   static set(pref) {
-    const config = {};
-    switch (pref.mode) {
-      case 'disable':
+    // --- check mode
+    switch (true) {
+      // no proxy, set to disable
+      case !pref.data[0]:
+        pref.mode = 'disable';
         break;
 
-      case 'pattern':
-        pref.data[0] && (config.pacString = this.getPacString(pref));
+      // no include pattern, set proxy to the first entry
+      case pref.mode === 'pattern' && !pref.data.some(i => i.include[0] || i.exclude[0]):
+        const pxy = pref.data[0]
+        pref.mode = pxy.type === 'pac' ? pxy.pac : `${i.hostname}:${i.port}`;
+        break;
+    }
+
+    App.firefox ? this.#setFirefox(pref) : this.#setChrome(pref);
+    Action.set(pref);
+  }
+
+  static async #setFirefox(pref) {
+    // retain settings as Network setting is partially customisable
+    const conf = await this.getSettings();
+    const value = conf.value;
+    switch (true) {
+      case pref.mode === 'disable':
+        value.proxyType = 'system';
+        browser.proxy.settings.set({value});
+        OnRequest.mode = pref.mode;
         break;
 
+      // Automatic proxy configuration URL
+      case pref.mode.includes('://'):
+        value.proxyType = 'autoConfig';
+        value.autoConfigUrl = mode;
+        browser.proxy.settings.set({value});
+        OnRequest.mode = pref.mode;
+        break;
+
+      // pattern or single proxy
       default:
-        const proxy = this.findProxy(pref);
-        if (proxy) {
-          config.proxy = proxy;
-          proxy.pac || (config.pacString = this.getPacString(pref, proxy)); // pac URL or single proxy
-        }
+        value.proxyType = 'system';
+        browser.proxy.settings.set({value});
+        OnRequest.init(pref);
+    }
+  }
+
+  static #setChrome(pref) {
+    // check if proxy.settings is controlled_by_this_extension
+    this.getSettings();
+
+    // https://developer.chrome.com/docs/extensions/reference/types/
+    // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
+    const config = {value: {}, scope: 'regular'};
+    switch (true) {
+      case pref.mode === 'disable':
+        config.value.mode = 'system';
+        break;
+
+      // Automatic proxy configuration URL
+      case pref.mode.includes('://'):
+        config.value.mode = 'pac_script';
+        config.value.pacScript = {mandatory: true};
+        config.value.pacScript.url = pref.mode;
+        break;
+
+      // pattern or single proxy
+      default:
+        config.value.mode = 'pac_script';
+        config.value.pacScript = {mandatory: true};
+        config.value.pacScript.data = this.#getPacString(pref);
     }
 
-    App.firefox && (OnRequest.mode = pref.mode);            // Firefox only
-    this.setProxySettings(pref, config);
+    browser.proxy.settings.set(config);
   }
 
-  static findProxy(pref) {
-    const pac = pref.mode.includes('://');                  // type pac
-    return pref.data.find(item => item.active && pref.mode === (pac ? item.pac :`${item.hostname}:${item.port}`)); // save as a.b.c:443
-  }
-
-  static getProxyString(proxy) {
-    let {type, hostname, port} = proxy;
-    switch (type) {
-      case 'http': type = 'PROXY'; break;                   // chrome PAC doesn't support HTTP
-      // case 'socks': type = 'SOCKS5'; break;                 // convert to SOCKS5 as SOCKS in PAC means SOCKS4
-      default: type = type.toUpperCase();
-    }
-    return `${type} ${hostname}:${port}`;
-  }
-
-  static getPacString(pref, proxy) {
+  static #getPacString(pref) {
+    // mode: pattern or single proxy
     const globalExclude = [
       ...pref.globalExcludeWildcard.split(/\n+/).map(i => Pattern.get(i, 'wildcard')),
       ...pref.globalExcludeRegex.split(/\n+/)
     ].filter(Boolean);
 
-    if (App.firefox) {
-      OnRequest.globalExclude = globalExclude;
-      OnRequest.proxy = proxy;
-      OnRequest.proxyDNS = pref.proxyDNS;
-      // --- proxy by pattern
-      if (!proxy) {
-        OnRequest.data = pref.data.filter(i => i.active && i.hostname && (i.include[0] || i.exclude[0])).map(item => {
-          return {
-            type: item.type,
-            hostname: item.hostname,
-            port: item.port,
-            username: item.username,
-            password: item.password,
-            include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
-            exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
-          }
-        });
-      }
-      console.log(OnRequest);
-      return;
-    }
+    // filter data
+    let data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
 
     // --- single proxy
-    if (proxy) {
+    if (pref.mode !== 'pattern') {
+      const proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`);
       const pacString =
 `function FindProxyForURL(url, host) {
   const globalExclude = ${JSON.stringify(globalExclude)};
-  return globalExclude.some(i => new RegExp(i, 'i').test(url)) ? 'DIRECT' : '${this.getProxyString(proxy)}';
+  return globalExclude.some(i => new RegExp(i, 'i').test(url)) ? 'DIRECT' : '${this.#getProxyString(proxy)}';
 }`;
       return pacString;
     }
-/*
-    {
-      "title": "example",
-      "pattern": "*://*.example.com",
-      "type": 'wildcard',
-      "active": true,
-    }
-*/
+
     // --- proxy by pattern
-    const data = pref.data.filter(i => i.active && i.hostname && (i.include[0] || i.exclude[0])).map(item => {
+    data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
       return {
-        str: this.getProxyString(item),
+        str: this.#getProxyString(item),
         include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
       }
@@ -112,71 +141,23 @@ export class Proxy {
     return pacString;
   }
 
-  static async setProxySettings(pref, {proxy, pacString}) {
-    // https://developer.chrome.com/docs/extensions/reference/types/
-    // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
-    // Firefox Only: retain settings as Network setting is partially customisable
-    const conf = App.firefox && await browser.proxy.settings.get({});
-    const config = App.firefox ? {value: conf.value} : {value: {}, scope: 'regular'};
+  static #getProxyString(proxy) {
+    let {type, hostname, port} = proxy;
+    switch (type) {
+      case 'direct':
+        return 'DIRECT';
 
-    switch (true) {
-      case App.chrome && !proxy && !pacString:              // disable
-        config.value.mode = 'system';
+      case 'http':
+        type = 'PROXY';                                     // chrome PAC doesn't support HTTP
         break;
 
-      case App.firefox && !proxy?.pac:                      // disable
-        config.value.proxyType = 'system';
-        break;
+      // case 'socks':
+      //   type = 'SOCKS5';                                    // convert to SOCKS5 as SOCKS in PAC means SOCKS4
+      //   break;
 
-      case App.chrome:
-        config.value.mode = 'pac_script';
-        config.value.pacScript = {mandatory: true};
-        proxy?.pac && (config.value.pacScript.url = proxy.pac);
-        pacString && (config.value.pacScript.data = pacString);
-        break;
-
-      case App.firefox:                                     // pac type
-        config.value.proxyType = 'autoConfig';
-        config.value.autoConfigUrl = proxy.pac;
-        config.value.proxyDNS = pref.proxyDNS;
-        break;
+      default:
+        type = type.toUpperCase();
     }
-
-    console.log(config);
-    browser.proxy.settings.set(config);
-    this.action(pref.mode, proxy);
-
-    // https://source.chromium.org/chromium/chromium/src/+/main:chrome/common/extensions/api/proxy.json
-    // chrome.proxy.settings not promise yet
-    // Uncaught TypeError: Error in invocation of types.ChromeSetting.get(object details, function callback): No matching signature.
-    // App.chrome ? chrome.proxy.settings.get({}, console.log) : browser.proxy.settings.get({}).then(console.log);
-  }
-
-  static action(mode, proxy) {
-    // default color (Chrome doesn't accept null)
-    // const color = proxy ? proxy.color : null;
-    const color = proxy ? proxy.color : '#ff9900';
-    const text = proxy ? proxy.title || mode : '';
-    const title = proxy ? this.getTitleLocation(proxy) : '';
-
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
-    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
-    // SVG is not supported by Chrome
-    const ext = App.chrome ? 'png' : 'svg';
-
-    // Firefox: If each one of imageData and path is one of undefined, null or empty object,
-    // the global icon will be reset to the manifest icon
-    // Chrome -> Error: Either the path or imageData property must be specified.
-    // const path = mode === 'disable' ? `/image/icon-off.${ext}` : '';
-    const path = mode === 'disable' ? `/image/icon-off.${ext}` : `/image/icon.${ext}`;
-
-    browser.action.setBadgeBackgroundColor({color});
-    browser.action.setBadgeText({text});
-    browser.action.setTitle({title});
-    browser.action.setIcon({path});
-  }
-
-  static getTitleLocation(item) {
-    return [App.getTitle(item), Location.get(item)].filter(Boolean).join('\n');
+    return `${type} ${hostname}:${port}`;
   }
 }
