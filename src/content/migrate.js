@@ -5,8 +5,9 @@ import {Color} from './color.js';
   Chrome v3 (current) encrypts username/passwords using CryptoJS 3.1.2
   CryptoJS library is used to migrate preferences to v8.0 but will be removed in future upgrades
   Original CryptoJS 3.1.2 aes.js  https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js
+  `export {CryptoJS};` was added to be able to import as ES6 module
 */
-import '../lib/aes.3.1.2.js';
+import {CryptoJS} from '../lib/aes.3.1.2.js';
 
 /*
   ----- Patterns -----
