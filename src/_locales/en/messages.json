@@ -82,7 +82,6 @@
   "export": { "message": "Export" },
   "fileParseError": { "message": "There was an error parsing the file" },
   "fileReadError": { "message": "There was an error with reading the file" },
-  "fileSizeError": { "message": "File size is larger than the $1kb allowed" },
   "fileTypeError": { "message": "Unsupported File Format" },
   "help": { "message": "Help" },
   "import": { "message": "Import" },
