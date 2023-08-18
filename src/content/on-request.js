@@ -20,9 +20,8 @@ export class OnRequest {
 
   static init(pref) {
     // --- used in mode pattern or single proxy
-    this.globalExclude = globalExclude;
     this.proxyDNS = pref.proxyDNS;
-    const globalExclude = [
+    this.globalExclude = [
       ...pref.globalExcludeWildcard.split(/\n+/).map(i => Pattern.get(i, 'wildcard')),
       ...pref.globalExcludeRegex.split(/\n+/)
     ].filter(Boolean);
