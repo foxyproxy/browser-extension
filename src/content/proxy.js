@@ -4,7 +4,8 @@ import {OnRequest} from './on-request.js';
 import {Action} from './action.js';
 
 export class Proxy {
-
+  // proxy.settings not supported on Android
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
   static async getSettings() {
     const conf = await browser.proxy.settings.get({});
     // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
@@ -43,11 +44,11 @@ export class Proxy {
     // retain settings as Network setting is partially customisable
     const conf = await this.getSettings();
     const value = conf.value;
+    OnRequest.mode = pref.mode;
     switch (true) {
       case pref.mode === 'disable':
         value.proxyType = 'system';
         browser.proxy.settings.set({value});
-        OnRequest.mode = pref.mode;
         break;
 
       // Automatic proxy configuration URL
@@ -55,7 +56,6 @@ export class Proxy {
         value.proxyType = 'autoConfig';
         value.autoConfigUrl = mode;
         browser.proxy.settings.set({value});
-        OnRequest.mode = pref.mode;
         break;
 
       // pattern or single proxy
