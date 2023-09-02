@@ -120,9 +120,7 @@ class Options {
     mode && (pref.mode = mode);
 
     // --- update PAC if Proxy by Pattern or Single Proxy
-    const isPattern = pref.mode === 'pattern';
-    const isProxy = /^[^:]+:\d+$/.test(pref.mode);
-    if ((globalExcludeChanged && (isPattern || isProxy)) || (dataChanged && isPattern)) {
+    if (!['disable', 'direct'].includes(pref.mode) && (globalExcludeChanged || dataChanged)) {
       browser.runtime.sendMessage({id: 'setProxy', pref});
     }
 
@@ -352,7 +350,6 @@ class Proxies {
   }
 
   static addProxy(item) {
-
     // --- make a blank proxy with all event listeners
     const pxy = this.proxyTemplate.cloneNode(true);
     const proxyBox = pxy.children[1].children[0];

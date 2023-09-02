@@ -1,4 +1,4 @@
-import {App} from './app.js';
+// import {App} from './app.js';
 import {Location} from './location.js';
 
 export class Action {
@@ -14,7 +14,7 @@ export class Action {
         text = '⛔';
         break;
 
-      case 'DIRECT':
+      case 'direct':
         title = 'DIRECT';
         text = '⮕';
         break;
@@ -33,7 +33,7 @@ export class Action {
           const host = [item.hostname, item.port].filter(Boolean).join(':');
           title = [host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
           // text = item.cc ? flag : item.hostname;
-          text = item.hostname;
+          text = item.title || item.hostname;
           color = item.color;
         }
     }
