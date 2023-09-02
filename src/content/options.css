@@ -97,7 +97,7 @@ input[type="number"] {
 
 .flat:hover {
   background: var(--btn-hover);
-  box-shadow: 0px 1px 5px var(--shadow);
+  /* box-shadow: 0px 1px 5px var(--shadow); */
 }
 
 fieldset {

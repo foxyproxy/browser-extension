@@ -17,7 +17,7 @@
 
   --link: #e70;
   --border: #ddd;
-  --shadow: #0004;
+  /* --shadow: #0004; */
   --dim: #777;
 }
 
@@ -37,7 +37,7 @@
 
     --link: #f90;
     --border: #777;
-    --shadow: #fff8;
+    /* --shadow: #fff8; */
     --dim: #ccc;
   }
 }

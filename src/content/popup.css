@@ -121,7 +121,7 @@ div.host {
 /* ----- Buttons ----- */
 div.buttons {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-auto-flow: column;
   column-gap: 0.1em;
 }
 
