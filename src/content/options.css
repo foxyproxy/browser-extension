@@ -640,7 +640,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 }
 
 .log td.unavailable::after {
-  content:'Not Available';
+  content:'Not Available On Chrome. Firefox Only.';
   color: var(--btn-bg);
   font-size: 6em;
 }

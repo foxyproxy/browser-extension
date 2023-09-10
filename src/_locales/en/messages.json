@@ -28,7 +28,7 @@
   "limitWebRTC": { "message": "Limit WebRTC" },
   "resetWebRTC": { "message": "Reset WebRTC" },
 
-  "proxy": { "message": "Proxy" },
+  "proxy": { "message": "Proxies" },
   "add": { "message": "Add" },
   "getLocation": { "message": "Get Location" },
 
@@ -66,7 +66,7 @@
   "importFromURL": { "message": "Import from URL" },
   "importFromOlderVersions": { "message": "Import from older versions" },
 
-  "tester": { "message": "Tester" },
+  "tester": { "message": "Pattern Tester" },
   "test": { "message": "Test" },
   "result": { "message": "Result" },
   "back": { "message": "Back" },

@@ -10,7 +10,7 @@
 <body>
 
   <nav>
-    <a href="#preamble">Preamble</a>
+    <a href="#intro">Introduction</a>
     <a href="#how-to">How to Use</a>
     <a href="#options">Options</a>
     <a href="#proxy">Proxy</a>
@@ -23,54 +23,39 @@
   <article>
     <section>
 
-    <h1 id="preamble">Preamble</h1>
+    <!-- Error: proxy.settings requires private browsing permission. -->
+    <h3>Private Browsing Permission Required for Firefox</h3>
+    <p class="note">Not required for Chrome, but Firefox requires FoxyProxy to have private browsing permission.
+    <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">How-to</a>.
+    </p>
 
-    <p>Since 2006, FoxyProxy has been the trusted source in VPN and proxy services. Used by millions daily! If you are upgrading from a legacy version, and your proxy settings are missing, please import them.</p>
 
-    <dl>
-      <dt>FoxyProxy v8.0</dt>
-      <dd>FoxyProxy has been re-written to comply with manifest v3 requirements. There are some updates to the interface and functions. Please take time to have a quick look over this Help document.</dd>
+    <h1 id="intro">Introduction</h1>
 
-      <dt>FoxyProxy Basic</h4>
-      <dd>FoxyProxy Basic is a simple on/off proxy switcher without ability to use patterns. FoxyProxy v8.0+ is a unified extension. If there are no patterns, it behaves like FoxyProxy Basic. Users of FoxyProxy Basic are encouraged to export their settings and migrate to FoxyProxy.</dd>
-    </dl>
+    <p>First released in 2006, FoxyProxy is the original proxy switching tool. Used by millions daily!
+      To support this free software, please <a href="https://www.paypal.me/ericjung2/5.99" target="_blank">donate</a> or <a href="https://getfoxyproxy.org/order/" target="_blank">buy VPN/Proxy Servers</a> in over 100 countries (including such remote places as <a href="https://wikipedia.org/wiki/Réunion" target="_blank">Reunion Island</a>).
+    </p>
 
+    <p>If you upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
     <h3>Non-Destructive Editing</h3>
-    <p>Editing & importing is non-destructive. Click <b>Save</b> to apply the changes.</p>
-
+    <p><b>Save</b> must be clicked to apply changes.</p>
 
     <h3>Proxy Authentication</h3>
     <ul>
-      <li>Authentication for http/https & socks (firefox only)</li>
+      <li>Authentication for http/https & SOCKS proxy servers (Note: SOCKS authentication does not work with Chrome; Firefox only)</li>
       <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
-
-    <!-- Error: proxy.settings requires private browsing permission. -->
-    <h3>Private Browsing Permission</h3>
-    <blockquote>
-      <p>Note: The ability to change proxy settings requires private window access because proxy settings affect both private and non-private windows. Therefore, if an extension has not been granted private window permission, calls to <code>proxy.settings.set()</code> will throw an exception.</p>
-      <cite><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings" target="_blank">proxy.settings</a></cite>
-    </blockquote>
-
-    <p>See also: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p>
 
     <h1 id="how-to">How to Use</h1>
 
     <h4>Light/Dark Theme</h4>
-    <p>Default scheme is based on <a href="https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme" target="_blank">prefers-color-scheme</a>.</p>
+    <p>FoxyProxy's theme is based on the browser's default light/dark theme.</p>
 
-
-
-    <h2 id="toolbar-icon">Toolbar Icon</h2>
-
-
-
-    <h4>Toolbar Icon</h4>
+    <h4 id="toolbar-icon">Toolbar Icon</h4>
     <ul>
       <li>Icons badge indicates selection</li>
       <li>Mouse-over title displays selection details</li>
-       <li class="note">Grey icon indicates that the network settings are not controlled by the extension. In that case, after finding the reason (often another extension which needs to be disabled), restart the browser or the extension.</li>
     </ul>
 
 
@@ -78,14 +63,14 @@
 
     <dl>
       <dt>Proxy by Patterns</dt>
-      <dd>Network connections are proxies based on patterns sets</dd>
-      <dd>If there are no patterns set for any proxies, connection goes through without proxy</dd>
+      <dd>Connections are proxied based on patterns</dd>
+      <dd>If there are no patterns that match the URL being loaded, connections are made without a proxy</dd>
 
       <dt>Disable</dt>
-      <dd>Network connections will be handled by the browser</dd>
+      <dd>FoxyProxy is completely bypassed; connections are handled by the browser</dd>
 
-      <dt>Individual Proxy/PAC</dt>
-      <dd>Network connections are passed through the selected Proxy or PAC</dd>
+      <dt>Individual Proxy</dt>
+      <dd>Connections are passed through the selected proxy (or PAC)</dd>
 
       <dt>Add Host Pattern to ...</dt>
       <dd>Quickly create and add a pattern based on the current page URL to the selected proxy</dd>
@@ -101,7 +86,7 @@
       <dd>Get IP from FoxyProxy servers</dd>
 
       <dt>Location</dt>
-      <dd>Open FoxyProxy site in a new tab to show location as well as WebRTC leak</dd>
+      <dd>Open FoxyProxy site in a new tab to show location as well as any WebRTC leaks</dd>
     </dl>
 
 
