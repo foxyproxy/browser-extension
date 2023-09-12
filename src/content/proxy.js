@@ -129,7 +129,7 @@ export class Proxy {
 `function FindProxyForURL(url, host) {
   const data = ${JSON.stringify(data)};
   const globalExclude = ${JSON.stringify(globalExclude)};
-  const match = array => array.some(i => new RegExp(i.regex, 'i').test(url));
+  const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
   if (match(globalExclude)) { return 'DIRECT'; }
   for (const proxy of data) {
