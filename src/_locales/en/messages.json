@@ -26,7 +26,7 @@
   "restoreDefaults": { "message": "Restore Defaults" },
   "restoreDefaultsConfirm": { "message": "Are you sure you want to restore all settings to Defaults?" },
   "limitWebRTC": { "message": "Limit WebRTC" },
-  "resetWebRTC": { "message": "Reset WebRTC" },
+  "limitWebRTCDescription": { "message": "Toggle WebRTC browser settings" },
 
   "proxy": { "message": "Proxies" },
   "add": { "message": "Add" },
