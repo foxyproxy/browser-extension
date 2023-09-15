@@ -76,6 +76,7 @@
   "url": { "message": "URL" },
   "method": { "message": "Method" },
   "timeStamp": { "message": "Time" },
+  "notAvailable": { "message": "Not Available On Chrome (Firefox Only)" },
 
   "about": { "message": "About" },
   "error": { "message": "There was an error with the operation" },
