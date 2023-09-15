@@ -9,7 +9,7 @@ class ShowLog {
 
     // no proxy info on chrome
     if (App.firefox) {
-      this.tbody.textContent = '';                          // remove not available notice
+      this.tbody.textContent = '';                          // remove "not available" notice
       browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
     }
   }
