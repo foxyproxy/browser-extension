@@ -620,19 +620,16 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   font-size: 0.7em;
 }
 
+/* Not Available On Chrome (Firefox Only)" */
 .log td.unavailable {
   height: 50vh;
   text-align: center;
   vertical-align: middle;
+  color: var(--btn-bg);
+  font-size: 3em;
 }
 
 .log td.unavailable::before {
   content: none !important;
-}
-
-.log td.unavailable::after {
-  content:'Not Available On Chrome. Firefox Only.';
-  color: var(--btn-bg);
-  font-size: 6em;
 }
 /* ----- /Log ----- */

@@ -8,18 +8,10 @@ class ShowLog {
     this.tbody = document.querySelector('.log tbody');
 
     // no proxy info on chrome
-    App.firefox ?
-      browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']}) :
-      this.notAvailable();
-  }
-
-  static notAvailable() {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = '5';
-    td.classList.add('unavailable');
-    tr.appendChild(td);
-    this.tbody.appendChild(tr);
+    if (App.firefox) {
+      this.tbody.textContent = '';                          // remove not available notice
+      browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
+    }
   }
 
   static process(e) {
