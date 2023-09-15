@@ -48,16 +48,14 @@
     <section class="options">
 
       <fieldset>
-        <div class="buttonTop">
-          <button type="button" class="flat" data-i18n="deleteBrowsingData"></button>
-          <button type="button" class="flat webRTC"><span data-i18n="limitWebRTC"></span><span data-i18n="resetWebRTC"></span></button>
-        </div>
-
         <label class="pointer" data-i18n="enableSync"><input type="checkbox" id="sync"></label>
         <p class="description" data-i18n="enableSyncDescription"></p>
 
         <label data-i18n="proxyDNS"><input type="checkbox" id="proxyDNS"></label>
         <p class="description" data-i18n="proxyDnsDescription"></p>
+
+        <label data-i18n="limitWebRTC"><input type="checkbox" id="limitWebRTC"></label>
+        <p class="description" data-i18n="limitWebRTCDescription"></p>
 
         <label data-i18n="globalExclude"></label>
         <p class="description" data-i18n="globalExcludeDescription"></p>
@@ -81,10 +79,11 @@
         </div>
 
 
-        <div class="buttons">
+        <div class="buttons" style="margin-top: 1em;">
           <label class="flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
           <button type="button" id="export" class="flat" data-i18n="export"></button>
           <span></span>
+          <button type="button" class="flat" data-i18n="deleteBrowsingData"></button>
           <button type="button" class="flat" data-i18n="restoreDefaults"></button>
         </div>
 

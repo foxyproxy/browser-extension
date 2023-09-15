@@ -279,8 +279,8 @@ class BrowsingData {
 class WebRTC {
 
   static {
-    this.webRTC = document.querySelector('.options button.webRTC');
-    this.webRTC.addEventListener('click', () => this.setWebRTC());
+    this.webRTC = document.querySelector('#limitWebRTC');
+    this.webRTC.addEventListener('change', () => this.setWebRTC());
     this.init();
   }
 
@@ -294,7 +294,7 @@ class WebRTC {
     if (this.permission) {
       this.result = await browser.privacy.network.webRTCIPHandlingPolicy.get({});
       if (this.result.value !== 'default') {
-        this.webRTC.classList.add('reset');
+        this.webRTC.checked = true;
       }
     }
   }
@@ -313,7 +313,7 @@ class WebRTC {
     const def = this.result.value === 'default'
     let value = def ? 'default_public_interface_only' : 'default';
     this.result.value = value;
-    this.webRTC.classList.toggle('reset', def);
+    this.webRTC.checked = def;
     browser.privacy.network.webRTCIPHandlingPolicy.set({value});
   }
 }
