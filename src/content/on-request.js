@@ -1,6 +1,10 @@
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1198822
 // Dynamic import is not available yet in MV3 service worker
 // Once implemented, module will be dynamically imported for Firefox only
+
+// Support non-ASCII username/password for socks proxy
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1853203
+// Fixed in Firefox 119
 import {Pattern} from './pattern.js';
 
 // ---------- Firefox Proxy Process ------------------------
