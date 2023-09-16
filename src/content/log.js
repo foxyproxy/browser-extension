@@ -34,6 +34,6 @@ class ShowLog {
 
   static formatInt(d) {
     return new Intl.DateTimeFormat(navigator.language,
-                    {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).format(new Date(d));
+            {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).format(new Date(d));
   }
 }
