@@ -29,7 +29,7 @@ export class App {
   static getPref() {
     // update pref with the saved version
     return browser.storage.local.get().then(result => {
-      Object.keys(result).forEach(item => pref[item] = result[item]);
+      Object.keys(result).forEach(i => pref[i] = result[i]);
     });
   }
 

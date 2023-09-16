@@ -59,7 +59,7 @@ class Options {
 
   static init(keys = Object.keys(pref)) {
     this.prefNode = document.querySelectorAll('#' + keys.join(',#')); // defaults to pref keys
-    document.querySelectorAll('button[type="submit"]').forEach(item => item.addEventListener('click', () => this.check())); // submit button
+    document.querySelectorAll('button[type="submit"]').forEach(i => i.addEventListener('click', () => this.check())); // submit button
 
     this.process();
   }
@@ -664,7 +664,7 @@ class importFromUrl {
     .then(response => response.json())
     .then(data => {
       // update pref with the saved version
-      Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
+      Object.keys(pref).forEach(i => data.hasOwnProperty(i) && (pref[i] = data[i]));
 
       Options.process();                                    // set options after the pref update
       Proxies.process();                                    // update page display
@@ -825,7 +825,7 @@ class importFromOlder {
 
     data = Migrate.convert7(data);
     // update pref with the saved version
-    Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
+    Object.keys(pref).forEach(i => data.hasOwnProperty(i) && (pref[i] = data[i]));
 
     Options.process();                                      // set options after the pref update
     Proxies.process();                                      // update page display
