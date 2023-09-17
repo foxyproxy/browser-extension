@@ -45,6 +45,7 @@ export class Proxy {
   }
 
   static async #setFirefox(pref) {
+    // proxy.settings is not supported on Android
     // retain settings as Network setting is partially customisable
     const conf = await this.#getSettings();
     const value = conf.value;
