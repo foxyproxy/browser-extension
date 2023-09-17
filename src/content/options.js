@@ -262,9 +262,24 @@ class BrowsingData {
 
   static {
     document.querySelector('.options button[data-i18n="deleteBrowsingData"]').addEventListener('click', () => this.deleteBrowsingData());
+    this.init();
   }
 
-  static deleteBrowsingData() {
+  static async init() {
+    // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request
+    // Any permissions granted are retained by the extension, even over upgrade and disable/enable cycling.
+    // check if permission is granted
+    this.permission = await browser.permissions.contains({permissions: ['browsingData']});
+  }
+
+  static async deleteBrowsingData() {
+    if (!this.permission) {
+      // request permission
+      // Chrome appears to return true without a popup request
+      this.permission = await browser.permissions.request({permissions: ['browsingData']});
+      if (!this.permission) { return; }
+    }
+
     if (!confirm(browser.i18n.getMessage('deleteBrowsingDataConfirm'))) { return; }
 
    browser.browsingData.remove({}, {

@@ -98,7 +98,6 @@ class Popup {
   }
 
   static getIP() {
-    // Network Request Timeout: Chrome 300 sec, Firefox 90 sec
     fetch('https://getfoxyproxy.org/webservices/lookup.php')
     .then(response => response.json())
     .then(data => {
