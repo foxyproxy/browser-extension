@@ -35,7 +35,6 @@
   },
 
   "permissions": [
-    "browsingData",
     "downloads",
     "notifications",
     "proxy",
@@ -46,6 +45,7 @@
   ],
 
   "optional_permissions": [
+    "browsingData",
     "privacy"
   ],
 
