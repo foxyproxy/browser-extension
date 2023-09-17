@@ -5,27 +5,6 @@ import {Action} from './action.js';
 
 export class Proxy {
 
-  static async #getSettings() {
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
-    // proxy.settings is not supported on Android
-    if (!browser.proxy.settings) {
-      return {value: {}};
-    }
-
-    const conf = await browser.proxy.settings.get({});
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
-    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
-    // SVG is not supported by Chrome
-
-    // check if proxy.settings is controlled_by_this_extension
-    if (conf.levelOfControl !== 'controlled_by_this_extension') {
-      const path = App.firefox ? '/image/icon-off.svg' : '/image/icon-off.png;'
-      browser.browserAction.setIcon({path});
-    }
-
-    return conf;
-  }
-
   static set(pref) {
     // --- check mode
     switch (true) {
@@ -43,6 +22,26 @@ export class Proxy {
 
     App.firefox ? this.#setFirefox(pref) : this.#setChrome(pref);
     Action.set(pref);
+  }
+
+  static async #getSettings() {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
+    // proxy.settings is not supported on Android
+    if (!browser.proxy.settings) {
+      return {value: {}};
+    }
+
+    const conf = await browser.proxy.settings.get({});
+
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
+    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
+    // SVG is not supported by Chrome
+    // check if proxy.settings is controlled_by_this_extension
+    if (conf.levelOfControl !== 'controlled_by_this_extension') {
+      browser.browserAction.setIcon({path: '/image/icon-off.png'});
+    }
+
+    return conf;
   }
 
   static async #setFirefox(pref) {
