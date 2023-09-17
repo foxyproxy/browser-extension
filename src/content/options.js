@@ -282,11 +282,11 @@ class BrowsingData {
 
     if (!confirm(browser.i18n.getMessage('deleteBrowsingDataConfirm'))) { return; }
 
-   browser.browsingData.remove({}, {
-     cookies: true,
-     indexedDB: true,
-     localStorage: true
-   })
+    browser.browsingData.remove({}, {
+      cookies: true,
+      indexedDB: true,
+      localStorage: true
+    })
    .catch(error => App.notify(browser.i18n.getMessage('deleteBrowsingData') + '\n\n' + error.message));
  }
 }
