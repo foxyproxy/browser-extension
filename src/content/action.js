@@ -3,9 +3,8 @@ import {Location} from './location.js';
 
 export class Action {
 
-  // --- set action/browserAction
   static set(pref) {
-
+    // --- set action/browserAction
     let title = '', text = '';
     let color = '#fff';
     switch (pref.mode) {
