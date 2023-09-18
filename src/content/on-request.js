@@ -77,8 +77,8 @@ export class OnRequest {
   // proxy.onRequest does not have a default localhost bypass
   // proxy.onRequest only apply to http/https/ws/wss
   // Implementing a default localhost bypass
-  static #bypass(e) {
-    const [, host] = e.url.split(/:\/\/|\//);               // hostname with/without port
+  static #bypass(url) {
+    const [, host] = url.split(/:\/\/|\//);                 // hostname with/without port
     const isIP = /^[\d.:]+$/.test(host);
 
     switch (true) {
@@ -91,8 +91,8 @@ export class OnRequest {
     }
   }
 
-  static #processPattern(url)  {
-    if (this.#bypass(e)) { return {type: 'direct'}; }
+  static #processPattern(url) {
+    if (this.#bypass(url)) { return {type: 'direct'}; }
 
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
