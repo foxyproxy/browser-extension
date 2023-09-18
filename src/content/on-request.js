@@ -71,7 +71,28 @@ export class OnRequest {
     }
   }
 
+  // https://github.com/foxyproxy/browser-extension/issues/20
+  // Firefox & Chrome proxy.settings have a default localhost bypass
+  // Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
+  // proxy.onRequest does not have a default localhost bypass
+  // proxy.onRequest only apply to http/https/ws/wss
+  // Implementing a default localhost bypass
+  static #bypass(e) {
+    const [, hostname] = e.url.split(/[:/]+/);              // hostname (without port)
+    const isIP = /^[\d.]+$/.test(hostname);
+
+    switch (true) {
+      case hostname === '1':                                // ::1
+      case hostname === '127.0.0.1':
+      case isIP && hostname.startsWith('127.'):             // 127.0.0.1 up to 127.255.255.254
+      case !isIP && !hostname.includes('.'):                // not IP & plain hostname (no dots)
+        return true;
+    }
+  }
+
   static #processPattern(url)  {
+    if (this.#bypass(e)) { return {type: 'direct'}; }
+
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
     for (const proxy of this.data) {
