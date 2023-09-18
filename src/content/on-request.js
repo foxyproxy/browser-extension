@@ -78,14 +78,15 @@ export class OnRequest {
   // proxy.onRequest only apply to http/https/ws/wss
   // Implementing a default localhost bypass
   static #bypass(e) {
-    const [, hostname] = e.url.split(/[:/]+/);              // hostname (without port)
-    const isIP = /^[\d.]+$/.test(hostname);
+    const [, host] = e.url.split(/:\/\/|\//);               // hostname with/without port
+    const isIP = /^[\d.:]+$/.test(host);
 
     switch (true) {
-      case hostname === '1':                                // ::1
-      case hostname === '127.0.0.1':
-      case isIP && hostname.startsWith('127.'):             // 127.0.0.1 up to 127.255.255.254
-      case !isIP && !hostname.includes('.'):                // not IP & plain hostname (no dots)
+      case host === '::1':
+      case isIP && host.startsWith('::1:'):                 // with port
+      case host === '127.0.0.1':
+      case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
+      case !isIP && !host.includes('.'):                    // not IP & plain hostname (no dots)
         return true;
     }
   }
