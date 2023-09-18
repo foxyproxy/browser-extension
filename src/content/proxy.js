@@ -33,8 +33,9 @@ export class Proxy {
 
     const conf = await browser.proxy.settings.get({});
 
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
     // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
+    // Issue 29683: Extension icons should support SVG (Dec 8, 2009)
     // SVG is not supported by Chrome
     // Firefox: If each one of imageData and path is one of undefined, null or empty object,
     // the global icon will be reset to the manifest icon

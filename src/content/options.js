@@ -261,7 +261,7 @@ class Options {
 class BrowsingData {
 
   static {
-    document.querySelector('.options button[data-i18n="deleteBrowsingData"]').addEventListener('click', () => this.deleteBrowsingData());
+    document.querySelector('#deleteBrowsingData').addEventListener('click', () => this.process());
     this.init();
   }
 
@@ -272,7 +272,7 @@ class BrowsingData {
     this.permission = await browser.permissions.contains({permissions: ['browsingData']});
   }
 
-  static async deleteBrowsingData() {
+  static async process() {
     if (!this.permission) {
       // request permission
       // Chrome appears to return true without a popup request
@@ -297,7 +297,7 @@ class WebRTC {
 
   static {
     this.webRTC = document.querySelector('#limitWebRTC');
-    this.webRTC.addEventListener('change', () => this.setWebRTC());
+    this.webRTC.addEventListener('change', () => this.process());
     this.init();
   }
 
@@ -310,17 +310,18 @@ class WebRTC {
     // check webRTCIPHandlingPolicy
     if (this.permission) {
       this.result = await browser.privacy.network.webRTCIPHandlingPolicy.get({});
-      if (this.result.value !== 'default') {
-        this.webRTC.checked = true;
-      }
+      this.webRTC.checked = this.result.value !== 'default';
     }
   }
 
-  static async setWebRTC() {
+  static async process() {
     if (!this.permission) {
       // request permission
       this.permission = await browser.permissions.request({permissions: ['privacy']});
-      if (!this.permission) { return; }
+      if (!this.permission) {
+        this.webRTC.checked = false;
+        return;
+      }
     }
 
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1790270
@@ -330,7 +331,7 @@ class WebRTC {
     const def = this.result.value === 'default'
     let value = def ? 'default_public_interface_only' : 'default';
     this.result.value = value;
-    this.webRTC.checked = def;
+    this.webRTC.checked = def;                              // was default but now changed
     browser.privacy.network.webRTCIPHandlingPolicy.set({value});
   }
 }
