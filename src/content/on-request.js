@@ -12,11 +12,11 @@ export class OnRequest {
 
   static {
     // --- default values
-    this.mode = 'disable';                                  // default start
-    this.proxy = null;                                      // needed only in Single Proxy
-    this.data = [];                                         // needed only in Proxy by Pattern
+    this.mode = 'disable';
+    this.proxy = null;                                      // only needed in Single Proxy
+    this.data = [];                                         // only needed in Proxy by Pattern
     this.globalExclude = [];
-    this.proxyDNS = true;                                   // default true
+    this.proxyDNS = true;
 
     // --- Firefox Only
     browser?.proxy?.onRequest?.addListener(e => this.#process(e), {urls: ['<all_urls>']});
@@ -77,6 +77,7 @@ export class OnRequest {
   // proxy.onRequest does not have a default localhost bypass
   // proxy.onRequest only apply to http/https/ws/wss
   // Implementing a default localhost bypass
+  // it can't catch a domain set by user to 127.0.0.1 in the hosts file
   static #bypass(url) {
     const [, host] = url.split(/:\/\/|\//);                 // hostname with/without port
     const isIP = /^[\d.:]+$/.test(host);
