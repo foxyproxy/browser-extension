@@ -11,7 +11,7 @@
     <a href="#introduction">Introduction</a>
     <a href="#how-to-use">How to Use</a>
     <a href="#options">Options</a>
-    <a href="#proxy">Proxy</a>
+    <a href="#proxies">Proxies</a>
     <a href="#import">Import</a>
     <a href="#pattern-tester">Pattern Tester</a>
     <a href="#log">Log</a>
@@ -21,10 +21,15 @@
   <article>
     <section>
 
-    <!-- Error: proxy.settings requires private browsing permission. -->
-    <h2>📌 Private Browsing Permission Required for Firefox</h2>
-    <p>Not required for Chrome, but Firefox requires FoxyProxy to have private browsing permission.</p>
-    <p>How to: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p></p>
+    <!--
+      Inconsistency: incognito in proxy.settings
+      https://github.com/w3c/webextensions/issues/429
+      Error: proxy.settings requires private browsing permission.
+    -->
+
+    <h2 style="margin: auto;">Private Browsing Permission Required for Firefox</h2>
+    <p>Although not required for Chrome, Firefox requires FoxyProxy to have private browsing permission.<br>
+    How to: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p></p>
 
 
 
@@ -147,7 +152,7 @@
     <p>Toggle is live and does not require SAVE</p>
     <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
 
-    <h3>Restore Defaults</h3>
+    <h2>Restore Defaults</h2>
     <p>Restore all settings to their defaults</p>
 
     <h2 id="import-export">Preferences: Import/Export</h2>
@@ -159,13 +164,13 @@
 
 
 
-    <h1 id="proxy">Proxy</h1>
+    <h1 id="proxies">Proxies</h1>
     <p>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied.</p>
-      <ul>
+      <!-- <ul>
         <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/en-US/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li>
         <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
         <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
-      </ul>
+      </ul> -->
 
     <!-- <p class="note">In Chrome FoxyProxy uses PAC and above rule is fully enforced. In Firefox API, it requires further testing.</p> -->
 
@@ -182,8 +187,8 @@
       <dd>Get location details for proxies from FoxyProxy Servers</dd>
   </dl>
 
-    <h3>Individual Proxy</h3>
-    <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, will result in a mismatch until it is set again.</p>
+    <h2>Individual Proxy</h2>
+    <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, may result in a mismatch until it is set again.</p>
 
     <dl>
       <dt>Toggle Button</dt>
@@ -225,7 +230,7 @@
     </dl>
 
 
-    <h3 id="patterns">Patterns</h3>
+    <h2 id="patterns">Patterns</h2>
     <p>Patterns can be full or partial match which means it can match the entire URL or only part of it.</p>
     <p>Ending with * for wildcard patterns is not necessary.</p>
 
@@ -331,7 +336,7 @@
 
 
 
-    <h2 id="import">Import</h2>
+    <h1 id="import">Import</h1>
       <p>Imported content will be added to existing proxies.</p>
 
     <dl>
