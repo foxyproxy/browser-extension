@@ -143,7 +143,7 @@ class ProcessPref {
   static async getTabURL() {
     const tab = await browser.tabs.query({currentWindow: true, active: true});
     const url = new URL(tab[0].url);
-    if (!['http:', 'https:', 'file:'].includes(url.protocol)) { return; } // acceptable URLs
+    if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
 
     return url;
   }
