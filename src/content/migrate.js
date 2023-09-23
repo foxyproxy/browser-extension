@@ -157,7 +157,7 @@ export class Migrate {
 
     data.forEach(item => {
       const pxy = {
-        active: item.active === 'true',                     // convert to boolean
+        active: item.active === 'true' || item.active === true, // convert to boolean, some old databases have mixed types
         title: item.title || '',
         color: item.color || Color.getRandom(),             // random color
         type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
