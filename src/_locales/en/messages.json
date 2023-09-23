@@ -6,8 +6,10 @@
   "disable": { "message": "Disable" },
   "ip": { "message": "IP" },
   "location": { "message": "Location" },
-  "addHost": { "message": "Add host pattern to" },
+  "quickAdd": { "message": "Quick Add" },
   "excludeHost": { "message": "Exclude host" },
+  "setTabProxy": { "message": "Set Tab Proxy" },
+  "unsetTabProxy": { "message": "Unset Tab Proxy" },
 
   "incognitoAccessError": { "message": "Proxy settings requires private browsing permission." },
 
@@ -45,7 +47,6 @@
 
   "pattern": { "message": "Pattern" },
   "patterns": { "message": "Patterns" },
-  "quickAdd": { "message": "Quick Add" },
   "include": { "message": "Include" },
   "exclude": { "message": "Exclude" },
   "all": { "message": "All" },
