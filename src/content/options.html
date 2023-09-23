@@ -67,7 +67,7 @@
 
           <!-- proxy.onRequest bypasses "Connections to localhost, 127.0.0.1/8, and ::1 are never proxied." restrictions -->
           <select>
-            <option disabled selected>&nbsp;</option>
+            <option value="" disabled selected>&nbsp;</option>
             <option data-type="regex" value="^http://.+">HTTP</option>
             <option data-type="regex" value="^https://.+">HTTPS</option>
             <option data-type="regex" value="^https?://[^.]+/" data-i18n="plainHost"></option>
@@ -442,7 +442,7 @@
 
         <div class="patternRow">
           <select>
-            <option disabled selected>&nbsp;</option>
+            <option value="" disabled selected>&nbsp;</option>
             <option data-type="regex" value="\S+" data-i18n="all"></option>
             <option data-type="regex" value="^http://.+">HTTP</option>
             <option data-type="regex" value="^https://.+">HTTPS</option>

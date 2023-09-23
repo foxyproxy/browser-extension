@@ -96,17 +96,25 @@ class ProcessPref {
         Proxy.set(pref);
         break;
 
-      case 'addHost':
-        this.addHost(pref, host);
+      case 'quickAdd':
+        this.quickAdd(pref, host);
         break;
 
       case 'excludeHost':
         this.excludeHost(pref);
         break;
+
+      case 'setTabProxy':
+        Proxy.setTabProxy(pref, host);
+        break;
+
+      case 'unsetTabProxy':
+        Proxy.unsetTabProxy();
+        break;
     }
   }
 
-  static async addHost(pref, host) {
+  static async quickAdd(pref, host) {
     const url = await this.getTabURL();
     if (!url) { return; }
 

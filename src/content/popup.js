@@ -10,6 +10,7 @@ class Popup {
 
   static {
     document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
+    this.select = document.querySelector('select');
     this.process();
   }
 
@@ -46,9 +47,6 @@ class Popup {
     );
 
     // --- Add Hosts to select
-    const select = document.querySelector('select');
-    select.addEventListener('change', this.addHost);
-
     // filter out PAC, limit to 10
     pref.data.filter(i => i.active && i.type !== 'pac').filter((i, idx) => idx < 10).forEach(item => {
       const flag = App.getFlag(item.cc);
@@ -58,7 +56,7 @@ class Popup {
       docFrag.appendChild(opt);
     });
 
-    select.appendChild(docFrag);
+    this.select.appendChild(docFrag);
   }
 
   static processSelect(mode) {
@@ -68,11 +66,6 @@ class Popup {
     browser.storage.local.set({mode});                      // save mode
     browser.runtime.sendMessage({id: 'setProxy', pref});
     localStorage.setItem('mode', mode);                     // keep a copy for options page ???
-  }
-
-  static addHost() {
-    browser.runtime.sendMessage({id: 'addHost', pref, host: this.value});
-    this.selectedIndex = 0;                                 // reset select option
   }
 
   static processButtons(e) {
@@ -91,9 +84,26 @@ class Popup {
         this.getIP();
         break;
 
+      case 'quickAdd':
+        if (!this.select.value) { break; }
+
+        browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.select.value});
+        this.select.selectedIndex = 0;                      // reset select option
+        break;
+
       case 'excludeHost':
         browser.runtime.sendMessage({id: 'excludeHost', pref});
         break;
+
+      case 'setTabProxy':
+        if (!this.select.value) { break; }
+
+        browser.runtime.sendMessage({id: 'setTabProxy', pref, host: this.select.value});
+        this.select.selectedIndex = 0;                      // reset select option
+        break;
+
+      case 'unsetTabProxy':
+        browser.runtime.sendMessage({id: 'unsetTabProxy'});
     }
   }
 

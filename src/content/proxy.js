@@ -2,6 +2,7 @@ import {App} from './app.js';
 import {Pattern} from './pattern.js';
 import {OnRequest} from './on-request.js';
 import {Action} from './action.js';
+import {PageAction} from './page-action.js';
 
 export class Proxy {
 
@@ -169,5 +170,25 @@ export class Proxy {
         type = type.toUpperCase();
     }
     return `${type} ${hostname}:${port}`;
+  }
+
+  // ---------- Tab Proxy ----------------------------------
+  static async setTabProxy(pref, host) {
+    const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
+    if (!pxy) { return; }
+
+    const tab = await browser.tabs.query({currentWindow: true, active: true});
+    if (!['http://', 'https://'].some(i => tab[0].url.startsWith(i))) {
+      return;
+    }
+
+    OnRequest.tabCache[tab[0].id] = pxy;
+    PageAction.set(tab[0].id, pxy);
+  }
+
+  static async unsetTabProxy() {
+    const tab = await browser.tabs.query({currentWindow: true, active: true});
+    delete OnRequest.tabCache[tab[0].id];
+    PageAction.unset(tab[0].id);
   }
 }

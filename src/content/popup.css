@@ -109,13 +109,25 @@ div.host {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0.5em;
-  gap: 0.5em;
+  gap: 0.2em;
   align-items: center;
 }
 
-.excludeHost {
-  padding: 0.2em 0.5em;
-  cursor: pointer;
+div.host button {
+  padding: 0.2em;
+  background: unset;
+  color: var(--color);
+  font-weight: normal;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+div.host button:hover {
+  background: var(--hover);
+}
+
+div.host select {
+  grid-column: span 2;
 }
 
 /* ----- Buttons ----- */

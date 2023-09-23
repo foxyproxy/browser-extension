@@ -17,9 +17,14 @@ export class OnRequest {
     this.data = [];                                         // only needed in Proxy by Pattern
     this.globalExclude = [];
     this.proxyDNS = true;
+    this.tabCache = {};                                     // tab proxy
 
-    // --- Firefox Only
-    browser?.proxy?.onRequest?.addListener(e => this.#process(e), {urls: ['<all_urls>']});
+    // --- Firefox only
+    if (browser?.proxy?.onRequest) {
+      browser.proxy.onRequest.addListener(e => this.#process(e), {urls: ['<all_urls>']});
+      // remove Tab from tabCache
+      browser.tabs.onRemoved.addListener(tabId => delete this.tabCache[tabId]);
+    }
   }
 
   static init(pref) {
@@ -58,6 +63,11 @@ export class OnRequest {
   static #process(e) {
     // --- check mode
     switch (true) {
+      // --- tab proxy
+      case e.tabId !== -1 && !!this.tabCache[e.tabId]:
+        return this.#processProxy(this.tabCache[e.tabId]);
+
+      // --- standard operation
       case this.mode === 'disable':                         // pass direct
       case this.mode.includes('://'):                       // PAC URL is set
       case this.globalExclude.some(i => new RegExp(i, 'i').test(e.url)): // global exclude
@@ -71,6 +81,8 @@ export class OnRequest {
     }
   }
 
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1854324
+  // proxy.onRequest failure to bypass proxy for localhost
   // https://github.com/foxyproxy/browser-extension/issues/20
   // Firefox & Chrome proxy.settings have a default localhost bypass
   // Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
