@@ -140,7 +140,7 @@ export class Migrate {
     };
 
     // new database format
-    let mode = pref.mode.includes(':') ? pref.mode : 'disable';
+    let mode = pref.mode || 'disable';
     pref.mode === 'disabled' && (pref.mode = 'disable');    // rename disabled -> disable
     pref.mode === 'patterns' && (pref.mode = 'pattern');    // rename patterns -> pattern
     if (pref[pref.mode]) {                                  // convert old mode
