@@ -844,6 +844,7 @@ class importFromOlder {
     }
 
     data = Migrate.convert7(data);
+    console.log(data);
     // update pref with the saved version
     Object.keys(pref).forEach(i => data.hasOwnProperty(i) && (pref[i] = data[i]));
 

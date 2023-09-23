@@ -152,7 +152,7 @@ export class Proxy {
     return pacString;
   }
 
-  static #getProxyString(proxy) {
+  static #getProxyString(proxy) { console.log(proxy);
     let {type, hostname, port} = proxy;
     switch (type) {
       case 'direct':
