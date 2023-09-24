@@ -28,7 +28,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 
 ### Installation Guide (for testing)
 - Backup your FoxyProxy settings
-- Download repo (or use `git)
+- Download repo (or use `git`)
   - [browser-extension](https://github.com/foxyproxy/browser-extension) -> Code (green button) -> Download ZIP
   - Unzip the downloaded file
 - **Firefox** *(Nightly/Beta/Developer Edition)*
