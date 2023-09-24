@@ -11,6 +11,10 @@ class Popup {
   static {
     document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
     this.select = document.querySelector('select');
+
+    // disable buttons on Chrome
+    !App.firefox && document.querySelectorAll('.firefox').forEach(i => i.disabled = true);
+
     this.process();
   }
 
@@ -96,13 +100,14 @@ class Popup {
         break;
 
       case 'setTabProxy':
-        if (!this.select.value) { break; }
+        if (!App.firefox || !this.select.value) { break; }
 
         browser.runtime.sendMessage({id: 'setTabProxy', pref, host: this.select.value});
         this.select.selectedIndex = 0;                      // reset select option
         break;
 
       case 'unsetTabProxy':
+        if (!App.firefox) { break; }
         browser.runtime.sendMessage({id: 'unsetTabProxy'});
     }
   }

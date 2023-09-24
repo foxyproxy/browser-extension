@@ -100,6 +100,10 @@ button:hover {
   background: var(--btn-hover);
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 .invalid,
 input:invalid {
   box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
