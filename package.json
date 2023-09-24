@@ -1,0 +1,7 @@
+{
+  "name": "browser-extension",
+  "devDependencies": {
+    "grunt": "^1.6.1",
+    "grunt-contrib-compress": "^2.0.0"
+  }
+}

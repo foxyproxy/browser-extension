@@ -18,7 +18,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 ### Firefox
 - Extension: [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
 - Extension: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
-- Source Code: [Firefox Extension 7.5](https://github.com/foxyproxy/firefox-extension)
+- Source Code: [Firefox Extension 7.5.1](https://github.com/foxyproxy/firefox-extension/tags/7.5.1)
 
 #### Chrome
 - Extension: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
@@ -42,3 +42,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
   - Enable Developer Mode (top right)
   - Click "Load Unpacked"
   - Select above `manifest.json` (or `src` folder)
+
+### Building for Distribution
+- copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
+- zip using [grunt](https://stackoverflow.com/questions/15703598/how-to-install-grunt-and-how-to-build-script-with-it), which requires npm and node. Run `grunt` in top-level directory. The add-on is packaged into `target.zip`. Alternatively, zip the `src` directory into the top of an archive and exclude a bunch of stuff manually.

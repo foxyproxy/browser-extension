@@ -42,7 +42,6 @@
 
 
   "edit": { "message": "编辑" },
-  "pattern": { "message": "模式" },
   "confirmDelete": { "message": "你确定要删除吗？" },
 
   "addProxy": { "message": "添加代理" },
