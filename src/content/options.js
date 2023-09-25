@@ -582,6 +582,35 @@ class Proxies {
 }
 // ---------- /Proxies -------------------------------------
 
+// ---------- Drag and Drop --------------------------------
+class Drag {
+
+  static {
+    this.proxyDiv = document.querySelector('div.proxyDiv');
+    this.x = 0;
+    this.elem = null;
+
+    this.proxyDiv.addEventListener('dragstart', e => this.dragstart(e));
+    this.proxyDiv.addEventListener('dragleave', e => this.dragleave(e));
+  }
+
+  static dragstart(e) {
+    this.x = e.x;                                           // cache x value
+    this.elem = e.target.closest('details');
+  }
+
+  static dragleave(e) {
+    if (!e.x) { return; }
+
+    const target = e.target.closest('details');
+    if (!target) { return; }
+
+    e.x > this.x ? target.before(this.elem) : target.after(this.elem);
+    this.x = e.x;
+  }
+}
+// ---------- /Drag and Drop -------------------------------
+
 // ---------- Import FP Account ----------------------------
 class ImportFoxyProxyAccount {
 

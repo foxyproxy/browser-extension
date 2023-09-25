@@ -95,8 +95,8 @@ export class OnRequest {
     const isIP = /^[\d.:]+$/.test(host);
 
     switch (true) {
-      case host === '::1':
-      case isIP && host.startsWith('::1:'):                 // with port
+      case host === '[::1]':
+      case host.startsWith('[::1:'):                        // with port
       case host === '127.0.0.1':
       case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
       case !isIP && !host.includes('.'):                    // not IP & plain hostname (no dots)

@@ -134,11 +134,6 @@ export class Migrate {
       5: 'direct'   // PROXY_TYPE_NONE
     };
 
-    const patternSet = {
-      1: 'wildcard',
-      2: 'regex'
-    };
-
     // new database format
     let mode = pref.mode || 'disable';
     pref.mode === 'disabled' && (pref.mode = 'disable');    // rename disabled -> disable
@@ -177,6 +172,8 @@ export class Migrate {
         pac: ''                                             // add PAC option
       };
 
+      pxy.cc === 'UK' && (pxy.cc = 'GB');                   // convert UK to ISO 3166-1 GB
+
       // --- type 'direct'
       pxy.type === 'direct' && (pxy.hostname = 'DIRECT');
 
@@ -189,10 +186,18 @@ export class Migrate {
        // "protocols": 1,
       },
 */
+
+      const patternSet = {
+        1: 'wildcard',
+        2: 'regex'
+      };
       // process include/exclude
       [...pxy.include, ...pxy.exclude].forEach(item => {
         item.type = patternSet[item.type];                  // convert to actual type: wildcard | regex
-        item.pattern = this.convertPattern(item.pattern, item.protocols); // convert all | http | https to v3 patterns
+
+        // convert wildcard all | http | https to v3 patterns
+        item.pattern = item.type === 'wildcard' ?
+          this.convertWildcard(item.pattern, item.protocols) : this.convertRegEx(item.pattern, item.protocols);
         delete item.protocols;                              // no longer needed
 
         // Validate RegExp, deactivate on error
@@ -210,7 +215,7 @@ export class Migrate {
   *.bbc.co.uk     exact domain and all subdomains
   **.bbc.co.uk    subdomains only (not bbc.co.uk)
 */
-  static convertPattern(pat, protocol) {
+  static convertWildcard(pat, protocol) {
     const protocolSet = {
       1: '*://',            // all
       2: 'http://',         // http
@@ -218,5 +223,27 @@ export class Migrate {
     };
 
     return protocolSet[protocol] + (pat[0] === '.' ? '*' : '') + pat + '/';
+  }
+
+  static convertRegEx(pat, protocol) {
+    const protocolSet = {
+      1: '.*://',            // all
+      2: 'http://',         // http
+      4: 'https://'         // https
+    };
+
+    // move the start marker
+    let p = protocolSet[protocol]
+    if (pat[0] === '^') {
+      p = '^' + p;
+      pat = pat.subSting(1);
+    }
+
+    // remove end marker
+    if (pat.endsWith('$')) {
+      pat = pat.slice(0, -1);
+    }
+
+    return  p + pat + '/';
   }
 }
