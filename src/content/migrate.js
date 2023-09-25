@@ -232,7 +232,7 @@ export class Migrate {
       4: '^https://'        // https
     };
 
-    pat.startsWith('^') && (pat = pat.subSting(1));         // remove the start marker
+    pat.startsWith('^') && (pat = pat.substring(1));        // remove the start marker
     pat.endsWith('$') && (pat = pat.slice(0, -1));          // remove end marker
 
     return protocolSet[protocol] + pat + '/';
