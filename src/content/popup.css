@@ -126,10 +126,6 @@ div.host button:hover {
   background: var(--hover);
 }
 
-button:disabled {
-  opacity: 0.4;
-}
-
 div.host select {
   grid-column: span 2;
 }
