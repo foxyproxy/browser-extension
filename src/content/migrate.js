@@ -227,23 +227,14 @@ export class Migrate {
 
   static convertRegEx(pat, protocol) {
     const protocolSet = {
-      1: '.*://',            // all
-      2: 'http://',         // http
-      4: 'https://'         // https
+      1: '^[^:]+://',       // all
+      2: '^http://',        // http
+      4: '^https://'        // https
     };
 
-    // move the start marker
-    let p = protocolSet[protocol]
-    if (pat[0] === '^') {
-      p = '^' + p;
-      pat = pat.subSting(1);
-    }
+    pat.startsWith('^') && (pat = pat.subSting(1));         // remove the start marker
+    pat.endsWith('$') && (pat = pat.slice(0, -1));          // remove end marker
 
-    // remove end marker
-    if (pat.endsWith('$')) {
-      pat = pat.slice(0, -1);
-    }
-
-    return  p + pat + '/';
+    return protocolSet[protocol] + pat + '/';
   }
 }
