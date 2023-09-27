@@ -30,7 +30,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 ### Firefox
 - Extension: [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
 - Extension: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/versions/)
-- Source Code: [Firefox Extension 7.5.1](https://github.com/foxyproxy/firefox-extension/tags/7.5.1)
+- Source Code: [Firefox Extension 7.5.1](https://github.com/foxyproxy/firefox-extension/)
 
 #### Chrome
 - Extension: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
