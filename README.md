@@ -35,7 +35,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 #### Chrome
 - Extension: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
 - Extension: [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
-- Source Code: [Chrome Extension 3.0](https://github.com/foxyproxy/Foxyproxy_Chrome)
+- Source Code: [Chrome Extension 3.0.7.1](https://github.com/foxyproxy/Foxyproxy_Chrome)
 
 
 ## Installation Guide (for testing)
