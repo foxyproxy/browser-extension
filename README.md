@@ -55,6 +55,11 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
   - Click "Load Unpacked"
   - Select above `manifest.json` (or `src` folder)
 
+- **Firefox for Android**  
+  You can try installing FoxyProxy Basic v8.0
+  - [Expanded extension support in Firefox for Android Nightly](https://blog.mozilla.org/addons/2020/09/29/expanded-extension-support-in-firefox-for-android-nightly/)
+  - [How to Install Any Add-on in Firefox for Android](https://www.maketecheasier.com/install-addon-firefox-android/)
+
 ## Building for Distribution
 - copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
 - zip using [grunt](https://stackoverflow.com/questions/15703598/how-to-install-grunt-and-how-to-build-script-with-it), which requires npm and node. Run `grunt` in top-level directory. The add-on is packaged into `target.zip`. Alternatively, zip the `src` directory into the top of an archive and exclude a bunch of stuff manually.
