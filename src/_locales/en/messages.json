@@ -7,7 +7,7 @@
   "ip": { "message": "IP" },
   "location": { "message": "Location" },
   "quickAdd": { "message": "Quick Add" },
-  "excludeHost": { "message": "Exclude host" },
+  "excludeHost": { "message": "Exclude Host" },
   "setTabProxy": { "message": "Set Tab Proxy" },
   "unsetTabProxy": { "message": "Unset Tab Proxy" },
 
@@ -18,10 +18,14 @@
   "syncError": { "message": "Sync Error" },
 
   "proxyDNS": { "message": "Proxy DNS" },
-  "proxyDnsDescription": { "message": "Use the proxy server to resolve certain DNS queries (only for SOCKS in Firefox)" },
+  "proxyDNSDescription": { "message": "Proxy DNS when using SOCKS v5 (Firefox Only)" },
 
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
+
+  "container": { "message": "Container" },
+  "containerDescription": { "message": "Incognito/Container proxy (Firefox only)" },
+  "incognito": { "message": "Incognito" },
 
   "deleteBrowsingData": { "message": "Delete Browsing Data" },
   "deleteBrowsingDataConfirm": { "message": "Are you sure you want to delete cookies, indexedDB storage, DOM local storage?" },
@@ -30,7 +34,7 @@
   "limitWebRTC": { "message": "Limit WebRTC" },
   "limitWebRTCDescription": { "message": "Toggle WebRTC browser settings" },
 
-  "proxy": { "message": "Proxies" },
+  "proxies": { "message": "Proxies" },
   "add": { "message": "Add" },
   "getLocation": { "message": "Get Location" },
 
@@ -76,7 +80,8 @@
   "documentUrl": { "message": "Document URL" },
   "url": { "message": "URL" },
   "method": { "message": "Method" },
-  "timeStamp": { "message": "Time" },
+  "proxy": { "message": "Proxy" },
+  "time": { "message": "Time" },
   "notAvailable": { "message": "Not Available On Chrome (Firefox Only)" },
 
   "about": { "message": "About" },
