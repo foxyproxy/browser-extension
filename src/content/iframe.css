@@ -230,33 +230,41 @@ figcaption {
   padding-top: 0.5em;
 }
 
-.note,
-.warning {
-  color: var(--color);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--btn-bg);
-  padding: 0.2em 0.5em;
-  margin-top: 0.3em;
-  border-radius: 4px;
-  display: table;
+/* ----- note, footnote, warning, experimental ----- */
+.note, .footnote, .warning {
+  border-left: 3px solid #17f;
+  padding: 0.3em 0.5em 0.3em 2em;
+  margin-top: 0.5em;
   position: relative;
 }
 
-.note::before,
-.warning::before {
-  content: '📌 ';
+.note::before, .footnote::before, .warning::before {
+  content: 'ⓘ';
+  color: #17f;
+  position: absolute;
+  top: 0;
+  left: 0.5em;
+}
+
+.footnote {
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.warning {
+  border-left-color: #f30;
 }
 
 .warning::before {
-  content: '⚠️ ';
+  content: '⚠️';
 }
 
 .experimental::after {
   content: '';
   background: url('../image/beaker.svg') no-repeat center / contain;
   display: inline-block;
-  width: 1.2em;
-  height: 1.2em;
+  width: 1em;
+  height: 1em;
   margin-left: 0.5em;
   vertical-align: text-bottom;
 }

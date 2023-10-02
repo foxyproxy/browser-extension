@@ -105,6 +105,17 @@ input[name="server"]:not(:checked) {
   opacity: 0;
 }
 
+input#filter {
+  background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
+  padding-left: 2em;
+  margin-bottom: 0.2em;
+  grid-column: span 2;
+}
+
+div.list label.off {
+  display: none;
+}
+
 div.host {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -136,6 +136,7 @@ input[name="nav"],
 input[type="checkbox"].control {
   display: none;
 }
+
 div.nav {
   background: var(--nav-bg);
 }
@@ -143,10 +144,12 @@ div.nav {
 nav {
   color: var(--nav-color);
   height: var(--nav-height);
-  display: flex;
-  align-items: end;
   max-width: var(--maxWidth);
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto repeat(7, max-content);
+  justify-content: start;
+  align-items: end;
 }
 
 nav img {
@@ -352,8 +355,7 @@ input[type="color"] {
   margin-top: 0.5em;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 0.2em;
-  row-gap: 0.2em;
+  gap: 0.2em;
 }
 
 .options div.globalExclude select {
@@ -364,6 +366,14 @@ input[type="color"] {
 .options div.globalExclude label {
   background-color: var(--alt-bg);
   padding: 0.3em 0.5em;
+}
+
+.options div.container {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 0.2em 1em;
+  margin-left: 1em;
+  margin-bottom: 1em;
 }
 
 .options div.buttons {
@@ -387,7 +397,7 @@ details div.content {
   margin: 0 0 0.5em;
 }
 
-.proxyTop input {
+.proxyTop input#filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
   padding-left: 2em;
 }
@@ -554,56 +564,69 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 /* ----- /Tester ----- */
 
 /* ----- Log ----- */
+section.log {
+  padding: 0 0.5em;
+}
+
 .log table {
   border-collapse: collapse;
-  font-size: 0.9em;
   margin: 0 auto;
   width: 100%;
   background-color: var(--bg);
 }
 
+.log thead  {
+  position: sticky;
+  top: 0;
+}
+
 .log thead th {
-  color: var(--bg);
+  color: #fff;
   background: #888;
-  padding: 0.5em;
+  padding: 0.5em 0.2em;
+  font-size: 0.9em;
+  font-weight: normal;
+  text-align: left;
+}
+
+.log thead th img {
+  width: 1em;
+  vertical-align: unset;
 }
 
 .log tbody tr {
-  font-size: 0.9em;
   border-bottom: 1px solid var(--border);
   animation: sect 0.5s ease-in-out;
 }
 
-.log td {
-  padding: 0.2em;
-  vertical-align: top;
+.log tr:hover {
+  background: var(--hover);
 }
 
-.log td:nth-of-type(1),
-.log td:nth-of-type(2) {
+.log td {
+  font-size: 0.8em;
+  padding: 0.2em;
+}
+
+.log td:nth-of-type(5),
+.log td:nth-of-type(6) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 20em;
 }
 
-.log td:nth-of-type(3) {
-  max-width: 3em;
-  text-align: center;
+.log td:nth-of-type(7) {
+ border-left: 2px solid var(--border);
 }
 
-.log td:nth-of-type(4) span:nth-of-type(2) {
-  color: #aaa;
-  font-size: 0.9em;
-}
-
-.log td:nth-of-type(5) {
-  max-width: 5em;
-  text-align: center;
-}
-
-.log tr:hover {
-  background: var(--hover);
+.log td.incognito::before {
+  content: '';
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: text-bottom;
+  background: url('../image/privateBrowsing.svg') no-repeat center / contain;
 }
 
 .log tbody { counter-reset: n; }
@@ -617,7 +640,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   pointer-events: none;
   counter-increment: n;
   content: counter(n);
-  font-size: 0.7em;
+  font-size: 0.8em;
 }
 
 /* Not Available On Chrome (Firefox Only)" */

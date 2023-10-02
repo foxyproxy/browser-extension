@@ -25,7 +25,7 @@
     <nav>
       <img src="../image/icon.svg" alt="">
       <label for="nav3" data-i18n="options"></label>
-      <label for="nav4" data-i18n="proxy"></label>
+      <label for="nav4" data-i18n="proxies"></label>
       <label for="nav5" data-i18n="import"></label>
       <label for="nav6" data-i18n="tester"></label>
       <label for="nav7" data-i18n="log"></label>
@@ -56,6 +56,37 @@
 
         <label data-i18n="limitWebRTC"><input type="checkbox" id="limitWebRTC"></label>
         <p class="description" data-i18n="limitWebRTCDescription"></p>
+
+        <label data-i18n="container"></label>
+        <p class="description" data-i18n="containerDescription"></p>
+
+        <div class="container">
+          <label data-i18n="incognito"></label>
+          <select name="incognito">
+            <option value="">&nbsp;</option>
+          </select>
+
+          <label><span data-i18n="container"></span> 1</label>
+          <select name="container-1">
+            <option value="">&nbsp;</option>
+          </select>
+
+          <label><span data-i18n="container"></span> 2</label>
+          <select name="container-2">
+            <option value="">&nbsp;</option>
+          </select>
+
+          <label><span data-i18n="container"></span> 3</label>
+          <select name="container-3">
+            <option value="">&nbsp;</option>
+          </select>
+
+          <label><span data-i18n="container"></span> 4</label>
+          <select name="container-4">
+            <option value="">&nbsp;</option>
+          </select>
+
+        </div>
 
         <label data-i18n="globalExclude"></label>
         <p class="description" data-i18n="globalExcludeDescription"></p>
@@ -101,7 +132,7 @@
 
         <div class="proxyTop">
           <button type="button" class="flat" data-i18n="add"></button>
-          <input type="text" spellcheck="false" placeholder="filter">
+          <input type="text" id="filter" spellcheck="false" placeholder="filter">
           <span></span>
           <button type="button" class="flat" data-i18n="getLocation"></button>
         </div>
@@ -545,16 +576,21 @@
       <table>
         <thead>
           <tr>
+            <th style="width: 1.5em;"></th>
+            <th style="width: 5em;" data-i18n="time"></th>
+            <th style="width: 1em;"><img src="../image/container.svg" alt=""></th>
+            <th style="width: 3em;" data-i18n="method"></th>
             <th data-i18n="documentURL"></th>
             <th data-i18n="url"></th>
-            <th data-i18n="method"></th>
-            <th data-i18n="proxy"></th>
-            <th data-i18n="time"></th>
+            <th><span data-i18n="proxy"></span>: <span data-i18n="title"></span></th>
+            <th style="width: 3em;" data-i18n="type"></th>
+            <th data-i18n="hostname"></th>
+            <th style="width: 3em;" data-i18n="port"></th>
            </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="unavailable" colspan="5" data-i18n="notAvailable"></td>
+            <td class="unavailable" colspan="8" data-i18n="notAvailable"></td>
         </tr>
         </tbody>
       </table>
@@ -562,11 +598,16 @@
       <!-- template -->
       <template>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><span></span><span></span></td>
-            <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </template>
     </section>

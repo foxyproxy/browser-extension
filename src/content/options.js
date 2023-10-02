@@ -6,7 +6,7 @@ import {Migrate} from './migrate.js';
 import {Color} from './color.js';
 import {Nav} from './nav.js';
 import {Spinner} from './spinner.js';
-import './log.js';
+import {Log} from './log.js';
 import './i18n.js';
 
 // ---------- User Preference ------------------------------
@@ -44,6 +44,9 @@ class Options {
     this.sync = document.getElementById('sync');
     this.proxyDNS = document.getElementById('proxyDNS');
 
+    // --- container
+    this.container = document.querySelectorAll('.options .container select');
+
     // --- global exclude
     this.globalExcludeWildcard = document.getElementById('globalExcludeWildcard');
     this.globalExcludeRegex = document.getElementById('globalExcludeRegex');
@@ -77,9 +80,10 @@ class Options {
     });
 
     save && !ProgressBar.show() && browser.storage.local.set(pref); // update saved pref
+    this.fillContainer();
   }
 
-  static check() {
+  static async check() {
     // --- global exclude
     if (!this.checkGlobalExclude(this.globalExcludeWildcard)) { return; };
     if (!this.checkGlobalExclude(this.globalExcludeRegex)) { return; };
@@ -101,6 +105,12 @@ class Options {
     // no errors, update pref.data
     pref.data = data;
 
+    // --- container
+    const container = {};
+    this.container.forEach(i => container[i.name] = i.value); // set container values
+    const containerChanged = Object.keys(container).some(i => container[i] !== pref.container[i]);
+    pref.container = container; // set to pref
+
     // --- check sync
     if (this.sync.checked) {
       // convert array to object {...data} to avoid sync maximum item size limit
@@ -114,19 +124,28 @@ class Options {
 
       pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
 
+      containerChanged && (obj.container = pref.container);
+
       // save changes to sync
       Object.keys(obj)[0] && browser.storage.sync.set(obj)
         .catch(error => App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message));
     }
 
-    // check mode in case it was changed while options page has been open
-    const mode = localStorage.getItem('mode');
-    mode && (pref.mode = mode);
-
-    // --- update PAC if Proxy by Pattern or Single Proxy
-    if (!['disable', 'direct'].includes(pref.mode) && (globalExcludeChanged || dataChanged)) {
-      browser.runtime.sendMessage({id: 'setProxy', pref});
+    // --- check mode
+    // get from storage in case it was changed while options page has been open
+    const m = await browser.storage.local.get({mode: 'disable'});
+    let mode = m.mode;
+    switch (true) {
+      case pref.mode.includes('://') && !pref.data.some(i => i.active && i.type === 'pac' && mode === i.pac):
+      case pref.mode.includes(':') && !pref.data.some(i => i.active && i.type !== 'pac' && mode === `${i.hostname}:${i.port}`):
+      case pref.mode === 'pattern' && !pref.data.some(i => i.active && i.include[0]):
+        mode = 'disable';
+        break;
     }
+    pref.mode = mode;
+
+    // --- update Proxy
+    browser.runtime.sendMessage({id: 'setProxy', pref});
 
     // --- save options
     this.process(true);
@@ -256,6 +275,28 @@ class Options {
     this.process();
     Proxies.process();
   }
+
+  static fillContainer() {
+    // reset, remove children except the first one
+    this.container.forEach(i =>
+      [...i.children].forEach((opt, idx) => idx && opt.remove())
+    );
+
+    const docFrag = document.createDocumentFragment();
+    // filter out PAC
+    pref.data.filter(i => i.active && i.type !== 'pac').forEach(item => {
+      const flag = App.getFlag(item.cc);
+      const value = `${item.hostname}:${item.port}`;
+      const opt = new Option(flag + ' ' + (item.title || value), value);
+      // opt.style.color = item.color;                         // supported on Chrome, not on Firefox
+      docFrag.appendChild(opt);
+    });
+
+    this.container.forEach(i => {
+      i.appendChild(docFrag.cloneNode(true));
+      pref.container[i.name] && (i.value = pref.container[i.name]);
+    });
+  }
 }
 // ---------- /Options -------------------------------------
 
@@ -277,7 +318,7 @@ class BrowsingData {
   static async process() {
     if (!this.permission) {
       // request permission
-      // Chrome appears to return true without a popup request
+      // Chrome appears to return true, granted silently without a popup prompt
       this.permission = await browser.permissions.request({permissions: ['browsingData']});
       if (!this.permission) { return; }
     }
@@ -345,20 +386,21 @@ class Proxies {
   static {
     this.docFrag = document.createDocumentFragment();
     this.proxyDiv = document.querySelector('div.proxyDiv');
-    // this.proxyTemplate = document.querySelector('.proxySection template').content.firstElementChild;
     const temp = document.querySelector('.proxySection template').content;
     this.proxyTemplate = temp.firstElementChild;
     this.patternTemplate = temp.lastElementChild;
-    // this.proxyFieldset = document.querySelector('.proxySection fieldset');
 
     // --- buttons
     document.querySelector('.proxySection .proxyTop button[data-i18n="getLocation"]').addEventListener('click', () => this.getLocation());
     document.querySelector('.proxySection .proxyTop button[data-i18n="add"]').addEventListener('click', () => this.addProxy());
 
     // --- proxy filter
-    const filter = document.querySelector('.proxySection .proxyTop input');
+    const filter = document.querySelector('#filter');
     filter.value = '';                                      // reset after reload
     filter.addEventListener('input', e => this.filterProxy(e));
+
+    this.proxyCache = {};                                   // used to find proxy
+    Log.proxyCache = this.proxyCache;                       // used to get the denials for the log
 
     this.process();
   }
@@ -471,6 +513,8 @@ class Proxies {
       return;
     }
 
+    this.proxyCache[`${item.hostname}:${item.port}`] = item; // cache to find later
+
     // --- populate with data
     const title = item.title || (item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`);
 
@@ -565,7 +609,6 @@ class Proxies {
     Spinner.hide();
   }
 
-
   static filterProxy(e) {
     const str = e.target.value.toLowerCase().trim();
     if (!str) {
@@ -574,9 +617,10 @@ class Proxies {
     }
 
     [...this.proxyDiv.children].forEach(item => {
-      const title = item.children[1].children[0].children[1];
-      const hostname = item.children[1].children[0].children[3];
-      item.classList.toggle('off', ![title, hostname].some(i => i.value.toLowerCase().includes(str)));
+      const title = item.children[1].children[0].children[1].value;
+      const hostname = item.children[1].children[0].children[3].value;
+      const port = ':' + item.children[1].children[0].children[7].value;
+      item.classList.toggle('off', ![title, hostname, port].some(i => i.toLowerCase().includes(str)));
     });
   }
 }
@@ -587,26 +631,21 @@ class Drag {
 
   static {
     this.proxyDiv = document.querySelector('div.proxyDiv');
-    this.x = 0;
-    this.elem = null;
-
-    this.proxyDiv.addEventListener('dragstart', e => this.dragstart(e));
-    this.proxyDiv.addEventListener('dragleave', e => this.dragleave(e));
+    this.proxyDiv.addEventListener('dragover', e => this.dragover(e));
+    this.proxyDiv.addEventListener('dragend', e => this.dragend(e));
+    this.target = null;
   }
 
-  static dragstart(e) {
-    this.x = e.x;                                           // cache x value
-    this.elem = e.target.closest('details');
-  }
-
-  static dragleave(e) {
-    if (!e.x) { return; }
-
+  static dragover(e) {
     const target = e.target.closest('details');
-    if (!target) { return; }
+    target && (this.target = target);
+  }
 
-    e.x > this.x ? target.before(this.elem) : target.after(this.elem);
-    this.x = e.x;
+  static dragend(e) {
+    if (!this.target) { return; }
+
+    const arr = [...this.proxyDiv.children];
+    arr.indexOf(e.target) > arr.indexOf(this.target) ? this.target.before(e.target) : this.target.after(e.target);
   }
 }
 // ---------- /Drag and Drop -------------------------------
@@ -640,7 +679,7 @@ class ImportFoxyProxyAccount {
         const pxy = {
           active: true,
           title: '',
-          color: '',                                            // random color will be set
+          color: '',                                        // random color will be set
           type: 'http',
           hostname: item.hostname,
           port: '443',

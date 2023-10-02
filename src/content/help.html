@@ -27,11 +27,11 @@
       Error: proxy.settings requires private browsing permission.
     -->
 
-    <h2 style="margin: auto;">Private Browsing Permission Required for Firefox</h2>
-    <p>Although not required for Chrome, Firefox requires FoxyProxy to have private browsing permission.<br>
-    How to: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p></p>
-
-
+    <div class="warning">
+      <h2 style="margin: auto;">Private Browsing Permission Required for Firefox</h2>
+      <p>Although not required for Chrome, Firefox requires FoxyProxy to have private browsing permission.<br>
+      How to: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p></p>
+    </div>
 
     <h1 id="introduction">Introduction</h1>
 
@@ -51,22 +51,24 @@
       <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
 
+    <h3>Light/Dark Theme</h3>
+    <p>FoxyProxy's theme is based on the browser's default light/dark theme.</p>
+
     <h3 class="experimental">Firefox on Android</h3>
     <p>Support is experimental and based on user feedback.</p>
 
+
+
     <h1 id="how-to-use">How to Use</h1>
 
-    <h4>Light/Dark Theme</h4>
-    <p>FoxyProxy's theme is based on the browser's default light/dark theme.</p>
-
-    <h4 id="toolbar-icon">Toolbar Icon</h4>
+    <h2 id="toolbar-icon">Toolbar Icon</h2>
     <ul>
       <li>Icons badge indicates selection</li>
       <li>Mouse-over title displays selection details</li>
     </ul>
 
 
-    <h4>Toolbar Popup</h4>
+    <h3>Toolbar Popup</h3>
 
     <dl>
       <dt>Proxy by Patterns</dt>
@@ -78,6 +80,10 @@
 
       <dt>Individual Proxy</dt>
       <dd>Connections are passed through the selected proxy (or PAC)</dd>
+
+      <dt>Search Filter</dt>
+      <dd>Proxy <i>Title</i>, <i>Hostname</i>, & <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
+      <dd>Use <i>:port</i> to filter by port</dd>
 
       <dt>Quick Add</dt>
       <dd>Select a proxy to add a pattern based on the current page URL</dd>
@@ -140,6 +146,18 @@
     <h2>Proxy DNS <span>(Firefox only)</span></h2>
     <p>Option to pass DNS to the SOCKS proxy when using SOCKS v5</p>
 
+    <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
+    <p>Toggle WebRTC browser settings</p>
+    <p>Toggle is live and does not require SAVE</p>
+    <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
+
+    <h2 class="experimental">Container <span>(Firefox only)</span></h2>
+    <p>Set or unset a proxy for Incognito (Private Mode) and/or Containers</p>
+    <p>Only active proxies are listed.</p>
+    <p>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user.</p>
+
+
+
     <h2 id="global-exclude">Global Exclude</h2>
     <ul>
       <li>Patterns entered here will never be proxied</li>
@@ -155,10 +173,6 @@
     <h2>Delete Browser Data</h2>
     <p>Delete cookies, indexedDB storage, DOM local storage</p>
 
-    <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
-    <p>Toggle WebRTC browser settings</p>
-    <p>Toggle is live and does not require SAVE</p>
-    <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
 
     <h2>Restore Defaults</h2>
     <p>Restore all settings to their defaults</p>
@@ -188,8 +202,9 @@
       <dt>Add</dt>
       <dd>Add a new proxy entry</dd>
 
-      <dt>Filter Proxies</dt>
-      <dd>Proxy <i>Title</i> & <i>Hostname</i> are searched and display filtered based on the input value (case-insensitive)</dd>
+      <dt>Search Filter</dt>
+      <dd>Proxy <i>Title</i>, <i>Hostname</i>, & <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
+      <dd>Use <i>:port</i> to filter by port</dd>
 
       <dt>Get Location <span>(optional)</span></dt>
       <dd>Get location details for proxies from FoxyProxy Servers</dd>
@@ -234,6 +249,7 @@
 
       <dt>PAC URL <span>(not available on Android)</span></dt>
       <dd>Required for PAC type</dd>
+      <dd>Patterns are not applicable in PAC type</dd>
 
     </dl>
 
@@ -330,7 +346,7 @@
       </tbody>
     </table>
 
-    <h3 id="">Local Server</h3>
+    <h3 id="">Local Servers</h3>
     <p>FoxyProxy can be used with local proxy servers:</p>
 
     <ul>
@@ -350,10 +366,10 @@
     <dl>
       <dt>FoxyProxy Account</dt>
       <dd>Import proxies from  <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
-      <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd>
+      <!-- <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd> -->
 
       <dt>Import from URL</dt>
-      <dd>Import preferences (valid JSON) from a remote URL</dd>
+      <dd>Import preferences (as valid JSON) from a remote URL</dd>
 
 
       <dt>Proxy List</dt>
@@ -403,7 +419,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     </ol>
 
     <h1 id="log">Log <span>(Firefox only)</span></h1>
-    <p>Live Log displays the last 100 proxied web requests in reversed order (new one on top). It will continue to display while the Options page is open and will stop logging as soon as the page is closed. Log data is not stored.</p>
+    <p>Live Log displays the last 200 proxied web requests in reversed order (new one on top). It will continue to display while the Options page is open and will stop logging as soon as the page is closed. Log data is not stored.</p>
     <p>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> webRequest API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a>.</p>
 
     <h1 id="support">Support</h1>

@@ -6,6 +6,7 @@
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1853203
 // Fixed in Firefox 119
 import {Pattern} from './pattern.js';
+import {PageAction} from './page-action.js';
 
 // ---------- Firefox Proxy Process ------------------------
 export class OnRequest {
@@ -17,13 +18,16 @@ export class OnRequest {
     this.data = [];                                         // only needed in Proxy by Pattern
     this.globalExclude = [];
     this.proxyDNS = true;
-    this.tabCache = {};                                     // tab proxy
+    this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
+    this.container = {};                                    // incognito/container proxy
 
     // --- Firefox only
     if (browser?.proxy?.onRequest) {
       browser.proxy.onRequest.addListener(e => this.#process(e), {urls: ['<all_urls>']});
-      // remove Tab from tabCache
-      browser.tabs.onRemoved.addListener(tabId => delete this.tabCache[tabId]);
+      // remove Tab from tabProxy
+      browser.tabs.onRemoved.addListener(tabId => delete this.tabProxy[tabId]);
+      // mark incognito/container
+      browser.tabs.onCreated.addListener(e => this.#checkPageAction(e));
     }
   }
 
@@ -58,14 +62,29 @@ export class OnRequest {
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
       }
     });
+
+    // --- incognito/container proxy
+    pref.container && Object.entries(pref.container).forEach(([key, val]) => {
+      if (!val) { return; }
+      key.startsWith('container-') && (key = 'firefox-' + key); // prefix key
+      this.container[key] = data.find(i => val === `${i.hostname}:${i.port}`);
+    });
   }
 
   static #process(e) {
     // --- check mode
     switch (true) {
       // --- tab proxy
-      case e.tabId !== -1 && !!this.tabCache[e.tabId]:
-        return this.#processProxy(this.tabCache[e.tabId]);
+      case e.tabId !== -1 && !!this.tabProxy[e.tabId]:
+        return this.#processProxy(this.tabProxy[e.tabId]);
+
+      // --- incognito proxy
+      case e.tabId !== -1 && e.incognito && !!this.container.incognito:
+        return this.#processProxy(this.container.incognito);
+
+      // --- incognito/container proxy
+      case e.tabId !== -1 && e.cookieStoreId && !!this.container[e.cookieStoreId]:
+        return this.#processProxy(this.containerProxy[e.cookieStoreId]);
 
       // --- standard operation
       case this.mode === 'disable':                         // pass direct
@@ -95,11 +114,16 @@ export class OnRequest {
     const isIP = /^[\d.:]+$/.test(host);
 
     switch (true) {
-      case host === '[::1]':
-      case host.startsWith('[::1:'):                        // with port
+      case host === 'localhost':
+      case host.endsWith('.localhost'):                     // *.localhost
       case host === '127.0.0.1':
       case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
+      case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16
+      case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
       case !isIP && !host.includes('.'):                    // not IP & plain hostname (no dots)
+      case host === '[::1]':
+      case host.startsWith('[::1:'):                        // with port
+      case host.startsWith('[FE80::'):                      // [FE80::]/10
         return true;
     }
   }
@@ -141,5 +165,30 @@ export class OnRequest {
     }
 
     return response;
+  }
+
+  // ---------- Tab Proxy ----------------------------------
+  static async setTabProxy(pxy) {
+    const tab = await browser.tabs.query({currentWindow: true, active: true});
+    if (!['http://', 'https://'].some(i => tab[0].url.startsWith(i))) {
+      return;
+    }
+
+    this.tabProxy[tab[0].id] = pxy;
+    PageAction.set(tab[0].id, pxy);
+  }
+
+  static async unsetTabProxy() {
+    const tab = await browser.tabs.query({currentWindow: true, active: true});
+    delete this.tabProxy[tab[0].id];
+    PageAction.unset(tab[0].id);
+  }
+
+  // ---------- Incognito/Container ------------------------
+  static #checkPageAction(tab) {
+    if (tab.id === -1 || this.tabProxy[tab.id]) { return; } // not if tab proxy is set
+
+    const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
+    pxy ? PageAction.set(tab.id, pxy) : PageAction.unset(tab.id);
   }
 }

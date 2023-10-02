@@ -10,26 +10,33 @@ class Popup {
 
   static {
     document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
+
+    this.list = document.querySelector('div.list');
     this.select = document.querySelector('select');
+    this.proxyCache = {};                                   // used to find proxy
 
     // disable buttons on Chrome
     !App.firefox && document.querySelectorAll('.firefox').forEach(i => i.disabled = true);
+
+    // --- proxy filter
+    const filter = document.querySelector('#filter');
+    filter.value = '';                                      // reset after reload
+    filter.addEventListener('input', e => this.filterProxy(e));
 
     this.process();
   }
 
   static process() {
-    const list = document.querySelector('div.list');
     const labelTemplate = document.querySelector('template').content.firstElementChild;
     const docFrag = document.createDocumentFragment();
 
     // check if there are patterns
-    if (!pref.data.some(i => i.include[0])) {
-      list.children[0].style.display = 'none';              // hide option if there are no patterns
+    if (!pref.data.some(i => i.active && i.include[0])) {
+      this.list.children[0].style.display = 'none';         // hide option if there are no patterns
       pref.mode === 'pattern' && (pref.mode = 'disable');   // show as disable
     }
 
-    pref.mode === 'pattern' && (list.children[0].children[2].checked = true);
+    pref.mode === 'pattern' && (this.list.children[0].children[2].checked = true);
 
     pref.data.filter(i => i.active).forEach(item => {
       const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
@@ -44,8 +51,8 @@ class Popup {
       docFrag.appendChild(label);
     });
 
-    list.appendChild(docFrag);
-    list.addEventListener('click', e =>
+    this.list.appendChild(docFrag);
+    this.list.addEventListener('click', e =>
       // fires twice (click & label -> input)
       e.target.name === 'server' && this.processSelect(e.target.value)
     );
@@ -56,8 +63,10 @@ class Popup {
       const flag = App.getFlag(item.cc);
       const value = `${item.hostname}:${item.port}`;
       const opt = new Option(flag + ' ' + (item.title || value), value);
-      opt.style.color = item.color;                         // supported on Chrome, not on Firefox
+      // opt.style.color = item.color;                         // supported on Chrome, not on Firefox
       docFrag.appendChild(opt);
+
+      this.proxyCache[value] = item;                        // cache to find later
     });
 
     this.select.appendChild(docFrag);
@@ -69,7 +78,6 @@ class Popup {
     pref.mode = mode;
     browser.storage.local.set({mode});                      // save mode
     browser.runtime.sendMessage({id: 'setProxy', pref});
-    localStorage.setItem('mode', mode);                     // keep a copy for options page ???
   }
 
   static processButtons(e) {
@@ -100,9 +108,9 @@ class Popup {
         break;
 
       case 'setTabProxy':
-        if (!App.firefox || !this.select.value) { break; }
+        if (!App.firefox || !this.select.value) { break; }  // firefox only
 
-        browser.runtime.sendMessage({id: 'setTabProxy', pref, host: this.select.value});
+        browser.runtime.sendMessage({id: 'setTabProxy', proxy: this.proxyCache[this.select.value]});
         this.select.selectedIndex = 0;                      // reset select option
         break;
 
@@ -110,6 +118,22 @@ class Popup {
         if (!App.firefox) { break; }
         browser.runtime.sendMessage({id: 'unsetTabProxy'});
     }
+  }
+
+  static filterProxy(e) {
+    const str = e.target.value.toLowerCase().trim();
+    if (!str) {
+      [...this.list.children].forEach(i => i.classList.remove('off'));
+      return;
+    }
+
+    [...this.list.children].forEach((item, idx) => {
+      if (idx < 2) { return; }                              // not the first 2
+
+      const title = item.children[1].textContent;
+      const host = item.children[3].value;
+      item.classList.toggle('off', ![title, host].some(i => i.toLowerCase().includes(str)));
+    });
   }
 
   static getIP() {

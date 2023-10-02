@@ -1,7 +1,7 @@
 import {App} from './app.js';
 
-// ---------- Log (Side Effect) ----------------------------
-class ShowLog {
+// ---------- Log ------------------------------------------
+export class Log {
 
   static {
     this.trTemplate = document.querySelector('.log template').content.firstElementChild;
@@ -12,22 +12,31 @@ class ShowLog {
       this.tbody.textContent = '';                          // remove "not available" notice
       browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
     }
+
+    this.proxyCache = {};                                   // used to find proxy
   }
 
   static process(e) {
-    if (!e.proxyInfo) { return; }
+    const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
+    const [num, time, container, method, doc, url, title, type, host, port] = tr.children;
 
-    const tr = this.tbody.children[99] || this.trTemplate.cloneNode(true);
-    const td = tr.children;
+    time.textContent = this.formatInt(e.timeStamp);
+    method.textContent = e.method;
+    doc.textContent = e.documentUrl || '';                  // For a top-level document, documentUrl is undefined
+    doc.title = e.documentUrl || '';
+    url.textContent = e.url;
+    url.title = e.url;
+    container.classList.toggle('incognito', e.incognito);
+    container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
 
-    td[0].title = e.documentUrl || '';
-    td[0].textContent = e.documentUrl || '';
-    td[1].title = e.url;
-    td[1].textContent = e.url;
-    td[2].textContent = e.method;
-    td[3].children[0].textContent = e.proxyInfo.host;
-    td[3].children[1].textContent = `:${e.proxyInfo.port}`;
-    td[4].textContent = this.formatInt(e.timeStamp);
+    const info = e.proxyInfo || {host: '', port: '', type: ''};
+    const item = this.proxyCache[`${info.host}:${info.port}`];
+    const flag = item?.cc ? App.getFlag(item.cc) + ' ' : '';
+    title.textContent = flag + (item?.title || '');
+    title.style.borderLeftColor = item?.color || 'var(--border)';
+    type.textContent = info.type.toUpperCase();
+    host.textContent = info.host;
+    port.textContent = info.port;
 
     this.tbody.prepend(tr);                                 // in reverse order, new on top
   }

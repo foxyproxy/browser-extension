@@ -69,7 +69,8 @@ export class Migrate {
       proxyDNS: true,                                       // global preference
       globalExcludeWildcard: '',
       globalExcludeRegex: '',
-      data: []
+      data: [],
+      container: {}
     };
 
     const sk = pref.settings.sk;                            // CryptoJS key
@@ -149,7 +150,8 @@ export class Migrate {
       proxyDNS: true,                                       // global preference
       globalExcludeWildcard: '',
       globalExcludeRegex: '',
-      data: []
+      data: [],
+      container: {}
     };
 
     const data = Object.values(pref).filter(i => i.hasOwnProperty('address'));

@@ -2,6 +2,7 @@ import {App} from './app.js';
 import {Migrate} from './migrate.js';
 import {Authentication} from './authentication.js';
 import {Proxy} from './proxy.js';
+import {OnRequest} from './on-request.js';
 
 // ---------- Process Preference ---------------------------
 class ProcessPref {
@@ -81,7 +82,7 @@ class ProcessPref {
     const obj = {};
     data[0] && !App.equal(pref.data, data) && (obj.data = data);
 
-    ['proxyDNS', 'globalExcludeRegex', 'globalExcludeWildcard'].forEach(item => {
+    ['proxyDNS', 'globalExcludeRegex', 'globalExcludeWildcard', 'container'].forEach(item => {
       changes.hasOwnProperty(item) && (obj[item] = changes[item].newValue);
     });
 
@@ -89,7 +90,7 @@ class ProcessPref {
   }
 
   static onMessage(message) {
-    const {id, pref, host} = message;
+    const {id, pref, host, proxy} = message;
     switch (id) {
       case 'setProxy':
         Authentication.init(pref.data);                     // update authentication data
@@ -105,11 +106,11 @@ class ProcessPref {
         break;
 
       case 'setTabProxy':
-        Proxy.setTabProxy(pref, host);
+        OnRequest.setTabProxy(proxy);
         break;
 
       case 'unsetTabProxy':
-        Proxy.unsetTabProxy();
+        OnRequest.unsetTabProxy();
         break;
     }
   }

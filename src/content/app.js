@@ -15,7 +15,8 @@ export let pref = {
   proxyDNS: true,
   globalExcludeWildcard: '',
   globalExcludeRegex: '',
-  data: []
+  data: [],
+  container: {}
 };
 // ---------- /Default Preference --------------------------
 
