@@ -45,7 +45,7 @@ export class OnRequest {
     const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
 
     // --- single proxy
-    /:\d$/.test(pref.mode) && (this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`));
+    /:\d+$/.test(pref.mode) && (this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`));
 
     // --- proxy by pattern
     // this.proxy = null;
