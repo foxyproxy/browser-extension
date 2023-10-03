@@ -54,7 +54,7 @@ export class Proxy {
     // retain settings as Network setting is partially customisable
     const conf = await this.#getSettings();
     const value = conf.value;
-    OnRequest.mode = pref.mode;
+    OnRequest.init(pref);
     switch (true) {
       case pref.mode === 'disable':
         value.proxyType = 'system';
@@ -64,7 +64,7 @@ export class Proxy {
       // Automatic proxy configuration URL
       case pref.mode.includes('://'):
         value.proxyType = 'autoConfig';
-        value.autoConfigUrl = mode;
+        value.autoConfigUrl = pref.mode;
         browser.proxy.settings?.set({value});
         break;
 
@@ -72,7 +72,6 @@ export class Proxy {
       default:
         value.proxyType = 'system';
         browser.proxy.settings?.set({value});
-        OnRequest.init(pref);
     }
   }
 

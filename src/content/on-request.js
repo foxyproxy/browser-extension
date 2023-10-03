@@ -32,6 +32,8 @@ export class OnRequest {
   }
 
   static init(pref) {
+    this.mode = pref.mode;
+
     // --- used in mode pattern or single proxy
     this.proxyDNS = pref.proxyDNS;
     this.globalExclude = [
@@ -43,14 +45,10 @@ export class OnRequest {
     const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
 
     // --- single proxy
-    if (pref.mode !== 'pattern') {
-      this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`);
-      this.data = [];
-      return;
-    }
+    /:\d$/.test(pref.mode) && (this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`));
 
     // --- proxy by pattern
-    this.proxy = null;
+    // this.proxy = null;
     this.data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
       return {
         type: item.type,
@@ -65,9 +63,8 @@ export class OnRequest {
 
     // --- incognito/container proxy
     pref.container && Object.entries(pref.container).forEach(([key, val]) => {
-      if (!val) { return; }
       key.startsWith('container-') && (key = 'firefox-' + key); // prefix key
-      this.container[key] = data.find(i => val === `${i.hostname}:${i.port}`);
+      this.container[key] = val && data.find(i => val === `${i.hostname}:${i.port}`);
     });
   }
 
@@ -84,7 +81,7 @@ export class OnRequest {
 
       // --- incognito/container proxy
       case e.tabId !== -1 && e.cookieStoreId && !!this.container[e.cookieStoreId]:
-        return this.#processProxy(this.containerProxy[e.cookieStoreId]);
+        return this.#processProxy(this.container[e.cookieStoreId]);
 
       // --- standard operation
       case this.mode === 'disable':                         // pass direct
