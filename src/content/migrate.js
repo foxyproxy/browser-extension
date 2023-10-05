@@ -42,6 +42,7 @@ export class Migrate {
     switch (true) {
       case pref.hasOwnProperty('settings'):
         pref = this.convert3(pref);
+        break;
 
       default:
         pref = this.convert7(pref);
