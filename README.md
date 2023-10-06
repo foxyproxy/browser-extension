@@ -5,6 +5,7 @@ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based 
 FoxyProxy is being updated for manifest V3.
 - Chrome minimum version 108
 - Firefox minimum version 93
+- Firefox for Android minimum version 113 (manifest) (API minimum 102)
 
 Please post all feature requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).
 
