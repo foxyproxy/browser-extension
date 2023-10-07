@@ -52,15 +52,21 @@ h3 span {
   margin-left: 0.5em;
 }
 
-h3 {
+/* h3 {
   font-size: 1.2em;
-}
+} */
 
 dt {
   /* color: var(--nav-bg); */
   background-color: var(--alt-bg);
   display: table;
   padding: 0.2em 0.5em;
+}
+
+dl.plain dt {
+  /* color: var(--color); */
+  background-color: unset;
+  font-weight: bold;
 }
 
 dd + dt {
@@ -172,6 +178,7 @@ pre {
 code {
   padding: 0 0.3em;
   background-color: var(--hover);
+  font-size: 1.1em;
 }
 
 blockquote {
@@ -252,7 +259,7 @@ figcaption {
 }
 
 .warning {
-  border-left-color: #f30;
+  border-left-color: #f90;
 }
 
 .warning::before {

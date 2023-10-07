@@ -115,7 +115,8 @@ class Popup {
         break;
 
       case 'unsetTabProxy':
-        if (!App.firefox) { break; }
+        if (!App.firefox) { break; }                        // firefox only
+
         browser.runtime.sendMessage({id: 'unsetTabProxy'});
     }
   }

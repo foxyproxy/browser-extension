@@ -1,11 +1,44 @@
 import {App} from './app.js';
 import {Pattern} from './pattern.js';
+import {Authentication} from './authentication.js';
 import {OnRequest} from './on-request.js';
 import {Action} from './action.js';
 
 export class Proxy {
 
+  static {
+    browser.runtime.onMessage.addListener((...e) => this.onMessage(...e)); // from popup options
+  }
+
+  static onMessage(message) {
+    const {id, pref, host, proxy} = message;
+    switch (id) {
+      case 'setProxy':
+        this.set(pref);
+        break;
+
+      case 'quickAdd':
+        this.quickAdd(pref, host);
+        break;
+
+      case 'excludeHost':
+        this.excludeHost(pref);
+        break;
+
+      case 'setTabProxy':
+        OnRequest.setTabProxy(proxy);
+        break;
+
+      case 'unsetTabProxy':
+        OnRequest.unsetTabProxy();
+        break;
+    }
+  }
+
   static set(pref) {
+    // --- update authentication data
+    Authentication.init(pref.data);
+
     // --- check mode
     switch (true) {
       // no proxy, set to disable
@@ -20,11 +53,11 @@ export class Proxy {
         break;
     }
 
-    App.firefox ? this.#setFirefox(pref) : this.#setChrome(pref);
+    App.firefox ? this.setFirefox(pref) : this.setChrome(pref);
     Action.set(pref);
   }
 
-  static async #getSettings() {
+  static async getSettings() {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
     if (!browser.proxy.settings) {
@@ -49,10 +82,10 @@ export class Proxy {
     return conf;
   }
 
-  static async #setFirefox(pref) {
+  static async setFirefox(pref) {
     // proxy.settings is not supported on Android
     // retain settings as Network setting is partially customisable
-    const conf = await this.#getSettings();
+    const conf = await this.getSettings();
     const value = conf.value;
     OnRequest.init(pref);
     switch (true) {
@@ -75,9 +108,9 @@ export class Proxy {
     }
   }
 
-  static #setChrome(pref) {
+  static setChrome(pref) {
     // check if proxy.settings is controlled_by_this_extension
-    this.#getSettings();
+    this.getSettings();
 
     // https://developer.chrome.com/docs/extensions/reference/types/
     // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
@@ -98,13 +131,13 @@ export class Proxy {
       default:
         config.value.mode = 'pac_script';
         config.value.pacScript = {mandatory: true};
-        config.value.pacScript.data = this.#getPacString(pref);
+        config.value.pacScript.data = this.getPacString(pref);
     }
 
     browser.proxy.settings.set(config);
   }
 
-  static #getPacString(pref) {
+  static getPacString(pref) {
     // mode: pattern or single proxy
     const globalExclude = [
       ...pref.globalExcludeWildcard.split(/\n+/).map(i => Pattern.get(i, 'wildcard')),
@@ -120,7 +153,7 @@ export class Proxy {
       const pacString =
 `function FindProxyForURL(url, host) {
   const globalExclude = ${JSON.stringify(globalExclude)};
-  return globalExclude.some(i => new RegExp(i, 'i').test(url)) ? 'DIRECT' : '${this.#getProxyString(proxy)}';
+  return globalExclude.some(i => new RegExp(i, 'i').test(url)) ? 'DIRECT' : '${this.getProxyString(proxy)}';
 }`;
       return pacString;
     }
@@ -128,7 +161,7 @@ export class Proxy {
     // --- proxy by pattern
     data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
       return {
-        str: this.#getProxyString(item),
+        str: this.getProxyString(item),
         include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
       }
@@ -150,7 +183,7 @@ export class Proxy {
     return pacString;
   }
 
-  static #getProxyString(proxy) {
+  static getProxyString(proxy) {
     let {type, hostname, port} = proxy;
     switch (type) {
       case 'direct':
@@ -170,12 +203,49 @@ export class Proxy {
     return `${type} ${hostname}:${port}`;
   }
 
-  // ---------- Tab Proxy ----------------------------------
-  // static setTabProxy(pxy) {
-  //   OnRequest.setTabProxy(pxy);
-  // }
+  // ---------- Quick Add/Exclude Host ---------------------
+  static async quickAdd(pref, host) {
+    const activeTab = await this.getActiveTab();
+    const url = this.getURL(activeTab[0].url);
+    if (!url) { return; }
 
-  // static unsetTabProxy() {
-  //   OnRequest.unsetTabProxy();
-  // }
+    const pat = {
+      active: true,
+      pattern: `^${url.origin}/`,
+      title: url.hostname,
+      type: 'regex',
+    };
+
+    const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
+    if (!pxy) { return; }
+
+    pxy.include.push(pat);
+    browser.storage.local.set({data: pref.data});
+    pref.mode === 'pattern' && pxy.active && this.set(pref); // update Proxy
+  }
+
+  static async excludeHost(pref, tab) {
+    const activeTab = tab || await this.getActiveTab();
+    const url = this.getURL(activeTab[0].url);
+    if (!url) { return; }
+
+    // add host pattern, remove duplicates
+    const pat = `^${url.origin}/`;
+    const exclude = pref.globalExcludeRegex.split(/[\r\n]+/);
+    if (exclude.includes(pat)) { return; }
+
+    exclude.push(pat);
+    pref.globalExcludeRegex  = [...new Set(exclude)].join('\n').trim();
+    browser.storage.local.set({globalExcludeRegex: pref.globalExcludeRegex});
+    this.set(pref);                                         // update Proxy
+  }
+
+  static async getActiveTab() {
+    return browser.tabs.query({currentWindow: true, active: true});
+  }
+
+  static getTabURL(str) {
+    const url = new URL(str);
+    return ['http:', 'https:'].includes(url.protocol) ? url : null; // acceptable URLs
+  }
 }

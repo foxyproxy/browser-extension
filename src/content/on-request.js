@@ -23,11 +23,11 @@ export class OnRequest {
 
     // --- Firefox only
     if (browser?.proxy?.onRequest) {
-      browser.proxy.onRequest.addListener(e => this.#process(e), {urls: ['<all_urls>']});
+      browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
       // remove Tab from tabProxy
       browser.tabs.onRemoved.addListener(tabId => delete this.tabProxy[tabId]);
       // mark incognito/container
-      browser.tabs.onCreated.addListener(e => this.#checkPageAction(e));
+      browser.tabs.onCreated.addListener(e => this.checkPageAction(e));
     }
   }
 
@@ -68,20 +68,20 @@ export class OnRequest {
     });
   }
 
-  static #process(e) {
+  static process(e) {
     // --- check mode
     switch (true) {
       // --- tab proxy
       case e.tabId !== -1 && !!this.tabProxy[e.tabId]:
-        return this.#processProxy(this.tabProxy[e.tabId]);
+        return this.processProxy(this.tabProxy[e.tabId]);
 
       // --- incognito proxy
       case e.tabId !== -1 && e.incognito && !!this.container.incognito:
-        return this.#processProxy(this.container.incognito);
+        return this.processProxy(this.container.incognito);
 
       // --- incognito/container proxy
       case e.tabId !== -1 && e.cookieStoreId && !!this.container[e.cookieStoreId]:
-        return this.#processProxy(this.container[e.cookieStoreId]);
+        return this.processProxy(this.container[e.cookieStoreId]);
 
       // --- standard operation
       case this.mode === 'disable':                         // pass direct
@@ -90,10 +90,10 @@ export class OnRequest {
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns
-        return this.#processPattern(e.url);
+        return this.processPattern(e.url);
 
       default:                                              // get the proxy for all
-        return this.#processProxy(this.proxy);
+        return this.processProxy(this.proxy);
     }
   }
 
@@ -106,7 +106,7 @@ export class OnRequest {
   // proxy.onRequest only apply to http/https/ws/wss
   // Implementing a default localhost bypass
   // it can't catch a domain set by user to 127.0.0.1 in the hosts file
-  static #bypass(url) {
+  static bypass(url) {
     const [, host] = url.split(/:\/\/|\//);                 // hostname with/without port
     const isIP = /^[\d.:]+$/.test(host);
 
@@ -125,19 +125,19 @@ export class OnRequest {
     }
   }
 
-  static #processPattern(url) {
-    if (this.#bypass(url)) { return {type: 'direct'}; }
+  static processPattern(url) {
+    if (this.bypass(url)) { return {type: 'direct'}; }
 
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
     for (const proxy of this.data) {
-      if (!match(proxy.exclude) && match(proxy.include)) { return this.#processProxy(proxy); }
+      if (!match(proxy.exclude) && match(proxy.include)) { return this.processProxy(proxy); }
     }
 
     return {type: 'direct'};                                // no match
   }
 
-  static #processProxy(proxy) {
+  static processProxy(proxy) {
     const {type, hostname: host, port, username, password} = proxy;
     if (type === 'direct') { return {type: 'direct'}; }
 
@@ -182,7 +182,7 @@ export class OnRequest {
   }
 
   // ---------- Incognito/Container ------------------------
-  static #checkPageAction(tab) {
+  static checkPageAction(tab) {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; } // not if tab proxy is set
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];

@@ -41,20 +41,24 @@
 
     <p>If you upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
-    <h3>Non-Destructive Editing</h3>
-    <!-- <p>Editing & importing is non-destructive.</p> -->
+    <h4>Non-Destructive Editing</h4>
+    <p>Editing & importing are non-destructive.</p>
     <p><b>Save</b> must be clicked to apply changes.</p>
 
-    <h3>Proxy Authentication</h3>
+    <h4>Proxy Authentication</h4>
     <ul>
       <li>Authentication for http/https & SOCKS proxy servers (Note: SOCKS authentication does not work with Chrome; Firefox only)</li>
       <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
 
-    <h3>Light/Dark Theme</h3>
+    <h4>Share Preferences</h4>
+    <p>Unified code for FoxyProxy & FoxyProxy Basic, on both on Firefox & Chrome, enables users to share their preferences.</p>
+
+
+    <h4>Light/Dark Theme</h4>
     <p>FoxyProxy's theme is based on the browser's default light/dark theme.</p>
 
-    <h3 class="experimental">Firefox on Android</h3>
+    <h4 class="experimental">Firefox on Android</h4>
     <p>Support is experimental and based on user feedback.</p>
 
 
@@ -93,6 +97,7 @@
       <dd>Add host (with its protocol) to the Global Exclude</dd>
 
       <dt>Set Tab Proxy <span>(Firefox only)</span></dt>
+      <dd>Tab Proxy is processed before standard proxy settings</dd>
       <dd>Select a proxy for the current tab</dd>
       <dd>Only top 10 active proxies are listed</dd>
       <dd>FoxyProxy icon will show in the selected tab and mouse-over title displays selection details</dd>
@@ -111,9 +116,27 @@
     </dl>
 
 
+    <h2>Keyboard Shortcut <span>(not available on Android)</span></h2>
+
+    <p>You can change/set keyboard shortcuts.</p>
+
+    <dl class="plain">
+      <dt>Chrome</dt>
+      <dd>Go to: <code>chrome://extensions/shortcuts</code></dd>
+
+      <dt>Firefox</dt>
+      <dd>Click the menu button ☰, click <code>Add-ons and Themes</code> and select <code>Extensions</code>.</dd>
+      <dd>Click the <i>Tools</i> for all <i>add-ons</i> cogwheel.</dd>
+      <dd>Click <code>Manage Extension Shortcuts</code> in the menu.</dd>
+      <dd>You will see the shortcut options (if available) for your installed add-ons.</dd>
+      <dd>See also: <a href="https://support.mozilla.org/kb/manage-extension-shortcuts-firefox" target="_blank">Manage extension shortcuts in Firefox</a></dd>
+
+    </dl>
 
 
     <h1 id="options">Options</h1>
+
+    <p>Some options are not available in Chrome, but has been left for when sharing preferences between Chrome & Firefox.</p>
 
     <h2 id="enable-storage-sync">Enable Storage Sync</h2>
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
@@ -140,7 +163,8 @@
       <li>Maximum number of items 512</li>
     </ul>
 
-    <p class="note">There is a discussion to increase the storage sync quota to 1MB (<a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a>).</p>
+    <p class="note">There is a discussion to increase the storage sync quota to 1MB.<br>
+      See also: <a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a></p>
 
 
     <h2>Proxy DNS <span>(Firefox only)</span></h2>
@@ -151,10 +175,25 @@
     <p>Toggle is live and does not require SAVE</p>
     <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
 
+
     <h2 class="experimental">Container <span>(Firefox only)</span></h2>
     <p>Set or unset a proxy for Incognito (Private Mode) and/or Containers</p>
-    <p>Only active proxies are listed.</p>
-    <p>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user.</p>
+
+    <ul>
+      <li>Incognito/Container are processed before standard proxy settings (and after Tab Proxy), therefore they function even with normal operation set to disable</li>
+      <li>Only active proxies are listed</li>
+      <li>Set proxy will clear if it is deleted or deactivated</li>
+      <li>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user</li>
+
+    </ul>
+
+
+    <h2>Keyboard Shortcut <span>(not available on Android)</span></h2>
+    <p>Preselect a proxy to associate with a keyboard shortcut action</p>
+    <ul>
+      <li>Only active proxies are listed</li>
+      <li>Set proxy will clear if it is deleted or deactivated</li>
+    </ul>
 
 
 
@@ -162,9 +201,11 @@
     <ul>
       <li>Patterns entered here will never be proxied</li>
       <li>Pattern rules are the same as include/exclude <a href="#patterns">patterns</a></li>
-      <pli>Use the drop down menu to add ready-made patterns</pli>
+      <li>Use the drop down menu to add ready-made patterns</li>
+      <li>Applies to Proxy by Patterns & Individual Proxy</li>
+      <li>Does not apply to PAC URLs, Tab Proxy, or Incognito/Container Proxy</li>
+      <li>In Firefox, for PAC URLs, you can use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></li>
       <li>Duplicates will be removed</li>
-      <!-- <li>In Firefox you can also use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></li> -->
     </ul>
 
 
@@ -187,16 +228,32 @@
 
 
     <h1 id="proxies">Proxies</h1>
+
+
+
+    <h2>localhost</h2>
+
     <p>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied.</p>
-      <!-- <ul>
-        <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/en-US/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li>
-        <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
-        <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
-      </ul> -->
 
-    <!-- <p class="note">In Chrome FoxyProxy uses PAC and above rule is fully enforced. In Firefox API, it requires further testing.</p> -->
+    <ul>
+      <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/en-US/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li>
+      <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
+      <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
+    </ul>
 
-    <!-- <p>Some options are not available in Chrome, but has been left for when sharing preferences between Chrome & Firefox.</p> -->
+
+    <dl class="plain">
+      <dt>Chrome</dt>
+      <dd><code>localhost</code> bypass is handle by Chrome</dd>
+
+      <dt>Firefox</dt>
+      <dd><code>localhost</code> bypass for standard proxies are handle by FoxyProxy</dd>
+      <dd><code>localhost</code> bypass for PAC URLs are handle by Firefox</dd>
+      <dd>In Firefox, for PAC URLs, you can use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></dd>
+    </dl>
+
+
+    <h2>Proxy</h2>
 
     <dl>
       <dt>Add</dt>
@@ -253,52 +310,28 @@
 
     </dl>
 
+    <h3 id="">Local Servers</h3>
+    <p>FoxyProxy can be used with local proxy servers:</p>
+
+    <ul>
+      <li>Go to Proxy tab ➤ Add a new proxy</li>
+      <li>Fill the details according to own preference e.g. Title: TOR</li>
+      <li>TOR ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 9050</li>
+      <li>Psiphon ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 60351</li>
+      <li>Privoxy ➤ Type: HTTPS, Hostname: 127.0.0.1, Port: 8118</li>
+      <li>Add patterns to limit to some URLs only</li>
+    </ul>
 
     <h2 id="patterns">Patterns</h2>
     <p>Patterns can be full or partial match which means it can match the entire URL or only part of it.</p>
     <p>Ending with * for wildcard patterns is not necessary.</p>
 
-    <p>When FoxyProxy is set to <i>Proxy by Patterns</i> and there are existing patterns:</p>
+    <p>When FoxyProxy is set to "Proxy by Patterns" and there are existing patterns:</p>
     <ul>
       <li>Proxies are checked in order</li>
       <li>If one of exclude patterns matches, then that proxy is skipped</li>
       <li>If one of include patterns matches, then that proxy is used, otherwise the next proxy is checked</li>
     </ul>
-
-    <dl>
-      <dt>Quick Add</dt>
-      <dd>Add ready-made patterns</dd>
-      <dd><code>Plain Host</code> matches hostnames that contain no dots, e.g. <code>http://intranet/</code></dd>
-
-      <dt>Include/Exclude</dt>
-      <dd>Select to include or exclude URL that matches the pattern</dd>
-
-      <dt>Type</dt>
-      <dd>Patterns can be Wildcard or Regular Expression</dd>
-      <dd>
-        <dl>
-          <dt>Wildcard Patterns</dt>
-          <dd>Wildcard <code>*</code> is translated to Regular Expression <code>.*</code> which means 0 or more characters</dd>
-          <dd>Character <code>?</code> is translated to Regular Expression <code>.</code> which means a single character</dd>
-
-          <dt>Regular Expression</dt>
-          <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
-          <dd>There is no need to double escape special characters (already happens when saved to storage)</dd>
-        </dl>
-      </dd>
-
-      <dt>Title</dt>
-      <dd>Set the pattern title</dd>
-
-      <dt>Pattern</dt>
-      <dd>Set the pattern</dd>
-
-      <dt>Enable</dt>
-      <dd>Enable/disable the pattern</dd>
-
-      <dt>Delete</dt>
-      <dd>Delete the pattern</dd>
-    </dl>
 
     <table>
       <caption>Examples</caption>
@@ -346,17 +379,40 @@
       </tbody>
     </table>
 
-    <h3 id="">Local Servers</h3>
-    <p>FoxyProxy can be used with local proxy servers:</p>
+    <dl>
+      <dt>Quick Add</dt>
+      <dd>Add ready-made patterns</dd>
+      <dd><code>Plain Host</code> matches hostnames that contain no dots, e.g. <code>http://intranet/</code></dd>
 
-    <ul>
-      <li>Go to Proxy tab ➤ Add a new proxy</li>
-      <li>Fill the details according to own preference e.g. Title: TOR</li>
-      <li>TOR ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 9050</li>
-      <li>Psiphon ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 60351</li>
-      <li>Privoxy ➤ Type: HTTPS, Hostname: 127.0.0.1, Port: 8118</li>
-      <li>Add patterns to limit to some URLs only</li>
-    </ul>
+      <dt>Include/Exclude</dt>
+      <dd>Select to include or exclude URL that matches the pattern</dd>
+
+      <dt>Type</dt>
+      <dd>Patterns can be Wildcard or Regular Expression</dd>
+      <dd>
+        <dl>
+          <dt>Wildcard Patterns</dt>
+          <dd>Wildcard <code>*</code> is translated to Regular Expression <code>.*</code> which means 0 or more characters</dd>
+          <dd>Character <code>?</code> is translated to Regular Expression <code>.</code> which means a single character</dd>
+
+          <dt>Regular Expression</dt>
+          <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
+          <dd>There is no need to double escape special characters (already happens when saved to storage)</dd>
+        </dl>
+      </dd>
+
+      <dt>Title</dt>
+      <dd>Set the pattern title</dd>
+
+      <dt>Pattern</dt>
+      <dd>Set the pattern</dd>
+
+      <dt>Enable</dt>
+      <dd>Enable/disable the pattern</dd>
+
+      <dt>Delete</dt>
+      <dd>Delete the pattern</dd>
+    </dl>
 
 
 
@@ -402,8 +458,8 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
 
       <dt>From earlier versions</dt>
-      <dd>Import v6-7 settings JSON (e.g. <i>FoxyProxy_YYYY-MM-DD.json</i>)</dd>
-      <dd>Old <i>foxyproxy.xml</i> format can be imported in FoxyProxy v7.5 and then exported as JSON</dd>
+      <dd>Import older settings JSON (e.g. <i>FoxyProxy_YYYY-MM-DD.json</i>)</dd>
+      <dd>Old <i>foxyproxy.xml</i> format can be imported in FoxyProxy v7.5.1 and then exported as JSON</dd>
     </dl>
 
 

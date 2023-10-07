@@ -16,7 +16,8 @@ export let pref = {
   globalExcludeWildcard: '',
   globalExcludeRegex: '',
   data: [],
-  container: {}
+  container: {},
+  commands: {}
 };
 // ---------- /Default Preference --------------------------
 
@@ -27,11 +28,17 @@ export class App {
   // static chrome = navigator.userAgent.includes('Chrome');
 
   // ---------- User Preference ----------------------------
+  static defaultPref = JSON.stringify(pref);
+
   static getPref() {
     // update pref with the saved version
     return browser.storage.local.get().then(result => {
       Object.keys(result).forEach(i => pref[i] = result[i]);
     });
+  }
+
+  static getDefaultPref() {
+    return JSON.parse(this.defaultPref);
   }
 
   // ---------- Helper functions ---------------------------
@@ -48,7 +55,7 @@ export class App {
     });
   }
 
-  static equal(a, b) {                                      // bg 2 options 1
+  static equal(a, b) {                                      // bg options
     return JSON.stringify(a) === JSON.stringify(b);
   }
 

@@ -14,9 +14,9 @@ export class Authentication {
     this.data = {};
     this.pending = {};                                      // prevent bad authentication loop
     const urls = ['*://*/*'];                               // limit to HTTP, HTTPS and WebSocket URLs
-    browser.webRequest.onAuthRequired.addListener(e => this.#process(e), {urls}, ['blocking']);
-    browser.webRequest.onCompleted.addListener(e => this.#clearPending(e), {urls});
-    browser.webRequest.onErrorOccurred.addListener(e => this.#clearPending(e), {urls});
+    browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']);
+    browser.webRequest.onCompleted.addListener(e => this.clearPending(e), {urls});
+    browser.webRequest.onErrorOccurred.addListener(e => this.clearPending(e), {urls});
   }
 
   static init(data) {
@@ -27,7 +27,7 @@ export class Authentication {
     });
   }
 
-  static #process(e) {
+  static process(e) {
     if (!e.isProxy) { return; }                             // true for Proxy-Authenticate, false for WWW-Authenticate
     if (this.pending[e.requestId]) { return {cancel: true}; } // already sent once and pending
 
@@ -39,7 +39,7 @@ export class Authentication {
     }
   }
 
-  static #clearPending(e) {
+  static clearPending(e) {
     delete this.pending[e.requestId];
   }
 }

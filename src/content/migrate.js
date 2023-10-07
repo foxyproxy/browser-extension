@@ -1,3 +1,4 @@
+import {App} from './app.js';
 import {Pattern} from './pattern.js';
 import {Color} from './color.js';
 
@@ -39,19 +40,34 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 export class Migrate {
 
   static async init(pref) {
+    if (pref.data) { return;}
+
+    let db = {};
     switch (true) {
+      case !Object.keys(pref)[0]:
+        db = App.getDefaultPref();
+        break;
+
       case pref.hasOwnProperty('settings'):
-        pref = this.convert3(pref);
+        db = this.convert3(pref);
         break;
 
       default:
-        pref = this.convert7(pref);
+        db = this.convert7(pref);
     }
 
+    if (Object.keys(pref)[0]) {
+      // clear pref
+      Object.keys(pref).forEach(i => delete pref[i]);
+      await browser.storage.local.clear();
+    }
+
+    // populate pref
+    Object.keys(db).forEach(i => pref[i] = db[i]);
+
     // --- update database
-    await browser.storage.local.clear();
     await browser.storage.local.set(pref);
-    return pref;
+    // return pref;
   }
 
   static decrypt(str, key) {
@@ -64,15 +80,8 @@ export class Migrate {
     // mode in v3 was saved to localStorage and not accessible in MV3 service worker/event page
 
     // new database format
-    const db = {
-      mode: 'disable',
-      sync: !!pref?.settings?.useSyncStorage,
-      proxyDNS: true,                                       // global preference
-      globalExcludeWildcard: '',
-      globalExcludeRegex: '',
-      data: [],
-      container: {}
-    };
+    const db = App.getDefaultPref();
+    db.sync = !!pref?.settings?.useSyncStorage;
 
     const sk = pref.settings.sk;                            // CryptoJS key
     pref.proxyList?.forEach(key => {
@@ -145,15 +154,8 @@ export class Migrate {
       mode = `${i.address}:${i.port}`;
     }
 
-    const db = {
-      mode,
-      sync: !!pref.sync,
-      proxyDNS: true,                                       // global preference
-      globalExcludeWildcard: '',
-      globalExcludeRegex: '',
-      data: [],
-      container: {}
-    };
+    const db = App.getDefaultPref();
+    db.sync = !!pref.sync;
 
     const data = Object.values(pref).filter(i => i.hasOwnProperty('address'));
     data.sort((a, b) => a.index - b.index);                 // sort by index

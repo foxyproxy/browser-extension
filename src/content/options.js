@@ -47,6 +47,9 @@ class Options {
     // --- container
     this.container = document.querySelectorAll('.options .container select');
 
+    // --- keyboard Shortcut
+    this.commands = document.querySelectorAll('.options .commands select');
+
     // --- global exclude
     this.globalExcludeWildcard = document.getElementById('globalExcludeWildcard');
     this.globalExcludeRegex = document.getElementById('globalExcludeRegex');
@@ -80,7 +83,7 @@ class Options {
     });
 
     save && !ProgressBar.show() && browser.storage.local.set(pref); // update saved pref
-    this.fillContainer();
+    this.fillContainerCommands();
   }
 
   static async check() {
@@ -93,23 +96,46 @@ class Options {
     // --- check and build proxies & patterns
     const ids = [];
     const data = [];
+    const cache = {};
     // using for loop to be able to break early
     for (const item of document.querySelectorAll('div.proxyDiv details')) {
       const pxy = this.getProxyDetails(item);
       if (!pxy) { return; }
 
       data.push(pxy);
+
+      // cache to update Proxies cache
+      const id = pxy.type === 'pac' ? pxy.pac : `${pxy.hostname}:${pxy.port}`;
+      cache[id] = pxy;
     }
     const dataChanged = !App.equal(pref.data, data);        // check if proxies & patterns have changed
 
     // no errors, update pref.data
     pref.data = data;
 
-    // --- container
+    // update Log proxyCache
+    Log.proxyCache = Cache;                                 // used to get the denials for the log
+
+    // helper: remove if proxy is deleted or disabled
+    const checkSelect = i => i.value && !cache[i.value]?.active && (i.value = '');
+
+    // --- container proxy
     const container = {};
-    this.container.forEach(i => container[i.name] = i.value); // set container values
+    this.container.forEach(i => {
+      checkSelect(i);
+      container[i.name] = i.value;
+    });
     const containerChanged = Object.keys(container).some(i => container[i] !== pref.container[i]);
-    pref.container = container; // set to pref
+    pref.container = container;                             // set to pref
+
+    // --- keyboard shortcut proxy
+    const commands = {};
+    this.commands.forEach(i => {
+      checkSelect(i);
+      commands[i.name] = i.value;
+    });
+    const commandsChanged = Object.keys(commands).some(i => commands[i] !== pref.commands[i]);
+    pref.commands = commands;                               // set to pref
 
     // --- check sync
     if (this.sync.checked) {
@@ -125,6 +151,7 @@ class Options {
       pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
 
       containerChanged && (obj.container = pref.container);
+      commandsChanged && (obj.commands = pref.commands);
 
       // save changes to sync
       Object.keys(obj)[0] && browser.storage.sync.set(obj)
@@ -240,7 +267,7 @@ class Options {
       if (!pat.pattern) { continue; }                       // blank pattern
 
       if (!Pattern.validate(pat.pattern, pat.type, true)) {
-        Nav.get('proxy');                                   // show Proxy tab
+        Nav.get('proxies');                                 // show Proxy tab
         const details = item.closest('details');
         details.open = true;                                // open proxy
         elem[4].classList.add('invalid');
@@ -263,39 +290,49 @@ class Options {
   static restoreDefaults() {
     if (!confirm(browser.i18n.getMessage('restoreDefaultsConfirm'))) { return; }
 
-    const defaultPref = {
-      mode: 'disable',
-      sync: false,
-      proxyDNS: true,
-      globalExcludeWildcard: '',
-      globalExcludeRegex: '',
-      data: []
-    };
-    Object.keys(defaultPref).forEach(i => pref[i] = defaultPref[i]);
+    const db = App.getDefaultPref();
+    Object.keys(db).forEach(i => pref[i] = db[i]);
     this.process();
     Proxies.process();
   }
 
-  static fillContainer() {
-    // reset, remove children except the first one
-    this.container.forEach(i =>
-      [...i.children].forEach((opt, idx) => idx && opt.remove())
-    );
+  // --- container & commands
+  static fillContainerCommands() {
+    // reset
+    this.clearSelect(this.container);
+    this.clearSelect(this.commands);
 
     const docFrag = document.createDocumentFragment();
+    const docFragPAC = docFrag.cloneNode();
+
     // filter out PAC
-    pref.data.filter(i => i.active && i.type !== 'pac').forEach(item => {
+    pref.data.filter(i => i.active).forEach(item => {
       const flag = App.getFlag(item.cc);
-      const value = `${item.hostname}:${item.port}`;
+      const value = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
       const opt = new Option(flag + ' ' + (item.title || value), value);
       // opt.style.color = item.color;                         // supported on Chrome, not on Firefox
-      docFrag.appendChild(opt);
+
+      docFragPAC.appendChild(opt);
+      item.type !== 'pac' && docFrag.appendChild(opt.cloneNode(true));
     });
 
     this.container.forEach(i => {
       i.appendChild(docFrag.cloneNode(true));
       pref.container[i.name] && (i.value = pref.container[i.name]);
     });
+
+    this.commands.forEach(i => {
+      const frag = i.name === 'setProxy' ? docFragPAC : docFrag;
+      i.appendChild(frag.cloneNode(true));
+      pref.commands[i.name] && (i.value = pref.commands[i.name]);
+    });
+  }
+
+  static clearSelect(elem) {
+    // remove children except the first one
+    elem.forEach(i =>
+      [...i.children].forEach((opt, idx) => idx && opt.remove())
+    );
   }
 }
 // ---------- /Options -------------------------------------
@@ -359,7 +396,7 @@ class WebRTC {
 
   static async process() {
     if (!this.permission) {
-      // request permission
+      // request permission, Firefox for Android version 102
       this.permission = await browser.permissions.request({permissions: ['privacy']});
       if (!this.permission) {
         this.webRTC.checked = false;
@@ -513,10 +550,11 @@ class Proxies {
       return;
     }
 
-    this.proxyCache[`${item.hostname}:${item.port}`] = item; // cache to find later
+    const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
+    this.proxyCache[id] = item;                             // cache to find later
 
     // --- populate with data
-    const title = item.title || (item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`);
+    const title = item.title || id;
 
     // --- summary
     sum[0].textContent = App.getFlag(item.cc);
@@ -704,7 +742,7 @@ class ImportFoxyProxyAccount {
       });
 
       Proxies.proxyDiv.appendChild(Proxies.docFrag);
-      Nav.get('proxy');
+      Nav.get('proxies');
     }
 
     Spinner.hide();
@@ -756,7 +794,7 @@ class importFromUrl {
 
       Options.process();                                    // set options after the pref update
       Proxies.process();                                    // update page display
-      Nav.get('proxy');                                     // show Proxy tab
+      Nav.get('proxies');                                   // show Proxy tab
       Spinner.hide();
     })
     .catch(error => {
@@ -792,7 +830,7 @@ class ImportProxyList{
     }
 
     Proxies.proxyDiv.appendChild(Proxies.docFrag);
-    Nav.get('proxy');
+    Nav.get('proxies');
   }
 
   static parseSimple(item) {
@@ -911,13 +949,13 @@ class importFromOlder {
       return;
     }
 
-    data = Migrate.convert7(data);
+    data = data.hasOwnProperty('settings') ? Migrate.convert3(data) : Migrate.convert7(data);
     // update pref with the saved version
     Object.keys(pref).forEach(i => data.hasOwnProperty(i) && (pref[i] = data[i]));
 
     Options.process();                                      // set options after the pref update
     Proxies.process();                                      // update page display
-    Nav.get('proxy');                                       // show Proxy tab
+    Nav.get('proxies');                                     // show Proxy tab
   }
 }
 // ---------- /Import Older Export -------------------------
@@ -966,7 +1004,7 @@ class Tester {
   static back() {
     if (!this.target) { return; }
 
-    Nav.get('proxy');                                       // show Proxy tab
+    Nav.get('proxies');                                     // show Proxy tab
     const details = this.target.closest('details');
     details.open = true;                                    // open proxy
     this.target.scrollIntoView({behavior: 'smooth'});

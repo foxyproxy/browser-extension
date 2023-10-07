@@ -368,9 +368,10 @@ input[type="color"] {
   padding: 0.3em 0.5em;
 }
 
-.options div.container {
+.options div.container,
+.options div.commands {
   display: grid;
-  grid-template-columns: max-content max-content;
+  grid-template-columns: minmax(max-content, 8em) max-content;
   gap: 0.2em 1em;
   margin-left: 1em;
   margin-bottom: 1em;

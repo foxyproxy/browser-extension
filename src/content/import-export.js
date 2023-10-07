@@ -5,12 +5,12 @@ export class ImportExport {
   // 'pref' references the same object in the memory and its value gets updated
   static init(pref, callback) {
     this.callback = callback;
-    document.getElementById('file').addEventListener('change', e => this.#import(e, pref));
-    document.getElementById('export').addEventListener('click', () => this.#export(pref));
+    document.getElementById('file').addEventListener('change', e => this.import(e, pref));
+    document.getElementById('export').addEventListener('click', () => this.export(pref));
   }
 
   // import preferences
-  static #import(e, pref) {
+  static import(e, pref) {
     const file = e.target.files[0];
     switch (true) {
       case !file: App.notify(browser.i18n.getMessage('error')); return;
@@ -19,10 +19,10 @@ export class ImportExport {
         return;
     }
 
-    this.fileReader(file, r => this.#readData(r, pref));
+    this.fileReader(file, r => this.readData(r, pref));
   }
 
-  static #readData(data, pref) {
+  static readData(data, pref) {
     try { data = JSON.parse(data); }
     catch(e) {
       App.notify(browser.i18n.getMessage('fileParseError')); // display the error
@@ -36,7 +36,7 @@ export class ImportExport {
   }
 
   // export preferences
-  static #export(pref) {
+  static export(pref) {
     const data = JSON.stringify(pref, null, 2);
     const filename = `${browser.i18n.getMessage('extensionName')}_${new Date().toISOString().substring(0, 10)}.json`;
     this.saveFile({data, filename, type: 'application/json'});
