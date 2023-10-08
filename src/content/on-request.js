@@ -68,7 +68,37 @@ export class OnRequest {
     });
   }
 
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1854324
+  // proxy.onRequest failure to bypass proxy for localhost
+  // https://github.com/foxyproxy/browser-extension/issues/20
+  // Firefox & Chrome proxy.settings have a default localhost bypass
+  // Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
+  // proxy.onRequest does not have a default localhost bypass
+  // proxy.onRequest only applies to http/https/ws/wss
+  // Implementing a default localhost bypass
+  // it can't catch a domain set by user to 127.0.0.1 in the hosts file
+  static bypass(url) {
+    const [, host] = url.split(/:\/\/|\//);                 // hostname with/without port
+    const isIP = /^[\d.:]+$/.test(host);
+
+    switch (true) {
+      case host === 'localhost':
+      case host.endsWith('.localhost'):                     // *.localhost
+      case host === '127.0.0.1':
+      case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
+      case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16
+      case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
+      case !isIP && !host.includes('.'):                    // not IP & plain hostname (no dots)
+      case host === '[::1]':
+      case host.startsWith('[::1:'):                        // with port
+      case host.startsWith('[FE80::'):                      // [FE80::]/10
+        return true;
+    }
+  }
+
   static process(e) {
+    if (this.bypass(e.url)) { return {type: 'direct'}; }
+
     // --- check mode
     switch (true) {
       // --- tab proxy
@@ -97,37 +127,8 @@ export class OnRequest {
     }
   }
 
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=1854324
-  // proxy.onRequest failure to bypass proxy for localhost
-  // https://github.com/foxyproxy/browser-extension/issues/20
-  // Firefox & Chrome proxy.settings have a default localhost bypass
-  // Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
-  // proxy.onRequest does not have a default localhost bypass
-  // proxy.onRequest only apply to http/https/ws/wss
-  // Implementing a default localhost bypass
-  // it can't catch a domain set by user to 127.0.0.1 in the hosts file
-  static bypass(url) {
-    const [, host] = url.split(/:\/\/|\//);                 // hostname with/without port
-    const isIP = /^[\d.:]+$/.test(host);
-
-    switch (true) {
-      case host === 'localhost':
-      case host.endsWith('.localhost'):                     // *.localhost
-      case host === '127.0.0.1':
-      case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
-      case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16
-      case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
-      case !isIP && !host.includes('.'):                    // not IP & plain hostname (no dots)
-      case host === '[::1]':
-      case host.startsWith('[::1:'):                        // with port
-      case host.startsWith('[FE80::'):                      // [FE80::]/10
-        return true;
-    }
-  }
 
   static processPattern(url) {
-    if (this.bypass(url)) { return {type: 'direct'}; }
-
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
     for (const proxy of this.data) {
