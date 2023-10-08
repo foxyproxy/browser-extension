@@ -241,15 +241,34 @@
       <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
     </ul>
 
+    <h2>Proxying Order</h2>
 
-    <dl class="plain">
-      <dt>Chrome</dt>
-      <dd><code>localhost</code> bypass is handle by Chrome</dd>
+    <h3>Chrome</h3>
+    <dl>
+      <dt>PAC URL</dt>
+      <dd>localhost bypass is handled by the browser</dd>
+      <dd>Request is handled by the browser (no Global Exclude)</dd>
 
-      <dt>Firefox</dt>
-      <dd><code>localhost</code> bypass for standard proxies are handle by FoxyProxy</dd>
-      <dd><code>localhost</code> bypass for PAC URLs are handle by Firefox</dd>
-      <dd>In Firefox, for PAC URLs, you can use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></dd>
+      <dt>Others</dt>
+      <dd>localhost bypass is handled by the browser</dd>
+      <dd>Global Exclude</dd>
+      <dd>Proxy by Patterns/Individual Proxy</dd>
+    </dl>
+
+    <h3>Firefox</h3>
+    <dl>
+      <dt>PAC URL</dt>
+      <dd>localhost bypass is handled by the browser</dd>
+      <dd>Request is handled by the browser (no Global Exclude)</dd>
+      <dd>Users can use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></dd>
+
+      <dt>Others</dt>
+      <dd>localhost bypass is handled by FoxyProxy</dd>
+      <dd>Tab Proxy (if set)</dd>
+      <dd>Incognito Proxy (if set)</dd>
+      <dd>Container Proxy (if set)</dd>
+      <dd>Global Exclude</dd>
+      <dd>Proxy by Patterns/Individual Proxy</dd>
     </dl>
 
 
