@@ -48,6 +48,13 @@
     <section class="options">
 
       <fieldset>
+        <div class="buttons">
+          <label class="flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
+          <button type="button" id="export" class="flat" data-i18n="export"></button>
+          <button type="button" class="flat" data-i18n="deleteBrowsingData" id="deleteBrowsingData"></button>
+          <button type="button" class="flat" data-i18n="restoreDefaults"></button>
+        </div>
+
         <label class="pointer" data-i18n="enableSync"><input type="checkbox" id="sync"></label>
         <p class="description" data-i18n="enableSyncDescription"></p>
 
@@ -113,7 +120,6 @@
         </div>
 
 
-
         <label data-i18n="globalExclude"></label>
         <p class="description" data-i18n="globalExcludeDescription"></p>
         <div class="globalExclude">
@@ -124,6 +130,7 @@
           <textarea id="globalExcludeRegex"></textarea>
 
           <!-- proxy.onRequest bypasses "Connections to localhost, 127.0.0.1/8, and ::1 are never proxied." restrictions -->
+          <label data-i18n="quickAdd"></label>
           <select>
             <option value="" disabled selected>&nbsp;</option>
             <option data-type="regex" value="^http://.+">HTTP</option>
@@ -134,15 +141,6 @@
             <option data-type="regex" value="^https?://172\.16(\.\d+){2}/">172.16.*.*</option>
             <option data-type="regex" value="^https?://192\.168(\.\d+){2}/">192.168.*.*</option>
           </select>
-        </div>
-
-
-        <div class="buttons" style="margin-top: 1em;">
-          <label class="flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
-          <button type="button" id="export" class="flat" data-i18n="export"></button>
-          <span></span>
-          <button type="button" class="flat" data-i18n="deleteBrowsingData" id="deleteBrowsingData"></button>
-          <button type="button" class="flat" data-i18n="restoreDefaults"></button>
         </div>
 
         <button type="submit" data-i18n="saveOptions"></button>

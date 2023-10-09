@@ -102,9 +102,7 @@ input[type="number"] {
 
 fieldset {
   background: var(--bg);
-  /* margin-bottom: 1em; */
   border-radius: 0.5em;
-  /* border: 1px solid var(--border); */
   border: 0;
   padding: 1.5em;
 }
@@ -142,14 +140,14 @@ div.nav {
 }
 
 nav {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: end;
   color: var(--nav-color);
   height: var(--nav-height);
   max-width: var(--maxWidth);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: auto repeat(7, max-content);
-  justify-content: start;
-  align-items: end;
 }
 
 nav img {
@@ -216,16 +214,17 @@ input[type="file"] {
 
 /* ----- Submit Button ----- */
 button[type="submit"] {
-  background: var(--btn-bg);
-  padding: 0.5em 3em;
+  display: table;
   color: #fff;
+  background: var(--btn-bg);
+  font-size: 0.9em;
+  font-weight: bold;
+  margin: 1em auto 0;
+  padding: 0.5em 3em;
+  text-shadow: 0 -1px 1px #333;
   border: 0;
   border-radius: 5px;
   box-shadow: 0 5px var(--body-bg);
-  display: table;
-  margin: 1em auto 0;
-  font-weight: bold;
-  text-shadow: 0 -1px 1px #333;
 }
 
 button[type="submit"]:hover {
@@ -355,27 +354,30 @@ input[type="color"] {
 .options div.commands,
 .options div.globalExclude {
   display: grid;
-  grid-template-columns: minmax(max-content, 8em) max-content;
+  grid-template-columns: minmax(8em, max-content) max-content;
   gap: 0.2em 1em;
   margin-left: 1em;
   margin-bottom: 1em;
 }
 
 .options div.globalExclude {
-  grid-template-columns: minmax(max-content, 8em) 0.5fr;
+  grid-template-columns: minmax(8em, max-content) 0.5fr;
 }
-
-.options div.globalExclude select {
-  grid-column-start: 2;
-}
-
 
 .options div.buttons {
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
-  column-gap: 0.5em;
-  margin-top: 0.5em;
+  grid-auto-flow: column;
+  justify-content: end;
+  column-gap: 0.2em;
+  margin-bottom: 1em;
 }
+
+/*
+.options div.buttons button,
+.options div.buttons label {
+  padding: 0.2em 0.5em;
+}
+*/
 /* ----- /Options ----- */
 
 
