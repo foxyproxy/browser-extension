@@ -206,12 +206,12 @@ export class Proxy {
   // ---------- Quick Add/Exclude Host ---------------------
   static async quickAdd(pref, host) {
     const activeTab = await this.getActiveTab();
-    const url = this.getURL(activeTab[0].url);
-    if (!url) { return; }
+    const pattern = this.getPattern(activeTab[0].url);
+    if (!pattern) { return; }
 
     const pat = {
       active: true,
-      pattern: `^${url.origin}/`,
+      pattern,
       title: url.hostname,
       type: 'regex',
     };
@@ -226,15 +226,14 @@ export class Proxy {
 
   static async excludeHost(pref, tab) {
     const activeTab = tab || await this.getActiveTab();
-    const url = this.getURL(activeTab[0].url);
-    if (!url) { return; }
+    const pattern = this.getPattern(activeTab[0].url);
+    if (!pattern) { return; }
 
     // add host pattern, remove duplicates
-    const pat = `^${url.origin}/`;
     const exclude = pref.globalExcludeRegex.split(/[\r\n]+/);
-    if (exclude.includes(pat)) { return; }
+    if (exclude.includes(pattern)) { return; }
 
-    exclude.push(pat);
+    exclude.push(pattern);
     pref.globalExcludeRegex  = [...new Set(exclude)].join('\n').trim();
     browser.storage.local.set({globalExcludeRegex: pref.globalExcludeRegex});
     this.set(pref);                                         // update Proxy
@@ -244,8 +243,10 @@ export class Proxy {
     return browser.tabs.query({currentWindow: true, active: true});
   }
 
-  static getTabURL(str) {
+  static getPattern(str) {
     const url = new URL(str);
-    return ['http:', 'https:'].includes(url.protocol) ? url : null; // acceptable URLs
+    if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
+
+    return  '^' + url.origin.replace(/\./g, '\\.') + '/';
   }
 }
