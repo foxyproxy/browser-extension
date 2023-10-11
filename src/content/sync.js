@@ -4,7 +4,7 @@ import {App} from './app.js';
 export class Sync {
 
   static init() {
-    this.props = ['proxyDNS', 'globalExcludeRegex', 'globalExcludeWildcard', 'container'];
+    this.props = ['proxyDNS', 'globalExcludeRegex', 'globalExcludeWildcard'];
     browser.storage.onChanged.addListener((...e) => this.onChanged(...e));
   }
 
@@ -24,7 +24,9 @@ export class Sync {
     if (!pref.sync) { return; }
 
     // convert object to array + filter null newValue (deleted) + map to newValue
-    const data = Object.values(changes).filter(i => i.newValue?.hasOwnProperty('hostname')).map(i => i.newValue);
+    const data = Object.values(changes)
+      .filter(i => i.newValue?.hasOwnProperty('hostname') || i.newValue?.hasOwnProperty('pac'))
+      .map(i => i.newValue);
 
     const obj = {};
     data[0] && !App.equal(pref.data, data) && (obj.data = data);

@@ -125,7 +125,7 @@ class Options {
       checkSelect(i);
       container[i.name] = i.value;
     });
-    const containerChanged = Object.keys(container).some(i => container[i] !== pref.container[i]);
+    // const containerChanged = Object.keys(container).some(i => container[i] !== pref.container[i]);
     pref.container = container;                             // set to pref
 
     // --- keyboard shortcut proxy
@@ -134,7 +134,7 @@ class Options {
       checkSelect(i);
       commands[i.name] = i.value;
     });
-    const commandsChanged = Object.keys(commands).some(i => commands[i] !== pref.commands[i]);
+    // const commandsChanged = Object.keys(commands).some(i => commands[i] !== pref.commands[i]);
     pref.commands = commands;                               // set to pref
 
     // --- check sync
@@ -150,8 +150,8 @@ class Options {
 
       pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
 
-      containerChanged && (obj.container = pref.container);
-      commandsChanged && (obj.commands = pref.commands);
+      // containerChanged && (obj.container = pref.container);
+      // commandsChanged && (obj.commands = pref.commands);
 
       // save changes to sync
       Object.keys(obj)[0] && browser.storage.sync.set(obj)
