@@ -77,7 +77,7 @@ export class Migrate {
   // --- Chrome v3
   static convert3(pref) {
     // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/6qiMo0P-XS4
-    // mode in v3 was saved to localStorage and not accessible in MV3 service worker/event page
+    // mode in v3 was saved to localStorage and not accessible in MV3 service worker
 
     // new database format
     const db = App.getDefaultPref();
