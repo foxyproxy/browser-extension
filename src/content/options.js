@@ -94,7 +94,7 @@ class Options {
       pref.globalExcludeRegex !== this.globalExcludeRegex.value;
 
     // --- check and build proxies & patterns
-    const ids = [];
+    // const ids = [];
     const data = [];
     const cache = {};
     // using for loop to be able to break early
