@@ -8,14 +8,10 @@ export class Sync {
     browser.storage.sync.onChanged.addListener(e => this.onChanged(e));
   }
 
-  static onChanged(changes) {
+  static async onChanged(changes) {
     // no newValue on storage.local.clear()
     if (!Object.values(changes)[0]?.hasOwnProperty('newValue')) { return; }
 
-    this.syncIn(changes);
-  }
-
-  static async syncIn(changes) {
     const pref = await browser.storage.local.get();
     if (!pref.sync) { return; }
 
