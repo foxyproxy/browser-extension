@@ -5,18 +5,14 @@ export class Sync {
 
   static init() {
     this.props = ['proxyDNS', 'globalExcludeRegex', 'globalExcludeWildcard'];
-    browser.storage.onChanged.addListener((...e) => this.onChanged(...e));
+    browser.storage.sync.onChanged.addListener(e => this.onChanged(e));
   }
 
-  static onChanged(changes, area) {
+  static onChanged(changes) {
     // no newValue on storage.local.clear()
     if (!Object.values(changes)[0]?.hasOwnProperty('newValue')) { return; }
 
-    switch (true) {
-      case area === 'sync':
-        this.syncIn(changes);
-        break;
-    }
+    this.syncIn(changes);
   }
 
   static async syncIn(changes) {
