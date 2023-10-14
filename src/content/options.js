@@ -32,7 +32,8 @@ class IncognitoAccess{
 class Toggle {
 
   static password() {
-    this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password';
+    const elem = this.previousElementSibling;
+    elem.type = elem.type === 'password' ? 'text' : 'password';
   }
 }
 // ---------- /Toggle --------------------------------------
@@ -718,7 +719,7 @@ class ImportFoxyProxyAccount {
           active: true,
           title: '',
           color: '',                                        // random color will be set
-          type: 'http',
+          type: 'https',
           hostname: item.hostname,
           port: '443',
           username: item.username,
@@ -732,10 +733,12 @@ class ImportFoxyProxyAccount {
 
         const title = item.hostname.split('.')[0];
         // add http port
+        pxy.type = 'http';
         pxy.title = title + '.' + item.port[0];
         pxy.port = item.port[0];
         Proxies.addProxy(pxy);
         // add SSL port
+        pxy.type = 'https';
         pxy.title = title + '.' + item.ssl_port;
         pxy.port = item.ssl_port;
         Proxies.addProxy(pxy);
