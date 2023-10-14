@@ -731,16 +731,16 @@ class ImportFoxyProxyAccount {
           pac: ''
         };
 
-        const title = item.hostname.split('.')[0];
+        const [title] = item.hostname.split('.');
         // add http port
         pxy.type = 'http';
-        pxy.title = title + '.' + item.port[0];
         pxy.port = item.port[0];
+        pxy.title = title + '.' + item.port[0];
         Proxies.addProxy(pxy);
         // add SSL port
         pxy.type = 'https';
-        pxy.title = title + '.' + item.ssl_port;
         pxy.port = item.ssl_port;
+        pxy.title = title + '.' + item.ssl_port;
         Proxies.addProxy(pxy);
       });
 
