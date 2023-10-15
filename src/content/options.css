@@ -372,12 +372,22 @@ input[type="color"] {
   margin-bottom: 1em;
 }
 
-/*
-.options div.buttons button,
-.options div.buttons label {
-  padding: 0.2em 0.5em;
+/* button strip */
+/* .options div.buttons {
+  padding: 0 1.5em;
+  margin: 0 -1.5em 1em;
+  background: var(--btn-bg);
 }
-*/
+
+.options div.buttons > * {
+  border-left: 2px solid var(--bg);
+  border-radius: 0;
+}
+
+.options div.buttons > *:last-child {
+  border-right: 2px solid var(--bg);
+} */
+
 /* ----- /Options ----- */
 
 

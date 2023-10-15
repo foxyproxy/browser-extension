@@ -156,7 +156,10 @@ class Options {
 
       // save changes to sync
       Object.keys(obj)[0] && browser.storage.sync.set(obj)
-        .catch(error => App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message));
+      .catch(error => {
+        App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message);
+        this.sync.checked = false;                          // disabling sync option to avoid repeated errors
+      });
     }
 
     // --- check mode
