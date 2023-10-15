@@ -164,8 +164,7 @@ class Options {
 
     // --- check mode
     // get from storage in case it was changed while options page has been open
-    const m = await browser.storage.local.get({mode: 'disable'});
-    let mode = m.mode;
+    let {mode} = await browser.storage.local.get({mode: 'disable'});
     switch (true) {
       case pref.mode.includes('://') && !pref.data.some(i => i.active && i.type === 'pac' && mode === i.pac):
       case pref.mode.includes(':') && !pref.data.some(i => i.active && i.type !== 'pac' && mode === `${i.hostname}:${i.port}`):
