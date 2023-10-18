@@ -164,6 +164,27 @@ td {
   padding: 0.5em;
 }
 
+thead td {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+tbody th {
+  font-weight: normal;
+  min-width: 10em;
+}
+
+.code td,
+td.code {
+  font-family: monospace;
+  font-size: 1.2em;
+}
+
+mark {
+  color: var(--header);
+  background-color: unset;
+}
+
 /* ----- /Table ----- */
 p {
   margin-top: 0.5em;

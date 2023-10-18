@@ -27,40 +27,51 @@
       Error: proxy.settings requires private browsing permission.
     -->
 
-    <div class="warning">
-      <h2 style="margin: auto;">Private Browsing Permission Required for Firefox</h2>
-      <p>Although not required for Chrome, Firefox requires FoxyProxy to have private browsing permission.<br>
-      How to: <a href="https://support.mozilla.org/en-US/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p></p>
-    </div>
-
     <h1 id="introduction">Introduction</h1>
 
-    <p>First released in 2006, FoxyProxy is the original proxy switching tool. Used by millions daily!
+    <p>First released in 2006, FoxyProxy is the original proxy switching tool, used by millions daily!<br>
       To support this free software, please <a href="https://www.paypal.me/ericjung2/5.99" target="_blank">donate</a> or <a href="https://getfoxyproxy.org/order/" target="_blank">buy VPN/Proxy Servers</a> in over 100 countries (including such remote places as <a href="https://wikipedia.org/wiki/Réunion" target="_blank">Reunion Island</a>).
     </p>
 
     <p>If you upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
-    <h4>Non-Destructive Editing</h4>
+
+    <h2>Private Browsing Permission Required for Firefox</h2>
+    <p class="warning">Although not compulsory by Chrome, Firefox requires FoxyProxy to have private browsing permission.<br>
+    How to: <a href="https://support.mozilla.org/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></p></p>
+
+    <h2>Non-Destructive Editing</h2>
     <p>Editing & importing are non-destructive.</p>
     <p><b>Save</b> must be clicked to apply changes.</p>
 
-    <h4>Proxy Authentication</h4>
+    <h2>Proxy Authentication</h2>
     <ul>
-      <li>Authentication for http/https & SOCKS proxy servers (Note: SOCKS authentication does not work with Chrome; Firefox only)</li>
-      <li>Authentication is port-specific i.e. there can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
+      <li>HTTP/HTTPS proxy servers authentication (Chrome/Firefox)</li>
+      <li>SOCKS5 proxy servers authentication (Firefox only)</li>
+      <li>Port-specific authentication<br>There can be different user/pass for <code>example.com:3128</code> & <code>example.com:443</code></li>
     </ul>
 
-    <h4>Share Preferences</h4>
+    <h2>Proxying Order</h2>
+
+    <ul>
+      <li>localhost passthrough</li>
+      <li>Tab Proxy</li>
+      <li>Global Exclude</li>
+      <li>Incognito Proxy</li>
+      <li>Container Proxy</li>
+      <li>Individual Proxy or Proxy by Patterns</li>
+    </ul>
+
+
+    <h2>Share Preferences</h2>
     <p>Unified code for FoxyProxy & FoxyProxy Basic, on both on Firefox & Chrome, enables users to share their preferences.</p>
 
 
-    <h4>Light/Dark Theme</h4>
+    <h2>Light/Dark Theme</h2>
     <p>FoxyProxy's theme is based on the browser's default light/dark theme.</p>
 
-    <h4 class="experimental">Firefox on Android</h4>
+    <h2 class="experimental">Firefox on Android</h2>
     <p>Support is experimental and based on user feedback.</p>
-
 
 
     <h1 id="how-to-use">How to Use</h1>
@@ -172,20 +183,33 @@
 
     <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
     <p>Toggle WebRTC browser settings</p>
-    <p>Toggle is live and does not require SAVE</p>
+    <p>Toggle is live and does not require SAVE.</p>
     <p><a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> has been known to leak real IP.</p>
 
 
-    <h2 class="experimental">Container <span>(Firefox only)</span></h2>
-    <p>Set or unset a proxy for Incognito (Private Mode) and/or Containers</p>
+    <h2 class="experimental">Incognito/Container</h2>
+    <p>Set a proxy for Incognito (Private Mode) and/or Containers</p>
+    <p>Incognito proxy behaviour is slightly different in Chrome and Firefox.</p>
 
     <ul>
-      <li>Incognito/Container are processed before standard proxy settings (and after Tab Proxy), therefore they function even with normal operation set to disable</li>
+
       <li>Only active proxies are listed</li>
       <li>Set proxy will clear if it is deleted or deactivated</li>
-      <li>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user</li>
+      <li>Patterns are not applicable in incognito/container settings</li>
+      <li>Incognito/Container are processed independently, therefore they function even with normal operation set to disable</li>
 
     </ul>
+
+    <dl class="plain">
+      <dt>Chrome</dt>
+      <dd>Only Incognito option is available</dd>
+      <dd>If incognito is not set, normal settings apply to both regular and incognito windows</dd>
+
+      <dt>Firefox</dt>
+      <dd>Incognito/Container are processed before standard proxy settings (and after Tab Proxy)</dd>
+      <dd>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user</dd>
+
+    </dl>
 
 
     <h2>Keyboard Shortcut <span>(not available on Android)</span></h2>
@@ -196,19 +220,145 @@
     </ul>
 
 
-
     <h2 id="global-exclude">Global Exclude</h2>
+    <p>List of hosts that should not be proxied</p>
+
+    <!-- <p>List of hostnames or IP addresses that will not be proxied.</p>
+    <p>A comma-separated list of hosts which should not be proxied.</p> -->
+
     <ul>
-      <li>Patterns entered here will never be proxied</li>
-      <li>Pattern rules are the same as include/exclude <a href="#patterns">patterns</a></li>
-      <li>Use the drop down menu to add ready-made patterns</li>
-      <li>Applies to Proxy by Patterns & Individual Proxy</li>
-      <li>Does not apply to PAC URLs, Tab Proxy, or Incognito/Container Proxy</li>
-      <li>In Firefox, for PAC URLs, you can use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></li>
-      <li>Duplicates will be removed</li>
+      <li>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied.</li>
+      <li>The passthrough implementation is slightly different in Chrome and Firefox</li>
+      <li>Entries can be separated by comma (as in Firefox), or space, or new line</li>
+      <li>The tables shows if the process is handled by the browser or FoxyProxy</li>
+      <li>Supported formats are listed under passthrough</li>
+      <li>Scheme is supported by FoxyProxy and Chrome but not Firefox (PAC URL)</li>
+      <li>At the moment, CIDR in passthrough is not supported by FoxyProxy</li>
+      <li>Use <code>&lt;local&gt;</code> to bypass proxying for all hostnames which do not contain periods</li>
+      <li>A leading "." is interpreted as a "*."</li>
+      <li>host without a wildcard is the most compatible format</li>
     </ul>
 
+    <table>
+      <thead>
+        <tr>
+          <td></td>
+          <td colspan="2">Chrome</td>
+          <td colspan="2">Firefox</td>
+        </tr>
+        <tr>
+          <th style="width: 12em;"></th>
+          <th>localhost</th>
+          <th>passthrough</th>
+          <th>localhost</th>
+          <th>passthrough</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Proxy by Patterns</th>
+          <td><mark>browser</mark></td>
+          <td>FoxyProxy<br><i>scheme, host, wildcard</i></td>
+          <td>FoxyProxy</td>
+          <td>FoxyProxy<br><i>scheme, host, wildcard</i></td>
+        </tr>
+        <tr>
+          <th>Single Proxy</th>
+          <td><mark>browser</mark></td>
+          <td><mark>browser</mark><br><i>scheme, host, wildcard, CIDR</i></td>
+          <td>FoxyProxy</td>
+          <td>FoxyProxy<br><i>scheme, host, wildcard</i></td>
+        </tr>
+        <tr>
+          <th>PAC URL</th>
+          <td><mark>browser</mark></td>
+          <td>❌</td>
+          <td><mark>browser</mark></td>
+          <td><mark>browser</mark><br><i>host, CIDR</i></td>
+        </tr>
+        <tr>
+          <th>Incognito</th>
+          <td><mark>browser</mark></td>
+          <td><mark>browser</mark><br><i>scheme, host, wildcard, CIDR</i></td>
+          <td>FoxyProxy</td>
+          <td>FoxyProxy<br><i>scheme, host, wildcard</i></td>
+        </tr>
+        <tr>
+          <th>Container</th>
+          <td>n/a</td>
+          <td>n/a</td>
+          <td>FoxyProxy</td>
+          <td>FoxyProxy<br><i>scheme, host, wildcard</i></td>
+        </tr>
+        <tr>
+          <th>Tab Proxy</th>
+          <td>n/a</td>
+          <td>n/a</td>
+          <td>FoxyProxy</td>
+          <td>❌</td>
+        </tr>
+      </tbody>
+    </table>
 
+
+
+    <table>
+      <caption>Examples</caption>
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>match</th>
+          <th>no-match</th>
+        </tr>
+      </thead>
+      <tbody class="code">
+        <tr>
+          <td>foobar.com</td>
+          <td>foobar.com</td>
+          <td>www.foobar.com</td>
+        </tr>
+        <tr>
+          <td>.foobar.com<br>*.foobar.com</td>
+          <td>www.foobar.com</td>
+          <td>foobar.com</td>
+        </tr>
+
+        <tr>
+          <td>*foobar.com</td>
+          <td>foobar.com<br>www.foobar.com<br>foofoobar.com</td>
+          <td>google.com</td>
+        </tr>
+        <tr>
+          <td>.com</td>
+          <td>foobar.com<br>www.foobar.com</td>
+          <td>google.org</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+
+
+<!--
+  Example: .mozilla.org, .net.nz, 192.168.1.0/24
+  Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
+-->
+    <h4>See also</h4>
+    <ul>
+      <li><a href="https://developer.chrome.com/docs/extensions/reference/proxy/#bypass-list" target="_blank">Chrome Bypass list</a></li>
+      <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Proxy-bypass-rules" target="_blank">Proxy bypass rules</a></li>
+      <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
+
+      <li style="margin-top: 1em;"><a href="https://www-archive.mozilla.org/quality/networking/docs/aboutno_proxy_for" target="_blank">No Proxy for</a></li>
+      <li><a href="https://support.mozilla.org/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></li>
+      <li><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings" target="_blank">Firefox passthrough</a></li>
+
+
+      <!-- <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1810738" target="_blank">Proxy override Host matching inconsistency with Chrome</a></li>       -->
+      <!-- <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li> -->
+      <!-- <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li> -->
+    </ul>
 
 
     <h2>Delete Browser Data</h2>
@@ -230,46 +380,6 @@
     <h1 id="proxies">Proxies</h1>
 
 
-
-    <h2>localhost</h2>
-
-    <p>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied.</p>
-
-    <ul>
-      <li><a href="https://searchfox.org/mozilla-central/source/browser/locales/en-US/browser/preferences/connection.ftl#64" target="_blank">Connections to localhost, 127.0.0.1/8, and ::1 are never proxied</a></li>
-      <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
-      <li><a href="https://zzz.buzz/2019/12/12/proxy-localhost-and-loopback-in-chrome/" target="_blank">Proxy localhost and loopback addresses in Chrome</a></li>
-    </ul>
-
-    <h2>Proxying Order</h2>
-
-    <h3>Chrome</h3>
-    <dl>
-      <dt>PAC URL</dt>
-      <dd>localhost bypass is handled by the browser</dd>
-      <dd>Request is handled by the browser (no Global Exclude)</dd>
-
-      <dt>Others</dt>
-      <dd>localhost bypass is handled by the browser</dd>
-      <dd>Global Exclude</dd>
-      <dd>Proxy by Patterns/Individual Proxy</dd>
-    </dl>
-
-    <h3>Firefox</h3>
-    <dl>
-      <dt>PAC URL</dt>
-      <dd>localhost bypass is handled by the browser</dd>
-      <dd>Request is handled by the browser (no Global Exclude)</dd>
-      <dd>Users can use "No proxy for" in <a href="https://support.mozilla.org/en-US/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></dd>
-
-      <dt>Others</dt>
-      <dd>localhost bypass is handled by FoxyProxy</dd>
-      <dd>Tab Proxy (if set)</dd>
-      <dd>Incognito Proxy (if set)</dd>
-      <dd>Container Proxy (if set)</dd>
-      <dd>Global Exclude</dd>
-      <dd>Proxy by Patterns/Individual Proxy</dd>
-    </dl>
 
 
     <h2>Proxy</h2>
@@ -304,7 +414,7 @@
       <dd>Set the proxy title</dd>
 
       <dt>Type</dt>
-      <dd>HTTP/HTTPS/SOCKS/SOCKS4 to be used with hostname & port</dd>
+      <dd>HTTP/HTTPS/SOCKS4/SOCKS5 to be used with hostname & port</dd>
       <dd>PAC to be used with PAC URL</dd>
 
       <dt>Country</dt>
@@ -342,61 +452,6 @@
     </ul>
 
     <h2 id="patterns">Patterns</h2>
-    <p>Patterns can be full or partial match which means it can match the entire URL or only part of it.</p>
-    <p>Ending with * for wildcard patterns is not necessary.</p>
-
-    <p>When FoxyProxy is set to "Proxy by Patterns" and there are existing patterns:</p>
-    <ul>
-      <li>Proxies are checked in order</li>
-      <li>If one of exclude patterns matches, then that proxy is skipped</li>
-      <li>If one of include patterns matches, then that proxy is used, otherwise the next proxy is checked</li>
-    </ul>
-
-    <table>
-      <caption>Examples</caption>
-      <thead>
-        <tr>
-          <th>Pattern</th>
-          <th>match</th>
-          <th>no-match</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>*.foxyproxy.com</td>
-          <td>http://help.foxyproxy.com/index.html<br>
-            https://foo.bar.foxyproxy.com<br>
-            https://example.com/ref=twostep.foxyproxy.com
-          </td>
-          <td>https://mozilla.com/</td>
-        </tr>
-
-        <tr>
-          <td>proxy</td>
-          <td>http://help.foxyproxy.com/index.html<br>
-            https://foxyproxy.com<br>
-            https://example.com/ref=proxylist
-          </td>
-          <td>https://mozilla.com/</td>
-        </tr>
-
-        <tr>
-          <td>https://g?ogle.*</td>
-          <td>https://google.com/<br>
-            https://grogle.org<br>
-            https://google.com/maps</td>
-          <td>https://goog.com/</td>
-        </tr>
-
-        <tr>
-          <td>^https://(www|mail)\.google\.com/\d+/</td>
-          <td>https://www.google.com/123/abc<br>
-            https://mail.google.com/123/abc</td>
-          <td>https://google.com/</td>
-        </tr>
-
-      </tbody>
-    </table>
 
     <dl>
       <dt>Quick Add</dt>
@@ -407,18 +462,7 @@
       <dd>Select to include or exclude URL that matches the pattern</dd>
 
       <dt>Type</dt>
-      <dd>Patterns can be Wildcard or Regular Expression</dd>
-      <dd>
-        <dl>
-          <dt>Wildcard Patterns</dt>
-          <dd>Wildcard <code>*</code> is translated to Regular Expression <code>.*</code> which means 0 or more characters</dd>
-          <dd>Character <code>?</code> is translated to Regular Expression <code>.</code> which means a single character</dd>
-
-          <dt>Regular Expression</dt>
-          <dd>Regular Expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
-          <dd>There is no need to double escape special characters (already happens when saved to storage)</dd>
-        </dl>
-      </dd>
+      <dd>Select Wildcard or Regular Expression</dd>
 
       <dt>Title</dt>
       <dd>Set the pattern title</dd>
@@ -435,12 +479,85 @@
 
 
 
+    <h3>Pattern Guide</h3>
+
+    <ul>
+      <li>Patterns can be Wildcard (<a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts#globs" target="_blank">globs</a>) or <a href="https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_expressions" target="_blank">Regular Expression</a></li>
+      <li>Patterns can be full or partial match which means it can match the entire URL or only part of it</li>
+      <li>In practice, including URL pathname with host is rarely necessary</li>
+    </ul>
+
+    <dl>
+      <dt>Wildcard</dt>
+      <dd>Ending with <code>*</code> is not necessary</dd>
+      <dd>Wildcard <code>*</code> is translated to regular expression <code>.*</code> which means 0 or more characters</dd>
+      <dd>Character <code>?</code> is translated to regular expression <code>.</code> which means a single character</dd>
+
+      <dt>Regular Expression</dt>
+      <dd>Regular expressions are created using <code>new RegExp()</code> so there is no need to escape forward slashes</dd>
+      <dd>There is no need to double escape special characters (already happens when saved to storage)</dd>
+    </dl>
+
+
+    <p>When FoxyProxy is set to "Proxy by Patterns" and there are existing patterns:</p>
+    <ul>
+      <li>Active proxies are checked in order</li>
+      <li>If one of exclude patterns matches, then that proxy is skipped</li>
+      <li>If one of include patterns matches, then that proxy is used, otherwise the next proxy is checked</li>
+    </ul>
+
+    <table>
+      <caption>Examples</caption>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Pattern</th>
+          <th>match</th>
+          <th>no-match</th>
+        </tr>
+      </thead>
+      <tbody class="code">
+        <tr>
+          <th>Wildcard</th>
+          <td>*.google.com<br>*://*.google.com</td>
+          <td>http://help.google.com/index.html<br>https://foo.bar.google.com<br>https://example.com/ref=twostep.google.com</td>
+          <td>https://mozilla.com/</td>
+        </tr>
+
+        <tr>
+          <th>Wildcard</th>
+          <td>proxy</td>
+          <td>http://help.foxyproxy.com/index.html<br>https://proxy.com<br>https://example.com/ref=proxylist</td>
+          <td>https://mozilla.com/</td>
+        </tr>
+
+        <tr>
+          <th>Wildcard</th>
+          <td>https://g?ogle.<br>https://g?ogle.*</td>
+          <td>https://google.com/<br>https://grogle.org<br>https://google.com/maps</td>
+          <td>https://gogle.com/<br>http://google.com/</td>
+        </tr>
+
+        <tr>
+          <th>Reg Exp</th>
+          <td>^https://(www|mail)\.google\.com/\d+/</td>
+          <td>https://www.google.com/123/abc<br>https://mail.google.com/123/abc</td>
+          <td>https://google.com/</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+
+
+
     <h1 id="import">Import</h1>
       <p>Imported content will be added to existing proxies.</p>
 
     <dl>
       <dt>FoxyProxy Account</dt>
-      <dd>Import proxies from  <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
+      <dd>Import proxies from <a href="https://getfoxyproxy.org/order/" target="_blank">FoxyProxy</a> account</dd>
       <!-- <dd>Select how they are imported e.g. as domain:port or ip:port; and as HTTPS or HTTP</dd> -->
 
       <dt>Import from URL</dt>
@@ -476,7 +593,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd>
 
 
-      <dt>From earlier versions</dt>
+      <dt>Import from older versions</dt>
       <dd>Import older settings JSON (e.g. <i>FoxyProxy_YYYY-MM-DD.json</i>)</dd>
       <dd>Old <i>foxyproxy.xml</i> format can be imported in FoxyProxy v7.5.1 and then exported as JSON</dd>
     </dl>
