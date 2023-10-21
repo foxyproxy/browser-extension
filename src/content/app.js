@@ -29,15 +29,15 @@ export class App {
   // ---------- User Preference ----------------------------
   static defaultPref = JSON.stringify(pref);
 
+  static getDefaultPref() {
+    return JSON.parse(this.defaultPref);
+  }
+
   static getPref() {
     // update pref with the saved version
     return browser.storage.local.get().then(result => {
       Object.keys(result).forEach(i => pref[i] = result[i]);
     });
-  }
-
-  static getDefaultPref() {
-    return JSON.parse(this.defaultPref);
   }
 
   // ---------- Helper functions ---------------------------
