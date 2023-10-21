@@ -11,7 +11,7 @@
   "setTabProxy": { "message": "Set Tab Proxy" },
   "unsetTabProxy": { "message": "Unset Tab Proxy" },
 
-  "incognitoAccessError": { "message": "Proxy settings requires private browsing permission." },
+  "incognitoAccessError": { "message": "Firefox requires private browsing permission for proxy settings." },
 
   "enableSync": { "message": "Enable Sync" },
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
@@ -21,7 +21,7 @@
   "proxyDNSDescription": { "message": "Proxy DNS when using SOCKS v5 (Firefox Only)" },
 
   "globalExclude": { "message": "Global Exclude" },
-  "globalExcludeDescription": { "message": "Patterns entered here will never be proxied" },
+  "globalExcludeDescription": { "message": "List of hosts that should not be proxied" },
 
   "container": { "message": "Container" },
   "containerDescription": { "message": "Incognito/Container proxy (Firefox only)" },
