@@ -5,7 +5,7 @@
 /* ----- General ----- */
 :root {
   --nav-height: 3rem;
-  --maxWidth: 75rem;
+  --maxWidth: calc(100% - 110px); /*Leave enough to show logo on bottom left*/
 }
 
 html {
@@ -47,7 +47,8 @@ article {
 
 section {
   display: none;
-  margin: 0 auto;
+  margin: 0 var(--maxWidth) 0 auto;
+  width: 100%;
   max-width: var(--maxWidth);
   height: calc(100vh - var(--nav-height) - 2rem);
   overflow: auto;
@@ -146,8 +147,9 @@ nav {
   align-items: end;
   color: var(--nav-color);
   height: var(--nav-height);
+  width: 100%;
   max-width: var(--maxWidth);
-  margin: 0 auto;
+  margin: 0 var(--maxWidth) 0 auto;
 }
 
 nav img {
@@ -619,6 +621,77 @@ section.log {
 
 .log td:nth-of-type(7) {
  border-left: 2px solid var(--border);
+}
+
+.log {
+   thead {
+      position: sticky;
+      top: 0;
+      line-height: .5ch;
+      tr:nth-of-type(1) {
+         th {
+            border-top-left-radius: 2ch;
+            border-top-right-radius: 2ch;
+         }
+      }
+      tr:nth-of-type(2) {
+         th:nth-of-type(1),
+         th:nth-of-type(7) {
+            border-bottom-left-radius: 2ch;
+         }
+         th:nth-of-type(6),
+         th:nth-of-type(10) {
+            border-bottom-right-radius: 2ch;
+         }
+      }
+      tr th {
+         background-color: var(--log-bg-header);
+         text-align: center;
+         /* font-weight: bold; */
+      }
+   }
+   tbody tr {
+      &:nth-of-type(odd) {
+         background-color: var(--log-bg-odd);
+      }
+      &:nth-of-type(even) {
+         background-color: var(--log-bg-even);
+      }
+   }
+   th, td {
+      &:nth-of-type(1) {
+         width: 3ch;
+      }
+      &:nth-of-type(2) {
+         width: 7ch;
+      }
+      &:nth-of-type(3) {
+         width: 1em;
+      }
+      &:nth-of-type(4) {
+         width: 7ch;
+      }
+      &:nth-of-type(5) {
+         min-width: calc(75% * (1/4));
+         max-width: 0;
+      }
+      &:nth-of-type(6) {
+         min-width: calc(75% * (3/4));
+         max-width: 0;
+      }
+      &:nth-of-type(7) {
+         min-width: auto;
+      }
+      &:nth-of-type(8) {
+         width: 6ch;
+      }
+      &:nth-of-type(9) {
+         width: auto;
+      }
+      &:nth-of-type(10) {
+         width: 6ch;
+      }
+   }
 }
 
 .log td.incognito::before {

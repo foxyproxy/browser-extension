@@ -39,6 +39,9 @@
     --border: #777;
     /* --shadow: #fff8; */
     --dim: #ccc;
+    --log-bg-header: hsl(30, 100%, 46.7%);
+    --log-bg-odd: hsl(30, 100%, 13.3%);
+    --log-bg-even: hsl(30, 100%, 15%);
   }
 }
 

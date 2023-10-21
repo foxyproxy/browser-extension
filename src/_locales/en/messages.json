@@ -82,6 +82,7 @@
   "back": { "message": "Back" },
 
   "log": { "message": "Log" },
+  "request": { "message": "Request" },
   "documentUrl": { "message": "Document URL" },
   "url": { "message": "URL" },
   "method": { "message": "Method" },
