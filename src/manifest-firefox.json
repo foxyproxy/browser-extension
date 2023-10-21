@@ -81,7 +81,7 @@
 
   "browser_specific_settings": {
     "gecko": {
-      "id": "foxyproxy@eric.h.jung",
+      "id": "foxyproxy-extension@eric.h.jung",
       "strict_min_version": "93.0"
     },
     "gecko_android": {
