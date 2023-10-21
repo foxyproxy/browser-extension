@@ -77,7 +77,8 @@ dd > dl {
   margin: 1em auto;
 }
 
-dt span {
+dt span,
+li span {
   margin-left: 0.5em;
   color: var(--dim);
   font-style: italic;

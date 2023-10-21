@@ -14,9 +14,9 @@ export class OnRequest {
   static {
     // --- default values
     this.mode = 'disable';
-    this.proxy = null;                                      // only needed in Single Proxy
-    this.data = [];                                         // only needed in Proxy by Pattern
-    this.globalExclude = [];
+    this.proxy = null;                                      // used for Single Proxy
+    this.data = [];                                         // used for Proxy by Pattern
+    this.passthrough = [];
     this.proxyDNS = true;
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
@@ -33,22 +33,15 @@ export class OnRequest {
 
   static init(pref) {
     this.mode = pref.mode;
+    this.passthrough = Pattern.getPassthrough(pref.passthrough);
+    this.proxyDNS = pref.proxyDNS;                          // used in mode pattern or single proxy
 
-    // --- used in mode pattern or single proxy
-    this.proxyDNS = pref.proxyDNS;
-    this.globalExclude = [
-      ...pref.globalExcludeWildcard.split(/\n+/).map(i => Pattern.get(i, 'wildcard')),
-      ...pref.globalExcludeRegex.split(/\n+/)
-    ].filter(Boolean);
-
-    // filter data
-    const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
+    const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname); // filter data
 
     // --- single proxy
     /:\d+$/.test(pref.mode) && (this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`));
 
     // --- proxy by pattern
-    // this.proxy = null;
     this.data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
       return {
         type: item.type,
@@ -69,10 +62,15 @@ export class OnRequest {
   }
 
   static process(e) {
-    if (this.bypass(e.url)) { return {type: 'direct'}; }
-
-    // --- check mode
     switch (true) {
+      // --- localhost passthrough
+      case this.localhost(e.url):
+        return {type: 'direct'};
+
+      // --- global passthrough
+      case this.passthrough.some(i => new RegExp(i, 'i').test(e.url)):
+        return {type: 'direct'};
+
       // --- tab proxy
       case e.tabId !== -1 && !!this.tabProxy[e.tabId]:
         return this.processProxy(this.tabProxy[e.tabId]);
@@ -81,14 +79,13 @@ export class OnRequest {
       case e.tabId !== -1 && e.incognito && !!this.container.incognito:
         return this.processProxy(this.container.incognito);
 
-      // --- incognito/container proxy
+      // --- container proxy
       case e.tabId !== -1 && e.cookieStoreId && !!this.container[e.cookieStoreId]:
         return this.processProxy(this.container[e.cookieStoreId]);
 
       // --- standard operation
       case this.mode === 'disable':                         // pass direct
       case this.mode.includes('://'):                       // PAC URL is set
-      case this.globalExclude.some(i => new RegExp(i, 'i').test(e.url)): // global exclude
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns
@@ -141,25 +138,28 @@ export class OnRequest {
   // https://github.com/foxyproxy/browser-extension/issues/20
   // Firefox & Chrome proxy.settings have a default localhost bypass
   // Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
-  // proxy.onRequest does not have a default localhost bypass
   // proxy.onRequest only applies to http/https/ws/wss
-  // Implementing a default localhost bypass
   // it can't catch a domain set by user to 127.0.0.1 in the hosts file
-  static bypass(url) {
-    const [, host] = url.split(/:\/\/|\//);                 // hostname with/without port
+  static localhost(url) {
+    const [, host] = url.split(/:\/\/|\//, 2);              // hostname with/without port
     const isIP = /^[\d.:]+$/.test(host);
 
     switch (true) {
-      case host === 'localhost':
+      // --- localhost & <local>
+      // case host === 'localhost':
+      case !host.includes('.'):                             // plain hostname (no dots)
       case host.endsWith('.localhost'):                     // *.localhost
-      case host === '127.0.0.1':
+
+      // --- IPv4
+      // case host === '127.0.0.1':
       case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
       case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16
       case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
-      case !isIP && !host.includes('.'):                    // not IP & plain hostname (no dots)
-      case host === '[::1]':
-      case host.startsWith('[::1:'):                        // with port
-      case host.startsWith('[FE80::'):                      // [FE80::]/10
+
+      // --- IPv6
+      // case host === '[::1]':
+      case host.startsWith('[::1]'):                        // literal IPv6 [::1]:80 with/without port
+      case host.startsWith('[FE80::]'):                     // literal IPv6 [FE80::]/10
         return true;
     }
   }

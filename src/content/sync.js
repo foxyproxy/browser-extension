@@ -4,7 +4,7 @@ import {App} from './app.js';
 export class Sync {
 
   static init() {
-    this.props = ['proxyDNS', 'globalExcludeRegex', 'globalExcludeWildcard'];
+    this.props = ['proxyDNS', 'passthrough'];
     browser.storage.sync.onChanged.addListener(e => this.onChanged(e));
   }
 

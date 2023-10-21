@@ -51,21 +51,13 @@ class Options {
     // --- keyboard Shortcut
     this.commands = document.querySelectorAll('.options .commands select');
 
-    // --- global exclude
-    this.globalExcludeWildcard = document.getElementById('globalExcludeWildcard');
-    this.globalExcludeRegex = document.getElementById('globalExcludeRegex');
-    const select = document.querySelector('.options .globalExclude select');
-    select.selectedIndex = 0;
-    select.addEventListener('change', () => {
-      const target = select.options[select.selectedIndex].dataset.type === 'regex' ? this.globalExcludeRegex : this.globalExcludeWildcard;
-      target.value = (target.value.trim() + '\n' + select.value).trim();
-      select.selectedIndex = 0;
-    });
+    // // --- global passthrough
+    this.passthrough = document.getElementById('passthrough');
 
     // --- buttons
     document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
 
-    this.init(['sync', 'proxyDNS', 'globalExcludeWildcard', 'globalExcludeRegex']);
+    this.init(['sync', 'proxyDNS', 'passthrough']);
   }
 
   static init(keys = Object.keys(pref)) {
@@ -88,14 +80,10 @@ class Options {
   }
 
   static async check() {
-    // --- global exclude
-    if (!this.checkGlobalExclude(this.globalExcludeWildcard)) { return; };
-    if (!this.checkGlobalExclude(this.globalExcludeRegex)) { return; };
-    const globalExcludeChanged = pref.globalExcludeWildcard !== this.globalExcludeWildcard.value ||
-      pref.globalExcludeRegex !== this.globalExcludeRegex.value;
+    // --- global exclude, clean up, remove path
+    this.passthrough.value = this.passthrough.value.trim().replace(/(?<=[a-z\d])\/[^\s,;]*/gi, '');
 
     // --- check and build proxies & patterns
-    // const ids = [];
     const data = [];
     const cache = {};
     // using for loop to be able to break early
@@ -115,7 +103,7 @@ class Options {
     pref.data = data;
 
     // update Log proxyCache
-    Log.proxyCache = Cache;                                 // used to get the denials for the log
+    Log.proxyCache = Cache;                                 // used to get the details for the log
 
     // helper: remove if proxy is deleted or disabled
     const checkSelect = i => i.value && !cache[i.value]?.active && (i.value = '');
@@ -143,12 +131,7 @@ class Options {
       // convert array to object {...data} to avoid sync maximum item size limit
       const obj = dataChanged ? {...data} : {};
 
-      // check if global Exclude have changed
-      if (globalExcludeChanged) {
-        obj.globalExcludeRegex = this.globalExcludeRegex.value;
-        obj.globalExcludeWildcard = this.globalExcludeWildcard.value;
-      }
-
+      pref.passthrough !== this.passthrough.value && (obj.passthrough = this.passthrough.value)
       pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
 
       // containerChanged && (obj.container = pref.container);
@@ -179,24 +162,6 @@ class Options {
 
     // --- save options
     this.process(true);
-  }
-
-  static checkGlobalExclude(elem) {
-    elem.classList.remove('invalid');                       // reset
-    // --- clean up global exclude, remove duplicates
-    const arr = [...new Set(elem.value.trim().split(/\n+/))];
-    elem.value = arr.join('\n');
-    if (!arr[0]) { return true; }
-
-    const type = elem.id.endsWith('Wildcard') ? 'wildcard' : 'regex';
-    for(const item of arr) {                                // using for loop to be able to break early
-      if (!Pattern.validate(item, type, true)) {
-        Nav.get('options');                                 // show Options tab
-        elem.classList.add('invalid');
-        return;
-      }
-    }
-    return true;
   }
 
   static getProxyDetails(elem) {
@@ -256,6 +221,7 @@ class Options {
     }
 
     // --- check & build patterns
+    const cache = [];
     for (const item of elem.querySelectorAll('.patternBox .patternRow')) {
       const elem = item.children;
       elem[4].classList.remove('invalid');                  // reset
@@ -278,6 +244,13 @@ class Options {
         return;
       }
 
+      // check for duplicate
+      if (cache.includes(pat.pattern)) {
+        item.remove();
+        continue;
+      }
+
+      cache.push(pat.pattern);                              // cache to check for duplicates
       obj[elem[1].value].push(pat);
     }
     return obj;
@@ -306,17 +279,15 @@ class Options {
     this.clearSelect(this.commands);
 
     const docFrag = document.createDocumentFragment();
-    const docFragPAC = docFrag.cloneNode();
 
     // filter out PAC
-    pref.data.filter(i => i.active).forEach(item => {
+    pref.data.filter(i => i.active && i.type !== 'pac').forEach(item => {
       const flag = App.getFlag(item.cc);
-      const value = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
+      const value = `${item.hostname}:${item.port}`;
       const opt = new Option(flag + ' ' + (item.title || value), value);
       // opt.style.color = item.color;                         // supported on Chrome, not on Firefox
 
-      docFragPAC.appendChild(opt);
-      item.type !== 'pac' && docFrag.appendChild(opt.cloneNode(true));
+      docFrag.appendChild(opt.cloneNode(true));
     });
 
     this.container.forEach(i => {
@@ -325,8 +296,7 @@ class Options {
     });
 
     this.commands.forEach(i => {
-      const frag = i.name === 'setProxy' ? docFragPAC : docFrag;
-      i.appendChild(frag.cloneNode(true));
+      i.appendChild(docFrag.cloneNode(true));
       pref.commands[i.name] && (i.value = pref.commands[i.name]);
     });
   }
@@ -734,16 +704,19 @@ class ImportFoxyProxyAccount {
         };
 
         const [title] = item.hostname.split('.');
-        // add http port
+
+        // --- add http port
         pxy.type = 'http';
         pxy.port = item.port[0];
-        pxy.title = title + '.' + item.port[0];
+        // pxy.title = title + '.' + item.port[0];
+        pxy.title = title;                                  // no need to add port if SSL is not added
         Proxies.addProxy(pxy);
-        // add SSL port
-        pxy.type = 'https';
-        pxy.port = item.ssl_port;
-        pxy.title = title + '.' + item.ssl_port;
-        Proxies.addProxy(pxy);
+
+        // --- add SSL port
+        // pxy.type = 'https';
+        // pxy.port = item.ssl_port;
+        // pxy.title = title + '.' + item.ssl_port;
+        // Proxies.addProxy(pxy);
       });
 
       Proxies.proxyDiv.appendChild(Proxies.docFrag);

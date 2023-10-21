@@ -15,12 +15,28 @@ export class Pattern {
     return type === 'wildcard' ? this.convertWildcard(str) : str;
   }
 
-  // convert wildcard to Regex string
+  // convert wildcard to regex string
   static convertWildcard(str) {
-    // escape Regular Expression Special Characters, minus * ?
+    if (str === '*') { return '\S+'; }
+
+    // escape regular expression special characters, minus * ?
     return str.replace(/[$.+()^{}\]\[|]/g, '\\$&')
               .replace(/\*/g, '.*')
               .replace(/\?/g, '.')
               .replace(/:\/\/\.\*\\./g, '://(.*\\.)?');
+  }
+
+  static getPassthrough(str) {
+    return str.split(/[\s,;]+/).map(i => {
+      if (i === '<local>') { return '^[a-z]+://[^.]+/'; }  // The literal string <local> matches simple hostnames (no dots)
+
+      i = i.replaceAll('.', '\\.')                          // literal '.'
+            .replaceAll('*', '.*');                         // wildcard
+      i.startsWith('\\.') && (i = '^[a-z]+://.*' + i);      // starting with '.'
+      !i.includes('://') && (i = '^[a-z]+://' + i);         // add scheme
+      !i.startsWith('^') && (i = '^' + i);                  // add start with assertion
+      i += '/';                                             // add end of host forward slash
+      return i;
+    });
   }
 }

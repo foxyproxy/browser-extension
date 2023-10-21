@@ -1,3 +1,10 @@
+// Chrome bypassList applies to 'fixed_servers', not 'pac_script' or URL
+// Firefox passthrough applies to all set in proxy.settings.set, i.e. PAC URL
+// manual bypass list:
+// Chrome: pac_script data, not possible for URL
+// Firefox proxy.onRequest
+
+
 import {App} from './app.js';
 import {Pattern} from './pattern.js';
 import {Authentication} from './authentication.js';
@@ -94,10 +101,12 @@ export class Proxy {
         browser.proxy.settings?.set({value});
         break;
 
-      // Automatic proxy configuration URL
+      // Proxy Auto-Configuration (PAC) URL
       case pref.mode.includes('://'):
         value.proxyType = 'autoConfig';
         value.autoConfigUrl = pref.mode;
+        value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', '); // convert to standard comma-separated
+        value.proxyDNS = pref.proxyDNS;
         browser.proxy.settings?.set({value});
         break;
 
@@ -120,14 +129,23 @@ export class Proxy {
         config.value.mode = 'system';
         break;
 
-      // Automatic proxy configuration URL
+      // Proxy Auto-Configuration (PAC) URL
       case pref.mode.includes('://'):
         config.value.mode = 'pac_script';
         config.value.pacScript = {mandatory: true};
         config.value.pacScript.url = pref.mode;
         break;
 
-      // pattern or single proxy
+      // single proxy
+      case pref.mode.includes(':'):
+        const proxy = this.findProxy(pref);
+        if (!proxy) { return; }
+
+        config.value.mode = 'fixed_servers';
+        config.value.rules = this.getSingleProxyRule(pref, pxy);
+        break;
+
+      // pattern
       default:
         config.value.mode = 'pac_script';
         config.value.pacScript = {mandatory: true};
@@ -135,30 +153,50 @@ export class Proxy {
     }
 
     browser.proxy.settings.set(config);
+
+    // --- incognito
+    this.setChromeIncognito(pref);
+  }
+
+  static findProxy(pref, mode = pref.mode) {
+    return pref.data.find(i =>
+      i.active && i.type !== 'pac' && i.hostname && mode === `${i.hostname}:${i.port}`);
+  }
+
+  static getSingleProxyRule(pref, pxy) {
+    return {
+      singleProxy: {
+        scheme: pxy.type,
+        host: pxy.hostname,
+        port: pxy.port
+      },
+      bypassList: pref.passthrough.split(/[\s,;]+/)
+    };
+  }
+
+  static setChromeIncognito(pref) {
+    const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
+    const config = {value: {}, scope: 'incognito_persistent'};
+
+    switch (true) {
+      case !pxy:
+        config.value.mode = 'system';                       // unset incognito
+        break;
+
+      default:
+        config.value.mode = 'fixed_servers';
+        config.value.rules = this.getSingleProxyRule(pref, pxy);
+    }
+
+    browser.proxy.settings.set(config);
   }
 
   static getPacString(pref) {
-    // mode: pattern or single proxy
-    const globalExclude = [
-      ...pref.globalExcludeWildcard.split(/\n+/).map(i => Pattern.get(i, 'wildcard')),
-      ...pref.globalExcludeRegex.split(/\n+/)
-    ].filter(Boolean);
+    // --- proxy by pattern
+    const passthrough = Pattern.getPassthrough(pref.passthrough);
 
     // filter data
     let data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
-
-    // --- single proxy
-    if (pref.mode !== 'pattern') {
-      const proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`);
-      const pacString =
-`function FindProxyForURL(url, host) {
-  const globalExclude = ${JSON.stringify(globalExclude)};
-  return globalExclude.some(i => new RegExp(i, 'i').test(url)) ? 'DIRECT' : '${this.getProxyString(proxy)}';
-}`;
-      return pacString;
-    }
-
-    // --- proxy by pattern
     data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
       return {
         str: this.getProxyString(item),
@@ -170,10 +208,10 @@ export class Proxy {
     const pacString =
 `function FindProxyForURL(url, host) {
   const data = ${JSON.stringify(data)};
-  const globalExclude = ${JSON.stringify(globalExclude)};
+  const passthrough = ${JSON.stringify(passthrough)};
   const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
-  if (match(globalExclude)) { return 'DIRECT'; }
+  if (match(passthrough)) { return 'DIRECT'; }
   for (const proxy of data) {
     if (!match(proxy.exclude) && match(proxy.include)) { return proxy.str; }
   }
@@ -226,16 +264,14 @@ export class Proxy {
 
   static async excludeHost(pref, tab) {
     const activeTab = tab || await this.getActiveTab();
-    const pattern = this.getPattern(activeTab[0].url);
+    const pattern = this.getHost(activeTab[0].url);
     if (!pattern) { return; }
 
     // add host pattern, remove duplicates
-    const exclude = pref.globalExcludeRegex.split(/[\r\n]+/);
-    if (exclude.includes(pattern)) { return; }
+    const [separator] = pref.passthrough.match(/[\s,;]+/) || ['\n'];
+    pref.passthrough = [pref.passthrough, pattern].filter(Boolean).join(separator);
 
-    exclude.push(pattern);
-    pref.globalExcludeRegex  = [...new Set(exclude)].join('\n').trim();
-    browser.storage.local.set({globalExcludeRegex: pref.globalExcludeRegex});
+    browser.storage.local.set({passthrough: pref.passthrough});
     this.set(pref);                                         // update Proxy
   }
 
@@ -247,6 +283,13 @@ export class Proxy {
     const url = new URL(str);
     if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
 
-    return  '^' + url.origin.replace(/\./g, '\\.') + '/';
+    return  '^' + url.origin.replace(/\./g, '\.') + '/';
+  }
+
+  static getHost(str) {
+    const url = new URL(str);
+    if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
+
+    return url.host;
   }
 }

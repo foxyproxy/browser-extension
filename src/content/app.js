@@ -13,8 +13,7 @@ export let pref = {
   mode: 'disable',
   sync: false,
   proxyDNS: true,
-  globalExcludeWildcard: '',
-  globalExcludeRegex: '',
+  passthrough: '',
   data: [],
   container: {},
   commands: {}

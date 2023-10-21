@@ -351,17 +351,12 @@ input[type="color"] {
 }
 
 .options div.container,
-.options div.commands,
-.options div.globalExclude {
+.options div.commands {
   display: grid;
   grid-template-columns: minmax(8em, max-content) max-content;
   gap: 0.2em 1em;
   margin-left: 1em;
   margin-bottom: 1em;
-}
-
-.options div.globalExclude {
-  grid-template-columns: minmax(8em, max-content) 0.5fr;
 }
 
 .options div.buttons {

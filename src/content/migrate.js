@@ -29,7 +29,7 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 
   Firefox/Chrome PAC 'SOCKS' means SOCKS4
   Firefox API 'SOCKS' means SOCKS5
-  Code uses PAC 'SOCKS4/5' but converts to socks in Firefox PAC
+  Code uses PAC 'SOCKS4/5' but converts to socks in Firefox API
 
   ----- host/hostname keywords -----
   Firefox/Chrome API/PAC use 'host' for domain/ip
@@ -40,6 +40,14 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 export class Migrate {
 
   static async init(pref) {
+    // --- v8.1 from v8.0
+    if (Object.hasOwn(pref, 'globalExcludeWildcard')) {
+      delete pref.globalExcludeWildcard;
+      delete pref.globalExcludeRegex;
+      await browser.storage.local.remove(['globalExcludeWildcard', 'globalExcludeRegex']);
+    }
+
+    // --- older versions
     if (pref.data) { return;}
 
     let db = {};

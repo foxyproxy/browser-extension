@@ -69,6 +69,14 @@ class Popup {
       this.proxyCache[value] = item;                        // cache to find later
     });
 
+    // add a DIRECT option to the end
+    const opt = new Option('⮕ Direct', 'DIRECT');
+    docFrag.appendChild(opt);
+    this.proxyCache['DIRECT'] = {
+      type: 'direct',
+      hostname: 'DIRECT'
+    };
+
     this.select.appendChild(docFrag);
   }
 
