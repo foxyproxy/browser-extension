@@ -2,8 +2,8 @@
 // https://developer.chrome.com/docs/extensions/reference/commands/#event-onCommand
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1843866
 // Add tab parameter to commands.onCommand
-// Firefox only return command name
-// Chrome returns command, tab
+// Firefox commands only returns command name
+// Chrome commands returns command, tab
 
 import {App} from './app.js';
 import {Proxy} from './proxy.js';

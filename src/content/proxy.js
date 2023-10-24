@@ -248,12 +248,13 @@ export class Proxy {
   // ---------- Quick Add/Exclude Host ---------------------
   static async quickAdd(pref, host) {
     const activeTab = await this.getActiveTab();
-    const pattern = this.getPattern(activeTab[0].url);
-    if (!pattern) { return; }
+    const url = this.getURL(activeTab[0].url);
+    if (!url) { return; }
 
+    const pattern = '^' + url.origin.replaceAll('.', '\.') + '/';
     const pat = {
       active: true,
-      pattern,
+      pattern: '^' + url.origin.replaceAll('.', '\.') + '/',
       title: url.hostname,
       type: 'regex',
     };
@@ -266,14 +267,22 @@ export class Proxy {
     pref.mode === 'pattern' && pxy.active && this.set(pref); // update Proxy
   }
 
+  // Chrome commands returns command, tab
   static async excludeHost(pref, tab) {
     const activeTab = tab || await this.getActiveTab();
-    const pattern = this.getHost(activeTab[0].url);
-    if (!pattern) { return; }
+    const url = this.getURL(activeTab[0].url);
+    if (!url) { return; }
+
+    const pattern = url.host;
+
 
     // add host pattern, remove duplicates
     const [separator] = pref.passthrough.match(/[\s,;]+/) || ['\n'];
-    pref.passthrough = [pref.passthrough, pattern].filter(Boolean).join(separator);
+    const arr = pref.passthrough.split(/[\s,;]+/);
+    if (arr.includes(pattern)) { return; }                  // already added
+
+    arr.push(pattern);
+    pref.passthrough = [...new Set(arr)].join(separator);
 
     browser.storage.local.set({passthrough: pref.passthrough});
     this.set(pref);                                         // update Proxy
@@ -283,17 +292,10 @@ export class Proxy {
     return browser.tabs.query({currentWindow: true, active: true});
   }
 
-  static getPattern(str) {
+  static getURL(str) {
     const url = new URL(str);
     if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
 
-    return  '^' + url.origin.replace(/\./g, '\.') + '/';
-  }
-
-  static getHost(str) {
-    const url = new URL(str);
-    if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
-
-    return url.host;
+    return url;
   }
 }
