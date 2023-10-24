@@ -275,7 +275,6 @@ export class Proxy {
 
     const pattern = url.host;
 
-
     // add host pattern, remove duplicates
     const [separator] = pref.passthrough.match(/[\s,;]+/) || ['\n'];
     const arr = pref.passthrough.split(/[\s,;]+/);
@@ -294,7 +293,7 @@ export class Proxy {
 
   static getURL(str) {
     const url = new URL(str);
-    if (!['http:', 'https:'].includes(url.protocol)) { return; } // acceptable URLs
+    if (!['http:', 'https:'].includes(url.protocol)) { return; } // unacceptable URLs
 
     return url;
   }
