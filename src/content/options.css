@@ -584,7 +584,7 @@ section.log {
 
 .log thead th {
   color: #fff;
-  background: #888;
+  background: #999;
   padding: 0.5em 0.2em;
   font-size: 0.9em;
   font-weight: normal;
@@ -606,7 +606,7 @@ section.log {
 }
 
 .log tr:hover {
-  background: var(--hover);
+  background: var(--hover) !important;
 }
 
 .log td {
