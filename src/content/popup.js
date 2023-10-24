@@ -2,7 +2,7 @@ import {pref, App} from './app.js';
 import {Location} from './location.js';
 import './i18n.js';
 
-// ---------- User Preference ------------------------------
+// ---------- User Preferences -----------------------------
 await App.getPref();
 
 // ---------- Popup ----------------------------------------

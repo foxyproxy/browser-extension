@@ -8,7 +8,7 @@ typeof globalThis.browser === 'undefined' && (globalThis.browser = globalThis.ch
 // MV3 action API
 !browser.action && (browser.action = browser.browserAction);
 
-// ---------- Default Preference ---------------------------
+// ---------- Default Preferences --------------------------
 export let pref = {
   mode: 'disable',
   sync: false,
@@ -18,7 +18,7 @@ export let pref = {
   container: {},
   commands: {}
 };
-// ---------- /Default Preference --------------------------
+// ---------- /Default Preferences -------------------------
 
 // ---------- App ------------------------------------------
 export class App {
@@ -26,7 +26,7 @@ export class App {
   static firefox = navigator.userAgent.includes('Firefox');
   // static chrome = navigator.userAgent.includes('Chrome');
 
-  // ---------- User Preference ----------------------------
+  // ---------- User Preferences ---------------------------
   static defaultPref = JSON.stringify(pref);
 
   static getDefaultPref() {

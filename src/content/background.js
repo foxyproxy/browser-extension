@@ -3,7 +3,7 @@ import {Migrate} from './migrate.js';
 import {Proxy} from './proxy.js';
 import './commands.js';
 
-// ---------- Process Preference ---------------------------
+// ---------- Process Preferences --------------------------
 class ProcessPref {
 
   static {
@@ -26,7 +26,7 @@ class ProcessPref {
     Sync.init();
   }
 }
-// ---------- /Process Preference --------------------------
+// ---------- /Process Preferences -------------------------
 
 // ---------- Initialisation -------------------------------
 browser.runtime.onInstalled.addListener(e => {

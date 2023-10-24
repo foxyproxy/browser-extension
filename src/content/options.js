@@ -9,7 +9,7 @@ import {Spinner} from './spinner.js';
 import {Log} from './log.js';
 import './i18n.js';
 
-// ---------- User Preference ------------------------------
+// ---------- User Preferences -----------------------------
 await App.getPref();
 
 // ---------- Incognito Access -----------------------------
