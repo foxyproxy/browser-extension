@@ -247,14 +247,18 @@ export class Proxy {
 
   // ---------- Quick Add/Exclude Host ---------------------
   static async quickAdd(pref, host) {
-    const activeTab = await this.getActiveTab();
-    const pattern = this.getPattern(activeTab[0].url);
+    const activeTabs = await this.getActiveTab();
+    const activeTabUrlStr = activeTabs[0].url;
+    if (!activeTabUrlStr) { return; }
+    const activeTabUrl = new URL(activeTabUrlStr);
+    if (!activeTabUrl) { return; }
+    const pattern = this.getPattern(activeTabUrlStr);
     if (!pattern) { return; }
 
     const pat = {
       active: true,
       pattern,
-      title: url.hostname,
+      title: activeTabUrl.hostname,
       type: 'regex',
     };
 
