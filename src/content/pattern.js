@@ -49,7 +49,7 @@ export class Pattern {
 
       // --- pattern
       i = i.replaceAll('.', '\\.')                          // literal '.'
-          .replaceAll('*', '.*');                           // wildcard
+            .replaceAll('*', '.*');                         // wildcard
       i.startsWith('\\.') && (i = '^[a-z]+://.*' + i);      // starting with '.'
       !i.includes('://') && (i = '^[a-z]+://' + i);         // add scheme
       !i.startsWith('^') && (i = '^' + i);                  // add start with assertion
