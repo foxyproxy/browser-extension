@@ -242,13 +242,17 @@
       <li>The passthrough implementation is slightly different in Chrome and Firefox</li>
       <li>Entries can be separated by comma (as in Firefox), or space, or new line</li>
       <li>The tables shows if the process is handled by the browser or FoxyProxy</li>
-      <li>Supported formats are listed under passthrough</li>
-      <li>Scheme is supported by FoxyProxy and Chrome but not Firefox (PAC URL)</li>
+      <li>Supported formats are listed under passthrough in each section</li>
+      <li>Scheme is supported by FoxyProxy and Chrome, but not Firefox (PAC URL)</li>
       <!-- <li>In Firefox, "*" is supported only at the beginning of domain filters (*.mozilla.org)</li> -->
-      <li>At the moment, CIDR in passthrough is not supported by FoxyProxy</li>
+      <!-- <li>At the moment, CIDR in passthrough is not supported by FoxyProxy</li> -->
+
+      <li>CIDR only applies to URLs that are IP literals and does not block hostnames that resolve to the IP address range (<code>10.0.0.0/8</code> is not "no proxy for intranet hostnames")</li>
+      <li>Only IPv4 CIDR is implemented by FoxyProxy</li>
       <li>The literal string <code>&lt;local&gt;</code> matches simple hostnames (no dots)</li>
       <li>A leading "." is interpreted as a "*."</li>
       <li>host without a wildcard is the most compatible format</li>
+
     </ul>
 
     <table>
@@ -270,16 +274,16 @@
         <tr>
           <th>Proxy by Patterns</th>
           <td>browser</td>
-          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard</i></td>
+          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
           <td><mark>FoxyProxy</mark></td>
-          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard</i></td>
+          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>Single Proxy</th>
           <td>browser</td>
           <td>browser<br><i>scheme, host, wildcard, CIDR</i></td>
           <td><mark>FoxyProxy</mark></td>
-          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard</i></td>
+          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>PAC URL</th>
@@ -293,21 +297,21 @@
           <td>browser</td>
           <td>browser<br><i>scheme, host, wildcard, CIDR</i></td>
           <td><mark>FoxyProxy</mark></td>
-          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard</i></td>
+          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>Container</th>
           <td>n/a</td>
           <td>n/a</td>
           <td><mark>FoxyProxy</mark></td>
-          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard</i></td>
+          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>Tab Proxy</th>
           <td>n/a</td>
           <td>n/a</td>
           <td><mark>FoxyProxy</mark></td>
-          <td>❌</td>
+          <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
       </tbody>
     </table>

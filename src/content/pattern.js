@@ -27,16 +27,57 @@ export class Pattern {
   }
 
   static getPassthrough(str) {
-    return str.split(/[\s,;]+/).map(i => {
-      if (i === '<local>') { return '^[a-z]+://[^.]+/'; }  // The literal string <local> matches simple hostnames (no dots)
+    const regex = [];                                       // RegExp string
+    const ipMask = [];                                      // 10.0.0.0/24 -> [ip, mask] e.g ['10.0.0.0', '255.255.255.0']
+    const stEnd = [];                                       // 10.0.0.0/24 -> [start, end] e.g. ['010000000000', '010000000255']
 
+    str.split(/[\s,;]+/).forEach(i => {
+      // The literal string <local> matches simple hostnames (no dots)
+      if (i === '<local>') {
+        regex.push('^[a-z]+://[^.]+/');
+        return;
+      }
+
+      // --- CIDR
+      const [, ip, , mask] = i.match(/^(\d+(\.\d+){3})\/(\d+)$/) || [];
+      if (ip && mask) {
+        const netmask = this.getNetmask(mask);
+        ipMask.push(ip, netmask);
+        stEnd.push(this.getRange(ip, netmask));
+        return;
+      }
+
+      // --- pattern
       i = i.replaceAll('.', '\\.')                          // literal '.'
-            .replaceAll('*', '.*');                         // wildcard
+          .replaceAll('*', '.*');                           // wildcard
       i.startsWith('\\.') && (i = '^[a-z]+://.*' + i);      // starting with '.'
       !i.includes('://') && (i = '^[a-z]+://' + i);         // add scheme
       !i.startsWith('^') && (i = '^' + i);                  // add start with assertion
       i += '/';                                             // add end of host forward slash
-      return i;
+      regex.push(i);
     });
+
+    return [regex, ipMask, stEnd];
+  }
+
+  // ---------- CIDR ---------------------------------------
+  // convert mask to netmask
+  static getNetmask(mask) {
+    return [...Array(4)].map(i => {
+      const n = Math.min(mask, 8);
+      mask -= n;
+      return 256 - Math.pow(2, 8-n);
+    }).join('.');
+  }
+
+  // convert to padded start & end
+  static getRange(ip, mask) {
+    let st = ip.split('.');                                 // ip array
+    const ma = mask.split('.');                             // mask array
+    let end = st.map((v, i) => Math.min(v-ma[i]+255, 255) + ''); // netmask wildcard array
+    st = st.map(i => i.padStart(3, '0')).join('');
+    end = end.map(i => i.padStart(3, '0')).join('');
+
+    return [st, end];
   }
 }

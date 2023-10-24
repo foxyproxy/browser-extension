@@ -40,14 +40,15 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 export class Migrate {
 
   static async init(pref) {
-    // --- v8.1 from v8.0
+    // --- 8.1
     if (Object.hasOwn(pref, 'globalExcludeWildcard')) {
-      delete pref.globalExcludeWildcard;
-      delete pref.globalExcludeRegex;
-      await browser.storage.local.remove(['globalExcludeWildcard', 'globalExcludeRegex']);
+      delete pref.globalExcludeWildcard;                    // from 8.0, removed in 8.1
+      delete pref.globalExcludeRegex;                       // from 8.0, removed in 8.1
+      delete pref.obj;                                      // 8.0 Sync typo error
+      await browser.storage.local.remove(['globalExcludeWildcard', 'globalExcludeRegex', 'obj']);
     }
 
-    // --- older versions
+    // --- 8.0
     if (pref.data) { return;}
 
     let db = {};

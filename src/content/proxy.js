@@ -129,14 +129,14 @@ export class Proxy {
         config.value.mode = 'system';
         break;
 
-      // Proxy Auto-Configuration (PAC) URL
+      // --- Proxy Auto-Configuration (PAC) URL
       case pref.mode.includes('://'):
         config.value.mode = 'pac_script';
         config.value.pacScript = {mandatory: true};
         config.value.pacScript.url = pref.mode;
         break;
 
-      // single proxy
+      // --- single proxy
       case pref.mode.includes(':'):
         const proxy = this.findProxy(pref);
         if (!proxy) { return; }
@@ -145,7 +145,7 @@ export class Proxy {
         config.value.rules = this.getSingleProxyRule(pref, pxy);
         break;
 
-      // pattern
+      // --- pattern
       default:
         config.value.mode = 'pac_script';
         config.value.pacScript = {mandatory: true};
@@ -193,7 +193,7 @@ export class Proxy {
 
   static getPacString(pref) {
     // --- proxy by pattern
-    const passthrough = Pattern.getPassthrough(pref.passthrough);
+    const [passthrough, net] = Pattern.getPassthrough(pref.passthrough);
 
     // filter data
     let data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
@@ -205,13 +205,21 @@ export class Proxy {
       }
     });
 
+    // https://developer.chrome.com/docs/extensions/reference/proxy/#type-PacScript
+    // https://github.com/w3c/webextensions/issues/339
+    // Chrome pacScript doesn't support bypassList
+
+    // isInNet(host, "192.0.2.172", "255.255.255.255")
+
     const pacString =
 `function FindProxyForURL(url, host) {
   const data = ${JSON.stringify(data)};
   const passthrough = ${JSON.stringify(passthrough)};
+  const net = ${JSON.stringify(net)};
   const match = array => array.some(i => new RegExp(i, 'i').test(url));
+  const inNet = () => net[0] && /^[\d.]+$/.test(host) && net.some(([ip, mask]) => isInNet(host, ip, mask));
 
-  if (match(passthrough)) { return 'DIRECT'; }
+  if (match(passthrough) || inNet()) { return 'DIRECT'; }
   for (const proxy of data) {
     if (!match(proxy.exclude) && match(proxy.include)) { return proxy.str; }
   }
@@ -230,10 +238,6 @@ export class Proxy {
       case 'http':
         type = 'PROXY';                                     // chrome PAC doesn't support HTTP
         break;
-
-      // case 'socks':
-      //   type = 'SOCKS5';                                    // convert to SOCKS5 as SOCKS in PAC means SOCKS4
-      //   break;
 
       default:
         type = type.toUpperCase();

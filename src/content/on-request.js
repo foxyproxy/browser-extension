@@ -5,6 +5,7 @@
 // Support non-ASCII username/password for socks proxy
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1853203
 // Fixed in Firefox 119
+
 import {Pattern} from './pattern.js';
 import {PageAction} from './page-action.js';
 
@@ -16,7 +17,8 @@ export class OnRequest {
     this.mode = 'disable';
     this.proxy = null;                                      // used for Single Proxy
     this.data = [];                                         // used for Proxy by Pattern
-    this.passthrough = [];
+    this.passthrough = [];                                  // RegExp string
+    this.net = [];                                          // [start, end] strings
     this.proxyDNS = true;
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
@@ -33,7 +35,10 @@ export class OnRequest {
 
   static init(pref) {
     this.mode = pref.mode;
-    this.passthrough = Pattern.getPassthrough(pref.passthrough);
+    const [passthrough, , net] = Pattern.getPassthrough(pref.passthrough);
+    this.passthrough = passthrough;
+    this.net = net;
+
     this.proxyDNS = pref.proxyDNS;                          // used in mode pattern or single proxy
 
     const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname); // filter data
@@ -61,6 +66,15 @@ export class OnRequest {
     });
   }
 
+  static isInNet(url) {
+    // check if IP address
+    if(!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; };
+
+    const ipa = url.split(/[:/.]+/, 5).slice(1);            // IP array
+    const ip = ipa.map(i => i.padStart(3, '0')).join('');   // convert to padded string
+    return this.net.some(([st, end]) => ip >= st && ip <= end);
+  }
+
   static process(e) {
     switch (true) {
       // --- localhost passthrough
@@ -69,6 +83,10 @@ export class OnRequest {
 
       // --- global passthrough
       case this.passthrough.some(i => new RegExp(i, 'i').test(e.url)):
+        return {type: 'direct'};
+
+      // --- global passthrough CIDR
+      case this.net[0] && this.isInNet(e.url):
         return {type: 'direct'};
 
       // --- tab proxy

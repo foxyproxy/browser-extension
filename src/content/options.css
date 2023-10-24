@@ -567,6 +567,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 /* ----- Log ----- */
 section.log {
   padding: 0 0.5em;
+  max-width: unset;
 }
 
 .log table {
@@ -596,8 +597,12 @@ section.log {
 }
 
 .log tbody tr {
-  border-bottom: 1px solid var(--border);
+  /* border-bottom: 1px solid var(--border); */
   animation: sect 0.5s ease-in-out;
+}
+
+.log tbody tr:nth-of-type(even) {
+  background-color: var(--tr);
 }
 
 .log tr:hover {

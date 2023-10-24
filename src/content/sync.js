@@ -3,8 +3,9 @@ import {App} from './app.js';
 // ---------- Storage Sync ---------------------------------
 export class Sync {
 
+  static props = ['proxyDNS', 'passthrough'];
+
   static init() {
-    this.props = ['proxyDNS', 'passthrough'];
     browser.storage.sync.onChanged.addListener(e => this.onChanged(e));
   }
 
@@ -27,7 +28,7 @@ export class Sync {
       changes.hasOwnProperty(item) && (obj[item] = changes[item].newValue);
     });
 
-    Object.keys(obj)[0] && browser.storage.local.set({obj}); // update local storage
+    Object.keys(obj)[0] && browser.storage.local.set(obj);  // update local storage
   }
 
   static async get(pref) {

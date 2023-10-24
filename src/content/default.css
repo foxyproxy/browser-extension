@@ -19,6 +19,7 @@
   --border: #ddd;
   /* --shadow: #0004; */
   --dim: #777;
+  --tr: #f5f5f5;
 }
 
 /* ----- Dark Theme ----- */
@@ -39,6 +40,7 @@
     --border: #777;
     /* --shadow: #fff8; */
     --dim: #ccc;
+    --tr: #531;
   }
 }
 
