@@ -619,7 +619,11 @@ section.log {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 30em;
+  max-width: 20em;
+}
+
+.log td:nth-of-type(6) {
+  max-width: 40em;
 }
 
 .log td:nth-of-type(7) {
