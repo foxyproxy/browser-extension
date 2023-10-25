@@ -1,3 +1,5 @@
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1804693
+// Setting single proxy for all fails
 // Chrome bypassList applies to 'fixed_servers', not 'pac_script' or URL
 // Firefox passthrough applies to all set in proxy.settings.set, i.e. PAC URL
 // manual bypass list:
@@ -281,7 +283,7 @@ export class Proxy {
     if (arr.includes(pattern)) { return; }                  // already added
 
     arr.push(pattern);
-    pref.passthrough = [...new Set(arr)].join(separator);
+    pref.passthrough = [...new Set(arr)].join(separator);   // remove duplicates
 
     browser.storage.local.set({passthrough: pref.passthrough});
     this.set(pref);                                         // update Proxy

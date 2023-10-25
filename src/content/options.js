@@ -80,8 +80,12 @@ class Options {
   }
 
   static async check() {
-    // --- global exclude, clean up, remove path
-    this.passthrough.value = this.passthrough.value.trim().replace(/(?<=[a-z\d])\/[^\s,;]*/gi, '');
+    // --- global exclude, clean up, remove path, remove duplicates
+    const passthrough = this.passthrough.value.trim();
+    const [separator] = passthrough.match(/[\s,;]+/) || ['\n'];
+    const arr = passthrough.split(/[\s,;]+/)
+      .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/(?<=[a-z\d])\/[^\s,;]*/gi, ''));// remove path
+    this.passthrough.value = [...new Set(arr)].join(separator); // remove duplicates
 
     // --- check and build proxies & patterns
     const data = [];
