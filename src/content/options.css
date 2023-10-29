@@ -416,7 +416,7 @@ details.proxy > summary {
   list-style: none;
   border-left: 1.5em solid var(--btn-bg);
   display: grid;
-  grid-template-columns: auto 1fr auto auto auto auto;
+  grid-template-columns: auto 1fr repeat(5, auto);
   column-gap: 0.2em;
   align-items: center;
 }
@@ -425,6 +425,10 @@ details.proxy > summary:hover,
 details.proxy[open] > summary {
   background-color: var(--hover);
 }
+
+/* details.proxy > summary button.plain {
+ color: var(--btn-bg);
+} */
 
 details.proxy.off {
   display: none;
@@ -469,7 +473,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 
 .patternHead {
   display: grid;
-  grid-template-columns: 6em 5em 5em 1fr 2fr 4em;
+  grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 4em;
   column-gap: 0.2em;
   align-items: center;
   justify-items: center;
@@ -482,12 +486,26 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   min-width: unset;
 }
 
+.patternHead .plain {
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+}
+
+/* .patternHead .plain:hover {
+  background-color: var(--hover);
+} */
+
 .patternRow {
   display: grid;
-  grid-template-columns: 6em 5em 5em 1fr 2fr 2em 1em 1em;
+  grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 2em 1em 1em;
   column-gap: 0.2em;
   align-items: center;
   margin-top: 0.3em;
+}
+
+.patternRow input:nth-of-type(2) {
+  grid-column: span 3;
 }
 /* ----- /Pattern ----- */
 

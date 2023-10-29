@@ -24,7 +24,7 @@ export class Log {
     method.textContent = e.method;
     doc.textContent = e.documentUrl || '';                  // For a top-level document, documentUrl is undefined
     doc.title = e.documentUrl || '';
-    url.textContent = e.url;
+    url.textContent = decodeURIComponent(e.url);
     url.title = e.url;
     container.classList.toggle('incognito', e.incognito);
     container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';

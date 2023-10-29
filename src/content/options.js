@@ -433,9 +433,10 @@ class Proxies {
 
     // --- summary
     const sum = pxy.children[0].children;
-    sum[3].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && pxy.remove());
-    sum[4].addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
-    sum[5].addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
+    sum[3].addEventListener('click', () => this.duplicateProxy(pxy, proxyBox));
+    sum[4].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && pxy.remove());
+    sum[5].addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
+    sum[6].addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
     // proxy details
     const elem = proxyBox.children;
@@ -517,6 +518,10 @@ class Proxies {
 
     // patterns
     pxy.querySelector('button[data-i18n="add"]').addEventListener('click', () => this.addPattern(patternBox));
+    pxy.querySelector('input[type="file"]').addEventListener('change', e => this.importPattern(e, patternBox));
+    pxy.querySelector('button[data-i18n^="export"]').addEventListener('click', () =>
+      this.exportPattern(patternBox, elem[1].value.trim() || elem[3].value.trim()));
+
 
     // from add button
     if (!item) {
@@ -562,7 +567,7 @@ class Proxies {
     this.docFrag.appendChild(pxy);
   }
 
-  static addPattern(parent, item, inc) {
+  static addPattern(parent, item, include) {
     // --- make a blank pattern with all event listeners
     const div = this.patternTemplate.cloneNode(true);
     const elem = div.children;
@@ -584,7 +589,7 @@ class Proxies {
     elem[7].addEventListener('click', () => div.remove());
 
     if (item) {
-      elem[1].value = inc;
+      elem[1].value = include;
       elem[2].value = item.type;
       elem[3].value = item.title;
       elem[4].value = item.pattern;
@@ -592,6 +597,60 @@ class Proxies {
     }
 
     parent.appendChild(div);
+  }
+
+  static duplicateProxy(pxy, proxyBox) {
+    const elem = proxyBox.children;
+    const hostname = elem[3].value.trim();
+    const type = elem[5].value;
+    const port = elem[7].value.trim();
+    const pac = elem[19].value.trim();
+
+    const id = type === 'pac' ? pac : `${hostname}:${port}`;
+    const item = this.proxyCache[id];
+
+    item && this.addProxy(item);
+    pxy.after(this.docFrag);
+  }
+
+  static importPattern(e, patternBox) {
+    const file = e.target.files[0];
+    switch (true) {
+      case !file: App.notify(browser.i18n.getMessage('error')); return;
+      case !['text/plain', 'application/json'].includes(file.type): // check file MIME type
+        App.notify(browser.i18n.getMessage('fileTypeError'));
+        return;
+    }
+
+    ImportExport.fileReader(file, data => {
+      try { data = JSON.parse(data); }
+      catch(e) {
+        App.notify(browser.i18n.getMessage('fileParseError')); // display the error
+        return;
+      }
+
+      Array.isArray(data) && data.forEach(i => this.addPattern(patternBox, i, i.include));
+    });
+  }
+
+  static exportPattern(patternBox, title = '') {
+    const arr = [...patternBox.children].map(item => {
+      const elem = item.children;
+      return {
+        include: elem[1].value,
+        type: elem[2].value,
+        title: elem[3].value.trim(),
+        pattern: elem[4].value.trim(),
+        active: elem[5].checked,
+      };
+    });
+
+    if (!arr[0]) { return; }                                // no patterns to export
+
+    title &&= '_' + title;
+    const data = JSON.stringify(arr, null, 2);
+    const filename = `${browser.i18n.getMessage('pattern')}${title}_${new Date().toISOString().substring(0, 10)}.json`;
+    ImportExport.saveFile({data, filename, type: 'application/json'});
   }
 
   static getLocation() {

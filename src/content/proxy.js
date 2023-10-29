@@ -1,11 +1,12 @@
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1804693
 // Setting single proxy for all fails
+// https://bugs.chromium.org/p/chromium/issues/detail?id=1495756
+// Issue 1495756: Support bypassList for PAC scripts in the chrome.proxy API
 // Chrome bypassList applies to 'fixed_servers', not 'pac_script' or URL
 // Firefox passthrough applies to all set in proxy.settings.set, i.e. PAC URL
 // manual bypass list:
 // Chrome: pac_script data, not possible for URL
 // Firefox proxy.onRequest
-
 
 import {App} from './app.js';
 import {Pattern} from './pattern.js';

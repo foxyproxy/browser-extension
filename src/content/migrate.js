@@ -22,7 +22,7 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
   https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/proxy/ProxyInfo
   https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#http-proxy-scheme
   Chrome PAC schemes  PROXY | HTTPS | SOCKS4/SOCKS | SOCKS5
-  Chrome API schemes  http | https | socks4 | socks5
+  Chrome API schemes  http | https | socks4 | socks5 | quic
 
   Firefox PAC schemes PROXY/HTTP | HTTPS | SOCKS4/SOCKS | SOCKS5
   Firefox API types   http | https | socks4 | socks (means socks5) | direct

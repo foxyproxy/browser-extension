@@ -156,6 +156,7 @@
             <span>🌎</span>
             <span></span>
             <input type="checkbox" class="toggle" data-id="active" checked>
+            <button type="button" class="plain" data-i18n="duplicate|title">⎘</button>
             <button type="button" class="bin" data-i18n="delete|title"></button>
             <button type="button" class="up">▲</button>
             <button type="button" class="down">▼</button>
@@ -176,6 +177,7 @@
                 <option value="https">HTTPS</option>
                 <option value="socks4">SOCKS4</option>
                 <option value="socks5">SOCKS5</option>
+                <!-- <option value="quic">QUIC</option> -->
                 <option value="socks5">TOR</option>
                 <option value="socks5">Psiphon</option>
                 <option value="http">Privoxy</option>
@@ -467,10 +469,12 @@
 
             <div class="patternHead">
               <span data-i18n="quickAdd"></span>
-              <span>+ / -</span>
+              <span data-i18n="include"></span>
               <span data-i18n="type"></span>
               <span data-i18n="title"></span>
               <span data-i18n="pattern"></span>
+              <label class="plain" data-i18n="import|title"><input type="file" accept=".json">📥</label>
+              <button type="button" class="plain" data-i18n="export|title">📤</button>
               <button type="button" class="flat" data-i18n="add"></button>
             </div>
 
