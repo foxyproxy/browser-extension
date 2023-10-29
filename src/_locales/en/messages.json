@@ -43,6 +43,7 @@
   "add": { "message": "Add" },
   "getLocation": { "message": "Get Location" },
 
+  "duplicate": { "message": "Duplicate" },
 
   "title": { "message": "Title" },
   "type": { "message": "Type" },
