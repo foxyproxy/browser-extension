@@ -185,8 +185,6 @@ export class OnRequest {
   // ---------- Tab Proxy ----------------------------------
   static async setTabProxy(pxy) {
     const [tab] = await browser.tabs.query({currentWindow: true, active: true});
-
-    // check local & global passthrough
     switch (true) {
       // --- unacceptable URLs
       case !['http://', 'https://'].some(i => tab.url.startsWith(i)):
