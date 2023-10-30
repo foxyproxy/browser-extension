@@ -204,18 +204,19 @@ export class OnRequest {
     PageAction.unset(tab.id);
   }
 
-  static onUpdated(tabId, changeInfo, tab) {
-    if (changeInfo.status !== 'complete') { return; }
-
-    const pxy = this.tabProxy[tab.id];
-    pxy && PageAction.set(tab.id, pxy);
-  }
-
   // ---------- Incognito/Container ------------------------
   static checkPageAction(tab) {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; } // not if tab proxy is set
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
-    pxy ? PageAction.set(tab.id, pxy) : PageAction.unset(tab.id);
+    pxy && PageAction.set(tab.id, pxy);
+  }
+
+  // ---------- Update Page Action -------------------------
+  static onUpdated(tabId, changeInfo, tab) {
+    if (changeInfo.status !== 'complete') { return; }
+
+    const pxy = this.tabProxy[tab.id];
+    pxy ? PageAction.set(tab.id, pxy) : this.checkPageAction(tab);
   }
 }
