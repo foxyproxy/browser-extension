@@ -184,19 +184,31 @@ export class OnRequest {
 
   // ---------- Tab Proxy ----------------------------------
   static async setTabProxy(pxy) {
-    const tab = await browser.tabs.query({currentWindow: true, active: true});
-    if (!['http://', 'https://'].some(i => tab[0].url.startsWith(i))) {
-      return;
+    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
+
+    // check local & global passthrough
+    switch (true) {
+      // --- unacceptable URLs
+      case !['http://', 'https://'].some(i => tab.url.startsWith(i)):
+        return;
+
+      // --- localhost passthrough
+      case this.localhost(tab.url):
+        return;
+
+      // --- global passthrough
+      case this.passthrough.some(i => new RegExp(i, 'i').test(tab.url)):
+        return;
     }
 
-    this.tabProxy[tab[0].id] = pxy;
-    PageAction.set(tab[0].id, pxy);
+    this.tabProxy[tab.id] = pxy;
+    PageAction.set(tab.id, pxy);
   }
 
   static async unsetTabProxy() {
-    const tab = await browser.tabs.query({currentWindow: true, active: true});
-    delete this.tabProxy[tab[0].id];
-    PageAction.unset(tab[0].id);
+    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
+    delete this.tabProxy[tab.id];
+    PageAction.unset(tab.id);
   }
 
   // ---------- Incognito/Container ------------------------
