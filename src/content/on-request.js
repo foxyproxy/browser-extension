@@ -26,7 +26,8 @@ export class OnRequest {
     // --- Firefox only
     if (browser?.proxy?.onRequest) {
       browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
-      // remove Tab from tabProxy
+      // check Tab for tab proxy
+      browser.tabs.onUpdated.addListener((...e) => this.onUpdated(...e));
       browser.tabs.onRemoved.addListener(tabId => delete this.tabProxy[tabId]);
       // mark incognito/container
       browser.tabs.onCreated.addListener(e => this.checkPageAction(e));
@@ -66,27 +67,10 @@ export class OnRequest {
     });
   }
 
-  static isInNet(url) {
-    // check if IP address
-    if(!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; };
-
-    const ipa = url.split(/[:/.]+/, 5).slice(1);            // IP array
-    const ip = ipa.map(i => i.padStart(3, '0')).join('');   // convert to padded string
-    return this.net.some(([st, end]) => ip >= st && ip <= end);
-  }
-
   static process(e) {
     switch (true) {
-      // --- localhost passthrough
-      case this.localhost(e.url):
-        return {type: 'direct'};
-
-      // --- global passthrough
-      case this.passthrough.some(i => new RegExp(i, 'i').test(e.url)):
-        return {type: 'direct'};
-
-      // --- global passthrough CIDR
-      case this.net[0] && this.isInNet(e.url):
+      // --- check local & global passthrough
+      case this.bypass(e.url):
         return {type: 'direct'};
 
       // --- tab proxy
@@ -151,6 +135,16 @@ export class OnRequest {
     return response;
   }
 
+  // ---------- passthrough --------------------------------
+  static bypass(url) {
+    switch (true) {
+      case this.localhost(url):                             // localhost passthrough
+      case this.passthrough.some(i => new RegExp(i, 'i').test(url)): // global passthrough
+      case this.net[0] && this.isInNet(url):                // global passthrough CIDR
+        return true;
+    }
+  }
+
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1854324
   // proxy.onRequest failure to bypass proxy for localhost
   // https://github.com/foxyproxy/browser-extension/issues/20
@@ -182,20 +176,21 @@ export class OnRequest {
     }
   }
 
+  static isInNet(url) {
+    // check if IP address
+    if(!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; };
+
+    const ipa = url.split(/[:/.]+/, 5).slice(1);            // IP array
+    const ip = ipa.map(i => i.padStart(3, '0')).join('');   // convert to padded string
+    return this.net.some(([st, end]) => ip >= st && ip <= end);
+  }
+
   // ---------- Tab Proxy ----------------------------------
   static async setTabProxy(pxy) {
     const [tab] = await browser.tabs.query({currentWindow: true, active: true});
     switch (true) {
-      // --- unacceptable URLs
-      case !['http://', 'https://'].some(i => tab.url.startsWith(i)):
-        return;
-
-      // --- localhost passthrough
-      case this.localhost(tab.url):
-        return;
-
-      // --- global passthrough
-      case this.passthrough.some(i => new RegExp(i, 'i').test(tab.url)):
+      case !/https?:\/\/.+/.test(tab.url):                  // unacceptable URLs
+      case this.bypass(tab.url):                            // check local & global passthrough
         return;
     }
 
@@ -207,6 +202,13 @@ export class OnRequest {
     const [tab] = await browser.tabs.query({currentWindow: true, active: true});
     delete this.tabProxy[tab.id];
     PageAction.unset(tab.id);
+  }
+
+  static onUpdated(tabId, changeInfo, tab) {
+    if (changeInfo.status !== 'complete') { return; }
+
+    const pxy = this.tabProxy[tab.id];
+    pxy && PageAction.set(tab.id, pxy);
   }
 
   // ---------- Incognito/Container ------------------------
