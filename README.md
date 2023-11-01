@@ -15,6 +15,10 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 
 
 ## Current Versions
+[![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-standard?label=Firefox%20FoxyProxy%20Standrad)](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
+[![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic?label=Firefox%20FoxyProxy%20Basic)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp?label=Chrome%20FoxyProxy%20Standard)](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp) 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb?label=Chrome%20FoxyProxy%20Basic)](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
 
 ### Firefox
 - Extension: 
