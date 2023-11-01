@@ -14,32 +14,17 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 - [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
 
 
-## Current Versions
-[![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-standard?label=Firefox%20FoxyProxy%20Standrad)](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
-[![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic?label=Firefox%20FoxyProxy%20Basic)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp?label=Chrome%20FoxyProxy%20Standard)](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp) 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb?label=Chrome%20FoxyProxy%20Basic)](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
+## Versions
 
 ### Firefox
-- Extension: 
-- Extension: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/)
-
-
-#### Chrome
-- Extension: 
-- Extension: 
-
-
-## Previous Versions
-
-### Firefox
-- Extension: [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
-- Extension: [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/versions/)
+- [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-standard.svg)](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/) [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
+- [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic.svg)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) 🆕
 - Source Code: [Firefox Extension 7.5.1](https://github.com/foxyproxy/firefox-extension/)
 
+
 #### Chrome
-- Extension: [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
-- Extension: [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
+- [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp.svg)](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp) [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
+- [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb.svg)](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb) [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
 - Source Code: [Chrome Extension 3.0.7.1](https://github.com/foxyproxy/Foxyproxy_Chrome)
 
 
