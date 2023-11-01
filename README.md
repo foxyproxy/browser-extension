@@ -1,6 +1,8 @@
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
-[![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
+![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension)
+
 
 Version 8.0+  
 Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
