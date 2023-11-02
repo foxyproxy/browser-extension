@@ -8,15 +8,31 @@ Version 8.0+
 Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
 
 FoxyProxy is being updated for manifest V3.
-- Chrome minimum version 108 (released 2022-11-29)
-- Firefox minimum version 93 (released 2021-10-05)
-- Firefox for Android minimum version 113 (manifest) (API minimum 102)
-
 Please post all feature requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).
 
 
 - [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
 - [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
+
+## Browser Minimum Versions
+
+<table>
+  <thead>
+    <tr>
+      <th>Firefox</th>
+      <th>Chrome</th>
+      <th>Firefox for Android</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>version 93<br><i>(released 2021-10-05)</i></td>
+      <td>version 108<br><i>(released 2022-11-29)</i></td>
+      <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
+    </tr>
+  </tbody>
+</table>
+
 
 
 ## Releases
@@ -59,8 +75,6 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
     </tr>
   </tbody>
 </table>
-
-
 
 
 ## Installation Guide (for testing)
