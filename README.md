@@ -1,10 +1,16 @@
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
+[![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-standard?label=FoxyProxy%20Standard)](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/) ![Mozilla Add-on Users](https://img.shields.io/amo/users/foxyproxy-standard) 
+[![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic.svg?label=FoxyProxy%20Basic&color=f60)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) ![Mozilla Add-on Users](https://img.shields.io/amo/users/foxyproxy-basic)
+
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp.svg?label=FoxyProxy%20Standard)](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp) ![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/gcknhkkoolaabfmlnjonogaaifnjlfnp) 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb.svg?label=FoxyProxy%20Basic)](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb) ![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/dookpfaalaaappcdneeahomimbllocnb)
+
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
 ![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension)
 
 
-Version 8.0+  
+Version 8.0+
 Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
 
 FoxyProxy is being updated for manifest V3.
@@ -19,18 +25,18 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 - [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
 
 
-## Versions
+## Releases
 
 ### Firefox
-- [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-standard.svg)](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/) ![Mozilla Add-on Users](https://img.shields.io/amo/users/foxyproxy-standard) [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
-- [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic.svg?color=f60)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) ![Mozilla Add-on Users](https://img.shields.io/amo/users/foxyproxy-basic) [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) 🆕
-- Source Code: [Firefox Extension 7.5.1](https://github.com/foxyproxy/firefox-extension/)
+- [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/) (7.5.1)
+- [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) 🆕
+- [Source Code](https://github.com/foxyproxy/firefox-extension/) (7.5.1)
 
 
 #### Chrome
-- [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp.svg)](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp) ![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/gcknhkkoolaabfmlnjonogaaifnjlfnp) [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
-- [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb.svg)](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb) ![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/dookpfaalaaappcdneeahomimbllocnb) [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb)
-- Source Code: [Chrome Extension 3.0.7.1](https://github.com/foxyproxy/Foxyproxy_Chrome)
+- [FoxyProxy Standard](https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp) (3.0.7.1)
+- [FoxyProxy Basic](https://chrome.google.com/webstore/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb) (1.7.1)
+- [Source Code](https://github.com/foxyproxy/Foxyproxy_Chrome) (3.0.7.1)
 
 
 ## Installation Guide (for testing)
