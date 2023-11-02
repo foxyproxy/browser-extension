@@ -23,7 +23,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 
 ### Firefox
 - [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-standard.svg)](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/) [FoxyProxy Standard](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
-- [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic.svg)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) 🆕
+- [![Mozilla Add-on](https://img.shields.io/amo/v/foxyproxy-basic.svg?color=f60)](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) [FoxyProxy Basic](https://addons.mozilla.org/firefox/addon/foxyproxy-basic/) 🆕
 - Source Code: [Firefox Extension 7.5.1](https://github.com/foxyproxy/firefox-extension/)
 
 
