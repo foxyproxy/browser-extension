@@ -171,13 +171,16 @@ export class Proxy {
       singleProxy: {
         scheme: pxy.type,
         host: pxy.hostname,
-        port: pxy.port
+        port: pxy.port*1                                    // must be number
       },
-      bypassList: pref.passthrough.split(/[\s,;]+/)
+      bypassList: pref.passthrough ? pref.passthrough?.split(/[\s,;]+/) : []
     };
   }
 
-  static setChromeIncognito(pref) {
+  static async setChromeIncognito(pref) {
+    const allowed =  await browser.extension.isAllowedIncognitoAccess();
+    if (!allowed) { return; }
+
     const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
     const config = {value: {}, scope: 'incognito_persistent'};
 

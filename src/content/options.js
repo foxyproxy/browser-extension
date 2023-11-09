@@ -847,7 +847,7 @@ class importFromUrl {
 // ---------- /Import From URL -----------------------------
 
 // ---------- Import List ----------------------------------
-class ImportProxyList{
+class ImportProxyList {
 
   static {
     this.textarea = document.querySelector('.importProxyList textarea');
