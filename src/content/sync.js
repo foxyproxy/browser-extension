@@ -25,7 +25,7 @@ export class Sync {
     data[0] && !App.equal(pref.data, data) && (obj.data = data);
 
     this.props.forEach(item => {
-      changes.hasOwnProperty(item) && (obj[item] = changes[item].newValue);
+      Object.hasOwn(changes, item) && (obj[item] = changes[item].newValue);
     });
 
     Object.keys(obj)[0] && browser.storage.local.set(obj);  // update local storage
@@ -37,7 +37,7 @@ export class Sync {
     const syncPref = await browser.storage.sync.get();
 
     // convert object to array & filter proxies
-    const data = Object.values(syncPref).filter(i => i.hasOwnProperty('hostname'));
+    const data = Object.values(syncPref).filter(i => Object.hasOwn(i, 'hostname'));
 
     const obj = {};
     if (data[0] && !App.equal(pref.data, data)) {
@@ -46,7 +46,7 @@ export class Sync {
     }
 
     this.props.forEach(item => {
-      if (syncPref.hasOwnProperty(item)) {
+      if (Object.hasOwn(syncPref, item)) {
         obj[item] = syncPref[item];
         pref[item] = syncPref[item];
       }

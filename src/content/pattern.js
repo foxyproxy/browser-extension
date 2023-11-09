@@ -20,7 +20,7 @@ export class Pattern {
     if (str === '*') { return '\S+'; }
 
     // escape regular expression special characters, minus * ?
-    return str.replace(/[$.+()^{}\]\[|]/g, '\\$&')
+    return str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
               .replace(/\*/g, '.*')
               .replace(/\?/g, '.')
               .replace(/:\/\/\.\*\\./g, '://(.*\\.)?');
@@ -63,7 +63,7 @@ export class Pattern {
   // ---------- CIDR ---------------------------------------
   // convert mask to netmask
   static getNetmask(mask) {
-    return [...Array(4)].map(i => {
+    return [...Array(4)].map(() => {
       const n = Math.min(mask, 8);
       mask -= n;
       return 256 - Math.pow(2, 8-n);

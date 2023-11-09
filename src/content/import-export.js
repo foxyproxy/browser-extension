@@ -30,7 +30,7 @@ export class ImportExport {
     }
 
     // update pref with the saved version
-    Object.keys(pref).forEach(item => data.hasOwnProperty(item) && (pref[item] = data[item]));
+    Object.keys(pref).forEach(item => Object.hasOwn(data, item) && (pref[item] = data[item]));
 
     this.callback();                                        // successful import
   }

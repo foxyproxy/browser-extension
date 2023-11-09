@@ -17,7 +17,7 @@ class Commands {
     browser.commands?.onCommand.addListener((...e) => this.process(...e));
   }
 
-  static async process (name, tab) {
+  static async process(name, tab) {
     const pref = await browser.storage.local.get();
     const host = pref.commands[name];
 

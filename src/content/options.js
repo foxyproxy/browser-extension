@@ -13,7 +13,7 @@ import './i18n.js';
 await App.getPref();
 
 // ---------- Incognito Access -----------------------------
-class IncognitoAccess{
+class IncognitoAccess {
 
   static {
     // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings
@@ -135,7 +135,7 @@ class Options {
       // convert array to object {...data} to avoid sync maximum item size limit
       const obj = dataChanged ? {...data} : {};
 
-      pref.passthrough !== this.passthrough.value && (obj.passthrough = this.passthrough.value)
+      pref.passthrough !== this.passthrough.value && (obj.passthrough = this.passthrough.value);
       pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
 
       // containerChanged && (obj.container = pref.container);
@@ -189,7 +189,7 @@ class Options {
     // --- populate values
     elem.querySelectorAll('[data-id]').forEach(i => {
       i.classList.remove('invalid');                        // reset
-      obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim()
+      obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim();
     });
 
 
@@ -385,7 +385,7 @@ class WebRTC {
     // WebRTC bypasses Network settings & proxy.onRequest
     // { "levelOfControl": "controllable_by_this_extension", "value": "default" }
     this.result ||= await browser.privacy.network.webRTCIPHandlingPolicy.get({});
-    const def = this.result.value === 'default'
+    const def = this.result.value === 'default';
     let value = def ? 'default_public_interface_only' : 'default';
     this.result.value = value;
     this.webRTC.checked = def;                              // was default but now changed
@@ -831,7 +831,7 @@ class importFromUrl {
     .then(response => response.json())
     .then(data => {
       // update pref with the saved version
-      Object.keys(pref).forEach(i => data.hasOwnProperty(i) && (pref[i] = data[i]));
+      Object.keys(pref).forEach(i => Object.hasOwn(data, i) && (pref[i] = data[i]));
 
       Options.process();                                    // set options after the pref update
       Proxies.process();                                    // update page display
@@ -990,9 +990,9 @@ class importFromOlder {
       return;
     }
 
-    data = data.hasOwnProperty('settings') ? Migrate.convert3(data) : Migrate.convert7(data);
+    data = Object.hasOwn(data, 'settings') ? Migrate.convert3(data) : Migrate.convert7(data);
     // update pref with the saved version
-    Object.keys(pref).forEach(i => data.hasOwnProperty(i) && (pref[i] = data[i]));
+    Object.keys(pref).forEach(i => Object.hasOwn(data, i) && (pref[i] = data[i]));
 
     Options.process();                                      // set options after the pref update
     Proxies.process();                                      // update page display

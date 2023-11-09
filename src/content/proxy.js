@@ -58,8 +58,8 @@ export class Proxy {
 
       // no include pattern, set proxy to the first entry
       case pref.mode === 'pattern' && !pref.data.some(i => i.include[0] || i.exclude[0]):
-        const pxy = pref.data[0]
-        pref.mode = pxy.type === 'pac' ? pxy.pac : `${i.hostname}:${i.port}`;
+        const pxy = pref.data[0];
+        pref.mode = pxy.type === 'pac' ? pxy.pac : `${pxy.hostname}:${pxy.port}`;
         break;
     }
 
@@ -141,8 +141,8 @@ export class Proxy {
 
       // --- single proxy
       case pref.mode.includes(':'):
-        const proxy = this.findProxy(pref);
-        if (!proxy) { return; }
+        const pxy = this.findProxy(pref);
+        if (!pxy) { return; }
 
         config.value.mode = 'fixed_servers';
         config.value.rules = this.getSingleProxyRule(pref, pxy);
@@ -205,7 +205,7 @@ export class Proxy {
         str: this.getProxyString(item),
         include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
-      }
+      };
     });
 
     // https://developer.chrome.com/docs/extensions/reference/proxy/#type-PacScript
@@ -257,7 +257,7 @@ export class Proxy {
     const pattern = '^' + url.origin.replaceAll('.', '\.') + '/';
     const pat = {
       active: true,
-      pattern: '^' + url.origin.replaceAll('.', '\.') + '/',
+      pattern,
       title: url.hostname,
       type: 'regex',
     };

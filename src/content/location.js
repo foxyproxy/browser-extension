@@ -259,5 +259,5 @@ export class Location {
     ZA: {country: "South Africa", continent: 'Africa'},
     ZM: {country: "Zambia", continent: 'Africa'},
     ZW: {country: "Zimbabwe", continent: 'Africa'}
-  }
+  };
 }

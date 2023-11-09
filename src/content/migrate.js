@@ -49,7 +49,7 @@ export class Migrate {
     }
 
     // --- 8.0
-    if (pref.data) { return;}
+    if (pref.data) { return; }
 
     let db = {};
     switch (true) {
@@ -57,7 +57,7 @@ export class Migrate {
         db = App.getDefaultPref();
         break;
 
-      case pref.hasOwnProperty('settings'):
+      case Object.hasOwn(pref, 'settings'):
         db = this.convert3(pref);
         break;
 
@@ -122,7 +122,7 @@ export class Migrate {
       // process include/exclude
       item.patterns.forEach(elem => {
         const p = elem.data;
-        if (!p?.type) { return; }                           //skip
+        if (!p?.type) { return; }                           // skip
 
         const pat = {
           active: true,
@@ -155,18 +155,18 @@ export class Migrate {
     };
 
     // new database format
-    let mode = pref.mode || 'disable';
+    pref.mode ||= 'disable';
     pref.mode === 'disabled' && (pref.mode = 'disable');    // rename disabled -> disable
     pref.mode === 'patterns' && (pref.mode = 'pattern');    // rename patterns -> pattern
     if (pref[pref.mode]) {                                  // convert old mode
       const i = pref[pref.mode];
-      mode = `${i.address}:${i.port}`;
+      pref.mode = `${i.address}:${i.port}`;
     }
 
     const db = App.getDefaultPref();
     db.sync = !!pref.sync;
 
-    const data = Object.values(pref).filter(i => i.hasOwnProperty('address'));
+    const data = Object.values(pref).filter(i => Object.hasOwn(i, 'address'));
     data.sort((a, b) => a.index - b.index);                 // sort by index
 
     data.forEach(item => {

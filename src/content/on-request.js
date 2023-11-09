@@ -57,7 +57,7 @@ export class OnRequest {
         password: item.password,
         include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
-      }
+      };
     });
 
     // --- incognito/container proxy
@@ -178,7 +178,7 @@ export class OnRequest {
 
   static isInNet(url) {
     // check if IP address
-    if(!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; };
+    if(!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; }
 
     const ipa = url.split(/[:/.]+/, 5).slice(1);            // IP array
     const ip = ipa.map(i => i.padStart(3, '0')).join('');   // convert to padded string
