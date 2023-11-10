@@ -173,7 +173,7 @@ export class Proxy {
         host: pxy.hostname,
         port: pxy.port*1                                    // must be number
       },
-      bypassList: pref.passthrough ? pref.passthrough?.split(/[\s,;]+/) : []
+      bypassList: pref.passthrough ? pref.passthrough.split(/[\s,;]+/) : []
     };
   }
 
