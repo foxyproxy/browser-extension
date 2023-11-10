@@ -17,7 +17,7 @@ export class Pattern {
 
   // convert wildcard to regex string
   static convertWildcard(str) {
-    if (str === '*') { return '\S+'; }
+    if (str === '*') { return '\\S+'; }
 
     // escape regular expression special characters, minus * ?
     return str.replace(/[.+^${}()|[\]\\]/g, '\\$&')

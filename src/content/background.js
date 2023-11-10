@@ -11,7 +11,7 @@ class ProcessPref {
   }
 
   static async init() {
-    let pref = await browser.storage.local.get();
+    const pref = await browser.storage.local.get();
 
     // storage sync -> local update
     await Sync.get(pref);

@@ -9,7 +9,7 @@ typeof globalThis.browser === 'undefined' && (globalThis.browser = globalThis.ch
 !browser.action && (browser.action = browser.browserAction);
 
 // ---------- Default Preferences --------------------------
-export let pref = {
+export const pref = {
   mode: 'disable',
   sync: false,
   proxyDNS: true,
