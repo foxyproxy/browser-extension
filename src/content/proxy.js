@@ -218,7 +218,7 @@ export class Proxy {
     // isInNet(host, "192.0.2.172", "255.255.255.255")
 
     const pacString =
-`function FindProxyForURL(url, host) {
+String.raw`function FindProxyForURL(url, host) {
   const data = ${JSON.stringify(data)};
   const passthrough = ${JSON.stringify(passthrough)};
   const net = ${JSON.stringify(net)};
@@ -257,7 +257,7 @@ export class Proxy {
     const url = this.getURL(activeTab[0].url);
     if (!url) { return; }
 
-    const pattern = '^' + url.origin.replaceAll('.', '\.') + '/';
+    const pattern = '^' + url.origin.replaceAll('.', '\\.') + '/';
     const pat = {
       active: true,
       pattern,
@@ -287,7 +287,7 @@ export class Proxy {
     if (arr.includes(pattern)) { return; }                  // already added
 
     arr.push(pattern);
-    pref.passthrough = [...new Set(arr)].join(separator);   // remove duplicates
+    pref.passthrough = [...new Set(arr)].join(separator).trim(); // remove duplicates
 
     browser.storage.local.set({passthrough: pref.passthrough});
     this.set(pref);                                         // update Proxy

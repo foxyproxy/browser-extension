@@ -11,14 +11,14 @@ export class Sync {
 
   static async onChanged(changes) {
     // no newValue on storage.local.clear()
-    if (!Object.values(changes)[0]?.hasOwnProperty('newValue')) { return; }
+    if (!Object.hasOwn(Object.values(changes)[0] || {}, 'newValue')) { return; }
 
     const pref = await browser.storage.local.get();
     if (!pref.sync) { return; }
 
     // convert object to array + filter null newValue (deleted) + map to newValue
     const data = Object.values(changes)
-      .filter(i => i.newValue?.hasOwnProperty('hostname') || i.newValue?.hasOwnProperty('pac'))
+      .filter(i => Object.hasOwn(i.newValue || {}, 'hostname'))
       .map(i => i.newValue);
 
     const obj = {};

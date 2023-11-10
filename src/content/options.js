@@ -192,7 +192,6 @@ class Options {
       obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim();
     });
 
-
     // --- check type: http | https | socks4 | socks5 | pac | direct
     switch (true) {
       // DIRECT
@@ -386,7 +385,7 @@ class WebRTC {
     // { "levelOfControl": "controllable_by_this_extension", "value": "default" }
     this.result ||= await browser.privacy.network.webRTCIPHandlingPolicy.get({});
     const def = this.result.value === 'default';
-    let value = def ? 'default_public_interface_only' : 'default';
+    const value = def ? 'default_public_interface_only' : 'default';
     this.result.value = value;
     this.webRTC.checked = def;                              // was default but now changed
     browser.privacy.network.webRTCIPHandlingPolicy.set({value});
@@ -521,7 +520,6 @@ class Proxies {
     pxy.querySelector('input[type="file"]').addEventListener('change', e => this.importPattern(e, patternBox));
     pxy.querySelector('button[data-i18n^="export"]').addEventListener('click', () =>
       this.exportPattern(patternBox, elem[1].value.trim() || elem[3].value.trim()));
-
 
     // from add button
     if (!item) {
@@ -935,7 +933,7 @@ class ImportProxyList {
     const pram = {type, hostname, port, username, password};
 
     // prepare object, make parameter keys case-insensitive
-    for (let [key, value] of url.searchParams) {
+    for (const [key, value] of url.searchParams) {
       pram[key.toLowerCase()] = value;
     }
 
