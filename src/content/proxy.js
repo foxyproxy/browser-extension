@@ -178,7 +178,7 @@ export class Proxy {
   }
 
   static async setChromeIncognito(pref) {
-    const allowed =  await browser.extension.isAllowedIncognitoAccess();
+    const allowed = await browser.extension.isAllowedIncognitoAccess();
     if (!allowed) { return; }
 
     const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);

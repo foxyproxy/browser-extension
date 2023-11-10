@@ -792,7 +792,7 @@ class ImportFoxyProxyAccount {
     return fetch('https://getfoxyproxy.org/webservices/get-accounts.php', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body:  `username=${encodeURIComponent(username)}&password=${(encodeURIComponent(password))}`
+      body: `username=${encodeURIComponent(username)}&password=${(encodeURIComponent(password))}`
     })
     .then(response => response.json())
     .then(data => {
@@ -975,7 +975,7 @@ class importFromOlder {
         return;
     }
 
-    const reader  = new FileReader();
+    const reader = new FileReader();
     reader.onloadend = () => this.parseJSON(reader.result);
     reader.onerror = () => App.notify(browser.i18n.getMessage('fileReadError'));
     reader.readAsText(file);
@@ -1018,7 +1018,7 @@ class Tester {
 
     this.url.value = this.url.value.trim();
     this.pattern.value = this.pattern.value.trim();
-    if(!this.url.value  || !this.pattern.value ) {
+    if(!this.url.value || !this.pattern.value ) {
       this.result.textContent = '❌';
       return;
     }
