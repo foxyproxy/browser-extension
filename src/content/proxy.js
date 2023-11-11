@@ -107,10 +107,6 @@ export class Proxy {
     const value = conf.value;
 
     switch (true) {
-      case pref.mode === 'disable':
-        value.proxyType = 'system';
-        break;
-
       // --- Proxy Auto-Configuration (PAC) URL
       case pref.mode.includes('://'):
         value.proxyType = 'autoConfig';
@@ -119,8 +115,9 @@ export class Proxy {
         value.proxyDNS = pref.proxyDNS;
         break;
 
-      // --- pattern or single proxy
+      // --- disable, direct, pattern, or single proxy
       default:
+        if (conf.value.proxyType === 'system') { return; }  // no need to set again
         value.proxyType = 'system';
     }
 
