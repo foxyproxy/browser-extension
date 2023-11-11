@@ -37,6 +37,25 @@ h1 img {
   vertical-align: text-bottom;
 }
 
+/* ----- Buttons ----- */
+div.buttons {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 0.1em;
+}
+
+button {
+  color: #fff;
+  border: 0;
+  padding: 0.8em;
+  font-weight: bold;
+}
+
+button:hover {
+  background: var(--btn-hover);
+}
+/* ----- /Buttons ----- */
+
 /* ----- Main Display ----- */
 div.list {
   min-height: 15em;
@@ -140,22 +159,3 @@ div.host button:hover {
 div.host select {
   grid-column: span 2;
 }
-
-/* ----- Buttons ----- */
-div.buttons {
-  display: grid;
-  grid-auto-flow: column;
-  column-gap: 0.1em;
-}
-
-button {
-  color: #fff;
-  border: 0;
-  padding: 0.8em;
-  font-weight: bold;
-}
-
-button:hover {
-  background: var(--btn-hover);
-}
-/* ----- /Buttons ----- */

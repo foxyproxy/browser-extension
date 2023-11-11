@@ -1,7 +1,7 @@
 // ---------- Progress Bar ---------------------------------
 export class ProgressBar {
 
-  static bar = document.querySelector('.progressBar');
+  static bar = document.querySelector('.progress-bar');
 
   static show() {
     this.bar.classList.toggle('on');

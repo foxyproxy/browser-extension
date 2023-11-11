@@ -5,7 +5,7 @@
 /* ----- General ----- */
 :root {
   --nav-height: 3rem;
-  --maxWidth: 75rem;
+  --max-width: 75rem;
 }
 
 html {
@@ -48,7 +48,7 @@ article {
 section {
   display: none;
   margin: 0 auto;
-  max-width: var(--maxWidth);
+  max-width: var(--max-width);
   height: calc(100vh - var(--nav-height) - 2rem);
   overflow: auto;
 }
@@ -146,7 +146,7 @@ nav {
   align-items: end;
   color: var(--nav-color);
   height: var(--nav-height);
-  max-width: var(--maxWidth);
+  max-width: var(--max-width);
   margin: 0 auto;
 }
 
@@ -240,8 +240,6 @@ button[type="submit"]:active {
 
 /* ----- Toggle Switch ----- */
 .toggle {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   width: 31px;
   height: 16px;
@@ -251,7 +249,7 @@ button[type="submit"]:active {
   transition: background-color 0.5s;
 }
 
-.toggle:before {
+.toggle::before {
   content: '';
   display: block;
   position: absolute;
@@ -270,7 +268,7 @@ button[type="submit"]:active {
   background-color: var(--btn-bg);
 }
 
-.toggle:checked:before {
+.toggle:checked::before {
   left: 16px;
 }
 /* ----- /Toggle Switch ----- */
@@ -282,19 +280,6 @@ button.plain {
   margin: 0;
   min-width: 1em;
   border: none;
-}
-
-.proxy summary button,
-.patternBox button.test,
-.patternBox button.bin {
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  font-size: 1em;
-  transition: 0.5s;
-  color: #ccc;
-  font-weight: 900;
-  text-shadow: 0px -1px 1px #555, 0px 1px 0px #fff;
 }
 
 button.bin,
@@ -329,6 +314,8 @@ button.close::before {
 button.random {
   font-size: 1.5em;
 }
+
+
 /* ----- /Button ----- */
 
 /* ----- Options ----- */
@@ -464,6 +451,8 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   grid-template-columns: 1fr 1em;
   column-gap: 0.5em;
 }
+
+
 /* ----- Pattern ----- */
 .patternBox {
   max-height: 10em;
@@ -475,8 +464,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   display: grid;
   grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 4em;
   column-gap: 0.2em;
-  align-items: center;
-  justify-items: center;
+  place-items: center;
   background-color: var(--bg);
   padding: 0.2em 0.5em;
 }
@@ -506,6 +494,19 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 
 .patternRow input:nth-of-type(2) {
   grid-column: span 3;
+}
+
+.proxy summary button,
+.patternBox button.test,
+.patternBox button.bin {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  font-size: 1em;
+  transition: 0.5s;
+  color: #ccc;
+  font-weight: 900;
+  text-shadow: 0 -1px 1px #555, 0 1px 0 #fff;
 }
 /* ----- /Pattern ----- */
 
@@ -538,8 +539,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 .import details.importAccount div.content {
   display: grid;
   grid-template-columns: 1fr 3fr 1em;
-  row-gap: 0.5em;
-  column-gap: 0.5em;
+  gap: 0.5em;
 }
 
 .import details.importAccount button.flat {
@@ -619,12 +619,12 @@ section.log {
   animation: sect 0.5s ease-in-out;
 }
 
-.log tbody tr:nth-of-type(even) {
-  background-color: var(--tr);
-}
-
 .log tr:hover {
   background: var(--hover) !important;
+}
+
+.log tbody tr:nth-of-type(even) {
+  background-color: var(--tr);
 }
 
 .log td {
@@ -657,7 +657,10 @@ section.log {
   background: url('../image/privateBrowsing.svg') no-repeat center / contain;
 }
 
-.log tbody { counter-reset: n; }
+.log tbody {
+  counter-reset: n;
+}
+
 .log tbody tr td:first-child::before {
   display: inline-block;
   color: #aaa;

@@ -63,14 +63,12 @@ dt {
   padding: 0.2em 0.5em;
 }
 
-dl.plain dt {
-  /* color: var(--color); */
-  background-color: unset;
-  font-weight: bold;
-}
-
 dd + dt {
   margin-top: 0.5em;
+}
+
+dd dl dt {
+  background-color: unset;
 }
 
 dd > dl {
@@ -87,23 +85,23 @@ li span {
   font-size: 0.9em;
 }
 
-dd dl dt {
-  background-color: unset;
-}
-
 /* ----- About ----- */
 .about dt {
-  background: none;
+  background-color: unset;
   color: var(--nav-hover);
   font-weight: bold;
-  display: table;
-  padding: 0.2em 0.5em;
   margin-bottom: 0.2em;
   font-size: 1.1em;
   border-bottom: 1px solid var(--border);
   min-width: 15vw;
 }
 /* ----- /About ----- */
+
+dl.plain dt {
+  /* color: var(--color); */
+  background-color: unset;
+  font-weight: bold;
+}
 
 /* ----- Navigation ----- */
 nav {
@@ -112,7 +110,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 1;
-  box-shadow: 0px 3px 6px #0004;
+  box-shadow: 0 3px 6px #0004;
   display: flex;
   align-items: center;
 }

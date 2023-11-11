@@ -45,7 +45,31 @@ export class Proxy {
     }
   }
 
-  static set(pref) {
+  static async getSettings() {
+    const conf = await browser.proxy.settings.get({});
+
+    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
+    // Issue 29683: Extension icons should support SVG (Dec 8, 2009)
+    // SVG is not supported by Chrome
+    // Firefox: If each one of imageData and path is one of undefined, null or empty object,
+    // the global icon will be reset to the manifest icon
+    // Chrome -> Error: Either the path or imageData property must be specified.
+
+    // check if proxy.settings is controlled_by_this_extension
+    const ext = App.firefox ? 'svg' : 'png';
+    const control = conf.levelOfControl === 'controlled_by_this_extension';
+    const path = control ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
+    browser.action.setIcon({path});
+
+    return control ? conf : null;
+  }
+
+  static async set(pref) {
+    // check if proxy.settings is controlled_by_this_extension
+    const conf = await this.getSettings();
+    if (!conf) { return; }                                  // not controlled_by_this_extension
+
     // --- update authentication data
     Authentication.init(pref.data);
 
@@ -63,72 +87,53 @@ export class Proxy {
         break;
     }
 
-    App.firefox ? this.setFirefox(pref) : this.setChrome(pref);
+    App.firefox ? this.setFirefox(pref, conf) : this.setChrome(pref);
     Action.set(pref);
   }
 
-  static async getSettings() {
+  static async setFirefox(pref, conf) {
+    // update OnRequest
+    OnRequest.init(pref);
+
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
-    if (!browser.proxy.settings) {
-      return {value: {}};
-    }
+    if (!browser.proxy.settings) { return; }
 
-    const conf = await browser.proxy.settings.get({});
+    // Incognito Access
+    const allowed = await browser.extension.isAllowedIncognitoAccess();
+    if (!allowed) { return; }
 
-    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
-    // Issue 29683: Extension icons should support SVG (Dec 8, 2009)
-    // SVG is not supported by Chrome
-    // Firefox: If each one of imageData and path is one of undefined, null or empty object,
-    // the global icon will be reset to the manifest icon
-    // Chrome -> Error: Either the path or imageData property must be specified.
-
-    // check if proxy.settings is controlled_by_this_extension
-    const ext = App.firefox ? 'svg' : 'png';
-    const path = conf.levelOfControl === 'controlled_by_this_extension' ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
-    browser.action.setIcon({path});
-
-    return conf;
-  }
-
-  static async setFirefox(pref) {
-    // proxy.settings is not supported on Android
     // retain settings as Network setting is partially customisable
-    const conf = await this.getSettings();
     const value = conf.value;
-    OnRequest.init(pref);
+
     switch (true) {
       case pref.mode === 'disable':
         value.proxyType = 'system';
-        browser.proxy.settings?.set({value});
         break;
 
-      // Proxy Auto-Configuration (PAC) URL
+      // --- Proxy Auto-Configuration (PAC) URL
       case pref.mode.includes('://'):
         value.proxyType = 'autoConfig';
         value.autoConfigUrl = pref.mode;
         value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', '); // convert to standard comma-separated
         value.proxyDNS = pref.proxyDNS;
-        browser.proxy.settings?.set({value});
         break;
 
-      // pattern or single proxy
+      // --- pattern or single proxy
       default:
         value.proxyType = 'system';
-        browser.proxy.settings?.set({value});
     }
+
+    browser.proxy.settings.set({value});
   }
 
-  static setChrome(pref) {
-    // check if proxy.settings is controlled_by_this_extension
-    this.getSettings();
-
+  static async setChrome(pref) {
     // https://developer.chrome.com/docs/extensions/reference/types/
     // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
     const config = {value: {}, scope: 'regular'};
     switch (true) {
       case pref.mode === 'disable':
+      case pref.mode === 'direct':
         config.value.mode = 'system';
         break;
 
@@ -178,6 +183,7 @@ export class Proxy {
   }
 
   static async setChromeIncognito(pref) {
+    // Incognito Access
     const allowed = await browser.extension.isAllowedIncognitoAccess();
     if (!allowed) { return; }
 

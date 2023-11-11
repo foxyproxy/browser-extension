@@ -1,5 +1,5 @@
 /* ----- Progress Bar ----- */
-.progressBar {
+.progress-bar {
   opacity: 0;
   height: 2px;
   width: 0;
@@ -9,7 +9,7 @@
   animation: rainbow 3s ease infinite;
 }
 
-.progressBar.on {
+.progress-bar.on {
   width: 100%;
   opacity: 1;
   transition: opacity 1s ease-in-out, width 2s ease-in-out;
