@@ -39,25 +39,13 @@ class Popup {
     pref.mode === 'pattern' && (this.list.children[0].children[2].checked = true);
 
     pref.data.filter(i => i.active).forEach(item => {
-      let id;
-      switch (item.type) {
-        case 'direct':
-          id = 'direct';
-          break;
-
-        case 'pac':
-          id = item.pac;
-          break;
-
-        default:
-          id = `${item.hostname}:${item.port}`;
-      }
+      const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
       const label = labelTemplate.cloneNode(true);
       const [flag, title, portNo, radio, data] = label.children;
       flag.textContent = App.getFlag(item.cc);
       title.textContent = item.title || id;
       portNo.textContent = item.port;
-      radio.value = id;
+      radio.value = item.type === 'direct' ? 'direct' : id;
       radio.checked = id === pref.mode;
       data.textContent = [item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
       docFrag.appendChild(label);
@@ -82,17 +70,18 @@ class Popup {
     });
 
     // add a DIRECT option to the end
-    const opt = new Option('⮕ Direct', 'DIRECT');
-    docFrag.appendChild(opt);
-    this.proxyCache['DIRECT'] = {
-      type: 'direct',
-      hostname: 'DIRECT'
-    };
+    // const opt = new Option('⮕ Direct', 'DIRECT');
+    // docFrag.appendChild(opt);
+    // this.proxyCache['DIRECT'] = {
+    //   type: 'direct',
+    //   hostname: 'DIRECT'
+    // };
 
     this.select.appendChild(docFrag);
   }
 
   static processSelect(mode) {
+
     if (mode === pref.mode) { return; }                     // disregard re-click
 
     pref.mode = mode;
