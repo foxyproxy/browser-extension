@@ -14,26 +14,6 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 - [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
 - [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
 
-## Browser Minimum Versions
-
-<table>
-  <thead>
-    <tr>
-      <th>Firefox</th>
-      <th>Chrome</th>
-      <th>Firefox for Android</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>version 93<br><i>(released 2021-10-05)</i></td>
-      <td>version 108<br><i>(released 2022-11-29)</i></td>
-      <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
-    </tr>
-  </tbody>
-</table>
-
-
 
 ## Releases
 
@@ -72,6 +52,26 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
       <td>Source Code</td>
       <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
       <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+## Browser Minimum Versions
+
+<table>
+  <thead>
+    <tr>
+      <th>Firefox</th>
+      <th>Chrome</th>
+      <th>Firefox for Android</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>version 93<br><i>(released 2021-10-05)</i></td>
+      <td>version 108<br><i>(released 2022-11-29)</i></td>
+      <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
     </tr>
   </tbody>
 </table>
