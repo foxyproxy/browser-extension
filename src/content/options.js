@@ -425,10 +425,13 @@ class Proxies {
   }
 
   static addProxy(item) {
-    // --- make a blank proxy with all event listeners
+    // --- details: make a blank proxy with all event listeners
     const pxy = this.proxyTemplate.cloneNode(true);
     const proxyBox = pxy.children[1].children[0];
     const patternBox = pxy.children[1].children[2];
+
+    // --- disable draggable when details is open
+    pxy.children[0].addEventListener('click', () => pxy.draggable = pxy.open);
 
     // --- summary
     const sum = pxy.children[0].children;
@@ -437,7 +440,7 @@ class Proxies {
     sum[5].addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
     sum[6].addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
-    // proxy details
+    // proxy data
     const elem = proxyBox.children;
     elem[1].addEventListener('change', function () {
       sum[1].textContent = this.value;

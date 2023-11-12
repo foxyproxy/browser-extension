@@ -39,7 +39,19 @@ class Popup {
     pref.mode === 'pattern' && (this.list.children[0].children[2].checked = true);
 
     pref.data.filter(i => i.active).forEach(item => {
-      const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
+      let id;
+      switch (item.type) {
+        case 'direct':
+          id = 'direct';
+          break;
+
+        case 'pac':
+          id = item.pac;
+          break;
+
+        default:
+          id = `${item.hostname}:${item.port}`;
+      }
       const label = labelTemplate.cloneNode(true);
       const [flag, title, portNo, radio, data] = label.children;
       flag.textContent = App.getFlag(item.cc);
