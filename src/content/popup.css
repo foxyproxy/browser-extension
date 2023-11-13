@@ -58,6 +58,7 @@ button:hover {
 
 /* ----- Main Display ----- */
 div.list {
+  padding-top: 0.5em;
   min-height: 15em;
   max-height: 30em;
   overflow-y: auto;
