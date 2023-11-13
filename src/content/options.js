@@ -31,9 +31,11 @@ class IncognitoAccess {
 // ---------- Toggle ---------------------------------------
 class Toggle {
 
-  static password() {
-    const elem = this.previousElementSibling;
-    elem.type = elem.type === 'password' ? 'text' : 'password';
+  static password(elem) {
+    elem.addEventListener('click', () => {
+      const input = elem.previousElementSibling;
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
   }
 }
 // ---------- /Toggle --------------------------------------
@@ -427,108 +429,105 @@ class Proxies {
   static addProxy(item) {
     // --- details: make a blank proxy with all event listeners
     const pxy = this.proxyTemplate.cloneNode(true);
+    const summary = pxy.children[0];
     const proxyBox = pxy.children[1].children[0];
     const patternBox = pxy.children[1].children[2];
 
-    // --- disable draggable when details is open
-    pxy.children[0].addEventListener('click', () => pxy.draggable = pxy.open);
+    // disable draggable when details is open
+    summary.addEventListener('click', () => pxy.draggable = pxy.open);
 
     // --- summary
-    const sum = pxy.children[0].children;
-    sum[3].addEventListener('click', () => this.duplicateProxy(pxy, proxyBox));
-    sum[4].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && pxy.remove());
-    sum[5].addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
-    sum[6].addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
+    const [flag, sumTitle, active, dup, del, up, down] = summary.children;
+    dup.addEventListener('click', () => this.duplicateProxy(pxy));
+    del.addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && pxy.remove());
+    up.addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
+    down.addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
     // proxy data
-    const elem = proxyBox.children;
-    elem[1].addEventListener('change', function () {
-      sum[1].textContent = this.value;
-    });
+    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pac] = [...proxyBox.children].filter((e, i) => i%2);
+    title.addEventListener('change', e => sumTitle.textContent = e.target.value);
 
-    elem[5].addEventListener('change', function () {
+    type.addEventListener('change', e => {
       // hide/show elements
       // this.parentElement.dataset.type = this.value;
       // this.parentElement.previousElementSibling.dataset.type = this.value;
 
-      switch (this.options[this.selectedIndex].textContent) {
+      switch (e.target.options[e.target.selectedIndex].textContent) {
         case 'TOR':
-          sum[0].textContent = '🌎';
-          sum[1].textContent = 'TOR';
-          elem[1].value = 'TOR';
-          elem[3].value = '127.0.0.1';
-          elem[7].value = '9050';
+          flag.textContent = '🌎';
+          sumTitle.textContent = 'TOR';
+          title.value = 'TOR';
+          hostname.value = '127.0.0.1';
+          port.value = '9050';
           break;
 
         case 'Psiphon':
-          sum[0].textContent = '🌎';
-          sum[1].textContent = 'Psiphon';
-          elem[1].value = 'Psiphon';
-          elem[3].value = '127.0.0.1';
-          elem[7].value = '60351';
+          flag.textContent = '🌎';
+          sumTitle.textContent = 'Psiphon';
+          title.value = 'Psiphon';
+          hostname.value = '127.0.0.1';
+          port.value = '60351';
           break;
 
         case 'Privoxy':
-          sum[0].textContent = '🌎';
-          sum[1].textContent = 'Privoxy';
-          elem[1].value = 'Privoxy';
-          elem[3].value = '127.0.0.1';
-          elem[7].value = '8118';
+          flag.textContent = '🌎';
+          sumTitle.textContent = 'Privoxy';
+          title.value = 'Privoxy';
+          hostname.value = '127.0.0.1';
+          port.value = '8118';
           break;
 
         case 'PAC':
-          sum[0].textContent = '🌎';
-          sum[1].textContent = 'PAC';
-          elem[1].value = 'PAC';
+          flag.textContent = '🌎';
+          sumTitle.textContent = 'PAC';
+          title.value = 'PAC';
           break;
 
         case 'DIRECT':
-          sum[0].textContent = '⮕';
-          sum[1].textContent = 'DIRECT';
-          elem[1].value = 'DIRECT';
-          elem[3].value = 'DIRECT';
+          flag.textContent = '⮕';
+          sumTitle.textContent = 'DIRECT';
+          title.value = 'DIRECT';
+          hostname.value = 'DIRECT';
           break;
         }
     });
-    elem[9].addEventListener('change', function () {
-      sum[0].textContent = App.getFlag(this.value);
-    });
-    elem[15].children[1].addEventListener('click', Toggle.password);
+
+    cc.addEventListener('change', () => flag.textContent = App.getFlag(cc.value));
+    Toggle.password(passwordSpan.children[1]);
 
     // random color
     const color = item?.color || Color.getRandom();
-    pxy.children[0].style.borderLeftColor = color;
-    elem[17].children[0].value = color;
-    elem[17].children[0].addEventListener('change', function () {
-      pxy.children[0].style.borderLeftColor = this.value;
+    summary.style.borderLeftColor = color;
+    const [colorInput, colorButton] = colorSpan.children;
+    colorInput.value = color;
+    colorInput.addEventListener('change', e => summary.style.borderLeftColor = e.target.value);
+
+    colorButton.addEventListener('click', e => {
+      e.target.previousElementSibling.value = Color.getRandom();
+      summary.style.borderLeftColor = e.target.previousElementSibling.value;
     });
 
-    elem[17].children[1].addEventListener('click', function () {
-      this.previousElementSibling.value = Color.getRandom();
-      pxy.children[0].style.borderLeftColor = this.previousElementSibling.value;
-    });
-
-    elem[19].addEventListener('change', function () {
-      const {hostname, port} = App.parseURL(this.value);
+    pac.addEventListener('change', e => {
+      const {hostname, port} = App.parseURL(e.target.value);
       if (!hostname) {
-        this.classList.add('invalid');
+        e.target.classList.add('invalid');
         return;
       }
-      elem[3].value = hostname;
-      port && (elem[7].value = port);
+      hostname.value = hostname;
+      port && (port.value = port);
     });
 
     // patterns
     pxy.querySelector('button[data-i18n="add"]').addEventListener('click', () => this.addPattern(patternBox));
     pxy.querySelector('input[type="file"]').addEventListener('change', e => this.importPattern(e, patternBox));
     pxy.querySelector('button[data-i18n^="export"]').addEventListener('click', () =>
-      this.exportPattern(patternBox, elem[1].value.trim() || elem[3].value.trim()));
+      this.exportPattern(patternBox, title.value.trim() || hostname.value.trim()));
 
     // from add button
     if (!item) {
       this.proxyDiv.appendChild(pxy);                       // insert blank proxy
       pxy.open = true;                                      // open the proxy details
-      elem[1].focus();
+      title.focus();
       pxy.scrollIntoView({behavior: 'smooth'});
       return;
     }
@@ -537,28 +536,28 @@ class Proxies {
     this.proxyCache[id] = item;                             // cache to find later
 
     // --- populate with data
-    const title = item.title || id;
+    const pxyTitle = item.title || id;
 
     // --- summary
-    sum[0].textContent = App.getFlag(item.cc);
-    sum[1].textContent = title;
-    sum[2].checked = item.active;
+    flag.textContent = App.getFlag(item.cc);
+    sumTitle.textContent = pxyTitle;
+    active.checked = item.active;
 
     // toggle button (hide/show elements)
     pxy.children[1].children[0].dataset.type = item.type;
 
     // proxy details
-    elem[1].value = title;
-    elem[3].value = item.hostname;
-    elem[5].value = item.type;
-    elem[7].value = item.port;
-    elem[9].value = item.cc;
-    elem[9].dataset.hostname = item.hostname;               // for Get Location
-    elem[11].value = item.username;
-    elem[13].value = item.city;
-    elem[13].dataset.hostname = item.hostname;              // for Get Location
-    elem[15].children[0].value = item.password;
-    elem[19].value = item.pac;
+    title.value = pxyTitle;
+    hostname.value = item.hostname;
+    type.value = item.type;
+    port.value = item.port;
+    cc.value = item.cc;
+    cc.dataset.hostname = item.hostname;                    // for Get Location
+    username.value = item.username;
+    city.value = item.city;
+    city.dataset.hostname = item.hostname;                  // for Get Location
+    passwordSpan.children[0].value = item.password;
+    pac.value = item.pac;
 
     // patterns
     item.include.forEach(i => this.addPattern(patternBox, i, 'include'));
@@ -568,50 +567,46 @@ class Proxies {
     this.docFrag.appendChild(pxy);
   }
 
-  static addPattern(parent, item, include) {
+  static addPattern(parent, item, inc) {
     // --- make a blank pattern with all event listeners
     const div = this.patternTemplate.cloneNode(true);
-    const elem = div.children;
+    const [quickAdd, include, type, title, pattern, active, test, del] = div.children;
 
-    elem[0].addEventListener('change', function () {
-      const opt = this.options[this.selectedIndex];
-      elem[2].value = opt.dataset.type;
-      elem[3].value = opt.textContent;
-      elem[4].value = opt.value;
-      this.selectedIndex = 0;                               // reset select option
+    quickAdd.addEventListener('change', e => {
+      const opt = e.target.options[e.target.selectedIndex];
+      type.value = opt.dataset.type;
+      title.value = opt.textContent;
+      pattern.value = opt.value;
+      e.target.selectedIndex = 0;                           // reset select option
     });
-    elem[6].addEventListener('click', () => {
-      Tester.select.value = elem[2].value;
-      Tester.pattern.value = elem[4].value;
-      Tester.target = elem[4];
+
+    test.addEventListener('click', () => {
+      Tester.select.value = type.value;
+      Tester.pattern.value = pattern.value;
+      Tester.target = pattern;
       Nav.get('tester');                                    // navigate to Tester tab
     });
-    // elem[7].addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && div.remove());
-    elem[7].addEventListener('click', () => div.remove());
+
+    // del.addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && div.remove());
+    del.addEventListener('click', () => div.remove());
 
     if (item) {
-      elem[1].value = include;
-      elem[2].value = item.type;
-      elem[3].value = item.title;
-      elem[4].value = item.pattern;
-      elem[5].checked = item.active;
+      include.value = inc;
+      type.value = item.type;
+      title.value = item.title;
+      pattern.value = item.pattern;
+      active.checked = item.active;
     }
 
     parent.appendChild(div);
   }
 
-  static duplicateProxy(pxy, proxyBox) {
-    const elem = proxyBox.children;
-    const hostname = elem[3].value.trim();
-    const type = elem[5].value;
-    const port = elem[7].value.trim();
-    const pac = elem[19].value.trim();
+  static duplicateProxy(item) {
+    const pxy = Options.getProxyDetails(item);
+    if (!pxy) { return; }
 
-    const id = type === 'pac' ? pac : `${hostname}:${port}`;
-    const item = this.proxyCache[id];
-
-    item && this.addProxy(item);
-    pxy.after(this.docFrag);
+    this.addProxy(pxy);
+    item.after(this.docFrag);
   }
 
   static importPattern(e, patternBox) {
@@ -692,9 +687,10 @@ class Proxies {
     }
 
     [...this.proxyDiv.children].forEach(item => {
-      const title = item.children[1].children[0].children[1].value;
-      const hostname = item.children[1].children[0].children[3].value;
-      const port = ':' + item.children[1].children[0].children[7].value;
+      const proxyBox = item.children[1].children[0];
+      const title = proxyBox.children[1].value;
+      const hostname = proxyBox.children[3].value;
+      const port = ':' + proxyBox.children[7].value;
       item.classList.toggle('off', ![title, hostname, port].some(i => i.toLowerCase().includes(str)));
     });
   }
@@ -731,7 +727,7 @@ class ImportFoxyProxyAccount {
   static {
     this.username = document.querySelector('.importAccount #username');
     this.password = document.querySelector('.importAccount #password');
-    document.querySelector('.importAccount button[data-i18n="togglePassword|title"]').addEventListener('click', Toggle.password);
+    Toggle.password(this.password.nextElementSibling);
     document.querySelector('.importAccount button[data-i18n="import"]').addEventListener('click', () => this.process());
   }
 
