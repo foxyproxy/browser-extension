@@ -56,6 +56,78 @@ h3 span {
   font-size: 1.2em;
 } */
 
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+pre {
+  border-left: 2px solid #ccc;
+  padding: 0.5em 1em;
+}
+
+code {
+  padding: 0 0.3em;
+  background-color: var(--hover);
+  font-size: 1.1em;
+}
+
+blockquote {
+  color: var(--color);
+  padding: 1em 3.5em;
+  font-style: italic;
+  position: relative;
+  font-size: 0.9em;
+}
+
+blockquote::before {
+  color: #ccc;
+  opacity: 0.6;
+  font-size: 4em;
+  position: absolute;
+  content: '❝';
+  top: 0;
+  left: 0.1em;
+}
+
+blockquote::after {
+  color: #ccc;
+  opacity: 0.6;
+  font-size: 4em;
+  position: absolute;
+  content: '❞';
+  bottom: -0.5em;
+  right: 0.5em;
+}
+
+cite {
+  display: block;
+  margin-top: 1em;
+  color: #999;
+}
+
+cite::before {
+  content: '— source: ';
+}
+
+figure {
+  display: table;
+  text-align: center;
+  padding: 0;
+}
+
+figure img {
+  border-radius: 1em;
+  border: 4px solid var(--nav-hover);
+  width: 140px;
+}
+
+figcaption {
+  font-style: italic;
+  font-size: 0.9em;
+  padding-top: 0.5em;
+}
+
 dt {
   /* color: var(--nav-bg); */
   background-color: var(--alt-bg);
@@ -185,77 +257,6 @@ mark {
 }
 
 /* ----- /Table ----- */
-p {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
-
-pre {
-  border-left: 2px solid #ccc;
-  padding: 0.5em 1em;
-}
-
-code {
-  padding: 0 0.3em;
-  background-color: var(--hover);
-  font-size: 1.1em;
-}
-
-blockquote {
-  color: var(--color);
-  padding: 1em 3.5em;
-  font-style: italic;
-  position: relative;
-  font-size: 0.9em;
-}
-
-blockquote::before {
-  color: #ccc;
-  opacity: 0.6;
-  font-size: 4em;
-  position: absolute;
-  content: '❝';
-  top: 0;
-  left: 0.1em;
-}
-
-blockquote::after {
-  color: #ccc;
-  opacity: 0.6;
-  font-size: 4em;
-  position: absolute;
-  content: '❞';
-  bottom: -0.5em;
-  right: 0.5em;
-}
-
-cite {
-  display: block;
-  margin-top: 1em;
-  color: #999;
-}
-
-cite::before {
-  content: '— source: ';
-}
-
-figure {
-  display: table;
-  text-align: center;
-  padding: 0;
-}
-
-figure img {
-  border-radius: 1em;
-  border: 4px solid var(--nav-hover);
-  width: 140px;
-}
-
-figcaption {
-  font-style: italic;
-  font-size: 0.9em;
-  padding-top: 0.5em;
-}
 
 /* ----- note, footnote, warning, experimental ----- */
 .note, .footnote, .warning {

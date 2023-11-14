@@ -18,7 +18,7 @@ export class Log {
 
   static process(e) {
     const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
-    const [num, time, container, method, doc, url, title, type, host, port] = tr.children;
+    const [, time, container, method, doc, url, title, type, host, port] = tr.children;
 
     time.textContent = this.formatInt(e.timeStamp);
     method.textContent = e.method;

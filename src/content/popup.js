@@ -6,6 +6,7 @@ import './i18n.js';
 await App.getPref();
 
 // ---------- Popup ----------------------------------------
+// eslint-disable-next-line no-unused-vars
 class Popup {
 
   static {

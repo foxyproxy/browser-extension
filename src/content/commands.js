@@ -10,6 +10,7 @@ import {Proxy} from './proxy.js';
 import {OnRequest} from './on-request.js';
 
 // ---------- Commands (Side Effect) ------------------------
+// eslint-disable-next-line no-unused-vars
 class Commands {
 
   static {

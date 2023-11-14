@@ -13,6 +13,7 @@ import './i18n.js';
 await App.getPref();
 
 // ---------- Incognito Access -----------------------------
+// eslint-disable-next-line no-unused-vars
 class IncognitoAccess {
 
   static {
@@ -316,6 +317,7 @@ class Options {
 // ---------- /Options -------------------------------------
 
 // ---------- browsingData ---------------------------------
+// eslint-disable-next-line no-unused-vars
 class BrowsingData {
 
   static {
@@ -351,6 +353,7 @@ class BrowsingData {
 // ---------- /browsingData --------------------------------
 
 // ---------- WebRTC ---------------------------------------
+// eslint-disable-next-line no-unused-vars
 class WebRTC {
 
   static {
@@ -698,6 +701,7 @@ class Proxies {
 // ---------- /Proxies -------------------------------------
 
 // ---------- Drag and Drop --------------------------------
+// eslint-disable-next-line no-unused-vars
 class Drag {
 
   static {
@@ -722,6 +726,7 @@ class Drag {
 // ---------- /Drag and Drop -------------------------------
 
 // ---------- Import FP Account ----------------------------
+// eslint-disable-next-line no-unused-vars
 class ImportFoxyProxyAccount {
 
   static {
@@ -810,6 +815,7 @@ class ImportFoxyProxyAccount {
 // ---------- /Import FP Account ---------------------------
 
 // ---------- Import From URL ------------------------------
+// eslint-disable-next-line no-unused-vars
 class importFromUrl {
 
   static {
@@ -844,6 +850,7 @@ class importFromUrl {
 // ---------- /Import From URL -----------------------------
 
 // ---------- Import List ----------------------------------
+// eslint-disable-next-line no-unused-vars
 class ImportProxyList {
 
   static {
@@ -959,6 +966,7 @@ class ImportProxyList {
 // ---------- /Import List ---------------------------------
 
 // ---------- Import Older Export --------------------------
+// eslint-disable-next-line no-unused-vars
 class importFromOlder {
 
   static {

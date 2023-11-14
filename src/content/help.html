@@ -595,7 +595,58 @@
     </table>
 
 
+    <h2 id="">Bulk Edit</h2>
+    <p>Bulk edit examples for the advanced users</p>
+    <ul>
+      <li>Go to the Options ➢ Proxies</li>
+      <li>Open Developer Tools (F12) or (Ctrl+Shift+I)</li>
+      <li>Go to the Console tab</li>
+      <li>Paste the following Code (edit as required)</li>
+      <li>Hit Enter</li>
+      <li>Click SAVE to apply changes</li>
+    </ul>
 
+
+    <table>
+      <caption>Examples</caption>
+      <tbody class="code">
+        <tr>
+          <th>Change all types</th>
+          <td>document.querySelectorAll('[data-id="type"]').forEach(i => i.value = 'https')</td>
+        </tr>
+
+        <tr>
+          <th>Change all ports</th>
+          <td>document.querySelectorAll('[data-id="port"]').forEach(i => i.value = '443')</td>
+        </tr>
+
+        <tr>
+          <th>Change all titles</th>
+          <td>document.querySelectorAll('[data-id="title"]').forEach(i => i.value += '-set')</td>
+        </tr>
+
+        <tr>
+          <th>Change all usernames</th>
+          <td>document.querySelectorAll('[data-id="username"]').forEach(i => i.value = 'user')</td>
+        </tr>
+
+        <tr>
+          <th>Change all passwords</th>
+          <td>document.querySelectorAll('[data-id="password"]').forEach(i => i.value = 'pass')</td>
+        </tr>
+
+        <tr>
+          <th>Open all proxies</th>
+          <td>document.querySelectorAll('details.proxy').forEach(i => i.open = true)</td>
+        </tr>
+
+        <tr>
+          <th>Close all proxies</th>
+          <td>document.querySelectorAll('details.proxy').forEach(i => i.open = false)</td>
+        </tr>
+
+      </tbody>
+    </table>
 
 
     <h1 id="import">Import</h1>
