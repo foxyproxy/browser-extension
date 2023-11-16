@@ -229,24 +229,24 @@ class Options {
     // --- check & build patterns
     const cache = [];
     for (const item of elem.querySelectorAll('.patternBox .patternRow')) {
-      const elem = item.children;
-      elem[4].classList.remove('invalid');                  // reset
+      const [, inc, type, title, pattern, active] = item.children;
+      pattern.classList.remove('invalid');                    // reset
       const pat = {
-        type: elem[2].value,
-        title: elem[3].value.trim(),
-        pattern: elem[4].value.trim(),
-        active: elem[5].checked,
+        type: type.value,
+        title: title.value.trim(),
+        pattern: pattern.value.trim(),
+        active: active.checked,
       };
 
       // --- test pattern
-      if (!pat.pattern) { continue; }                       // blank pattern
+      if (!pat.pattern) { continue; }                         // blank pattern
 
       if (!Pattern.validate(pat.pattern, pat.type, true)) {
-        Nav.get('proxies');                                 // show Proxy tab
+        Nav.get('proxies');                                   // show Proxy tab
         const details = item.closest('details');
-        details.open = true;                                // open proxy
-        elem[4].classList.add('invalid');
-        elem[4].scrollIntoView({behavior: 'smooth'});
+        details.open = true;                                  // open proxy
+        pattern.classList.add('invalid');
+        pattern.scrollIntoView({behavior: 'smooth'});
         return;
       }
 
@@ -256,8 +256,8 @@ class Options {
         continue;
       }
 
-      cache.push(pat.pattern);                              // cache to check for duplicates
-      obj[elem[1].value].push(pat);
+      cache.push(pat.pattern);                                // cache to check for duplicates
+      obj[inc.value].push(pat);
     }
     return obj;
   }
@@ -387,7 +387,7 @@ class WebRTC {
 
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1790270
     // WebRTC bypasses Network settings & proxy.onRequest
-    // { "levelOfControl": "controllable_by_this_extension", "value": "default" }
+    // {"levelOfControl": "controllable_by_this_extension", "value": "default"}
     this.result ||= await browser.privacy.network.webRTCIPHandlingPolicy.get({});
     const def = this.result.value === 'default';
     const value = def ? 'default_public_interface_only' : 'default';
@@ -530,10 +530,14 @@ class Proxies {
     if (!item) {
       this.proxyDiv.appendChild(pxy);                       // insert blank proxy
       pxy.open = true;                                      // open the proxy details
+      pxy.draggable = false;                                // disable draggable
       title.focus();
       pxy.scrollIntoView({behavior: 'smooth'});
       return;
     }
+
+    // toggle button (hide/show elements)
+    // proxyBox.dataset.type = item.type;
 
     const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
     this.proxyCache[id] = item;                             // cache to find later
@@ -545,9 +549,6 @@ class Proxies {
     flag.textContent = App.getFlag(item.cc);
     sumTitle.textContent = pxyTitle;
     active.checked = item.active;
-
-    // toggle button (hide/show elements)
-    pxy.children[1].children[0].dataset.type = item.type;
 
     // proxy details
     title.value = pxyTitle;

@@ -58,7 +58,7 @@ export class Proxy {
 
     // check if proxy.settings is controlled_by_this_extension
     const ext = App.firefox ? 'svg' : 'png';
-    const control = conf.levelOfControl === 'controlled_by_this_extension';
+    const control = ['controlled_by_this_extension', 'controllable_by_this_extension'].includes(conf.levelOfControl);
     const path = control ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
     browser.action.setIcon({path});
 
