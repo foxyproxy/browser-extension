@@ -407,7 +407,7 @@ details.proxy {
 
 details.proxy > summary {
   border-radius: 5px;
-  padding: 0.5em;
+  padding: 0.2em 0.5em;
   list-style: none;
   border-left: 1.5em solid var(--btn-bg);
   display: grid;
