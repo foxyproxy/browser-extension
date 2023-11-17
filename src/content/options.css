@@ -40,10 +40,12 @@ article {
 }
 
 /* About & Help */
-/* #nav1:checked ~ article,
+/*
+#nav1:checked ~ article,
 #nav2:checked ~ article {
   background-color: var(--bg);
-} */
+}
+*/
 
 section {
   display: none;
@@ -78,7 +80,8 @@ label > input[type="checkbox"] {
 /*
 input[type="number"] {
   width: 4em;
-} */
+}
+*/
 
 .flat {
   background: var(--btn-bg);
@@ -118,6 +121,11 @@ fieldset {
   margin-left: 0.5em;
   margin-top: 0;
   padding-left: 0.3em;
+}
+
+details > summary:hover,
+details[open] > summary {
+  background-color: var(--hover);
 }
 
 summary ~ * {
@@ -378,14 +386,14 @@ details div.content {
 }
 
 /* ----- Proxy ----- */
-.proxyTop {
+.proxy-top {
   display: grid;
   grid-template-columns: auto 1fr 1fr auto;
   column-gap: 0.5em;
   margin: 0 0 0.5em;
 }
 
-.proxyTop input#filter {
+.proxy-top input#filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
   padding-left: 2em;
 }
@@ -408,11 +416,6 @@ details.proxy > summary {
   align-items: center;
 }
 
-details.proxy > summary:hover,
-details.proxy[open] > summary {
-  background-color: var(--hover);
-}
-
 /* details.proxy > summary button.plain {
  color: var(--btn-bg);
 } */
@@ -431,7 +434,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   opacity: 0.2;
 }
 
-.proxyBox {
+.proxy-box {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr;
   /* grid-auto-rows: min-content; */
@@ -439,7 +442,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   padding-bottom: 0.5em;
 }
 
-.proxyBox button.country {
+.proxy-box button.country {
   background: none;
   font-size: 1em;
   width: 2em;
@@ -454,13 +457,13 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 
 
 /* ----- Pattern ----- */
-.patternBox {
+.pattern-box {
   max-height: 10em;
   overflow-y: auto;
   padding: 0 0.5em;
 }
 
-.patternHead {
+.pattern-head {
   display: grid;
   grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 4em;
   column-gap: 0.2em;
@@ -469,22 +472,18 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   padding: 0.2em 0.5em;
 }
 
-.patternHead button {
+.pattern-head button {
   padding: 0.2em 1em;
   min-width: unset;
 }
 
-.patternHead .plain {
+.pattern-head .plain {
   font-size: 1em;
   cursor: pointer;
   padding: 0.2em 0.5em;
 }
 
-/* .patternHead .plain:hover {
-  background-color: var(--hover);
-} */
-
-.patternRow {
+.pattern-row {
   display: grid;
   grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 2em 1em 1em;
   column-gap: 0.2em;
@@ -492,13 +491,13 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   margin-top: 0.3em;
 }
 
-.patternRow input:nth-of-type(2) {
+.pattern-row input:nth-of-type(2) {
   grid-column: span 3;
 }
 
 .proxy summary button,
-.patternBox button.test,
-.patternBox button.bin {
+.pattern-box button.test,
+.pattern-box button.bin {
   padding: 0;
   background-color: transparent;
   border: none;
@@ -531,18 +530,13 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   border-radius: 5px;
 }
 
-.import details summary:hover,
-.import details[open] summary {
-  background-color: var(--hover);
-}
-
-.import details.importAccount div.content {
+.import details.import-account div.content {
   display: grid;
   grid-template-columns: 1fr 3fr 1em;
   gap: 0.5em;
 }
 
-.import details.importAccount button.flat {
+.import details.import-account button.flat {
   justify-self: start;
 }
 
@@ -559,7 +553,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   gap: 0.8em 0.5em;
 }
 
-.tester input {
+.tester input[type] {
   font-size: 1em;
 }
 
@@ -567,7 +561,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   grid-column: span 2;
 }
 
-.tester .testResult {
+.tester .test-result {
   min-height: 4em;
   grid-column: span 2;
 }

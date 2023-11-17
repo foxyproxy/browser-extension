@@ -228,7 +228,7 @@ class Options {
 
     // --- check & build patterns
     const cache = [];
-    for (const item of elem.querySelectorAll('.patternBox .patternRow')) {
+    for (const item of elem.querySelectorAll('.pattern-box .pattern-row')) {
       const [, inc, type, title, pattern, active] = item.children;
       pattern.classList.remove('invalid');                    // reset
       const pat = {
@@ -409,8 +409,8 @@ class Proxies {
     this.patternTemplate = temp.lastElementChild;
 
     // --- buttons
-    document.querySelector('.proxySection .proxyTop button[data-i18n="getLocation"]').addEventListener('click', () => this.getLocation());
-    document.querySelector('.proxySection .proxyTop button[data-i18n="add"]').addEventListener('click', () => this.addProxy());
+    document.querySelector('.proxySection .proxy-top button[data-i18n="getLocation"]').addEventListener('click', () => this.getLocation());
+    document.querySelector('.proxySection .proxy-top button[data-i18n="add"]').addEventListener('click', () => this.addProxy());
 
     // --- proxy filter
     const filter = document.querySelector('#filter');
@@ -731,10 +731,10 @@ class Drag {
 class ImportFoxyProxyAccount {
 
   static {
-    this.username = document.querySelector('.importAccount #username');
-    this.password = document.querySelector('.importAccount #password');
+    this.username = document.querySelector('.import-account #username');
+    this.password = document.querySelector('.import-account #password');
     Toggle.password(this.password.nextElementSibling);
-    document.querySelector('.importAccount button[data-i18n="import"]').addEventListener('click', () => this.process());
+    document.querySelector('.import-account button[data-i18n="import"]').addEventListener('click', () => this.process());
   }
 
   static async process() {
@@ -820,8 +820,8 @@ class ImportFoxyProxyAccount {
 class importFromUrl {
 
   static {
-    this.input = document.querySelector('.importFromUrl input');
-    document.querySelector('.importFromUrl button').addEventListener('click', () => this.process());
+    this.input = document.querySelector('.import-from-url input');
+    document.querySelector('.import-from-url button').addEventListener('click', () => this.process());
   }
 
   static process() {
@@ -855,8 +855,8 @@ class importFromUrl {
 class ImportProxyList {
 
   static {
-    this.textarea = document.querySelector('.importProxyList textarea');
-    document.querySelector('.importProxyList button').addEventListener('click', () => this.process());
+    this.textarea = document.querySelector('.import-proxy-list textarea');
+    document.querySelector('.import-proxy-list button').addEventListener('click', () => this.process());
   }
 
   static process() {
@@ -971,7 +971,7 @@ class ImportProxyList {
 class importFromOlder {
 
   static {
-    document.querySelector('.importFromOlder input').addEventListener('change', e => this.process(e));
+    document.querySelector('.import-from-older input').addEventListener('change', e => this.process(e));
   }
 
   static process(e) {
@@ -1014,7 +1014,7 @@ class Tester {
     this.url = document.querySelector('.tester input[type="url"]');
     this.select = document.querySelector('.tester select');
     this.pattern = document.querySelector('.tester input[type="text"]');
-    this.result = document.querySelector('.tester .testResult');
+    this.result = document.querySelector('.tester .test-result');
     document.querySelector('.tester button[data-i18n="back"]').addEventListener('click', () => this.back());
     document.querySelector('.tester button[data-i18n="test"]').addEventListener('click', () => this.process());
   }

@@ -62,7 +62,13 @@ export class Proxy {
     const path = control ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
     browser.action.setIcon({path});
 
-    return control ? conf : null;
+    if (!control) {
+      browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
+      browser.action.setBadgeText({text: '❌'});
+      return null;
+    }
+
+    return conf;
   }
 
   static async set(pref) {
