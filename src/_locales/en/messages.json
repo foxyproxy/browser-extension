@@ -12,6 +12,7 @@
   "unsetTabProxy": { "message": "Unset Tab Proxy" },
 
   "incognitoAccessError": { "message": "Firefox requires private browsing permission for proxy settings." },
+  "controlledByOtherExtensions": { "message": "Settings are controlled by other extensions." },
 
   "enableSync": { "message": "Enable Sync" },
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
