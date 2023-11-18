@@ -21,10 +21,6 @@ body {
   transition: opacity 0.5s;
 }
 
-body.android {
-  width: auto;
-}
-
 h1 {
   color: var(--nav-color);
   background: var(--body-bg);

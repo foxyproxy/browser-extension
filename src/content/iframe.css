@@ -80,7 +80,8 @@ blockquote {
   font-size: 0.9em;
 }
 
-blockquote::before {
+blockquote::before,
+blockquote::after {
   color: #ccc;
   opacity: 0.6;
   font-size: 4em;
@@ -91,11 +92,6 @@ blockquote::before {
 }
 
 blockquote::after {
-  color: #ccc;
-  opacity: 0.6;
-  font-size: 4em;
-  position: absolute;
-  content: '❞';
   bottom: -0.5em;
   right: 0.5em;
 }
@@ -255,18 +251,21 @@ mark {
   color: var(--header);
   background-color: unset;
 }
-
 /* ----- /Table ----- */
 
 /* ----- note, footnote, warning, experimental ----- */
-.note, .footnote, .warning {
+.note,
+.footnote,
+.warning {
   border-left: 3px solid #17f;
   padding: 0.3em 0.5em 0.3em 2em;
   margin-top: 0.5em;
   position: relative;
 }
 
-.note::before, .footnote::before, .warning::before {
+.note::before,
+.footnote::before,
+.warning::before {
   content: 'ⓘ';
   color: #17f;
   position: absolute;

@@ -39,14 +39,6 @@ article {
   padding: 1em;
 }
 
-/* About & Help */
-/*
-#nav1:checked ~ article,
-#nav2:checked ~ article {
-  background-color: var(--bg);
-}
-*/
-
 section {
   display: none;
   margin: 0 auto;
@@ -62,9 +54,9 @@ iframe {
   height: 99%;
 }
 
-img {
+/* img {
   vertical-align: text-bottom;
-}
+} */
 
 label[for],
 input[type="checkbox"],
@@ -82,6 +74,11 @@ input[type="number"] {
   width: 4em;
 }
 */
+
+textarea {
+  min-height: 6em;
+  resize: vertical;
+}
 
 .flat {
   background: var(--btn-bg);
@@ -123,6 +120,18 @@ fieldset {
   padding-left: 0.3em;
 }
 
+details {
+  padding: 0;
+  background-color: var(--alt-bg);
+  border-radius: 5px;
+  margin-bottom: 0.5em;
+}
+
+details > summary {
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
 details > summary:hover,
 details[open] > summary {
   background-color: var(--hover);
@@ -160,7 +169,7 @@ nav {
 
 nav img {
   width: 2em;
-  margin: 0.5em;
+  margin: 0.2em 0.5em;
 }
 
 nav > label {
@@ -340,11 +349,6 @@ input[type="color"] {
   border: 0;
 }
 
-.options textarea {
-  min-height: 6em;
-  resize: vertical;
-}
-
 .options div.container,
 .options div.commands {
   display: grid;
@@ -398,16 +402,11 @@ details div.content {
   padding-left: 2em;
 }
 
-details.proxy {
-  padding: 0;
-  background-color: var(--alt-bg);
-  border-radius: 5px;
-  margin-bottom: 0.5em;
+details.proxy.off {
+  display: none;
 }
 
 details.proxy > summary {
-  border-radius: 5px;
-  padding: 0.2em 0.5em;
   list-style: none;
   border-left: 1.5em solid var(--btn-bg);
   display: grid;
@@ -416,12 +415,8 @@ details.proxy > summary {
   align-items: center;
 }
 
-/* details.proxy > summary button.plain {
- color: var(--btn-bg);
-} */
-
-details.proxy.off {
-  display: none;
+details.proxy > summary button.plain {
+  line-height: 1em;
 }
 
 details.proxy > summary span:first-of-type {
@@ -440,13 +435,6 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   /* grid-auto-rows: min-content; */
   gap: 0.5em;
   padding-bottom: 0.5em;
-}
-
-.proxy-box button.country {
-  background: none;
-  font-size: 1em;
-  width: 2em;
-  padding: 0;
 }
 
 .password {
@@ -477,6 +465,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   min-width: unset;
 }
 
+/* import & export (label & button) */
 .pattern-head .plain {
   font-size: 1em;
   cursor: pointer;
@@ -512,22 +501,10 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 /* ----- Import ----- */
 .import textarea {
   height: 10em;
-  resize: vertical;
-}
-
-.import details {
-  background-color: var(--alt-bg);
-  border-radius: 5px;
-  margin-bottom: 0.5em;
 }
 
 .import summary::marker {
   color: var(--header);
-}
-
-.import details summary {
-  padding: 0.5em;
-  border-radius: 5px;
 }
 
 .import details.import-account div.content {
