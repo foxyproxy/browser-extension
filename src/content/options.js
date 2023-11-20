@@ -89,6 +89,7 @@ class Options {
     const arr = passthrough.split(/[\s,;]+/)
       .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/(?<=[a-z\d])\/[^\s,;]*/gi, ''));// remove path
     this.passthrough.value = [...new Set(arr)].join(separator); // remove duplicates
+    pref.passthrough = this.passthrough.value;
 
     // --- check and build proxies & patterns
     const data = [];
@@ -511,13 +512,13 @@ class Proxies {
     });
 
     pac.addEventListener('change', e => {
-      const {hostname, port} = App.parseURL(e.target.value);
-      if (!hostname) {
+      const {hostname: h, port: p} = App.parseURL(e.target.value);
+      if (!h) {
         e.target.classList.add('invalid');
         return;
       }
-      hostname.value = hostname;
-      port && (port.value = port);
+      hostname.value = h;
+      p && (port.value = p);
     });
 
     // patterns
@@ -942,6 +943,21 @@ class ImportProxyList {
     // prepare object, make parameter keys case-insensitive
     for (const [key, value] of url.searchParams) {
       pram[key.toLowerCase()] = value;
+    }
+
+    // fix missing default port
+    if (!pram.port) {
+      switch (type) {
+        case 'http':
+        case 'ws':
+          pram.port = '80';
+          break;
+
+        case 'https':
+        case 'wss':
+          pram.port = '443';
+          break;
+      }
     }
 
     // proxy template

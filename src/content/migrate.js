@@ -132,7 +132,7 @@ export class Migrate {
         };
 
         // Validate RegExp, deactivate on error
-        !Pattern.validate(p.pattern, p.type) && (p.active = false);
+        !Pattern.validate(pat.pattern, pat.type) && (pat.active = false);
 
         // whitelist: Inclusive/Exclusive
         p.whitelist === 'Inclusive' ? pxy.include.push(pat) : pxy.exclude.push(pat);

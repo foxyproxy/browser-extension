@@ -64,7 +64,7 @@ export class Proxy {
 
     if (!control) {
       browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
-      browser.action.setBadgeText({text: '❌'});
+      browser.action.setBadgeText({text: ''});
       return null;
     }
 
@@ -284,7 +284,7 @@ String.raw`function FindProxyForURL(url, host) {
 
   // Chrome commands returns command, tab
   static async excludeHost(pref, tab) {
-    const activeTab = tab || await this.getActiveTab();
+    const activeTab = tab ? [tab] : await this.getActiveTab();
     const url = this.getURL(activeTab[0].url);
     if (!url) { return; }
 
@@ -302,7 +302,7 @@ String.raw`function FindProxyForURL(url, host) {
     this.set(pref);                                         // update Proxy
   }
 
-  static async getActiveTab() {
+  static getActiveTab() {
     return browser.tabs.query({currentWindow: true, active: true});
   }
 
