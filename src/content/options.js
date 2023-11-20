@@ -519,6 +519,7 @@ class Proxies {
       }
       hostname.value = h;
       p && (port.value = p);
+      type.value = 'pac';
     });
 
     // patterns
