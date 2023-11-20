@@ -517,9 +517,11 @@ class Proxies {
         e.target.classList.add('invalid');
         return;
       }
-      hostname.value = h;
+      hostname.value ||= h;
       p && (port.value = p);
       type.value = 'pac';
+      title.value ||= 'PAC';
+      sumTitle.textContent ||= 'PAC';
     });
 
     // patterns
