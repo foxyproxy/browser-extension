@@ -64,7 +64,7 @@ export class Proxy {
 
     if (!control) {
       browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
-      browser.action.setBadgeText({text: ''});
+      browser.action.setBadgeText({text: '❌'});
       return null;
     }
 
