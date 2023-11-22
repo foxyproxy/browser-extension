@@ -1,0 +1,284 @@
+{
+  "mode": "pattern",
+  "sync": true,
+  "proxyDNS": true,
+  "passthrough": "ericjung.net\nreddit.com",
+  "data": [
+    {
+      "active": true,
+      "title": "iceland server",
+      "color": "#00bfff",
+      "type": "http",
+      "hostname": "ehj-5010.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaa",
+      "cc": "IS",
+      "city": "Reykjavik",
+      "include": [
+        {
+          "type": "wildcard",
+          "title": "eric jung",
+          "pattern": "*://ericjung.net/*",
+          "active": true
+        },
+        {
+          "type": "wildcard",
+          "title": "check my ip",
+          "pattern": "*://ip.me/*",
+          "active": true
+        },
+        {
+          "type": "regex",
+          "title": "",
+          "pattern": "^https://whatismyipaddress\\\\.com/",
+          "active": true
+        }
+      ],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "india-901",
+      "color": "#b22222",
+      "type": "http",
+      "hostname": "ehj-5011.getfoxyproxy.org",
+      "port": "1337",
+      "username": "",
+      "password": "",
+      "cc": "IN",
+      "city": "Bangalore",
+      "include": [
+        {
+          "type": "regex",
+          "title": "iplocation",
+          "pattern": ".*://www.iplocation.net/.*",
+          "active": true
+        },
+        {
+          "type": "regex",
+          "title": "playwright automation",
+          "pattern": "^https://playwright\\\\.dev/",
+          "active": true
+        }
+      ],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "TOR",
+      "color": "#66cdaa",
+      "type": "socks5",
+      "hostname": "127.0.0.1",
+      "port": "9050",
+      "username": "",
+      "password": "",
+      "cc": "JP",
+      "city": "",
+      "include": [
+        {
+          "type": "wildcard",
+          "title": "",
+          "pattern": "*.onion/*",
+          "active": true
+        }
+      ],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "polish torrent proxy",
+      "color": "#b0e0e6",
+      "type": "http",
+      "hostname": "ehj-5014.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaaaa",
+      "cc": "PL",
+      "city": "Warsaw",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "london dragonfly",
+      "color": "#7b68ee",
+      "type": "http",
+      "hostname": "ehj-5098.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaaaaaa",
+      "cc": "GB",
+      "city": "London",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "my fav Latvia server",
+      "color": "#4b0082",
+      "type": "http",
+      "hostname": "ehj-5008.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaaaaa",
+      "cc": "LV",
+      "city": "Riga",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "estonia 1999",
+      "color": "#2f4f4f",
+      "type": "http",
+      "hostname": "ehj-5007.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaaa",
+      "cc": "EE",
+      "city": "Tallinn",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "Auckland 3",
+      "color": "#40e0d0",
+      "type": "http",
+      "hostname": "ehj-5006.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaaaaa",
+      "cc": "NZ",
+      "city": "Auckland",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "Mexico",
+      "color": "#d8bfd8",
+      "type": "http",
+      "hostname": "ehj-5005.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ejung",
+      "password": "aaaaaaaaaaaaaa",
+      "cc": "MX",
+      "city": "Mexico City",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "ablearcher",
+      "color": "#6a5acd",
+      "type": "http",
+      "hostname": "ehj-5004.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ericjung",
+      "password": "aaaaaaaaaaaaaaa",
+      "cc": "PY",
+      "city": "Asuncion",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "mike's slovenia proxy",
+      "color": "#ffb6c1",
+      "type": "http",
+      "hostname": "ehj-5000.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ejung",
+      "password": "aaaaaaaaaaaaa",
+      "cc": "SI",
+      "city": "Ljubljana",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "south africa 12",
+      "color": "#d2691e",
+      "type": "http",
+      "hostname": "ehj-5001.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ejung",
+      "password": "aaaaaaaaaaaaa",
+      "cc": "ZA",
+      "city": "Johannesburg",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "ehj-509",
+      "color": "#f5f5dc",
+      "type": "http",
+      "hostname": "ehj-5002.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ejung",
+      "password": "aaaaaaaaaaaaa",
+      "cc": "ES",
+      "city": "Madrid",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "ehj-89",
+      "color": "#8b0000",
+      "type": "http",
+      "hostname": "ehj-5003.getfoxyproxy.org",
+      "port": "2112",
+      "username": "ejung",
+      "password": "aaaaaaaaaaaaa",
+      "cc": "US",
+      "city": "New York",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    },
+    {
+      "active": true,
+      "title": "Privoxy",
+      "color": "#a52a2a",
+      "type": "http",
+      "hostname": "127.0.0.1",
+      "port": "8118",
+      "username": "",
+      "password": "",
+      "cc": "",
+      "city": "",
+      "include": [],
+      "exclude": [],
+      "pac": ""
+    }
+  ],
+  "container": {
+    "incognito": "127.0.0.1:9050",
+    "container-1": "ehj-5010.getfoxyproxy.org:2112",
+    "container-2": "ehj-5001.getfoxyproxy.org:2112",
+    "container-3": "ehj-5000.getfoxyproxy.org:2112",
+    "container-4": "ehj-5014.getfoxyproxy.org:2112"
+  },
+  "commands": {
+    "setProxy": "ehj-5011.getfoxyproxy.org:1337",
+    "setTabProxy": "ehj-5008.getfoxyproxy.org:2112",
+    "quickAdd": "127.0.0.1:8118"
+  }
+}
