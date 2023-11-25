@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "properties": {
+    "mode": {"type": "string"},
+    "sync": {"type": "boolean"},
+    "proxyDNS": {"type": "boolean"},
+    "passthrough": {"type": "string"},
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "active": {"type": "boolean"},
+          "title": {"type": "string"},
+          "color": {"type": "string"},
+          "type": {"type": "string"},
+          "hostname": {"type": "string"},
+          "port": {"type": "string"},
+          "username": {"type": "string"},
+          "password": {"type": "string"},
+          "cc": {"type": "string"},
+          "city": {"type": "string"},
+          "include": {
+            "type": "array",
+            "id": "Include",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {"type": "string"},
+                "title": {"type": "string"},
+                "pattern": {"type": "string"},
+                "active": {"type": "boolean"}
+              }
+            }
+          },
+          "exclude": {"$ref": "Include"},
+          "pac": {"type": "string"}
+        }
+      }
+    },
+    "container": {
+      "type": "object",
+      "properties": {
+        "incognito": {"type": "string"},
+        "container-1": {"type": "string"},
+        "container-2": {"type": "string"},
+        "container-3": {"type": "string"},
+        "container-4": {"type": "string"}
+      }
+    },
+    "commands": {
+      "type": "object",
+      "properties": {
+        "setProxy": {"type": "string"},
+        "setTabProxy": {"type": "string"},
+        "quickAdd": {"type": "string"}
+      }
+    }
+  }
+}

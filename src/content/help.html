@@ -12,9 +12,10 @@
     <a href="#how-to-use">How to Use</a>
     <a href="#options">Options</a>
     <a href="#proxies">Proxies</a>
-    <a href="#import">Import</a>
-    <a href="#pattern-tester">Pattern Tester</a>
-    <a href="#log">Log</a>
+    <!-- <a href="#import">Import</a> -->
+    <!-- <a href="#pattern-tester">Pattern Tester</a> -->
+    <!-- <a href="#log">Log</a> -->
+    <!-- <a href="#managed-storage">Managed Storage</a> -->
     <a href="#support">Support</a>
   </nav>
 
@@ -118,18 +119,22 @@
       <dt>Quick Add</dt>
       <dd>Select a proxy to add a pattern based on the current page URL</dd>
       <dd>Only top 10 active proxies are listed</dd>
+      <dd>Disabled on managed storage</dd>
 
       <dt>Exclude Host</dt>
       <dd>Add host (with its protocol) to the Global Exclude</dd>
+      <dd>Disabled on managed storage</dd>
 
       <dt>Set Tab Proxy <span>(Firefox only)</span></dt>
       <dd>Tab Proxy is processed before normal proxy settings</dd>
       <dd>Select a proxy for the current tab</dd>
       <dd>Only top 10 active proxies are listed</dd>
       <dd>FoxyProxy icon will show in the selected tab and mouse-over title displays selection details</dd>
+      <dd>Disabled on managed storage</dd>
 
       <dt>Unset Tab Proxy <span>(Firefox only)</span></dt>
       <dd>Unset proxy for the current tab</dd>
+      <dd>Disabled on managed storage</dd>
 
       <dt>Options</dt>
       <dd>Open the Options page</dd>
@@ -383,7 +388,7 @@
 
 
     <h2>Restore Defaults</h2>
-    <p>Restore all settings to their defaults</p>
+    <p>Restore all settings to default values</p>
 
     <h2 id="import-export">Preferences: Import/Export</h2>
     <p>You can import/export Preferences (for backup or share) from/to a local file on your computer.</p>
@@ -391,13 +396,11 @@
 
     <h2 id="save">Save</h2>
     <p>Please note that changes will not take effect until they are saved.</p>
+    <p>Save is disabled on managed storage.</p>
 
 
 
     <h1 id="proxies">Proxies</h1>
-
-
-
 
     <h2>Proxy</h2>
 
@@ -717,6 +720,60 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> webRequest API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
     </ul>
 
+
+    <h1 id="managed-storage" class="experimental">Managed Storage</h1>
+    <dl class="plain">
+      <dd>FoxyProxy checks for managed storage at start-up, and MV3 background re-load</dd>
+      <dd>Managed storage data will be used if found</dd>
+      <dd>Managed storage data can set all, or some of the options and the rest will be set to default values</dd>
+
+      <dt>Chrome</dt>
+      <dd>The ID the extension e.g. FoxyProxy "gcknhkkoolaabfmlnjonogaaifnjlfnp" or FoxyProxy Basic "dookpfaalaaappcdneeahomimbllocnb"</dd>
+      <dd>
+<pre>
+{
+  "3rdparty": {
+    "extensions": {
+      "gcknhkkoolaabfmlnjonogaaifnjlfnp": {
+        "mode": "disable",
+        "sync": false,
+        "proxyDNS": true,
+        "passthrough": "",
+        "data": [],
+        "container": {},
+        "commands": {}
+      }
+    }
+  }
+}
+</pre>
+      </dd>
+      <dd>See also:</dd>
+      <dd><a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a></dd>
+
+      <dt>Firefox</dt>
+      <dd>"name" is the id of the extension e.g. "foxyproxy@eric.h.jung" or "foxyproxy-basic@eric.h.jung"</dd>
+      <dd>
+<pre>
+{
+  "name": "foxyproxy@eric.h.jung",
+  "type": "storage",
+  "data": {
+    "mode": "disable",
+    "sync": false,
+    "proxyDNS": true,
+    "passthrough": "",
+    "data": [],
+    "container": {},
+    "commands": {}
+  }
+}
+</pre>
+      </dd>
+      <dd>See also:</dd>
+      <dd><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/managed" target="_blank">storage.managed</a></dd>
+      <dd><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#managed_storage_manifests" target="_blank">Managed storage manifests</a></dd>
+    </dl>
 
     <h1 id="support">Support</h1>
     <ul>

@@ -18,6 +18,8 @@ class Popup {
 
     // disable buttons on Chrome
     !App.firefox && document.querySelectorAll('.firefox').forEach(i => i.disabled = true);
+    // disable buttons on storage.managed
+    pref.managed && document.querySelectorAll('.local').forEach(i => i.disabled = true);
 
     // --- proxy filter
     const filter = document.querySelector('#filter');
@@ -107,6 +109,7 @@ class Popup {
         break;
 
       case 'quickAdd':
+        if (pref.managed) { break; }                        // not for storage.managed
         if (!this.select.value) { break; }
 
         browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.select.value});
@@ -114,10 +117,13 @@ class Popup {
         break;
 
       case 'excludeHost':
+        if (pref.managed) { break; }                        // not for storage.managed
+
         browser.runtime.sendMessage({id: 'excludeHost', pref});
         break;
 
       case 'setTabProxy':
+        if (pref.managed) { break; }                        // not for storage.managed
         if (!App.firefox || !this.select.value) { break; }  // firefox only
 
         browser.runtime.sendMessage({id: 'setTabProxy', proxy: this.proxyCache[this.select.value]});
@@ -125,6 +131,7 @@ class Popup {
         break;
 
       case 'unsetTabProxy':
+        if (pref.managed) { break; }                        // not for storage.managed
         if (!App.firefox) { break; }                        // firefox only
 
         browser.runtime.sendMessage({id: 'unsetTabProxy'});

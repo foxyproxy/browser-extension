@@ -24,7 +24,7 @@ class ProcessPref {
     Proxy.set(pref);
 
     // add listener after migrate
-    Sync.init();
+    Sync.init(pref);
   }
 }
 // ---------- /Process Preferences -------------------------

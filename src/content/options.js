@@ -83,6 +83,8 @@ class Options {
   }
 
   static async check() {
+    if (pref.managed) { return; }                           // not for storage.managed
+
     // --- global exclude, clean up, remove path, remove duplicates
     const passthrough = this.passthrough.value.trim();
     const [separator] = passthrough.match(/[\s,;]+/) || ['\n'];
