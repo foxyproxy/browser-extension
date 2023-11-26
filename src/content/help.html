@@ -172,6 +172,7 @@
     <h2 id="enable-storage-sync">Enable Storage Sync</h2>
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
       Sync will be turned off automatically to avoid repeated errors.</p>
+      <p>Storage Sync is disabled on managed storage.</p>
 
 
     <blockquote>
@@ -721,14 +722,36 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     </ul>
 
 
-    <h1 id="managed-storage" class="experimental">Managed Storage</h1>
+    <h1 id="enterprise-policy" class="experimental">Enterprise Policy</h1>
+    <p>Policies can also be configured for extensions that support policy management via the managed storage API.</p>
+
     <dl class="plain">
       <dd>FoxyProxy checks for managed storage at start-up, and MV3 background re-load</dd>
       <dd>Managed storage data will be used if found</dd>
-      <dd>Managed storage data can set all, or some of the options and the rest will be set to default values</dd>
+      <dd>Managed storage data can set all, or some of the options and the rest will be set to their default values</dd>
+      <dd>Toolbar popup works and users can switch between the option values made available in managed storage</dd>
+      <dd>Some Toolbar popup buttons are disabled</dd>
+      <dd>Options page works normally but any changes will NOT be SAVED</dd>
+
+      <dt>Default Options <span>(v8.2)</span></dt>
+      <dd>
+<pre>
+{
+
+  "mode": "disable",        // optional:  current option
+  "sync": false,            // optional:  not neceeecasry as it will be disabled on managed storage
+  "proxyDNS": true,         // optional:  Firefox Only and for SOCKS
+  "passthrough": "",        // optional:  Global Exclude
+  "container": {},          // optional:  Incognito/Container settings
+  "commands": {},           // optional:  Keyboard Shortcut settings
+  "data": []                // mandatory: array of proxies and their patterns
+}
+</pre>
+      </dd>
 
       <dt>Chrome</dt>
-      <dd>The ID the extension e.g. FoxyProxy "gcknhkkoolaabfmlnjonogaaifnjlfnp" or FoxyProxy Basic "dookpfaalaaappcdneeahomimbllocnb"</dd>
+      <dd>Policies can be viewed on <code>chrome://policy/</code></dd>
+      <dd>Set the ID the extension e.g. FoxyProxy "gcknhkkoolaabfmlnjonogaaifnjlfnp" or FoxyProxy Basic "dookpfaalaaappcdneeahomimbllocnb"</dd>
       <dd>
 <pre>
 {
@@ -739,9 +762,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         "sync": false,
         "proxyDNS": true,
         "passthrough": "",
-        "data": [],
         "container": {},
-        "commands": {}
+        "commands": {},
+        "data": []
       }
     }
   }
@@ -752,8 +775,42 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dd><a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a></dd>
 
       <dt>Firefox</dt>
-      <dd>"name" is the id of the extension e.g. "foxyproxy@eric.h.jung" or "foxyproxy-basic@eric.h.jung"</dd>
+      <dd>Policies can be viewed on <code>about:policies</code></dd>
+      <dd>"Set the ID the extension e.g. "foxyproxy@eric.h.jung" or "foxyproxy-basic@eric.h.jung"</dd>
       <dd>
+<pre>
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "foxyproxy@eric.h.jung": {
+          "mode": "disable",
+          "sync": false,
+          "proxyDNS": true,
+          "passthrough": "",
+          "container": {},
+          "commands": {},
+          "data": []
+        }
+      }
+    }
+  }
+}
+</pre>
+      </dd>
+      <dd>See also:</dd>
+      <dd><a href="https://extensionworkshop.com/documentation/enterprise/adding-policy-support-to-your-extension/" target="_blank">How to add policy support</a></dd>
+      <dd><a href="https://mozilla.github.io/policy-templates/" target="_blank">policy-templates</a></dd>
+
+
+
+      <h1 id="managed-storage" class="experimental">Managed Storage</h1>
+
+      <dl class="plain">
+        <dd>A <code>storage.managed</code> object that represents the managed storage area. Items in managed storage are set by the domain administrator or other native applications installed on the user's computer and are read-only for the extension.</dd>
+
+        <dt>Firefox</dt>
+        <dd>
 <pre>
 {
   "name": "foxyproxy@eric.h.jung",
@@ -763,17 +820,20 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     "sync": false,
     "proxyDNS": true,
     "passthrough": "",
-    "data": [],
     "container": {},
-    "commands": {}
+    "commands": {},
+    "data": []
   }
 }
 </pre>
       </dd>
+
       <dd>See also:</dd>
       <dd><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/managed" target="_blank">storage.managed</a></dd>
       <dd><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#managed_storage_manifests" target="_blank">Managed storage manifests</a></dd>
     </dl>
+
+
 
     <h1 id="support">Support</h1>
     <ul>
