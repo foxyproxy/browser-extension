@@ -107,3 +107,10 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 ## Building for Distribution
 - copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
 - zip using [grunt](https://stackoverflow.com/questions/15703598/how-to-install-grunt-and-how-to-build-script-with-it), which requires npm and node. Run `grunt` in top-level directory. The add-on is packaged into `target.zip`. Alternatively, zip the `src` directory into the top of an archive and exclude a bunch of stuff manually.
+
+## Screenshots
+
+<img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
+
