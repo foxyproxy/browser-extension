@@ -616,37 +616,37 @@
       <tbody class="code">
         <tr>
           <th>Change all types</th>
-          <td>document.querySelectorAll('[data-id="type"]').forEach(i => i.value = 'https')</td>
+          <td>document.querySelectorAll('[data-id="type"]').forEach(i =&gt; i.value = 'https')</td>
         </tr>
 
         <tr>
           <th>Change all ports</th>
-          <td>document.querySelectorAll('[data-id="port"]').forEach(i => i.value = '443')</td>
+          <td>document.querySelectorAll('[data-id="port"]').forEach(i =&gt; i.value = '443')</td>
         </tr>
 
         <tr>
           <th>Change all titles</th>
-          <td>document.querySelectorAll('[data-id="title"]').forEach(i => i.value += '-set')</td>
+          <td>document.querySelectorAll('[data-id="title"]').forEach(i =&gt; i.value += '-set')</td>
         </tr>
 
         <tr>
           <th>Change all usernames</th>
-          <td>document.querySelectorAll('[data-id="username"]').forEach(i => i.value = 'user')</td>
+          <td>document.querySelectorAll('[data-id="username"]').forEach(i =&gt; i.value = 'user')</td>
         </tr>
 
         <tr>
           <th>Change all passwords</th>
-          <td>document.querySelectorAll('[data-id="password"]').forEach(i => i.value = 'pass')</td>
+          <td>document.querySelectorAll('[data-id="password"]').forEach(i =&gt; i.value = 'pass')</td>
         </tr>
 
         <tr>
           <th>Open all proxies</th>
-          <td>document.querySelectorAll('details.proxy').forEach(i => i.open = true)</td>
+          <td>document.querySelectorAll('details.proxy').forEach(i =&gt; i.open = true)</td>
         </tr>
 
         <tr>
           <th>Close all proxies</th>
-          <td>document.querySelectorAll('details.proxy').forEach(i => i.open = false)</td>
+          <td>document.querySelectorAll('details.proxy').forEach(i =&gt; i.open = false)</td>
         </tr>
 
       </tbody>
@@ -693,7 +693,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
           </dd>
         </dl>
       </dd>
-      <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd>
+      <!-- <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd> -->
 
 
       <dt>Import from older versions</dt>
@@ -718,23 +718,23 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Live Log displays the web requests in reversed order (new one on top)</li>
       <li>It will continue to display while the Options page is open and will stop logging as soon as the page is closed</li>
       <li>Log data is not stored</li>
-      <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> webRequest API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
+      <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
     </ul>
 
 
     <h1 id="enterprise-policy" class="experimental">Enterprise Policy</h1>
     <p>Policies can also be configured for extensions that support policy management via the managed storage API.</p>
 
-    <dl class="plain">
+    <dl>
       <dd>FoxyProxy checks for managed storage at start-up, and MV3 background re-load</dd>
       <dd>Managed storage data will be used if found</dd>
-      <dd>Managed storage data can set all, or some of the options and the rest will be set to their default values</dd>
-      <dd>Toolbar popup works and users can switch between the option values made available in managed storage</dd>
+      <dd>Managed storage data can set all, or some of the options (the rest will be set to their default values)</dd>
+      <dd>Toolbar popup works and users can switch between the options made available in managed storage</dd>
       <dd>Some Toolbar popup buttons are disabled</dd>
       <dd>Options page works normally but any changes will NOT be SAVED</dd>
+    </dl>
 
-      <dt>Default Options <span>(v8.2)</span></dt>
-      <dd>
+    <h4>Default Options <span>(v8.2)</span></h4>
 <pre>
 {
 
@@ -747,50 +747,62 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
   "data": []                // mandatory: array of proxies and their patterns
 }
 </pre>
-      </dd>
 
-      <dt>Chrome</dt>
-      <dd>Policies can be viewed on <code>chrome://policy/</code></dd>
-      <dd>Set the ID the extension e.g. FoxyProxy "gcknhkkoolaabfmlnjonogaaifnjlfnp" or FoxyProxy Basic "dookpfaalaaappcdneeahomimbllocnb"</dd>
-      <dd>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Chrome</th>
+          <th>Firefox</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>View policy</th>
+          <td>chrome://policy/</td>
+          <td>about:policies</td>
+        </tr>
+
+        <tr>
+          <th>FoxyProxy</th>
+          <td>gcknhkkoolaabfmlnjonogaaifnjlfnp</td>
+          <td>foxyproxy@eric.h.jung</td>
+        </tr>
+        <tr>
+          <th>FoxyProxy Basic</th>
+          <td>dookpfaalaaappcdneeahomimbllocnb</td>
+          <td>foxyproxy-basic@eric.h.jung</td>
+        </tr>
+
+        <tr>
+          <th>FoxyProxy beta</th>
+          <td>Copy the ID from chrome://extensions</td>
+          <td>foxyproxy@eric.h.jung</td>
+        </tr>
+
+        <tr>
+          <th>policies.json</th>
+          <td>
 <pre>
 {
   "3rdparty": {
     "extensions": {
       "gcknhkkoolaabfmlnjonogaaifnjlfnp": {
-        "mode": "disable",
-        "sync": false,
-        "proxyDNS": true,
-        "passthrough": "",
-        "container": {},
-        "commands": {},
         "data": []
       }
     }
   }
 }
 </pre>
-      </dd>
-      <dd>See also:</dd>
-      <dd><a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a></dd>
-      <dd><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md" target="_blank">Enterprise policies</a></dd>
-
-      <dt>Firefox</dt>
-      <dd>Policies can be viewed on <code>about:policies</code></dd>
-      <dd>Set the ID the extension e.g. "foxyproxy@eric.h.jung" or "foxyproxy-basic@eric.h.jung"</dd>
-      <dd>
+          </td>
+          <td>
 <pre>
 {
   "policies": {
     "3rdparty": {
       "Extensions": {
         "foxyproxy@eric.h.jung": {
-          "mode": "disable",
-          "sync": false,
-          "proxyDNS": true,
-          "passthrough": "",
-          "container": {},
-          "commands": {},
           "data": []
         }
       }
@@ -798,20 +810,26 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
   }
 }
 </pre>
-      </dd>
-      <dd>See also:</dd>
-      <dd><a href="https://extensionworkshop.com/documentation/enterprise/adding-policy-support-to-your-extension/" target="_blank">How to add policy support</a></dd>
-      <dd><a href="https://mozilla.github.io/policy-templates/" target="_blank">policy-templates</a></dd>
+          </td>
+        </tr>
 
+        <tr>
+          <th>See also</th>
+          <td><a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a><br>
+            <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md" target="_blank">Enterprise policies</a></td>
+          <td><a href="https://extensionworkshop.com/documentation/enterprise/adding-policy-support-to-your-extension/" target="_blank">How to add policy support</a><br>
+            <a href="https://mozilla.github.io/policy-templates/" target="_blank">policy-templates</a></td>
+        </tr>
+
+
+      </tbody>
+    </table>
 
 
       <h1 id="managed-storage" class="experimental">Managed Storage</h1>
 
-      <dl class="plain">
-        <dd>A <code>storage.managed</code> object that represents the managed storage area. Items in managed storage are set by the domain administrator or other native applications installed on the user's computer and are read-only for the extension.</dd>
+      <p>A <code>storage.managed</code> object that represents the managed storage area. Items in managed storage are set by the domain administrator or other native applications installed on the user's computer and are read-only for the extension.</p>
 
-        <dt>Firefox</dt>
-        <dd>
 <pre>
 {
   "name": "foxyproxy@eric.h.jung",
@@ -827,12 +845,13 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
   }
 }
 </pre>
-      </dd>
 
-      <dd>See also:</dd>
-      <dd><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/managed" target="_blank">storage.managed</a></dd>
-      <dd><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#managed_storage_manifests" target="_blank">Managed storage manifests</a></dd>
-    </dl>
+
+    <h4>See also</h4>
+    <ul>
+      <li><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/managed" target="_blank">storage.managed</a></li>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#managed_storage_manifests" target="_blank">Managed storage manifests</a></li>
+    </ul>
 
 
 

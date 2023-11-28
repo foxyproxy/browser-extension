@@ -42,9 +42,7 @@ h2 {
   margin-top: 1.5em;
 }
 
-h1 span,
-h2 span,
-h3 span {
+:is(h1, h2, h3, h4) span {
   color: var(--dim);
   font-size: 0.8em;
   font-style: italic;
@@ -62,7 +60,7 @@ p {
 }
 
 pre {
-  border-left: 2px solid #ccc;
+  border-left: 3px solid #ccc;
   padding: 0.5em 1em;
 }
 

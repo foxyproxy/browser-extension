@@ -89,7 +89,7 @@ class Options {
     const passthrough = this.passthrough.value.trim();
     const [separator] = passthrough.match(/[\s,;]+/) || ['\n'];
     const arr = passthrough.split(/[\s,;]+/)
-      .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/(?<=[a-z\d])\/[^\s,;]*/gi, ''));// remove path
+      .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/(?<=[a-z\d])\/[^\s,;]*/gi, '')); // remove path
     this.passthrough.value = [...new Set(arr)].join(separator); // remove duplicates
     pref.passthrough = this.passthrough.value;
 
