@@ -112,6 +112,14 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 ## Screenshots
 
 <img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
-<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
 
+<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
+
+
+<img src="/screenshots/8.1/light-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="200" alt="">
+
+<img src="/screenshots/8.1/light-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/light-theme/log-tab.jpg" width="200" alt="">
