@@ -24,39 +24,39 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
   <thead>
     <tr>
       <th></th>
-      <th>Firefox</th>
       <th>Chrome</th>
+      <th>Firefox</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Standard</td>
       <td>
+        <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp.svg" alt=""></a><br>
+        <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/users/gcknhkkoolaabfmlnjonogaaifnjlfnp" alt=""></a>
+      </td>
+      <td>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/v/foxyproxy-standard" alt=""></a><br>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/users/foxyproxy-standard" alt=""></a>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/dw/foxyproxy-standard" alt=""></a>
-      </td>
-      <td>
-        <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp.svg" alt=""></a><br>
-        <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/users/gcknhkkoolaabfmlnjonogaaifnjlfnp" alt=""></a>
       </td>
     </tr>
     <tr>
       <td>Basic</td>
       <td>
+        <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb.svg?color=f60" alt=""></a><br>
+        <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/users/dookpfaalaaappcdneeahomimbllocnb" alt=""></a>
+      </td>
+      <td>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"><img src="https://img.shields.io/amo/v/foxyproxy-basic.svg?color=f60" alt=""></a><br>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"></a><img src="https://img.shields.io/amo/users/foxyproxy-basic" alt="">
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"></a><img src="https://img.shields.io/amo/dw/foxyproxy-basic" alt="">
       </td>
-      <td>
-        <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb.svg?color=f60" alt=""></a><br>
-        <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/users/dookpfaalaaappcdneeahomimbllocnb" alt=""></a>
-      </td>
     </tr>
     <tr>
       <td>Source Code</td>
-      <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
       <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
+      <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
     </tr>
   </tbody>
 </table>
@@ -67,15 +67,15 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 <table>
   <thead>
     <tr>
-      <th>Firefox</th>
       <th>Chrome</th>
+      <th>Firefox</th>
       <th>Firefox for Android</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>version 93<br><i>(released 2021-10-05)</i></td>
       <td>version 108<br><i>(released 2022-11-29)</i></td>
+      <td>version 93<br><i>(released 2021-10-05)</i></td>
       <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
     </tr>
   </tbody>
@@ -87,17 +87,19 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 - Download repo *(or use `git`)*
   - browser-extension *(this page)* -> Code *(green button)* -> Download ZIP
   - Unzip the downloaded file
-- **Firefox** *(Nightly/Beta/Developer Edition)*
-  - Rename `manifest-firefox.json` in `src` folder to `manifest.json`
-  - Go to `about:debugging#/runtime/this-firefox`
-  - Click "Load Temporary Add-on..."
-  - Select above `manifest.json`
+
 - **Chrome**
   - Rename `manifest-chrome.json` in `src` folder to `manifest.json`
   - Go to `chrome://extensions/`
   - Enable Developer Mode (top right)
   - Click "Load Unpacked"
   - Select above `manifest.json` (or `src` folder)
+
+- **Firefox** *(Nightly/Beta/Developer Edition)*
+  - Rename `manifest-firefox.json` in `src` folder to `manifest.json`
+  - Go to `about:debugging#/runtime/this-firefox`
+  - Click "Load Temporary Add-on..."
+  - Select above `manifest.json`
 
 - **Firefox for Android**  
   You can try installing FoxyProxy Basic v8.*
