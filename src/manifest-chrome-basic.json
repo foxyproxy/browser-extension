@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
 
-  "name": "FoxyProxy Basic",
+  "name": "__MSG_extensionNameBasic__",
   "description": "__MSG_extensionDescription__",
   "version": "8.2",
   "default_locale": "en",
