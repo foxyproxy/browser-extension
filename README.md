@@ -84,8 +84,8 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
 
 ## Installation Guide (for testing)
 - Backup your FoxyProxy settings
-- Download repo (or use `git`)
-  - [browser-extension](https://github.com/foxyproxy/browser-extension) -> Code (green button) -> Download ZIP
+- Download repo *(or use `git`)*
+  - browser-extension *(this page)* -> Code *(green button)* -> Download ZIP
   - Unzip the downloaded file
 - **Firefox** *(Nightly/Beta/Developer Edition)*
   - Rename `manifest-firefox.json` in `src` folder to `manifest.json`
@@ -100,7 +100,7 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
   - Select above `manifest.json` (or `src` folder)
 
 - **Firefox for Android**  
-  You can try installing FoxyProxy Basic v8.0
+  You can try installing FoxyProxy Basic v8.*
   - [Expanded extension support in Firefox for Android Nightly](https://blog.mozilla.org/addons/2020/09/29/expanded-extension-support-in-firefox-for-android-nightly/)
   - [How to Install Any Add-on in Firefox for Android](https://www.maketecheasier.com/install-addon-firefox-android/)
 
