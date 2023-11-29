@@ -5,18 +5,32 @@
 ![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&prefix=v&label=FoxyProxy%20beta&color=f60)
 
 
-
-
 Version 8.0+
 Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
 
-FoxyProxy is being updated for manifest V3.
-Please post all feature requests to the [issues](https://github.com/foxyproxy/browser-extension/issues).
+Please post all feature requests and bugs [here](https://github.com/foxyproxy/browser-extension/issues).
 
 
 - [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
 - [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
 
+## Screenshots
+
+### Dark Theme
+
+<img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
+
+<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
+
+### Light Theme
+
+<img src="/screenshots/8.1/light-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="200" alt="">
+
+<img src="/screenshots/8.1/light-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/light-theme/log-tab.jpg" width="200" alt="">
 
 ## Releases
 
@@ -55,8 +69,8 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
     </tr>
     <tr>
       <td>Source Code</td>
-      <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
-      <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
+      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current) <a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a> (old)</td>
+      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current) <a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a> (old)</td>
     </tr>
   </tbody>
 </table>
@@ -107,21 +121,23 @@ Please post all feature requests to the [issues](https://github.com/foxyproxy/br
   - [How to Install Any Add-on in Firefox for Android](https://www.maketecheasier.com/install-addon-firefox-android/)
 
 ## Building for Distribution
-- Copy the appropriate `manifest-xxx.json` file to `manifest.json`  
-  e.g. `mv manifest-chrome.json manifest.json`
-- Zip using [grunt](https://stackoverflow.com/questions/15703598/how-to-install-grunt-and-how-to-build-script-with-it), which requires npm and node. Run `grunt` in top-level directory. The add-on is packaged into `target.zip`. Alternatively, zip the `src` directory into the top of an archive and exclude a bunch of stuff manually.
 
-## Screenshots
+### With [grunt](https://stackoverflow.com/questions/15703598/how-to-install-grunt-and-how-to-build-script-with-it):
 
-<img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
-<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
+1. Install grunt locally:
 
-<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
-<img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
+`npm i -D grunt-cli`
 
+2. Run one of:
 
-<img src="/screenshots/8.1/light-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="200" alt="">
+`grunt --target=chrome-standard`<br>
+`grunt --target=chrome-basic`<br>
+`grunt --target=firefox-standard`<br>
+`grunt --target=firefox-basic`
 
-<img src="/screenshots/8.1/light-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/light-theme/log-tab.jpg" width="200" alt="">
+The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.zip`.
+
+### Without grunt:
+
+- copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
+- zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
