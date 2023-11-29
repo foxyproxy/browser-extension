@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
   const target = grunt.option('target');
   grunt.initConfig({
-        clean: ['src/manifest-*.json'],
         compress: {
           main: {
             options: {
@@ -25,8 +24,7 @@ module.exports = function(grunt) {
     manifestSuffix = 'firefox';
   }
   grunt.file.copy(`src/manifest-${manifestSuffix}.json`, 'src/manifest.json');
-  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compress');
-  grunt.registerTask('default', ['clean','compress']);
+  grunt.registerTask('default', ['compress']);
 };
       
