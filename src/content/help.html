@@ -723,21 +723,25 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     </ul>
 
 
-    <h1 id="enterprise-policy" class="experimental">Enterprise Policy</h1>
-    <p>Policies can also be configured for extensions that support policy management via the managed storage API.</p>
+    <h1 id="enterprise-policy" class="experimental">Enterprise Policy <span>(v8.2)</span></h1>
+    <p>FoxyProxy supports enterprise policy and managed storage, and they can be configured to set FoxyProxy options.</p>
 
     <ul>
-      <li>FoxyProxy checks for managed storage at start-up, and MV3 background re-load</li>
-      <li>Managed storage data will be used if found</li>
-      <li>Managed storage data can set all, or some of the options (the rest will be set to their default values)</li>
-      <li>Toolbar popup & Options page work normally but any changes will NOT be SAVED</li>
+      <li>FoxyProxy checks for enterprise policy and managed storage at start-up, and when background script is reloaded in MV3</li>
+      <li>If managed data is found:
+        <ul>
+          <li>Managed data will be used</li>
+          <li>Toolbar popup & Options page work normally but changes will NOT be SAVED</li>
+          <li>Managed data can set all, or some of the options (the rest will be set to their default values)</li>
+        </ul>
+      </li>
     </ul>
 
     <h4>Default Options <span>(v8.2)</span></h4>
 <pre>
 {
 
-  "mode": "disable",        // optional:  current option
+  "mode": "disable",        // mandatory: current option
   "sync": false,            // optional:  not neceeecasry as it will be disabled on managed storage
   "proxyDNS": true,         // optional:  Firefox Only and for SOCKS
   "passthrough": "",        // optional:  Global Exclude
@@ -788,6 +792,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
   "3rdparty": {
     "extensions": {
       "gcknhkkoolaabfmlnjonogaaifnjlfnp": {
+        "mode": "pattern",
         "data": []
       }
     }
@@ -802,6 +807,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     "3rdparty": {
       "Extensions": {
         "foxyproxy@eric.h.jung": {
+          "mode": "pattern",
           "data": []
         }
       }
