@@ -84,8 +84,8 @@ class Popup {
   }
 
   static processSelect(mode) {
-
     if (mode === pref.mode) { return; }                     // disregard re-click
+    if (pref.managed) { return; }                           // not for storage.managed
 
     pref.mode = mode;
     browser.storage.local.set({mode});                      // save mode
@@ -109,8 +109,8 @@ class Popup {
         break;
 
       case 'quickAdd':
-        if (pref.managed) { break; }                        // not for storage.managed
         if (!this.select.value) { break; }
+        if (pref.managed) { break; }                        // not for storage.managed
 
         browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.select.value});
         this.select.selectedIndex = 0;                      // reset select option
@@ -123,18 +123,19 @@ class Popup {
         break;
 
       case 'setTabProxy':
-        if (pref.managed) { break; }                        // not for storage.managed
         if (!App.firefox || !this.select.value) { break; }  // firefox only
+        if (pref.managed) { break; }                        // not for storage.managed
 
         browser.runtime.sendMessage({id: 'setTabProxy', proxy: this.proxyCache[this.select.value]});
         this.select.selectedIndex = 0;                      // reset select option
         break;
 
       case 'unsetTabProxy':
-        if (pref.managed) { break; }                        // not for storage.managed
         if (!App.firefox) { break; }                        // firefox only
+        if (pref.managed) { break; }                        // not for storage.managed
 
         browser.runtime.sendMessage({id: 'unsetTabProxy'});
+        break;
     }
   }
 
