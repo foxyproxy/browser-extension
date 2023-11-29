@@ -17,7 +17,7 @@ module.exports = function(grunt) {
   if (!target) {
     grunt.fail.fatal('--target command-line arg expected to be one of: chrome-standard, chrome-basic, firefox-standard, firefox-basic. Example: grunt --target=chrome-standard');
   }
-  let manifestSuffix;
+  let manifestSuffix = target;
   if (target === 'chrome-standard') {
     manifestSuffix = 'chrome';
   }
