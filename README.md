@@ -122,7 +122,7 @@ Please post all feature requests and bugs [here](https://github.com/foxyproxy/br
 
 ## Building for Distribution
 
-### With [grunt](https://stackoverflow.com/questions/15703598/how-to-install-grunt-and-how-to-build-script-with-it):
+### With [grunt](https://gruntjs.com/getting-started):
 
 1. Install grunt locally:
 
