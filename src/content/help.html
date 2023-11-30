@@ -517,7 +517,7 @@
     <ul>
       <li>Patterns can be Wildcard (<a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts#globs" target="_blank">globs</a>) or <a href="https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_expressions" target="_blank">Regular Expression</a></li>
       <li>Patterns can be full or partial match which means it can match the entire URL or only part of it</li>
-      <li>Include <code>...://...</code> to ensure it matches the host</li>
+      <li>Include <code>://...</code> to ensure it matches the host</li>
       <li>In practice, including URL pathname with host is rarely necessary</li>
     </ul>
 
@@ -575,8 +575,8 @@
 
         <tr>
           <th>Wildcard</th>
-          <td>*://*.example.com</td>
-          <td>http://help.example.com/</td>
+          <td>://*.example.com<br>*://*.example.com</td>
+          <td>http://help.example.com/<br>https://help.example.com/</td>
           <td>https://example.com/<br>https://google.com/ref=help.example.com</td>
         </tr>
 
@@ -789,11 +789,11 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 {
 
   "3rdparty": {
-    "extensions": {<span style="color: var(--header); font-size: 1.3em;">
-      "gcknhkkoolaabfmlnjonogaaifnjlfnp": {
+    "extensions": {
+      "gcknhkkoolaabfmlnjonogaaifnjlfnp": {<span style="color: var(--header); font-size: 1.1em;">
         "mode": "pattern",
-        "data": []
-      }</span>
+        "data": []</span>
+      }
     }
   }
 
@@ -805,11 +805,11 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 {
   "policies": {
     "3rdparty": {
-      "Extensions": {<span style="color: var(--header); font-size: 1.3em;">
-        "foxyproxy@eric.h.jung": {
+      "Extensions": {
+        "foxyproxy@eric.h.jung": {<span style="color: var(--header); font-size: 1.1em;">
           "mode": "pattern",
-          "data": []
-        }</span>
+          "data": []</span>
+        }
       }
     }
   }
@@ -821,11 +821,11 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         <tr>
           <th>Location: Linux</th>
           <td>
-            Chrome: /etc/opt/chrome/policies/ <br>
-            Chromium: /etc/chromium/policies</td>
+            • Chrome: /etc/opt/chrome/policies/ <br>
+            • Chromium: /etc/chromium/policies</td>
           <td>
-            system-wide: /etc/firefox/policies<br>
-            Specific Firefox: firefox/distribution</td>
+            • System-wide: /etc/firefox/policies<br>
+            • Specific Firefox: firefox/distribution</td>
         </tr>
 
         <tr>
@@ -854,14 +854,14 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 {
   "name": "foxyproxy@eric.h.jung",
   "type": "storage",
-  "data": {
+  "data": {<span style="color: var(--header); font-size: 1.1em;">
     "mode": "disable",
     "sync": false,
     "proxyDNS": true,
     "passthrough": "",
     "container": {},
     "commands": {},
-    "data": []
+    "data": []</span>
   }
 }
 </pre>

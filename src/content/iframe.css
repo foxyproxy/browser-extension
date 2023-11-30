@@ -239,6 +239,7 @@ tbody th {
   min-width: 10em;
 }
 
+td pre,
 .code td,
 td.code {
   font-family: monospace;
