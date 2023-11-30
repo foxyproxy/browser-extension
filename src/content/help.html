@@ -102,6 +102,8 @@
 
     <h3>Toolbar Popup</h3>
 
+    <p class="note">Changing options is disabled on managed storage.</p>
+
     <dl>
       <dt>Proxy by Patterns</dt>
       <dd>Connections are proxied based on patterns</dd>
@@ -120,22 +122,18 @@
       <dt>Quick Add</dt>
       <dd>Select a proxy to add a pattern based on the current page URL</dd>
       <dd>Only top 10 active proxies are listed</dd>
-      <dd>Disabled on managed storage</dd>
 
       <dt>Exclude Host</dt>
       <dd>Add host (with its protocol) to the Global Exclude</dd>
-      <dd>Disabled on managed storage</dd>
 
       <dt>Set Tab Proxy <span>(Firefox only)</span></dt>
       <dd>Tab Proxy is processed before normal proxy settings</dd>
       <dd>Select a proxy for the current tab</dd>
       <dd>Only top 10 active proxies are listed</dd>
       <dd>FoxyProxy icon will show in the selected tab and mouse-over title displays selection details</dd>
-      <dd>Disabled on managed storage</dd>
 
       <dt>Unset Tab Proxy <span>(Firefox only)</span></dt>
       <dd>Unset proxy for the current tab</dd>
-      <dd>Disabled on managed storage</dd>
 
       <dt>Options</dt>
       <dd>Open the Options page</dd>
@@ -173,7 +171,7 @@
     <h2 id="enable-storage-sync">Enable Storage Sync</h2>
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
       Sync will be turned off automatically to avoid repeated errors.</p>
-      <p>Storage Sync is disabled on managed storage.</p>
+      <p class="note">Storage Sync is disabled on managed storage.</p>
 
 
     <blockquote>
@@ -398,7 +396,7 @@
 
     <h2 id="save">Save</h2>
     <p>Please note that changes will not take effect until they are saved.</p>
-    <p>Save is disabled on managed storage.</p>
+    <p class="note">Save is disabled on managed storage.</p>
 
 
 
@@ -731,7 +729,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>If managed data is found:
         <ul>
           <li>Managed data will be used</li>
-          <li>Toolbar popup & Options page work normally but changes will NOT be SAVED</li>
+          <li>Toolbar popup & Options page work normally but changes will NOT apply</li>
           <li>Managed data can set all, or some of the options (the rest will be set to their default values)</li>
           <li>Managed data format is the same as FoxyProxy export format</li>
         </ul>
@@ -741,13 +739,12 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <h4>Default Options <span>(v8.2)</span></h4>
 <pre>
 {
-
-  "mode": "disable",        // mandatory: current option
+  "mode": "disable",        // optional:  current option, necessary to enable
   "sync": false,            // optional:  not necessary as it will be disabled on managed storage
   "proxyDNS": true,         // optional:  Firefox Only and for SOCKS
   "passthrough": "",        // optional:  Global Exclude
   "container": {},          // optional:  Incognito/Container settings
-  "commands": {},           // optional:  Keyboard Shortcut settings
+  "commands": {},           // optional:  keyboard shortcut settings
   "data": []                // mandatory: array of proxies and their patterns
 }
 </pre>
@@ -790,14 +787,16 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
           <td>
 <pre>
 {
+
   "3rdparty": {
-    "extensions": {
+    "extensions": {<span style="color: var(--header); font-size: 1.3em;">
       "gcknhkkoolaabfmlnjonogaaifnjlfnp": {
         "mode": "pattern",
         "data": []
-      }
+      }</span>
     }
   }
+
 }
 </pre>
           </td>
@@ -806,11 +805,11 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 {
   "policies": {
     "3rdparty": {
-      "Extensions": {
+      "Extensions": {<span style="color: var(--header); font-size: 1.3em;">
         "foxyproxy@eric.h.jung": {
           "mode": "pattern",
           "data": []
-        }
+        }</span>
       }
     }
   }
@@ -820,11 +819,25 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         </tr>
 
         <tr>
+          <th>Location: Linux</th>
+          <td>
+            Chrome: /etc/opt/chrome/policies/ <br>
+            Chromium: /etc/chromium/policies</td>
+          <td>
+            system-wide: /etc/firefox/policies<br>
+            Specific Firefox: firefox/distribution</td>
+        </tr>
+
+        <tr>
           <th>See also</th>
-          <td><a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a><br>
-            <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md" target="_blank">Enterprise policies</a></td>
-          <td><a href="https://extensionworkshop.com/documentation/enterprise/adding-policy-support-to-your-extension/" target="_blank">How to add policy support</a><br>
-            <a href="https://mozilla.github.io/policy-templates/" target="_blank">policy-templates</a></td>
+          <td>
+            • <a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a><br>
+            • <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md" target="_blank">Enterprise policies</a>
+          </td>
+          <td>
+            • <a href="https://extensionworkshop.com/documentation/enterprise/adding-policy-support-to-your-extension/" target="_blank">How to add policy support</a><br>
+            • <a href="https://mozilla.github.io/policy-templates/" target="_blank">policy-templates</a>
+          </td>
         </tr>
 
 
@@ -832,9 +845,10 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     </table>
 
 
-      <h1 id="managed-storage" class="experimental">Managed Storage</h1>
+      <h2 id="managed-storage" class="experimental">Managed Storage</h2>
 
       <p>A <code>storage.managed</code> object that represents the managed storage area. Items in managed storage are set by the domain administrator or other native applications installed on the user's computer and are read-only for the extension.</p>
+      <p>Native manifests are specially formatted JSON files that are provisioned on the user's computer by some means outside the extension installation process. For example, a native manifest might be provisioned by a device administrator or by a native application installer</p>
 
 <pre>
 {
