@@ -105,9 +105,9 @@ Please post all feature requests and bugs [here](https://github.com/foxyproxy/br
 - **Chrome**
   - Rename `manifest-chrome.json` in `src` folder to `manifest.json`
   - Go to `chrome://extensions/`
-  - Enable Developer Mode (top right)
+  - Enable Developer Mode *(top right)*
   - Click "Load Unpacked"
-  - Select above `manifest.json` (or `src` folder)
+  - Select above `manifest.json` *(or `src` folder)*
 
 - **Firefox** *(Nightly/Beta/Developer Edition)*
   - Rename `manifest-firefox.json` in `src` folder to `manifest.json`
