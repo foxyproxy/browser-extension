@@ -2,10 +2,11 @@
   "type": "object",
   "required": ["mode", "data"],
   "properties": {
-    "mode": {"type": "string"},
+    "mode": {"$ref": "#/$defs/mode"},
     "sync": {"type": "boolean"},
     "proxyDNS": {"type": "boolean"},
     "passthrough": {"type": "string"},
+
     "data": {
       "type": "array",
       "minItems": 1,
@@ -24,34 +25,36 @@
           "password": {"type": "string"},
           "cc": {"type": "string", "pattern": "^([A-Z]{2}|)$"},
           "city": {"type": "string"},
-          "include": {"$ref": "#/$defs/include-exclude"},
-          "exclude": {"$ref": "#/$defs/include-exclude"},
+          "include": {"$ref": "#/$defs/include"},
+          "exclude": {"$ref": "#/$defs/include"},
           "pac": {"type": "string", "oneOf": [{"const": ""}, {"format": "uri"}]}
         }
       }
     },
+
     "container": {
       "type": "object",
       "properties": {
-        "incognito": {"type": "string"},
-        "container-1": {"type": "string"},
-        "container-2": {"type": "string"},
-        "container-3": {"type": "string"},
-        "container-4": {"type": "string"}
+        "incognito": {"$ref": "#/$defs/host"},
+        "container-1": {"$ref": "#/$defs/host"},
+        "container-2": {"$ref": "#/$defs/host"},
+        "container-3": {"$ref": "#/$defs/host"},
+        "container-4": {"$ref": "#/$defs/host"}
       }
     },
+
     "commands": {
       "type": "object",
       "properties": {
-        "setProxy": {"type": "string"},
-        "setTabProxy": {"type": "string"},
-        "quickAdd": {"type": "string"}
+        "setProxy": {"$ref": "#/$defs/host"},
+        "setTabProxy": {"$ref": "#/$defs/host"},
+        "quickAdd": {"$ref": "#/$defs/host"}
       }
     }
   },
 
   "$defs": {
-    "include-exclude": {
+    "include": {
       "type": "array",
       "items": {
         "type": "object",
@@ -64,6 +67,17 @@
           "active": {"type": "boolean"}
         }
       }
+    },
+    "host": {
+      "type": "string",
+      "pattern": "^(.+:\\d+|direct)$"
+    },
+    "mode": {
+      "type": "string",
+      "anyOf": [
+        {"enum": ["pattern", "disable", "direct"]},
+        {"format": "uri"}
+      ]
     }
   }
 }
