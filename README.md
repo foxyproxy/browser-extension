@@ -76,7 +76,7 @@ Please post all feature requests and bugs [here](https://github.com/foxyproxy/br
 </table>
 
 
-## Browser Minimum Versions
+### Browser Minimum Versions
 
 <table>
   <thead>
