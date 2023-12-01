@@ -598,7 +598,7 @@
     </table>
 
 
-    <h2 id="">Bulk Edit</h2>
+    <h2 id="bulk-edit">Bulk Edit</h2>
     <p>Bulk edit examples for the advanced users</p>
     <ul>
       <li>Go to the Options ➢ Proxies</li>
@@ -652,7 +652,7 @@
     </table>
 
 
-    <h1 id="import">Import</h1>
+    <h2 id="import">Import</h2>
 
     <dl>
       <dt>FoxyProxy Account</dt>
@@ -703,7 +703,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
 
 
-    <h1 id="pattern-tester">Pattern Tester</h1>
+    <h2 id="pattern-tester">Pattern Tester</h2>
     <ol>
       <li>Enter URL to test</li>
       <li>Select the pattern type</li>
@@ -712,7 +712,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Result will be match ✅ or fail ❌</li>
     </ol>
 
-    <h1 id="log">Log <span>(Firefox only)</span></h1>
+    <h2 id="log">Log <span>(Firefox only)</span></h2>
     <ul>
       <li>Live Log displays the web requests in reversed order (new one on top)</li>
       <li>It will continue to display while the Options page is open and will stop logging as soon as the page is closed</li>
@@ -729,7 +729,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>If managed data is found:
         <ul>
           <li>Managed data will be used</li>
-          <li>Toolbar popup & Options page work normally but changes will NOT apply</li>
+          <li>Toolbar popup & Options page work normally but changes will not apply</li>
           <li>Managed data can set all, or some of the options (the rest will be set to their default values)</li>
           <li>Managed data format is the same as FoxyProxy export format</li>
         </ul>
@@ -739,7 +739,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <h4>Default Options <span>(v8.2)</span></h4>
 <pre>
 {
-  "mode": "disable",        // optional:  current option, necessary to enable
+  "mode": "disable",        // mandatory: current option, necessary to enable
   "sync": false,            // optional:  not necessary as it will be disabled on managed storage
   "proxyDNS": true,         // optional:  Firefox Only and for SOCKS
   "passthrough": "",        // optional:  Global Exclude
@@ -790,9 +790,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
   "3rdparty": {
     "extensions": {
-      "gcknhkkoolaabfmlnjonogaaifnjlfnp": {<span style="color: var(--header); font-size: 1.1em;">
+      "gcknhkkoolaabfmlnjonogaaifnjlfnp": {<mark style="font-size: 1.1em;">
         "mode": "pattern",
-        "data": []</span>
+        "data": []</mark>
       }
     }
   }
@@ -806,9 +806,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
   "policies": {
     "3rdparty": {
       "Extensions": {
-        "foxyproxy@eric.h.jung": {<span style="color: var(--header); font-size: 1.1em;">
+        "foxyproxy@eric.h.jung": {<mark style="font-size: 1.1em;">
           "mode": "pattern",
-          "data": []</span>
+          "data": []</mark>
         }
       }
     }
@@ -854,14 +854,14 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 {
   "name": "foxyproxy@eric.h.jung",
   "type": "storage",
-  "data": {<span style="color: var(--header); font-size: 1.1em;">
+  "data": {<mark style="font-size: 1.1em;">
     "mode": "disable",
     "sync": false,
     "proxyDNS": true,
     "passthrough": "",
     "container": {},
     "commands": {},
-    "data": []</span>
+    "data": []</mark>
   }
 }
 </pre>

@@ -35,14 +35,12 @@ export class Sync {
 
   static async get(pref) {
     await this.getManaged(pref);                            // check storage.managed
-    if (pref.managed) { return; }
-
-    await this.getSync(pref);
+    await this.getSync(pref);                               // check storage.sync
   }
 
   static async getManaged(pref) {
     const result = await browser.storage.managed.get().catch(() => {});
-    if (!Array.isArray(result?.data)) {                     // storage.managed not found
+    if (!Array.isArray(result?.data) || !result.data[0]) {  // storage.managed not found
       if (Object.hasOwn(pref, 'managed')) {                 // clean up
         delete pref.managed;
         await browser.storage.local.remove('managed');
@@ -50,12 +48,11 @@ export class Sync {
       return;
     }
 
-    console.log(result);
     const db = App.getDefaultPref();                        // get default pref
-    Object.keys(db).forEach(i => pref[i] = db[i]);          // clear pref
+    Object.keys(db).forEach(i => pref[i] = db[i]);          // revert pref to default values
 
     Object.keys(result).forEach(i => Object.hasOwn(pref, i) && (pref[i] = result[i]));  // set data from storage.managed
-    pref.managed = true;                                    // set pref.managed to use in options.js
+    pref.managed = true;                                    // set pref.managed to use in options.js, popup.js
     pref.sync = false;                                      // no sync for storage.managed
 
     // --- update database
@@ -64,6 +61,7 @@ export class Sync {
 
   static async getSync(pref) {
     if (!pref.sync) { return; }
+    if (pref.managed) { return; }
 
     const syncPref = await browser.storage.sync.get();
 

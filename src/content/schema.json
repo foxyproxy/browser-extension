@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "required": ["mode", "data"],
   "properties": {
     "mode": {"type": "string"},
     "sync": {"type": "boolean"},
@@ -7,34 +8,25 @@
     "passthrough": {"type": "string"},
     "data": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
+        "minProperties": 13,
+        "additionalProperties": false,
         "properties": {
           "active": {"type": "boolean"},
           "title": {"type": "string"},
           "color": {"type": "string"},
-          "type": {"type": "string"},
-          "hostname": {"type": "string"},
-          "port": {"type": "string"},
+          "type": {"type": "string", "enum": ["http", "https", "socks4", "socks5", "pac", "direct"]},
+          "hostname": {"type": "string", "format": "hostname"},
+          "port": {"type": "string", "pattern": "^\\d*$"},
           "username": {"type": "string"},
           "password": {"type": "string"},
-          "cc": {"type": "string"},
+          "cc": {"type": "string", "pattern": "^([A-Z]{2}|)$"},
           "city": {"type": "string"},
-          "include": {
-            "type": "array",
-            "id": "Include",
-            "items": {
-              "type": "object",
-              "properties": {
-                "type": {"type": "string"},
-                "title": {"type": "string"},
-                "pattern": {"type": "string"},
-                "active": {"type": "boolean"}
-              }
-            }
-          },
-          "exclude": {"$ref": "Include"},
-          "pac": {"type": "string"}
+          "include": {"$ref": "#/$defs/include-exclude"},
+          "exclude": {"$ref": "#/$defs/include-exclude"},
+          "pac": {"type": "string", "oneOf": [{"const": ""}, {"format": "uri"}]}
         }
       }
     },
@@ -54,6 +46,23 @@
         "setProxy": {"type": "string"},
         "setTabProxy": {"type": "string"},
         "quickAdd": {"type": "string"}
+      }
+    }
+  },
+
+  "$defs": {
+    "include-exclude": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "minProperties": 4,
+        "additionalProperties": false,
+        "properties": {
+          "type": {"type": "string", "enum": ["wildcard", "regex"]},
+          "title": {"type": "string"},
+          "pattern": {"type": "string"},
+          "active": {"type": "boolean"}
+        }
       }
     }
   }
