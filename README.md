@@ -69,8 +69,8 @@ Please post all feature requests and bugs [here](https://github.com/foxyproxy/br
     </tr>
     <tr>
       <td>Source Code</td>
-      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current) <a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a> (old)</td>
-      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current) <a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a> (old)</td>
+      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current)<br> <a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a> (old)</td>
+      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current)<br> <a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a> (old)</td>
     </tr>
   </tbody>
 </table>
