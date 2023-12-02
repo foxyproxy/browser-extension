@@ -2,7 +2,6 @@
 
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
 ![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension)
-![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&prefix=v&label=FoxyProxy%20beta&color=f60)
 
 
 Version 8.0+
@@ -68,9 +67,17 @@ Please post all feature requests and bugs [here](https://github.com/foxyproxy/br
       </td>
     </tr>
     <tr>
-      <td>Source Code</td>
-      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current)<br> <a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a> (old)</td>
-      <td><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a> (current)<br> <a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a> (old)</td>
+      <td>Source Code Beta</td>
+      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&prefix=v&label=FoxyProxy%20beta&color=f60" alt=""></a></td>
+    </tr>
+    <tr>
+      <td>Source Code Release</td>
+      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a></td>
+    </tr>
+    <tr>
+      <td>Source Code Old</td>
+      <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
+      <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
     </tr>
   </tbody>
 </table>
