@@ -2,11 +2,10 @@
   "type": "object",
   "required": ["mode", "data"],
   "properties": {
-    "mode": {"$ref": "#/$defs/mode"},
+    "mode": {"type": "string"},
     "sync": {"type": "boolean"},
     "proxyDNS": {"type": "boolean"},
     "passthrough": {"type": "string"},
-
     "data": {
       "type": "array",
       "minItems": 1,
@@ -27,28 +26,26 @@
           "city": {"type": "string"},
           "include": {"$ref": "#/$defs/include"},
           "exclude": {"$ref": "#/$defs/include"},
-          "pac": {"type": "string", "oneOf": [{"const": ""}, {"format": "uri"}]}
+          "pac": {"type": "string"}
         }
       }
     },
-
     "container": {
       "type": "object",
       "properties": {
-        "incognito": {"$ref": "#/$defs/host"},
-        "container-1": {"$ref": "#/$defs/host"},
-        "container-2": {"$ref": "#/$defs/host"},
-        "container-3": {"$ref": "#/$defs/host"},
-        "container-4": {"$ref": "#/$defs/host"}
+        "incognito": {"type": "string"},
+        "container-1": {"type": "string"},
+        "container-2": {"type": "string"},
+        "container-3": {"type": "string"},
+        "container-4": {"type": "string"}
       }
     },
-
     "commands": {
       "type": "object",
       "properties": {
-        "setProxy": {"$ref": "#/$defs/host"},
-        "setTabProxy": {"$ref": "#/$defs/host"},
-        "quickAdd": {"$ref": "#/$defs/host"}
+        "setProxy": {"type": "string"},
+        "setTabProxy": {"type": "string"},
+        "quickAdd": {"type": "string"}
       }
     }
   },
@@ -67,17 +64,6 @@
           "active": {"type": "boolean"}
         }
       }
-    },
-    "host": {
-      "type": "string",
-      "pattern": "^(.+:\\d+|direct)$"
-    },
-    "mode": {
-      "type": "string",
-      "anyOf": [
-        {"enum": ["pattern", "disable", "direct"]},
-        {"format": "uri"}
-      ]
     }
   }
 }

@@ -151,6 +151,11 @@ li span {
   font-size: 0.9em;
 }
 
+mark {
+  color: var(--header);
+  background-color: unset;
+}
+
 /* ----- About ----- */
 .about dt {
   background-color: unset;
@@ -206,36 +211,26 @@ caption {
   padding: 0.5em;
 }
 
+tr:nth-child(2n) {
+  background-color: var(--alt-bg);
+}
+
 th,
 td {
   border: 1px solid var(--border);
   vertical-align: top;
 }
 
-th {
-  background-color: var(--alt-bg);
-  text-align: left;
-  padding: 0.5em;
-}
-
-/* th span {
-  display: block;
-  font-size: 0.9em;
-  font-weight: normal;
-  font-style: italic;
-} */
-
 td {
   padding: 0.5em;
 }
 
-thead td {
+thead th {
   font-size: 1.2em;
-  text-align: center;
+  padding: 0.5em;
 }
 
 tbody th {
-  font-weight: normal;
   min-width: 10em;
 }
 
@@ -244,11 +239,6 @@ td pre,
 td.code {
   font-family: monospace;
   font-size: 1.2em;
-}
-
-mark {
-  color: var(--header);
-  background-color: unset;
 }
 /* ----- /Table ----- */
 
