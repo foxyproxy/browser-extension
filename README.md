@@ -3,15 +3,11 @@
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
 ![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension)
 
+[About](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
-Version 8.0+
-Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
+Version 8.0+ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
+Please post all feature requests and bugs to issues.
 
-Please post all feature requests and bugs [here](https://github.com/foxyproxy/browser-extension/issues).
-
-
-- [About](https://foxyproxy.github.io/browser-extension/src/content/about.html)
-- [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html)
 
 ## Screenshots
 
