@@ -6,7 +6,8 @@
 [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
 Version 8.0+ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
-Please post all feature requests and bugs to issues.
+
+Code for versions [before 8.0](https://github.com/foxyproxy/firefox-extension).
 
 
 ## Screenshots
