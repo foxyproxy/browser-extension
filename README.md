@@ -5,8 +5,31 @@
 
 [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
-Version 8.0+ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
+After some years of stability, FoxyProxy has been updated to support Manifest Version 3 which is required by Chrome in order for extensions to be compatible with Chrome in 2024. We took advantage of this forced update to implement many feature requests and other changes that were requested over the years.
 
+FoxyProxy has been owned and developed consistently by the same team since 2006.
+
+The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*. Source code for [older versions](https://github.com/foxyproxy/firefox-extension).
+
+## Permissions Justification
+
+These justifications were provied to Google and Mozilla
+
+1. **downloads**: Required to export the extension settings to a file. Users can import that file to other Chrome/Firefox instances, or share it with colleagues, in order to keep the same settings. It can also be backed up and used later.
+2. **proxy**: The core function of the extension is to allow users to set the proxy server used by the browser.
+3. **storag**: Required to store proxy server settings (hostname, port, username, and which proxy server is enabled by the user).
+4. **tabs**: Required so that users can set separate proxies to use per tab. It is also needed for "QuickAdd" to quickly add a URL pattern that applies to the current/active tab. It is also used to open a URL to getfoxyproxy.org where there is online help.
+5. **webRequest**: Required to authenticate with proxy servers via webRequest.onAuthRequired
+6. **webRequestAuthProvider**: Required to authenticate with proxies servers via webRequest.onAuthRequired
+7. **browsingData**: Required so the extension can delete cookies, indexedDB, and localStorage when requested by the user on the Options page (*Delete Browsing Data* button)
+8. **privacy**: Required so the extension can call browser.privacy.network.webRTCIPHandlingPolicy to turn on/off webRTC in Chrome (*Limit WebRTC* checkbox in Options page)
+9. **host permission**: Required to proxy all webRequests and provide proxy server authentication. *<all_urls>* is used because users may choose to load any/all URLs through proxy servers (chrome.webRequest.onAuthRequired and chrome.webRequest.onAuthRequired.addListener) . Required to proxy all webRequests and provide proxy server authentication. Also needed to get accounts details from FoxyProxy servers, if requested by the user with the *Import FoxyProxy Account* on the *Import*tab.
+
+No remote code is used in this extension.
+
+### Why is there a crypto library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?
+
+The crypto library is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned) to 2023. It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x 
 
 
 ## Screenshots
