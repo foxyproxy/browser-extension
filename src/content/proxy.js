@@ -191,18 +191,15 @@ export class Proxy {
     if (!allowed) { return; }
 
     const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
-    const config = {value: {}, scope: 'incognito_persistent'};
-
-    switch (true) {
-      case !pxy:
-        chrome.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
-        break;
-
-      default:
-        config.value.mode = 'fixed_servers';
-        config.value.rules = this.getSingleProxyRule(pref, pxy);
-        browser.proxy.settings.set(config);
+    if (!pxy) {
+      chrome.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
+      return;
     }
+
+    const config = {value: {}, scope: 'incognito_persistent'};
+    config.value.mode = 'fixed_servers';
+    config.value.rules = this.getSingleProxyRule(pref, pxy);
+    browser.proxy.settings.set(config);
   }
 
   static getPacString(pref) {
