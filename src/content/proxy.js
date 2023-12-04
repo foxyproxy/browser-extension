@@ -205,7 +205,7 @@ export class Proxy {
         config.value.rules = this.getSingleProxyRule(pref, pxy);
     }
 
-    browser.proxy.settings.set(config);
+    await browser.proxy.settings.set(config);
     return !!pxy;                                           // true/false
   }
 
