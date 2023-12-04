@@ -36,6 +36,13 @@ export class Sync {
 
     const syncPref = await browser.storage.sync.get();
 
+    // check sync from old version 3-7
+    if (!Object.keys(pref)[0] &&
+      (Object.hasOwn(syncPref, 'settings') || Object.hasOwn(syncPref, 'foxyProxyEdition'))) {
+        Object.keys(syncPref).forEach(i => pref[i] = syncPref[i]);
+        return;
+    }
+
     // convert object to array & filter proxies
     const data = Object.values(syncPref).filter(i => Object.hasOwn(i, 'hostname'));
 
