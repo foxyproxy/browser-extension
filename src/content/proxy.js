@@ -133,12 +133,7 @@ export class Proxy {
   static async setChrome(pref) {
     // https://developer.chrome.com/docs/extensions/reference/types/
     // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
-
-    // --- incognito
-    const incognito = await this.setChromeIncognito(pref);
-    const scope = incognito ? 'regular_only' : 'regular';
-    const config = {value: {}, scope};
-
+    const config = {value: {}, scope: 'regular'};
     switch (true) {
       case pref.mode === 'disable':
       case pref.mode === 'direct':
@@ -169,6 +164,9 @@ export class Proxy {
     }
 
     browser.proxy.settings.set(config);
+
+    // --- incognito
+    // this.setChromeIncognito(pref);
   }
 
   static findProxy(pref, mode = pref.mode) {
@@ -205,8 +203,7 @@ export class Proxy {
         config.value.rules = this.getSingleProxyRule(pref, pxy);
     }
 
-    await browser.proxy.settings.set(config);
-    return !!pxy;                                           // true/false
+    browser.proxy.settings.set(config);
   }
 
   static getPacString(pref) {
