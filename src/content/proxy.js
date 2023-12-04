@@ -166,7 +166,7 @@ export class Proxy {
     browser.proxy.settings.set(config);
 
     // --- incognito
-    // this.setChromeIncognito(pref);
+    this.setChromeIncognito(pref);
   }
 
   static findProxy(pref, mode = pref.mode) {
@@ -195,15 +195,14 @@ export class Proxy {
 
     switch (true) {
       case !pxy:
-        config.value.mode = 'system';                       // unset incognito
+        chrome.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
         break;
 
       default:
         config.value.mode = 'fixed_servers';
         config.value.rules = this.getSingleProxyRule(pref, pxy);
+        browser.proxy.settings.set(config);
     }
-
-    browser.proxy.settings.set(config);
   }
 
   static getPacString(pref) {
