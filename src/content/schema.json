@@ -11,8 +11,6 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "minProperties": 13,
-        "additionalProperties": false,
         "properties": {
           "active": {"type": "boolean"},
           "title": {"type": "string"},
@@ -24,10 +22,24 @@
           "password": {"type": "string"},
           "cc": {"type": "string", "pattern": "^([A-Z]{2}|)$"},
           "city": {"type": "string"},
-          "include": {"$ref": "#/$defs/include"},
-          "exclude": {"$ref": "#/$defs/include"},
+          "include": {
+            "type": "array",
+            "id": "include",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {"type": "string", "enum": ["wildcard", "regex"]},
+                "title": {"type": "string"},
+                "pattern": {"type": "string"},
+                "active": {"type": "boolean"}
+              }
+            },
+            "required": ["type", "title",  "pattern", "active"]
+          },
+          "exclude": {"$ref": "include"},
           "pac": {"type": "string"}
-        }
+        },
+        "required": [ "active", "title", "color", "type", "hostname", "port", "username", "password", "cc", "city", "include", "exclude", "pac" ]
       }
     },
     "container": {
@@ -46,23 +58,6 @@
         "setProxy": {"type": "string"},
         "setTabProxy": {"type": "string"},
         "quickAdd": {"type": "string"}
-      }
-    }
-  },
-
-  "$defs": {
-    "include": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "minProperties": 4,
-        "additionalProperties": false,
-        "properties": {
-          "type": {"type": "string", "enum": ["wildcard", "regex"]},
-          "title": {"type": "string"},
-          "pattern": {"type": "string"},
-          "active": {"type": "boolean"}
-        }
       }
     }
   }
