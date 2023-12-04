@@ -7,7 +7,6 @@
 
 Version 8.0+ Browser extension source code for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*
 
-Code for versions [before 8.0](https://github.com/foxyproxy/firefox-extension).
 
 
 ## Screenshots
