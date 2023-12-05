@@ -1,9 +1,7 @@
 {
-  "extensionName": { "message": "FoxyProxy Estándar" },
-  "extensionDescription": { "message": "Herramienta Avanzada de Gestión de Proxies fácil de usar para todos" },
-
+  "extensionName": { "message": "FoxyProxy" },
   "extensionNameBasic": { "message": "FoxyProxy Básico" },
-
+  "extensionDescription": { "message": "Herramienta Avanzada de Gestión de Proxies fácil de usar para todos" },
 
   "error": { "message": "Error" },
   "errorNoSettings": { "message": "No se encontraron ajustes. Por favor reinstala FoxyProxy." },
