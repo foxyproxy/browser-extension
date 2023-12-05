@@ -68,7 +68,7 @@ export class Sync {
     // check sync from old version 3-7
     if (!Object.keys(pref)[0] &&
       (Object.hasOwn(syncPref, 'settings') || Object.hasOwn(syncPref, 'foxyProxyEdition'))) {
-        Object.keys(syncPref).forEach(i => pref[i] = syncPref[i]);
+        Object.keys(syncPref).forEach(i => pref[i] = syncPref[i]); // set sync data to pref to migrate next in background.js
         return;
     }
 
