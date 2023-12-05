@@ -1,5 +1,6 @@
 {
-  "extensionName": { "message": "فاکسی پروکسی" },
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "ابزاری آسان و پیشرفتهٔ مدیریت پیشکار برای همه" },
 
 
@@ -40,7 +41,7 @@
   "togglePW": { "message": "تغییر حالت گذرواژه" },
   "importAs": { "message": "درون‌ریزی به عنوان" },
   "domain": { "message": "دامنه" },
-  "errorUserPass": { "message": "لطفاً نام کاربری و گذرواژه را تکمیل کنید." },
+  "userPassError": { "message": "لطفاً نام کاربری و گذرواژه را تکمیل کنید." },
 
   "proxyList": { "message": "فهرست پیشکار" },
   "proxyTypeError": { "message": "گونهٔ ناشناخته" },

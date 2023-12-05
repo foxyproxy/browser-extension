@@ -1,5 +1,6 @@
 {
   "extensionName": { "message": "FoxyProxy" },
+  "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "Łatwe w użyciu zaawansowane narzędzie do zarządzania proxy dla każdego" },
 
 
@@ -40,7 +41,7 @@
   "togglePW": { "message": "Przełącz hasło" },
   "importAs": { "message": "Zaimportuj jako" },
   "domain": { "message": "Domena" },
-  "errorUserPass": { "message": "Proszę wpisać nazwę użytkownika oraz hasło." },
+  "userPassError": { "message": "Proszę wpisać nazwę użytkownika oraz hasło." },
 
   "proxyList": { "message": "Lista Proxy" },
   "proxyTypeError": { "message": "Nieznany typ" },

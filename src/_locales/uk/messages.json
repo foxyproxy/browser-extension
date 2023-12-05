@@ -1,5 +1,6 @@
 {
   "extensionName": { "message": "FoxyProxy" },
+  "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "Простий у використанні просунутий засіб керування проксі для кожного" },
 
 
@@ -43,7 +44,7 @@
   "togglePW": { "message": "Показати/сховати пароль" },
   "importAs": { "message": "Імпортувати як" },
   "domain": { "message": "Домен" },
-  "errorUserPass": { "message": "Будь ласка, введіть і ім’я користувача, і пароль." },
+  "userPassError": { "message": "Будь ласка, введіть і ім’я користувача, і пароль." },
 
   "proxyList": { "message": "Перелік проксі-серверів" },
   "proxyTypeError": { "message": "Невідомий тип" },

@@ -29,7 +29,6 @@
   "about": { "message": "A propos" },
   "syncSettings": { "message": "Synchroniser les Paramètres" },
   "syncSettingsHelp": { "message": "Activer pour utiliser Firefox Sync (les paramètres sont synchronisés entre tous vos navigateurs Firefox). Desactiver pour sauvegarder les paramètres localement. A noter que deux profils de paramètres peuvent coexister, un synchronisé et un local" },
-  "onOff": { "message": "Activer/Desactiver" },
   "on": { "message": "Activer" },
   "off": { "message": "Desactiver" },
   "confirmTransferToLocal": { "message": "Voulez-vous appliquez les paramètres synchronisés au profil local ?\nLes données existantes seront fusionnées." },
@@ -43,6 +42,7 @@
 
 
   "edit": { "message": "Modifier" },
+  "pattern": { "message": "Modèles" },
   "confirmDelete": { "message": "Etes-vous sûr de vouloir supprimer ?" },
 
   "addProxy": { "message": "Ajouter un Proxy" },
@@ -78,7 +78,6 @@
   "none": { "message": "Aucun" },
 
   "name": { "message": "Nom" },
-  "pattern": { "message": "Modèle" },
   "type": { "message": "Type" },
   "protocol": { "message": "Protocole" },
   "whitePatterns": { "message": "Modèle d'inclusion" },
