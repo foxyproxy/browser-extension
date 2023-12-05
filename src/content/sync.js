@@ -59,6 +59,11 @@ export class Sync {
     await browser.storage.local.set(pref);
   }
 
+  static hasOldData(obj) {
+    // FP v3 OR FP v7
+    return Object.hasOwn(obj, 'settings') || Object.hasOwn(obj, 'foxyProxyEdition');
+  }
+
   static async getSync(pref) {
     if (!pref.sync) { return; }
     if (pref.managed) { return; }
@@ -66,10 +71,9 @@ export class Sync {
     const syncPref = await browser.storage.sync.get();
 
     // check sync from old version 3-7
-    if (!Object.keys(pref)[0] &&
-      (Object.hasOwn(syncPref, 'settings') || Object.hasOwn(syncPref, 'foxyProxyEdition'))) {
-        Object.keys(syncPref).forEach(i => pref[i] = syncPref[i]); // set sync data to pref to migrate next in background.js
-        return;
+    if ((!Object.keys(pref)[0] || this.hasOldData(pref)) && this.hasOldData(syncPref)) { // (local has no data OR has old data) AND sync has old data
+      Object.keys(syncPref).forEach(i => pref[i] = syncPref[i]); // set sync data to pref to migrate next in background.js
+      return;
     }
 
     // convert object to array & filter proxies
