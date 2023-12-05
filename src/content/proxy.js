@@ -133,12 +133,7 @@ export class Proxy {
   static async setChrome(pref) {
     // https://developer.chrome.com/docs/extensions/reference/types/
     // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
-
-    // --- incognito
-    const incognito = await this.setChromeIncognito(pref);
-    const scope = incognito ? 'regular_only' : 'regular';
-    const config = {value: {}, scope};
-
+    const config = {value: {}, scope: 'regular'};
     switch (true) {
       case pref.mode === 'disable':
       case pref.mode === 'direct':
@@ -169,6 +164,9 @@ export class Proxy {
     }
 
     browser.proxy.settings.set(config);
+
+    // --- incognito
+    // this.setChromeIncognito(pref);
   }
 
   static findProxy(pref, mode = pref.mode) {
@@ -193,20 +191,15 @@ export class Proxy {
     if (!allowed) { return; }
 
     const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
-    const config = {value: {}, scope: 'incognito_persistent'};
-
-    switch (true) {
-      case !pxy:
-        config.value.mode = 'system';                       // unset incognito
-        break;
-
-      default:
-        config.value.mode = 'fixed_servers';
-        config.value.rules = this.getSingleProxyRule(pref, pxy);
+    if (!pxy) {
+      chrome.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
+      return;
     }
 
+    const config = {value: {}, scope: 'incognito_persistent'};
+    config.value.mode = 'fixed_servers';
+    config.value.rules = this.getSingleProxyRule(pref, pxy);
     browser.proxy.settings.set(config);
-    return !!pxy;                                           // true/false
   }
 
   static getPacString(pref) {

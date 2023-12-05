@@ -1,5 +1,6 @@
 {
   "extensionName": { "message": "FoxyProxy" },
+  "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "Easy to use advanced Proxy Management tool for everyone" },
 
   "proxyByPatterns": { "message": "Proxy by Patterns" },

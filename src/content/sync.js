@@ -32,6 +32,10 @@ export class Sync {
   }
 
   static async get(pref) {
+    await this.getSync(pref);                               // check storage.sync
+  }
+
+  static async getSync(pref) {
     if (!pref.sync) { return; }
 
     const syncPref = await browser.storage.sync.get();
