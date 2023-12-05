@@ -192,7 +192,7 @@ export class Proxy {
 
     const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
     if (!pxy) {
-      chrome.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
+      browser.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
       return;
     }
 
