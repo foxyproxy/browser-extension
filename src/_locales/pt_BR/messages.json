@@ -1,6 +1,6 @@
 {
   "extensionName": { "message": "FoxyProxy" },
-  "extensionNameBasic": { "message": "FoxyProxy Basic" },
+  "extensionNameBasic": { "message": "FoxyProxy Básico" },
   "extensionDescription": { "message": "Ferramenta avançada de gerenciamento de proxy fácil de usar para todos" },
 
   "error": { "message": "Falha" },
