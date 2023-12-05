@@ -12,9 +12,10 @@
     <a href="#how-to-use">How to Use</a>
     <a href="#options">Options</a>
     <a href="#proxies">Proxies</a>
-    <a href="#import">Import</a>
-    <a href="#pattern-tester">Pattern Tester</a>
-    <a href="#log">Log</a>
+    <!-- <a href="#import">Import</a> -->
+    <!-- <a href="#pattern-tester">Pattern Tester</a> -->
+    <!-- <a href="#log">Log</a> -->
+    <!-- <a href="#managed-storage">Managed Storage</a> -->
     <a href="#support">Support</a>
   </nav>
 
@@ -100,6 +101,8 @@
 
     <h3>Toolbar Popup</h3>
 
+    <p class="note">Changing options is disabled on managed storage.</p>
+
     <dl>
       <dt>Proxy by Patterns</dt>
       <dd>Connections are proxied based on patterns</dd>
@@ -167,6 +170,7 @@
     <h2 id="enable-storage-sync">Enable Storage Sync</h2>
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
       Sync will be turned off automatically to avoid repeated errors.</p>
+      <p class="note">Storage Sync is disabled on managed storage.</p>
 
 
     <blockquote>
@@ -259,19 +263,19 @@
     <table>
       <thead>
         <tr>
-          <td></td>
-          <td colspan="2">Chrome</td>
-          <td colspan="2">Firefox</td>
-        </tr>
-        <tr>
-          <th style="width: 12em;"></th>
-          <th>localhost</th>
-          <th>passthrough</th>
-          <th>localhost</th>
-          <th>passthrough</th>
+          <th></th>
+          <th colspan="2">Chrome</th>
+          <th colspan="2">Firefox</th>
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <th></th>
+          <th>localhost</th>
+          <th>passthrough</th>
+          <th>localhost</th>
+          <th>passthrough</th>
+        </tr>
         <tr>
           <th>Proxy by Patterns</th>
           <td>browser</td>
@@ -383,7 +387,7 @@
 
 
     <h2>Restore Defaults</h2>
-    <p>Restore all settings to their defaults</p>
+    <p>Restore all settings to default values</p>
 
     <h2 id="import-export">Preferences: Import/Export</h2>
     <p>You can import/export Preferences (for backup or share) from/to a local file on your computer.</p>
@@ -391,13 +395,11 @@
 
     <h2 id="save">Save</h2>
     <p>Please note that changes will not take effect until they are saved.</p>
+    <p class="note">Save is disabled on managed storage.</p>
 
 
 
     <h1 id="proxies">Proxies</h1>
-
-
-
 
     <h2>Proxy</h2>
 
@@ -514,7 +516,7 @@
     <ul>
       <li>Patterns can be Wildcard (<a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts#globs" target="_blank">globs</a>) or <a href="https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_expressions" target="_blank">Regular Expression</a></li>
       <li>Patterns can be full or partial match which means it can match the entire URL or only part of it</li>
-      <li>Include <code>...://...</code> to ensure it matches the host</li>
+      <li>Include <code>://...</code> to ensure it matches the host</li>
       <li>In practice, including URL pathname with host is rarely necessary</li>
     </ul>
 
@@ -572,8 +574,8 @@
 
         <tr>
           <th>Wildcard</th>
-          <td>*://*.example.com</td>
-          <td>http://help.example.com/</td>
+          <td>://*.example.com<br>*://*.example.com</td>
+          <td>http://help.example.com/<br>https://help.example.com/</td>
           <td>https://example.com/<br>https://google.com/ref=help.example.com</td>
         </tr>
 
@@ -595,7 +597,7 @@
     </table>
 
 
-    <h2 id="">Bulk Edit</h2>
+    <h2 id="bulk-edit">Bulk Edit</h2>
     <p>Bulk edit examples for the advanced users</p>
     <ul>
       <li>Go to the Options ➢ Proxies</li>
@@ -612,44 +614,44 @@
       <tbody class="code">
         <tr>
           <th>Change all types</th>
-          <td>document.querySelectorAll('[data-id="type"]').forEach(i => i.value = 'https')</td>
+          <td>document.querySelectorAll('[data-id="type"]').forEach(i =&gt; i.value = 'https')</td>
         </tr>
 
         <tr>
           <th>Change all ports</th>
-          <td>document.querySelectorAll('[data-id="port"]').forEach(i => i.value = '443')</td>
+          <td>document.querySelectorAll('[data-id="port"]').forEach(i =&gt; i.value = '443')</td>
         </tr>
 
         <tr>
           <th>Change all titles</th>
-          <td>document.querySelectorAll('[data-id="title"]').forEach(i => i.value += '-set')</td>
+          <td>document.querySelectorAll('[data-id="title"]').forEach(i =&gt; i.value += '-set')</td>
         </tr>
 
         <tr>
           <th>Change all usernames</th>
-          <td>document.querySelectorAll('[data-id="username"]').forEach(i => i.value = 'user')</td>
+          <td>document.querySelectorAll('[data-id="username"]').forEach(i =&gt; i.value = 'user')</td>
         </tr>
 
         <tr>
           <th>Change all passwords</th>
-          <td>document.querySelectorAll('[data-id="password"]').forEach(i => i.value = 'pass')</td>
+          <td>document.querySelectorAll('[data-id="password"]').forEach(i =&gt; i.value = 'pass')</td>
         </tr>
 
         <tr>
           <th>Open all proxies</th>
-          <td>document.querySelectorAll('details.proxy').forEach(i => i.open = true)</td>
+          <td>document.querySelectorAll('details.proxy').forEach(i =&gt; i.open = true)</td>
         </tr>
 
         <tr>
           <th>Close all proxies</th>
-          <td>document.querySelectorAll('details.proxy').forEach(i => i.open = false)</td>
+          <td>document.querySelectorAll('details.proxy').forEach(i =&gt; i.open = false)</td>
         </tr>
 
       </tbody>
     </table>
 
 
-    <h1 id="import">Import</h1>
+    <h2 id="import">Import</h2>
 
     <dl>
       <dt>FoxyProxy Account</dt>
@@ -689,7 +691,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
           </dd>
         </dl>
       </dd>
-      <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd>
+      <!-- <dd>More Information: <a href="https://github.com/foxyproxy/firefox-extension/wiki/Import-Proxy-List" target="_blank">Import Proxy List</a></dd> -->
 
 
       <dt>Import from older versions</dt>
@@ -700,7 +702,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
 
 
-    <h1 id="pattern-tester">Pattern Tester</h1>
+    <h2 id="pattern-tester">Pattern Tester</h2>
     <ol>
       <li>Enter URL to test</li>
       <li>Select the pattern type</li>
@@ -709,15 +711,15 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Result will be match ✅ or fail ❌</li>
     </ol>
 
-    <h1 id="log">Log <span>(Firefox only)</span></h1>
+    <h2 id="log">Log <span>(Firefox only)</span></h2>
     <ul>
       <li>Live Log displays the web requests in reversed order (new one on top)</li>
       <li>It will continue to display while the Options page is open and will stop logging as soon as the page is closed</li>
       <li>Log data is not stored</li>
-      <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> webRequest API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
+      <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
     </ul>
 
-
+    
     <h1 id="support">Support</h1>
     <ul>
       <li>GitHub Community <a href="https://github.com/foxyproxy/browser-extension" target="_blank">Support</a></li>
