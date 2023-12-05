@@ -1,9 +1,7 @@
 {
-  "extensionName": { "message": "FoxyProxy Standard" },
-  "extensionDescription": { "message": "任誰都能快速上手的進階代理伺服器管理工具" },
-
+  "extensionName": { "message": "FoxyProxy" },
   "extensionNameBasic": { "message": "FoxyProxy Basic" },
-
+  "extensionDescription": { "message": "任誰都能快速上手的進階代理伺服器管理工具" },
 
   "error": { "message": "錯誤" },
   "erroNoSettings": { "message": "找不到設定檔。 請重新安裝 FoxyProxy。" },
