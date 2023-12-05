@@ -166,7 +166,7 @@ export class Proxy {
     browser.proxy.settings.set(config);
 
     // --- incognito
-    // this.setChromeIncognito(pref);
+    this.setChromeIncognito(pref);
   }
 
   static findProxy(pref, mode = pref.mode) {
