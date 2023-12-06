@@ -331,8 +331,6 @@ button.close::before {
 button.random {
   font-size: 1.5em;
 }
-
-
 /* ----- /Button ----- */
 
 /* ----- Options ----- */
@@ -497,6 +495,54 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   text-shadow: 0 -1px 1px #555, 0 1px 0 #fff;
 }
 /* ----- /Pattern ----- */
+
+/* ----- hide/show elements ----- */
+details.proxy[data-type="direct"] :is(
+  [data-i18n="port"],
+  [data-id="port"],
+  [data-i18n="username"],
+  [data-id="username"],
+  [data-i18n="password"],
+  .password,
+  [data-i18n="country"],
+  [data-id="cc"],
+  [data-i18n="city"],
+  [data-id="city"],
+  [data-type="pac"],
+  [data-id="pac"],
+  .pattern-head,
+  .pattern-box) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="pac"] :is(
+  [data-i18n="port"],
+  [data-id="port"],
+  [data-i18n="username"],
+  [data-id="username"],
+  [data-i18n="password"],
+  .password,
+  .pattern-head,
+  .pattern-box) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy:not([data-type="pac"]) :is(
+  [data-type="pac"],
+  [data-id="pac"]) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+
+
+
+/* ----- hide/show elements ----- */
 
 /* ----- Import ----- */
 .import textarea {

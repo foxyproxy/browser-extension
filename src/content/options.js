@@ -454,9 +454,7 @@ class Proxies {
     title.addEventListener('change', e => sumTitle.textContent = e.target.value);
 
     type.addEventListener('change', e => {
-      // hide/show elements
-      // this.parentElement.dataset.type = this.value;
-      // this.parentElement.previousElementSibling.dataset.type = this.value;
+      pxy.dataset.type = e.target.value;                    // hide/show elements
 
       switch (e.target.options[e.target.selectedIndex].textContent) {
         case 'TOR':
@@ -542,8 +540,7 @@ class Proxies {
       return;
     }
 
-    // toggle button (hide/show elements)
-    // proxyBox.dataset.type = item.type;
+    pxy.dataset.type = item.type;                           // hide/show elements
 
     const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
     this.proxyCache[id] = item;                             // cache to find later

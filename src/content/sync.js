@@ -38,6 +38,8 @@ export class Sync {
     await this.getSync(pref);                               // check storage.sync
   }
 
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1868153
+  // On Firefox storage.managed returns undefined if not found
   static async getManaged(pref) {
     const result = await browser.storage.managed.get().catch(() => {});
     if (!Array.isArray(result?.data) || !result.data[0]) {  // storage.managed not found

@@ -113,8 +113,12 @@ export class Proxy {
     const value = conf.value;
 
     switch (true) {
+      // https://github.com/foxyproxy/browser-extension/issues/47
+      // Unix domain socket SOCKS proxy support
+      // regard file:///run/user/1000/proxy.socks:9999 as normal proxy (not PAC)
+
       // --- Proxy Auto-Configuration (PAC) URL
-      case pref.mode.includes('://'):
+      case pref.mode.includes('://') && !/:\d+$/.test(pref.mode):
         value.proxyType = 'autoConfig';
         value.autoConfigUrl = pref.mode;
         value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', '); // convert to standard comma-separated

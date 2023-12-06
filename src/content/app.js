@@ -14,9 +14,9 @@ export const pref = {
   sync: false,
   proxyDNS: true,
   passthrough: '',
-  data: [],
   container: {},
-  commands: {}
+  commands: {},
+  data: []
 };
 // ---------- /Default Preferences -------------------------
 
@@ -71,7 +71,7 @@ export class App {
     }
 
     // check protocol
-    if (!['http:', 'https:'].includes(url.protocol)) {
+    if (!['http:', 'https:', 'file:'].includes(url.protocol)) {
       alert(`${url} ➜ Unsupported Protocol ${url.protocol}`);
       return {};
     }
