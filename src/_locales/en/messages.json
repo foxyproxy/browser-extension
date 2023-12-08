@@ -74,6 +74,8 @@
   "password": { "message": "Password" },
   "togglePassword": { "message": "Toggle Password" },
   "userPassError": { "message": "Missing Username or Password" },
+  "storeLocally": { "message": "Store Locally" },
+  "view": { "message": "View" },
 
   "importProxyList": { "message": "Import Proxy List" },
   "importFromURL": { "message": "Import from URL" },
