@@ -517,30 +517,21 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 
 /* ----- hide/show elements ----- */
 details.proxy[data-type="direct"] :is(
-  [data-i18n="port"],
-  [data-id="port"],
-  [data-i18n="username"],
-  [data-id="username"],
-  [data-i18n="password"],
-  .password,
-  [data-i18n="country"],
-  [data-id="cc"],
-  [data-i18n="city"],
-  [data-id="city"],
-  [data-type="pac"],
-  .pac) {
+  [data-i18n="port"], [data-id="port"],
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password,
+  [data-i18n="country"], [data-id="cc"],
+  [data-i18n="city"], [data-id="city"],
+  [data-type="pac"], .pac) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
 }
 
 details.proxy[data-type="pac"] :is(
-  [data-i18n="port"],
-  [data-id="port"],
-  [data-i18n="username"],
-  [data-id="username"],
-  [data-i18n="password"],
-  .password) {
+  [data-i18n="port"], [data-id="port"],
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
@@ -559,10 +550,8 @@ details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {
 }
 
 details.proxy[data-type="socks4"] :is(
-  [data-i18n="username"],
-  [data-id="username"],
-  [data-i18n="password"],
-  .password) {
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;

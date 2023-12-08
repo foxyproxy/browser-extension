@@ -249,8 +249,8 @@ class Options {
         return;
     }
 
-    // --- check pac sting
-    if (obj.pac) {
+    // --- check store locally for active PAC
+    if (obj.active && obj.pac) {
       const storeLocally = elem.querySelector('.pac input[type="checkbox"]');
       if (storeLocally.checked) {
         const str = await Proxies.getPAC(obj.pac);
