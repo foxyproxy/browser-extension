@@ -471,6 +471,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 4em;
   column-gap: 0.2em;
   place-items: center;
+  align-items: end;
   background-color: var(--bg);
   padding: 0.2em 0.5em;
 }
@@ -483,6 +484,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 /* import & export (label & button) */
 .pattern-head .plain {
   font-size: 1em;
+  line-height: 1em;
   cursor: pointer;
   padding: 0.2em 0.5em;
 }

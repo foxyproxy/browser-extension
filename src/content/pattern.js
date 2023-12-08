@@ -34,8 +34,7 @@ export class Pattern {
     const stEnd = [];                                       // 10.0.0.0/24 -> [start, end] e.g. ['010000000000', '010000000255']
 
     str.split(/[\s,;]+/).forEach(i => {
-      // The literal string <local> matches simple hostnames (no dots)
-      if (i === '<local>') {
+      if (i === '<local>') {                                // The literal string <local> matches simple hostnames (no dots)
         regex.push('^[a-z]+://[^.]+/');
         return;
       }
