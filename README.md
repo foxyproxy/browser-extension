@@ -23,13 +23,13 @@ These justifications were provied to Google and Mozilla
 6. **webRequestAuthProvider**: Required to authenticate with proxies servers via webRequest.onAuthRequired
 7. **browsingData**: Required so the extension can delete cookies, indexedDB, and localStorage when requested by the user on the Options page (*Delete Browsing Data* button)
 8. **privacy**: Required so the extension can call browser.privacy.network.webRTCIPHandlingPolicy to turn on/off webRTC in Chrome (*Limit WebRTC* checkbox in Options page)
-9. **host permission**: Required to proxy all webRequests and provide proxy server authentication. *<all_urls>* is used because users may choose to load any/all URLs through proxy servers (chrome.webRequest.onAuthRequired and chrome.webRequest.onAuthRequired.addListener) . Required to proxy all webRequests and provide proxy server authentication. Also needed to get accounts details from FoxyProxy servers, if requested by the user with the *Import FoxyProxy Account* on the *Import* tab.
+9. **host permission**: "<all_urls>" permissions is required in order to supply credentials for [Proxy authorization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired#proxy_authorization)
 
 No remote code is used in this extension.
 
 ### Why is there a crypto library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?
 
-The crypto library is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned) to 2023. It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x 
+The crypto library was already incldued in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentails. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned) to 2023. It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x.
 
 
 ## Screenshots
