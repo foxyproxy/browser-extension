@@ -441,6 +441,23 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   column-gap: 0.5em;
 }
 
+.pac {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2em 0.5em;
+  font-size: 0.9em;
+}
+
+.pac [type="url"] {
+  grid-column: span 2;
+}
+
+.pac button {
+  padding: 0.2em 1em;
+  min-width: unset;
+  justify-self: end;
+}
+
 
 /* ----- Pattern ----- */
 .pattern-box {
@@ -509,9 +526,7 @@ details.proxy[data-type="direct"] :is(
   [data-i18n="city"],
   [data-id="city"],
   [data-type="pac"],
-  [data-id="pac"],
-  .pattern-head,
-  .pattern-box) {
+  .pac) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
@@ -523,26 +538,82 @@ details.proxy[data-type="pac"] :is(
   [data-i18n="username"],
   [data-id="username"],
   [data-i18n="password"],
-  .password,
-  .pattern-head,
-  .pattern-box) {
+  .password) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
 }
 
-details.proxy:not([data-type="pac"]) :is(
-  [data-type="pac"],
-  [data-id="pac"]) {
+:is(
+  details.proxy[data-type="direct"],
+  details.proxy[data-type="pac"]) :is(.pattern-head, .pattern-box) {
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
 }
 
-
-
-
+details.proxy[data-type="socks4"] :is(
+  [data-i18n="username"],
+  [data-id="username"],
+  [data-i18n="password"],
+  .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
 /* ----- hide/show elements ----- */
+
+/* ----- Popup ----- */
+div.popup {
+  display: none;
+  background-color: #0003;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  transition: all 0.5s ease-in-out;
+}
+
+div.popup button {
+  font-size: 2em;
+  background-color: var(--bg);
+  border-radius: 100%;
+  padding: 0.3em;
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+}
+
+.popup textarea {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  resize: both;
+  padding: 0.5em;
+}
+
+.popup.on {
+  display: block;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+/* ----- /Popup ----- */
 
 /* ----- Import ----- */
 .import textarea {

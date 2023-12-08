@@ -40,6 +40,12 @@
     <!-- spinner -->
     <div class="spinner"></div>
 
+    <!-- popup -->
+    <div class="popup">
+      <button type="button" class="plain">❌</button>
+      <textarea></textarea>
+    </div>
+
     <!-- Help/About -->
     <section><iframe src="help.html"></iframe></section>
     <section><iframe src="about.html"></iframe></section>
@@ -464,7 +470,12 @@
 
 
               <label data-type="pac">PAC URL</label>
-              <input type="url" data-id="pac" data-type="pac" placeholder="PAC URL">
+              <span class="pac">
+                <input type="url" data-id="pac" data-type="pac" placeholder="PAC URL">
+                <label class="pointer" data-i18n="storeLocally"><input type="checkbox"></label>
+                <button type="button" class="flat" data-i18n="view"></button>
+              </span>
+
             </div>
 
             <div class="pattern-head">

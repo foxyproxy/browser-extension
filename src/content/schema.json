@@ -37,9 +37,10 @@
             "required": ["type", "title",  "pattern", "active"]
           },
           "exclude": {"$ref": "include"},
-          "pac": {"type": "string"}
+          "pac": {"type": "string"},
+          "pacString": {"type": "string"}
         },
-        "required": [ "active", "title", "color", "type", "hostname", "port", "username", "password", "cc", "city", "include", "exclude", "pac" ]
+        "required": [ "active", "title", "color", "type", "hostname", "port", "username", "password", "cc", "city", "include", "exclude", "pac", "pacString"]
       }
     },
     "container": {

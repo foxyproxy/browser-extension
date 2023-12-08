@@ -9,6 +9,25 @@ import {Spinner} from './spinner.js';
 import {Log} from './log.js';
 import './i18n.js';
 
+// ---------- Popup --------------------------------------
+export class Popup {
+
+  static popup = document.querySelector('.popup');
+
+  static {
+    this.popup.children[0].addEventListener('click', () => this.hide());
+  }
+
+  static show(text) {
+    this.popup.children[1].value = text;
+    this.popup.classList.add('on');
+  }
+
+  static hide() {
+    this.popup.classList.remove('on');
+  }
+}
+
 // ---------- User Preferences -----------------------------
 await App.getPref();
 
@@ -98,7 +117,7 @@ class Options {
     const cache = {};
     // using for loop to be able to break early
     for (const item of document.querySelectorAll('div.proxyDiv details')) {
-      const pxy = this.getProxyDetails(item);
+      const pxy = await this.getProxyDetails(item);
       if (!pxy) { return; }
 
       data.push(pxy);
@@ -174,7 +193,7 @@ class Options {
     this.process(true);
   }
 
-  static getProxyDetails(elem) {
+  static async getProxyDetails(elem) {
     // blank proxy
     const obj = {
       active: true,
@@ -189,13 +208,14 @@ class Options {
       city: '',
       include: [],
       exclude: [],
-      pac: ''
+      pac: '',
+      pacString: ''
     };
 
     // --- populate values
     elem.querySelectorAll('[data-id]').forEach(i => {
       i.classList.remove('invalid');                        // reset
-      obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim();
+      Object.hasOwn(obj, i.dataset.id) && (obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim());
     });
 
     // --- check type: http | https | socks4 | socks5 | pac | direct
@@ -227,6 +247,15 @@ class Options {
         this.setInvalid(elem, 'port');
         alert(browser.i18n.getMessage('hostnamePortError'));
         return;
+    }
+
+    // --- check pac sting
+    if (obj.pac) {
+      const storeLocally = elem.querySelector('.pac input[type="checkbox"]');
+      if (storeLocally.checked) {
+        const str = await Proxies.getPAC(obj.pac);
+        /function\s+FindProxyForURL\s*\(/.test(str) && (obj.pacString = str.trim());
+      }
     }
 
     // --- check & build patterns
@@ -450,8 +479,10 @@ class Proxies {
     down.addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
     // proxy data
-    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pac] = [...proxyBox.children].filter((e, i) => i%2);
+    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pacSpan] = [...proxyBox.children].filter((e, i) => i%2);
     title.addEventListener('change', e => sumTitle.textContent = e.target.value);
+
+    const [pac, storeLocallyLabel, view] = pacSpan.children;
 
     type.addEventListener('change', e => {
       pxy.dataset.type = e.target.value;                    // hide/show elements
@@ -564,7 +595,10 @@ class Proxies {
     city.value = item.city;
     city.dataset.hostname = item.hostname;                  // for Get Location
     passwordSpan.children[0].value = item.password;
+
     pac.value = item.pac;
+    storeLocallyLabel.children[0].checked = !!item.pacString;
+    view.addEventListener('click', () => this.viewPac(pac.value.trim()));
 
     // patterns
     item.include.forEach(i => this.addPattern(patternBox, i, 'include'));
@@ -572,6 +606,22 @@ class Proxies {
 
     // return pxy;
     this.docFrag.appendChild(pxy);
+  }
+
+  static async getPAC(url) {
+    Spinner.show();
+    const text = await fetch(url)
+    .then(response => response.text())
+    .catch(error => error);
+    Spinner.hide();
+    return text;
+  }
+
+  static async viewPac(url) {
+    if (!url) { return; }
+
+    const text = await this.getPAC(url);
+    Popup.show(text);
   }
 
   static addPattern(parent, item, inc) {
@@ -608,8 +658,8 @@ class Proxies {
     parent.appendChild(div);
   }
 
-  static duplicateProxy(item) {
-    const pxy = Options.getProxyDetails(item);
+  static async duplicateProxy(item) {
+    const pxy = await Options.getProxyDetails(item);
     if (!pxy) { return; }
 
     this.addProxy(pxy);
@@ -769,7 +819,8 @@ class ImportFoxyProxyAccount {
           city: item.city,
           include: [],
           exclude: [],
-          pac: ''
+          pac: '',
+          pacString: ''
         };
 
         const [title] = item.hostname.split('.');
@@ -904,7 +955,8 @@ class ImportProxyList {
       city: '',
       include: [],
       exclude: [],
-      pac: ''
+      pac: '',
+      pacString: ''
     };
 
     return pxy;
@@ -976,7 +1028,8 @@ class ImportProxyList {
       city: pram.city || '',
       include: [],
       exclude: [],
-      pac: pram.pac || (pram.type === 'pac' && url.origin + url.pathname) || ''
+      pac: pram.pac || (pram.type === 'pac' && url.origin + url.pathname) || '',
+      pacString: ''
     };
 
     return pxy;

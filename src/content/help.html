@@ -109,7 +109,7 @@
       <dt>Proxy by Patterns</dt>
       <dd>Connections are proxied based on patterns</dd>
       <dd>If there are no patterns that match the URL being loaded, connections are made without a proxy</dd>
-      <dd>Patterns are not applicable in PAC type</dd>
+      <dd>Patterns are not applicable in remote PAC type (but apply to <a href="#store-locally">Store Locally</a>)</dd>
 
       <dt>Disable or Direct</dt>
       <dd>Normal proxying is set to system and handled by the browser</dd>
@@ -457,12 +457,34 @@
       <dt>Username & Password</dt>
       <dd>To be used for HTTP/HTTPS/SOCKS types</dd>
       <dd>If not set, authentication will be handled by the browser</dd>
+      <dd>Username & Password are port specific and different ones can be set for different ports</dd>
 
       <dt>PAC URL <span>(not available on Android)</span></dt>
       <dd>Required for PAC type</dd>
       <dd>Proxy Auto-Configuration file (PAC) can be used to handle all proxying configurations</dd>
       <dd>Patterns are not applicable in PAC type</dd>
       <dd>See also: <a href="https://developer.mozilla.org/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file" target="_blank">Proxy Auto-Configuration (PAC) file</a></dd>
+
+      <dt id="store-locally">Store Locally</dt>
+      <dd>Option to store PAC locally</dd>
+      <dd>Option should only be used for altering remote PAC rules</dd>
+      <dd>Storing large or many PACs locally is not recommended and can prevent browser sync</dd>
+      <dd>There are limits on the overall PAC length when set locally (could be 512kb)</dd>
+
+      <dd>Individual Proxy
+        <ul>
+          <li>All PACs will be set as remote PAC, regardless of the checkbox state</li>
+        </ul>
+      </dd>
+      <dd>Proxy by Patterns
+        <ul>
+          <li>Locally stored PACs will be processed in order, after processing other proxy patterns</li>
+        </ul>
+      </dd>
+
+
+      <dt>View</dt>
+      <dd>Click to fetch and display the remote PAC</dd>
 
     </dl>
 
@@ -736,6 +758,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
           <li>Toolbar popup & Options page work normally but changes will not apply</li>
           <li>Managed data can set all, or some of the options (the rest will be set to their default values)</li>
           <li>Managed data format is the same as FoxyProxy export format</li>
+          <li>The easiest way to create a managed data JSON is to set all values in FoxyProxy and export options</li>
         </ul>
       </li>
     </ul>

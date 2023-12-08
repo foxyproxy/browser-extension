@@ -220,6 +220,13 @@ export class Proxy {
       };
     });
 
+    // add PAC rules from pacString
+    let pacData = pref.data.filter(i => i.active && i.type === 'pac' && i.pacString);
+    pacData = pacData.map((i, idx) => i.pacString.replace('FindProxyForURL', '$&' + idx) +
+`\nconst find${idx} = FindProxyForURL${idx}(url, host);
+if (find${idx} !== 'DIRECT') { return find${idx}; }`).join('\n\n');
+    pacData &&= `\n${pacData}\n`;
+
     // https://developer.chrome.com/docs/extensions/reference/proxy/#type-PacScript
     // https://github.com/w3c/webextensions/issues/339
     // Chrome pacScript doesn't support bypassList
@@ -238,6 +245,7 @@ String.raw`function FindProxyForURL(url, host) {
   for (const proxy of data) {
     if (!match(proxy.exclude) && match(proxy.include)) { return proxy.str; }
   }
+  ${pacData}
   return 'DIRECT';
 }`;
 

@@ -27,6 +27,8 @@ export class Pattern {
   }
 
   static getPassthrough(str) {
+    if (!str) { return [[], [], []]; }
+
     const regex = [];                                       // RegExp string
     const ipMask = [];                                      // 10.0.0.0/24 -> [ip, mask] e.g ['10.0.0.0', '255.255.255.0']
     const stEnd = [];                                       // 10.0.0.0/24 -> [start, end] e.g. ['010000000000', '010000000255']
