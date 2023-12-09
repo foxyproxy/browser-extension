@@ -167,7 +167,7 @@ export class OnRequest {
       // case host === '127.0.0.1':
       case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
       case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16
-      case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
+      // case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
 
       // --- IPv6
       // case host === '[::1]':
