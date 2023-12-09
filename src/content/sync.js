@@ -63,7 +63,7 @@ export class Sync {
 
   static hasOldData(obj) {
     // FP v3 OR FP v7
-    return Object.hasOwn(obj, 'settings') || Object.hasOwn(obj, 'foxyProxyEdition');
+    return Object.hasOwn(obj, 'settings') || Object.values(obj).some(i => i.address);
   }
 
   static async getSync(pref) {
