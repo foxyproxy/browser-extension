@@ -3,7 +3,7 @@
 
   "name": "__MSG_extensionNameBasic__",
   "description": "__MSG_extensionDescription__",
-  "version": "8.3",
+  "version": "8.4",
   "default_locale": "en",
   "homepage_url": "https://getfoxyproxy.org/",
   "author": "Eric Jung",
