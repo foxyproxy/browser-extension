@@ -10,9 +10,9 @@ From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#iss
 2. Open the Dev Tools (F12)
 3. Go to the Console tab
 4. Type the following and hit ENTER
-   
-  browser.storage.sync.get().then(console.log) 
-  
+```js   
+  browser.storage.sync.get().then(console.log)
+```
 If above has some data, then in the Console tab
 
 1. Type the following and hit ENTER
@@ -46,7 +46,7 @@ This will not retrieve old settings. You will keep the old version but lose all 
 
 If you upgrade to 8.3, when it is available at https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ then the bug will be gone.
 
-## Wait For Mozilla to Approve 8.3
+## Wait For Mozilla to Approve 8.4
 
 It should be available in a few days, but we have no guarantee.
 
