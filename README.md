@@ -2,16 +2,7 @@
 
 Using Firefox and you've lost all FoxyProxy settings? FoxyProxy updated from 7.4.2 to 8.2 and you encountered an update bug. You have 3 choices:
 
-## Downgrade to 7.4.2
-
-1. Download https://github.com/foxyproxy/firefox-extension/releases/download/7.4.2/foxyproxy_standard-7.4.2-an+fx.xpi
-2. Click the file; firefox will ask you to install that addon. Confirm.
-3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.4.2.
-**Important**: On that same page, set "Allow automatic updates" to off, otherwise 8.2 could be installed at any time.
-
-If you upgrade to 8.3, when it is available at https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ then the bug will be gone.
-
-## Retrieve Settings and Keep 8.2
+## Retrieve Settings and Keep version 8.2
 
 From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#issuecomment-1838719332):
 
@@ -43,6 +34,17 @@ browser.storage.sync.get().then(pref => {
 2. Go to Import Tab -> Import from older versions
 3. Import FoxyProxy_sync.json file that you have saved
 4. Click SAVE to save the data
+
+## Downgrade to 7.4.2
+
+This will not retrieve old settings. You will keep the old version but lose all settings.
+
+1. Download https://github.com/foxyproxy/firefox-extension/releases/download/7.4.2/foxyproxy_standard-7.4.2-an+fx.xpi
+2. Click the file; firefox will ask you to install that addon. Confirm.
+3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.4.2.
+**Important**: On that same page, set "Allow automatic updates" to off, otherwise 8.2 could be installed at any time.
+
+If you upgrade to 8.3, when it is available at https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ then the bug will be gone.
 
 ## Wait For Mozilla to Approve 8.3
 
