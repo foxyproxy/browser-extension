@@ -21,9 +21,10 @@ export class Proxy {
   }
 
   static onMessage(message) {
-    const {id, pref, host, proxy} = message;
+    const {id, pref, host, proxy, dark} = message;
     switch (id) {
       case 'setProxy':
+        Action.dark = dark;
         this.set(pref);
         break;
 
@@ -62,9 +63,9 @@ export class Proxy {
     const path = control ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
     browser.action.setIcon({path});
 
-    if (!control) {
+    if (!App.firefox && !control) {
       browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
-      browser.action.setBadgeText({text: '❌'});
+      // browser.action.setBadgeText({text: '❌'});
       return null;
     }
 
@@ -131,6 +132,7 @@ export class Proxy {
         value.proxyType = 'system';
     }
 
+    // no error if levelOfControl: "controlled_by_other_extensions"
     browser.proxy.settings.set({value});
   }
 

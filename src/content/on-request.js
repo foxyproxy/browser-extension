@@ -139,7 +139,7 @@ export class OnRequest {
   // ---------- passthrough --------------------------------
   static bypass(url) {
     switch (true) {
-      case this.localhost(url):                             // localhost passthrough
+      // case this.localhost(url):                             // localhost passthrough
       case this.passthrough.some(i => new RegExp(i, 'i').test(url)): // global passthrough
       case this.net[0] && this.isInNet(url):                // global passthrough CIDR
         return true;

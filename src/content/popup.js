@@ -87,9 +87,12 @@ class Popup {
     if (mode === pref.mode) { return; }                     // disregard re-click
     if (pref.managed) { return; }                           // not for storage.managed
 
+    // check 'prefers-color-scheme' since it is not available in background service worker
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     pref.mode = mode;
     browser.storage.local.set({mode});                      // save mode
-    browser.runtime.sendMessage({id: 'setProxy', pref});
+    browser.runtime.sendMessage({id: 'setProxy', pref, dark});
   }
 
   static processButtons(e) {

@@ -249,6 +249,12 @@ class Options {
         return;
     }
 
+    // --- title check
+    if (!obj.title) {
+      const id = obj.type === 'pac' ? obj.pac : `${obj.hostname}:${obj.port}`;
+      elem.children[0].children[1].textContent = id;
+    }
+
     // --- check store locally for active PAC
     if (obj.active && obj.pac) {
       const storeLocally = elem.querySelector('.pac input[type="checkbox"]');

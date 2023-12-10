@@ -2,11 +2,14 @@
 import {Location} from './location.js';
 
 export class Action {
+  // https://github.com/w3c/webextensions/issues/72#issuecomment-1848874359
+  // 'prefers-color-scheme' detection in Chrome background service worker
+  static dark = false;
 
   static set(pref) {
     // --- set action/browserAction
     let title = '', text = '';
-    let color = '#fff';
+    let color = this.dark ? '#444' : '#fff';
     switch (pref.mode) {
       case 'disable':
         title = browser.i18n.getMessage('disable');
