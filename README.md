@@ -35,16 +35,16 @@ browser.storage.sync.get().then(pref => {
 3. Import FoxyProxy_sync.json file that you have saved
 4. Click SAVE to save the data
 
-## Downgrade to 7.4.2
+## Downgrade to 7.*
 
-This will not retrieve old settings. You will keep the old version but lose all settings.
+Downgrade may retrieve old settings.
 
-1. Download https://github.com/foxyproxy/firefox-extension/releases/download/7.4.2/foxyproxy_standard-7.4.2-an+fx.xpi
+1. Download 7.5.1 (or older) from https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
 2. Click the file; firefox will ask you to install that addon. Confirm.
-3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.4.2.
-**Important**: On that same page, set "Allow automatic updates" to off, otherwise 8.2 could be installed at any time.
+3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.*.
+**Important**: On that same page, set "Allow automatic updates" to off.
 
-If you upgrade to 8.3, when it is available at https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ then the bug will be gone.
+If you upgrade to 8.3+, when it is available at https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ then the bug will be gone.
 
 ## Wait For Mozilla to Approve 8.4
 
