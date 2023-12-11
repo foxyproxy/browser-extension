@@ -1,8 +1,9 @@
 # Help! FoxyProxy Updated and All Settings Are Lost
 
-Using Firefox and you've lost all FoxyProxy settings? FoxyProxy updated from 7.4.2 to 8.2 and you encountered an update bug. You have 3 choices:
+Using Firefox and you've lost all FoxyProxy settings?  
+These following options are available if FoxyProxy updated from 7.* to 8.2 and you have encountered an update bug:
 
-## Retrieve Settings and Keep version 8.2
+## 1. Retrieve Settings and Keep version 8.2
 
 From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#issuecomment-1838719332):
 
@@ -10,9 +11,11 @@ From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#iss
 2. Open the Dev Tools (F12)
 3. Go to the Console tab
 4. Type the following and hit ENTER
+
 ```js   
   browser.storage.sync.get().then(console.log)
 ```
+
 If above has some data, then in the Console tab
 
 1. Type the following and hit ENTER
@@ -32,21 +35,23 @@ browser.storage.sync.get().then(pref => {
 ```
 
 2. Go to Import Tab -> Import from older versions
-3. Import FoxyProxy_sync.json file that you have saved
+3. Import `FoxyProxy_sync.json` file that you have saved
 4. Click SAVE to save the data
 
-## Downgrade to 7.*
+## 2. Downgrade to 7.*
 
 Downgrade may retrieve old settings.
 
 1. Download 7.5.1 (or older) from https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
-2. Click the file; firefox will ask you to install that addon. Confirm.
-3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.*.
-**Important**: On that same page, set "Allow automatic updates" to off.
+2. Click the file; firefox will ask you to install that addon. Confirm
+3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.*
+4. **Important**: On that same page, set "Allow automatic updates" to off
 
-If you upgrade to 8.3+, when it is available at https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ then the bug will be gone.
+The settings bug is expected to be fixed in v8.3+.  
+Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) for more information.
 
-## Wait For Mozilla to Approve 8.4
+
+## 3. Wait For Mozilla to Approve 8.4
 
 It should be available in a few days, but we have no guarantee.
 
