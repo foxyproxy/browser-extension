@@ -556,6 +556,14 @@ details.proxy[data-type="socks4"] :is(
   pointer-events: none;
   user-select: none;
 }
+
+details.proxy[data-type="socks5"][data-chrome] :is(
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
 /* ----- hide/show elements ----- */
 
 /* ----- Popup ----- */

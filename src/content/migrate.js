@@ -166,7 +166,7 @@ export class Migrate {
     const db = App.getDefaultPref();
     db.sync = !!pref.sync;
 
-    const data = Object.values(pref).filter(i => Object.hasOwn(i, 'address'));
+    const data = Object.values(pref).filter(i => i && Object.hasOwn(i, 'address')); // null value causes an error
     data.sort((a, b) => a.index - b.index);                 // sort by index
 
     data.forEach(item => {

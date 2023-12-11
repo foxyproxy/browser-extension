@@ -577,7 +577,9 @@ class Proxies {
       return;
     }
 
-    pxy.dataset.type = item.type;                           // hide/show elements
+    // hide/show elements
+    pxy.dataset.type = item.type;
+    App.firefox || (pxy.dataset.chrome = true);
 
     const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
     this.proxyCache[id] = item;                             // cache to find later

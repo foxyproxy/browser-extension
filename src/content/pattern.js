@@ -20,10 +20,23 @@ export class Pattern {
     if (str === '*') { return '\\S+'; }
 
     // escape regular expression special characters, minus * ?
-    return str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
+    str = str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
               .replace(/\*/g, '.*')
               .replace(/\?/g, '.')
               .replace(/:\/\/\.\*\\./g, '://(.*\\.)?');
+
+    // convert leading '://' or '.*://'
+    switch (true) {
+      case str.startsWith('://'):
+        str = '^[^:]+' + str;
+        break;
+
+      case str.startsWith('.*://'):
+        str = '^[^:]+' + str.substring(2);
+        break;
+    }
+
+    return str;
   }
 
   static getPassthrough(str) {
