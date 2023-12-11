@@ -58,8 +58,8 @@ browser.storage.local.get().then(pref => {
 ```
 ### Import data
 
-1. Go to Import Tab -> Import from older versions
-2. Import `FoxyProxy_sync.json` file that you have saved
+1. Go to **Import Tab -> Import from older versions**
+2. Import the `FoxyProxy_sync.json` or `FoxyProxy_local.json` file that you have saved
 3. Click SAVE to save the data
 
 ## 2. Downgrade to 7.*
