@@ -7,19 +7,20 @@ These following options are available if FoxyProxy updated from 7.* to 8.2 and y
 
 From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#issuecomment-1838719332):
 
-1. Go to the Options page
+### Look for old data
+1. Go to the FoxyProxy Options page
 2. Open the Dev Tools (F12)
 3. Go to the Console tab
 4. Type the following and hit ENTER
+
+#### With Sync
 
 ```js   
   browser.storage.sync.get().then(console.log)
 ```
 
-If above has some data, then in the Console tab
+If above has some data, then in the Console tab, type the following and hit ENTER
 
-1. Type the following and hit ENTER
-   
 ```js
 browser.storage.sync.get().then(pref => {
   const data = JSON.stringify(pref, null, 2);
@@ -34,9 +35,32 @@ browser.storage.sync.get().then(pref => {
 });
 ```
 
-2. Go to Import Tab -> Import from older versions
-3. Import `FoxyProxy_sync.json` file that you have saved
-4. Click SAVE to save the data
+#### Without Sync
+
+```js   
+  browser.storage.local.get().then(console.log)
+```
+
+If above has some data, then in the Console tab, type the following and hit ENTER
+
+```js
+browser.storage.local.get().then(pref => {
+  const data = JSON.stringify(pref, null, 2);
+  const blob = new Blob([data], {type: 'application/json'});
+  browser.downloads.download({
+    url: URL.createObjectURL(blob),
+    filename: 'FoxyProxy_local.json',
+    saveAs: true,
+    conflictAction: 'uniquify'
+  })
+  .catch(() => {}); 
+});
+```
+### Import data
+
+1. Go to Import Tab -> Import from older versions
+2. Import `FoxyProxy_sync.json` file that you have saved
+3. Click SAVE to save the data
 
 ## 2. Downgrade to 7.*
 
@@ -51,7 +75,7 @@ The settings bug is expected to be fixed in v8.3+.
 Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) for more information.
 
 
-## 3. Wait For Mozilla to Approve 8.4
+## 3. Wait For Mozilla to Approve 8.6
 
 It should be available in a few days, but we have no guarantee.
 
