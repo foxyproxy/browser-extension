@@ -71,7 +71,7 @@ Downgrade may retrieve old settings.
 3. Go to Firefox settings, addons (about:addons), FoxyProxy, check that it shows version 7.*
 4. **Important**: On that same page, set "Allow automatic updates" to off
 
-The settings bug is expected to be fixed in v8.3+.  
+The settings bug is expected to be fixed in the latest release.
 Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) for more information.
 
 
