@@ -204,7 +204,7 @@ The crypto library was already incldued in [FoxyProxy 3.x](https://github.com/fo
 </table>
 
 
-## Installation Guide (for testing)
+## Beta Installation Guide
 - Backup your FoxyProxy settings
 - Download repo *(or use `git`)*
   - browser-extension *(this page)* -> Code *(green button)* -> Download ZIP
