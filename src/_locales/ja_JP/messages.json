@@ -4,7 +4,7 @@
   "extensionDescription": { "message": "誰でも使いやすい先進的なプロキシー管理ツール" },
 
   "proxyByPatterns": { "message": "Proxy by Patterns" },
-  "disable": { "message": "無効化" },
+  "disable": { "message": "無効" },
   "ip": { "message": "IP" },
   "location": { "message": "位置情報" },
   "quickAdd": { "message": "クイック追加" },
@@ -12,7 +12,7 @@
   "setTabProxy": { "message": "タブプロキシーを設定" },
   "unsetTabProxy": { "message": "タブプロキシーを解除" },
 
-  "incognitoAccessError": { "message": "Firefox requires private browsing permission for proxy settings." },
+  "incognitoAccessError": { "message": "Firefox でプロキシーを設定するためにはプライベートブラウジングでの許可設定が必要です" },
   "controlledByOtherExtensions": { "message": "他の機能拡張によって設定が制御されています" },
 
   "enableSync": { "message": "同期を有効化" },
@@ -57,8 +57,8 @@
   "country": { "message": "国" },
   "hostnamePortError": { "message": "ホスト名 - ポートが入力されていません" },
 
-  "pattern": { "message": "Pattern" },
-  "patterns": { "message": "Patterns" },
+  "pattern": { "message": "パターン" },
+  "patterns": { "message": "パターン" },
   "include": { "message": "含む" },
   "exclude": { "message": "除く" },
   "all": { "message": "全て" },
