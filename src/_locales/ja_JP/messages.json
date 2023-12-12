@@ -20,13 +20,13 @@
   "syncError": { "message": "同期エラー" },
 
   "proxyDNS": { "message": "DNS をプロキシー" },
-  "proxyDNSDescription": { "message": "SOCKS v5 を使用するときは DNS もプロキシーを使用する (Firefoxのみ)" },
+  "proxyDNSDescription": { "message": "SOCKS v5 を使用するときは DNS もプロキシーを使用する (Firefox のみ)" },
 
   "globalExclude": { "message": "グローバル除外" },
   "globalExcludeDescription": { "message": "プロキシーを使用しないホストのリスト" },
 
   "container": { "message": "コンテナー" },
-  "containerDescription": { "message": "Incognito/コンテナープロキシー (Firefoxのみ)" },
+  "containerDescription": { "message": "Incognito/コンテナープロキシー (Firefox のみ)" },
   "incognito": { "message": "Incognito" },
 
   "shortcut": { "message": "キーボードショートカット" },
