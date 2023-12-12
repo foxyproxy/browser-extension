@@ -19,7 +19,7 @@
   "enableSyncDescription": { "message": "グローバル除外、プロキシー、パターンを同期する" },
   "syncError": { "message": "同期エラー" },
 
-  "proxyDNS": { "message": "DNS をプロキシー" },
+  "proxyDNS": { "message": "DNS でプロキシーを使用" },
   "proxyDNSDescription": { "message": "SOCKS v5 を使用するときは DNS もプロキシーを使用する (Firefox のみ)" },
 
   "globalExclude": { "message": "グローバル除外" },
