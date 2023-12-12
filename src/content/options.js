@@ -593,7 +593,7 @@ class Proxies {
     active.checked = item.active;
 
     // proxy details
-    title.value = pxyTitle;
+    title.value = item.title;
     hostname.value = item.hostname;
     type.value = item.type;
     port.value = item.port;

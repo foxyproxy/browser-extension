@@ -47,6 +47,10 @@ export class Proxy {
   }
 
   static async getSettings() {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
+    // proxy.settings is not supported on Android
+    if (!browser.proxy.settings) { return {}; }
+
     const conf = await browser.proxy.settings.get({});
 
     // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
@@ -62,14 +66,10 @@ export class Proxy {
     const control = ['controlled_by_this_extension', 'controllable_by_this_extension'].includes(conf.levelOfControl);
     const path = control ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
     browser.action.setIcon({path});
+    !control && browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
 
-    if (!App.firefox && !control) {
-      browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
-      // browser.action.setBadgeText({text: '❌'});
-      return null;
-    }
-
-    return conf;
+    // return null if Chrome and no control, allow Firefox to continue regardless
+    return !App.firefox && !control ? null : conf;
   }
 
   static async set(pref) {

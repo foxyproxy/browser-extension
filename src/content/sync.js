@@ -62,7 +62,7 @@ export class Sync {
   }
 
   static hasOldData(obj) {
-    // FP v3 OR FP v7
+    // FP v3 OR FP v7, null value causes an error
     return Object.hasOwn(obj, 'settings') || Object.values(obj).some(i => i && Object.hasOwn(i, 'address'));
   }
 

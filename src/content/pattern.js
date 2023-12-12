@@ -23,7 +23,7 @@ export class Pattern {
     str = str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
               .replace(/\*/g, '.*')
               .replace(/\?/g, '.')
-              .replace(/:\/\/\.\*\\./g, '://(.*\\.)?');
+              .replace(/:\/\/\.\*\\./g, '://([^/]+\\.)?');
 
     // convert leading '://' or '.*://'
     switch (true) {
