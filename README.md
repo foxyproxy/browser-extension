@@ -117,6 +117,7 @@ No remote code is used in this extension.
 
 The crypto library was already incldued in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentails. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned) to 2023. It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x.
 
+The library is not used in Firefox and will be removed once users migrate to v8+.
 
 ## Screenshots
 
