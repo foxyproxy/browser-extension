@@ -83,7 +83,7 @@ It should be available in a few days, but we have no guarantee.
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
-![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension)
+![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension?logo=github&logoColor=fff)
 
 [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
@@ -146,11 +146,11 @@ The crypto library was already incldued in [FoxyProxy 3.x](https://github.com/fo
     <tr>
       <td>Standard</td>
       <td>
-        <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp.svg" alt=""></a><br>
+        <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/v/gcknhkkoolaabfmlnjonogaaifnjlfnp?logo=googlechrome&logoColor=fff&label=Chrome%20108%2B" alt=""></a><br>
         <a href="https://chromewebstore.google.com/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp"><img src="https://img.shields.io/chrome-web-store/users/gcknhkkoolaabfmlnjonogaaifnjlfnp" alt=""></a>
       </td>
       <td>
-        <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/v/foxyproxy-standard" alt=""></a><br>
+        <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/v/foxyproxy-standard?logo=firefoxbrowser&logoColor=fff&label=Firefox%2093%2B" alt=""></a><br>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/users/foxyproxy-standard" alt=""></a>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/dw/foxyproxy-standard" alt=""></a>
       </td>
@@ -158,18 +158,18 @@ The crypto library was already incldued in [FoxyProxy 3.x](https://github.com/fo
     <tr>
       <td>Basic</td>
       <td>
-        <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb.svg" alt=""></a><br>
+        <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/v/dookpfaalaaappcdneeahomimbllocnb?logo=googlechrome&logoColor=fff&label=Chrome%20108%2B" alt=""></a><br>
         <a href="https://chromewebstore.google.com/detail/foxyproxy-basic/dookpfaalaaappcdneeahomimbllocnb"><img src="https://img.shields.io/chrome-web-store/users/dookpfaalaaappcdneeahomimbllocnb" alt=""></a>
       </td>
       <td>
-        <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"><img src="https://img.shields.io/amo/v/foxyproxy-basic.svg" alt=""></a><br>
+        <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"><img src="https://img.shields.io/amo/v/foxyproxy-basic?logo=firefoxbrowser&logoColor=fff&label=Firefox%2093%2B" alt=""></a><br>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"></a><img src="https://img.shields.io/amo/users/foxyproxy-basic" alt="">
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"></a><img src="https://img.shields.io/amo/dw/foxyproxy-basic" alt="">
       </td>
     </tr>
     <tr>
       <td>Source Code Beta</td>
-      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&prefix=v&label=FoxyProxy%20beta&color=f60" alt=""></a></td>
+      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?&url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&logo=github&logoColor=fff&label=FoxyProxy%20Beta&color=f60&prefix=v" alt=""></a></td>
     </tr>
     <tr>
       <td>Source Code Release</td>
