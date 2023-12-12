@@ -124,16 +124,16 @@ export class Proxy {
         value.autoConfigUrl = pref.mode;
         value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', '); // convert to standard comma-separated
         value.proxyDNS = pref.proxyDNS;
+        // no error if levelOfControl: "controlled_by_other_extensions"
+        browser.proxy.settings.set({value});
         break;
 
       // --- disable, direct, pattern, or single proxy
       default:
-        if (conf.value.proxyType === 'system') { return; }  // no need to set again
-        value.proxyType = 'system';
+        browser.proxy.settings.clear({});
+        // if (conf.value.proxyType === 'system') { return; }  // no need to set again
+        // value.proxyType = 'system';
     }
-
-    // no error if levelOfControl: "controlled_by_other_extensions"
-    browser.proxy.settings.set({value});
   }
 
   static async setChrome(pref) {
