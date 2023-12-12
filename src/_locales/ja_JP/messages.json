@@ -3,7 +3,7 @@
   "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "誰でも使いやすい先進的なプロキシー管理ツール" },
 
-  "proxyByPatterns": { "message": "Proxy by Patterns" },
+  "proxyByPatterns": { "message": "パターンによるプロキシー" },
   "disable": { "message": "無効" },
   "ip": { "message": "IP" },
   "location": { "message": "位置情報" },
@@ -35,7 +35,7 @@
 
 
   "deleteBrowsingData": { "message": "閲覧データを削除" },
-  "deleteBrowsingDataConfirm": { "message": "本当にクッキー、indexedDB ストレージ、DOM ローカルストレージを削除しますか?" },
+  "deleteBrowsingDataConfirm": { "message": "本当に Cookie、indexedDB ストレージ、DOM ローカルストレージを削除しますか?" },
   "restoreDefaults": { "message": "規定値を復元" },
   "restoreDefaultsConfirm": { "message": "本当に全ての設定を規定値に復元しますか?" },
   "limitWebRTC": { "message": "WebRTC を制限" },
