@@ -84,6 +84,8 @@ It should be available in a few days, but we have no guarantee.
 
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
 ![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension?logo=github&logoColor=fff)
+![ECMAScript](https://img.shields.io/badge/JavaScript-ECMAScript_2022-blue?style=plastic&logo=javascript&label=JavaScript)
+
 
 [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
