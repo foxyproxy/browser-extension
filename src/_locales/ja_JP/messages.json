@@ -1,0 +1,107 @@
+{
+  "extensionName": { "message": "FoxyProxy" },
+  "extensionNameBasic": { "message": "FoxyProxy Basic" },
+  "extensionDescription": { "message": "誰でも使いやすい先進的なプロキシー管理ツール" },
+
+  "proxyByPatterns": { "message": "Proxy by Patterns" },
+  "disable": { "message": "無効化" },
+  "ip": { "message": "IP" },
+  "location": { "message": "位置情報" },
+  "quickAdd": { "message": "クイック追加" },
+  "excludeHost": { "message": "ホストを除外" },
+  "setTabProxy": { "message": "タブプロキシーを設定" },
+  "unsetTabProxy": { "message": "タブプロキシーを解除" },
+
+  "incognitoAccessError": { "message": "Firefox requires private browsing permission for proxy settings." },
+  "controlledByOtherExtensions": { "message": "他の機能拡張によって設定が制御されています" },
+
+  "enableSync": { "message": "同期を有効化" },
+  "enableSyncDescription": { "message": "グローバル除外、プロキシー、パターンを同期する" },
+  "syncError": { "message": "同期エラー" },
+
+  "proxyDNS": { "message": "DNS をプロキシー" },
+  "proxyDNSDescription": { "message": "SOCKS v5 を使用するときは DNS もプロキシーを使用する (Firefoxのみ)" },
+
+  "globalExclude": { "message": "グローバル除外" },
+  "globalExcludeDescription": { "message": "プロキシーを使用しないホストのリスト" },
+
+  "container": { "message": "コンテナー" },
+  "containerDescription": { "message": "Incognito/コンテナープロキシー (Firefoxのみ)" },
+  "incognito": { "message": "Incognito" },
+
+  "shortcut": { "message": "キーボードショートカット" },
+  "shortcutDescription": { "message": "キーボードショートカットアクションに関連付けるプロキシーをあらかじめ選択する" },
+  "setProxy": { "message": "プロキシーを設定" },
+
+
+  "deleteBrowsingData": { "message": "閲覧データを削除" },
+  "deleteBrowsingDataConfirm": { "message": "本当にクッキー、indexedDB ストレージ、DOM ローカルストレージを削除しますか?" },
+  "restoreDefaults": { "message": "規定値を復元" },
+  "restoreDefaultsConfirm": { "message": "本当に全ての設定を規定値に復元しますか?" },
+  "limitWebRTC": { "message": "WebRTC を制限" },
+  "limitWebRTCDescription": { "message": "WebRTC ブラウザー設定を切り替える" },
+
+  "proxies": { "message": "プロキシー" },
+  "add": { "message": "追加" },
+  "getLocation": { "message": "位置情報を取得" },
+
+  "duplicate": { "message": "複製" },
+
+  "title": { "message": "タイトル" },
+  "type": { "message": "種類" },
+  "color": { "message": "カラー" },
+  "random": { "message": "ランダム" },
+  "hostname": { "message": "ホスト名" },
+  "port": { "message": "ポート" },
+  "city": { "message": "市区町村" },
+  "country": { "message": "国" },
+  "hostnamePortError": { "message": "ホスト名 - ポートが入力されていません" },
+
+  "pattern": { "message": "Pattern" },
+  "patterns": { "message": "Patterns" },
+  "include": { "message": "含む" },
+  "exclude": { "message": "除く" },
+  "all": { "message": "全て" },
+  "plainHost": { "message": "プレーンホスト" },
+  "wildcard": { "message": "ワイルドカード" },
+  "regexError": { "message": "パターンの正規表現を作成中にエラーが発生しました" },
+
+  "delete": { "message": "削除" },
+  "deleteConfirm": { "message": "本当に削除しますか?" },
+
+  "importFoxyProxyAccount": { "message": "FoxyProxy アカウントからインポート" },
+  "username": { "message": "ユーザー名" },
+  "password": { "message": "パスワード" },
+  "togglePassword": { "message": "パスワードを切り替え" },
+  "userPassError": { "message": "ユーザー名もしくはパスワードが入力されていません" },
+  "storeLocally": { "message": "ローカルに保存" },
+  "view": { "message": "閲覧" },
+
+  "importProxyList": { "message": "プロキシーリストをインポート" },
+  "importFromURL": { "message": "URL からインポート" },
+  "importFromOlderVersions": { "message": "以前のバージョンからインポート" },
+
+  "tester": { "message": "パターンテスター" },
+  "test": { "message": "テスト" },
+  "result": { "message": "結果" },
+  "back": { "message": "戻る" },
+
+  "log": { "message": "ログ" },
+  "documentUrl": { "message": "ドキュメント URL" },
+  "url": { "message": "URL" },
+  "method": { "message": "メソッド" },
+  "proxy": { "message": "プロキシー" },
+  "time": { "message": "時刻" },
+  "notAvailable": { "message": "Chrome では利用できません (Firefox のみ)" },
+
+  "about": { "message": "About" },
+  "error": { "message": "操作中にエラーが発生しました" },
+  "export": { "message": "エクスポート" },
+  "fileParseError": { "message": "ファイルの解析中にエラーが発生しました" },
+  "fileReadError": { "message": "ファイルの読み取り中にエラーが発生しました" },
+  "fileTypeError": { "message": "サポートされていないファイルフォーマットです" },
+  "help": { "message": "ヘルプ" },
+  "import": { "message": "インポート" },
+  "options": { "message": "オプション" },
+  "saveOptions": { "message": "保存" }
+}
