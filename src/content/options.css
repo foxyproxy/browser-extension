@@ -481,6 +481,10 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   min-width: unset;
 }
 
+.pattern-head button span.plus {
+  filter: brightness(0) invert(1);
+}
+
 /* import & export (label & button) */
 .pattern-head .plain {
   font-size: 1em;
@@ -564,6 +568,14 @@ details.proxy[data-type="socks5"][data-chrome] :is(
   pointer-events: none;
   user-select: none;
 }
+
+/* --- Basic --- */
+div.proxy-div.basic :is(.pattern-head, .pattern-box) {
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* ----- hide/show elements ----- */
 
 /* ----- Popup ----- */

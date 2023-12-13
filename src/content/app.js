@@ -64,6 +64,9 @@ export class App {
   }
 
   static parseURL(url) {
+    // rebuild file://
+    url.startsWith('file://') && (url = 'http' + url.substring(4));
+
     try { url = new URL(url); }
     catch (error) {
       alert(`${url} ➜ ${error.message}`);
@@ -75,6 +78,11 @@ export class App {
       alert(`${url} ➜ Unsupported Protocol ${url.protocol}`);
       return {};
     }
+
     return url;
+  }
+
+  static isBasic() {
+    return browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
   }
 }

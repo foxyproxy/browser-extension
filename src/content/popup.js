@@ -33,8 +33,8 @@ class Popup {
     const labelTemplate = document.querySelector('template').content.firstElementChild;
     const docFrag = document.createDocumentFragment();
 
-    // check if there are patterns
-    if (!pref.data.some(i => i.active && i.include[0])) {
+    // check if there are patterns, hide elements for Basic
+    if (/* App.isBasic || */ !pref.data.some(i => i.active && i.include[0])) {
       this.list.children[0].style.display = 'none';         // hide option if there are no patterns
       pref.mode === 'pattern' && (pref.mode = 'disable');   // show as disable
     }

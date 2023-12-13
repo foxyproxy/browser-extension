@@ -182,7 +182,9 @@ nav {
   top: 0;
   z-index: 1;
   box-shadow: 0 3px 6px #0004;
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
   align-items: center;
 }
 
@@ -284,3 +286,26 @@ td.code {
   margin-left: 0.5em;
   vertical-align: text-bottom;
 }
+
+/* ----- Translate ----- */
+div.translate {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: end;
+  align-items: center;
+  gap: 0.5em;
+}
+
+div.translate select {
+  width: auto;
+}
+
+div.translate input[type="submit"] {
+  color: inherit;
+  background-color: var(--alt-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.3em;
+  padding: 0.2em 0.5em;
+}
+
+/* ----- /Translate ----- */

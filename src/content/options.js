@@ -73,7 +73,7 @@ class Options {
     // --- keyboard Shortcut
     this.commands = document.querySelectorAll('.options .commands select');
 
-    // // --- global passthrough
+    // --- global passthrough
     this.passthrough = document.getElementById('passthrough');
 
     // --- buttons
@@ -116,7 +116,7 @@ class Options {
     const data = [];
     const cache = {};
     // using for loop to be able to break early
-    for (const item of document.querySelectorAll('div.proxyDiv details')) {
+    for (const item of document.querySelectorAll('div.proxy-div details')) {
       const pxy = await this.getProxyDetails(item);
       if (!pxy) { return; }
 
@@ -441,7 +441,7 @@ class Proxies {
 
   static {
     this.docFrag = document.createDocumentFragment();
-    this.proxyDiv = document.querySelector('div.proxyDiv');
+    this.proxyDiv = document.querySelector('div.proxy-div');
     const temp = document.querySelector('.proxySection template').content;
     this.proxyTemplate = temp.firstElementChild;
     this.patternTemplate = temp.lastElementChild;
@@ -457,6 +457,9 @@ class Proxies {
 
     this.proxyCache = {};                                   // used to find proxy
     Log.proxyCache = this.proxyCache;                       // used to get the denials for the log
+
+    // --- hide elements for Basic
+    // App.isBasic && this.proxyDiv.classList.add('basic');
 
     this.process();
   }
@@ -562,7 +565,7 @@ class Proxies {
     });
 
     // patterns
-    pxy.querySelector('button[data-i18n="add"]').addEventListener('click', () => this.addPattern(patternBox));
+    pxy.querySelector('button[data-i18n="add|title"]').addEventListener('click', () => this.addPattern(patternBox));
     pxy.querySelector('input[type="file"]').addEventListener('change', e => this.importPattern(e, patternBox));
     pxy.querySelector('button[data-i18n^="export"]').addEventListener('click', () =>
       this.exportPattern(patternBox, title.value.trim() || hostname.value.trim()));
@@ -767,7 +770,7 @@ class Proxies {
 class Drag {
 
   static {
-    this.proxyDiv = document.querySelector('div.proxyDiv');
+    this.proxyDiv = document.querySelector('div.proxy-div');
     this.proxyDiv.addEventListener('dragover', e => this.dragover(e));
     this.proxyDiv.addEventListener('dragend', e => this.dragend(e));
     this.target = null;
