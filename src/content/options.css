@@ -461,7 +461,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 
 /* ----- Pattern ----- */
 .pattern-box {
-  max-height: 10em;
+  max-height: 100em;
   overflow-y: auto;
   padding: 0 0.5em;
 }
