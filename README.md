@@ -79,6 +79,40 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 It should be available in a few days, but we have no guarantee.
 
+# Firefox for Android
+
+## Install Firefox Nightly for Developers
+
+- Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US)
+- Go to: Nightly menu -> Settings ->  About Firefox nightly
+- Tap a few times on the Firefox icon to enable debug menu
+
+## Disable Automatic Updates
+
+- Go to: `about:confog`
+- Find `extensions.update.enabled`
+- Toggle to `false`
+
+## FoxyProxy Beta
+
+- Follow [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
+- Create a zip file from the content of `src`
+- Make the file available to the Android device
+
+## FoxyProxy Older Versions
+
+- Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
+- Download the desired version
+
+## Install add-on from file
+
+- Go to:  Android Nightly menu -> Settings -> Advanced -> Install add-on from file
+
+
+---
+---
+
+
 
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
