@@ -84,7 +84,7 @@ It should be available in a few days, but we have no guarantee.
 Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) (for beta testing)
 
 ## Enable Debug Menu
-- Go to: menu -> Settings ->  About Firefox nightly
+- Go to: menu -> Settings ->  About Firefox (Nightly)
 - Tap a few times on the Firefox icon to enable debug menu
 
 ## Disable Automatic Updates
