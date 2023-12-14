@@ -81,10 +81,10 @@ It should be available in a few days, but we have no guarantee.
 
 # Firefox for Android
 
-## Install Firefox Nightly for Developers
+Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) (for beta testing)
 
-- Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US)
-- Go to: Nightly menu -> Settings ->  About Firefox nightly
+## Enable Debug Menu
+- Go to: menu -> Settings ->  About Firefox nightly
 - Tap a few times on the Firefox icon to enable debug menu
 
 ## Disable Automatic Updates
@@ -101,12 +101,13 @@ It should be available in a few days, but we have no guarantee.
 
 ## FoxyProxy Older Versions
 
+- Older versions can also be installed in normal Firefox for Android (must enable debug menu)
 - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
 - Download the desired version
 
 ## Install add-on from file
 
-- Go to:  Android Nightly menu -> Settings -> Advanced -> Install add-on from file
+- Go to: menu -> Settings -> Advanced -> Install add-on from file
 
 
 ---
@@ -133,7 +134,7 @@ The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, an
 
 ## Permissions Justification
 
-These justifications were provied to Google and Mozilla
+These justifications were provided to Google and Mozilla
 
 1. **downloads**: Required to export the extension settings to a file. Users can import that file to other Chrome/Firefox instances, or share it with colleagues, in order to keep the same settings. It can also be backed up and used later.
 2. **proxy**: The core function of the extension is to allow users to set the proxy server used by the browser.
