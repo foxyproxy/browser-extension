@@ -95,6 +95,9 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 
 ## FoxyProxy Beta
 
+- Go to: `about:confog`
+- Find `xpinstall.signatures.required`
+- Toggle to `false`
 - Follow [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
 - Create a zip file from the content of `src`
 - Make the file available to the Android device
