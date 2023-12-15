@@ -83,22 +83,22 @@ It should be available in a few days, but we have no guarantee.
 
 Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) 
 
-## Enable Debug Menu
+### Enable Debug Menu
 - Go to: menu -> Settings ->  About Firefox Nightly
 - Tap a few times on the Firefox icon to enable debug menu
 
-## Disable Automatic Updates
+### Disable Automatic Updates
 
 - Go to: `about:confog`
 - Find `extensions.update.enabled`
 - Toggle to `false`
 
-## FoxyProxy Older Versions
+### FoxyProxy Older Versions
 
 - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
 - Download the desired version
 
-## FoxyProxy Beta
+### FoxyProxy Beta
 
 - Go to: `about:confog`
 - Find `xpinstall.signatures.required`
@@ -108,7 +108,7 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 - Make the file available to the Android device
 
 
-## Install add-on from file
+### Install add-on from file
 
 - Go to: menu -> Settings -> Advanced -> Install add-on from file
 
