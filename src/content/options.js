@@ -133,7 +133,7 @@ class Options {
     pref.data = data;
 
     // update Log proxyCache
-    Log.proxyCache = Cache;                                 // used to get the details for the log
+    Log.proxyCache = cache;                                 // used to get the details for the log
 
     // helper: remove if proxy is deleted or disabled
     const checkSelect = i => i.value && !cache[i.value]?.active && (i.value = '');
@@ -187,11 +187,11 @@ class Options {
     }
     pref.mode = mode;
 
-    // --- update Proxy
-    browser.runtime.sendMessage({id: 'setProxy', pref});
-
     // --- save options
     this.process(true);
+
+    // --- update Proxy
+    browser.runtime.sendMessage({id: 'setProxy', pref});
   }
 
   static async getProxyDetails(elem) {
