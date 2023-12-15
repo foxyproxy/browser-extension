@@ -81,10 +81,10 @@ It should be available in a few days, but we have no guarantee.
 
 # Firefox for Android
 
-Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) (for beta testing)
+Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) 
 
 ## Enable Debug Menu
-- Go to: menu -> Settings ->  About Firefox (Nightly)
+- Go to: menu -> Settings ->  About Firefox Nightly
 - Tap a few times on the Firefox icon to enable debug menu
 
 ## Disable Automatic Updates
@@ -104,7 +104,6 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 
 ## FoxyProxy Older Versions
 
-- Older versions can also be installed in normal Firefox for Android (must enable debug menu)
 - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
 - Download the desired version
 
