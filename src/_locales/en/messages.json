@@ -18,15 +18,14 @@
   "enableSync": { "message": "Enable Sync" },
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
   "syncError": { "message": "Sync Error" },
-
-  "proxyDNS": { "message": "Proxy DNS" },
-  "proxyDNSDescription": { "message": "Proxy DNS when using SOCKS v5 (Firefox Only)" },
+  "showPatternProxy": { "message": "Show Pattern Proxy" },
+  "showPatternProxyDescription": { "message": "Show proxies on the toolbar badge when in Proxy by Patterns mode (Firefox only)" },
 
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "List of hosts that should not be proxied" },
 
   "container": { "message": "Container" },
-  "containerDescription": { "message": "Incognito/Container proxy (Firefox only)" },
+  "containerDescription": { "message": "Incognito and Container proxy (Firefox only)" },
   "incognito": { "message": "Incognito" },
 
   "shortcut": { "message": "Keyboard Shortcut" },
@@ -55,6 +54,7 @@
   "port": { "message": "Port" },
   "city": { "message": "City" },
   "country": { "message": "Country" },
+  "proxyDNS": { "message": "Proxy DNS" },
   "hostnamePortError": { "message": "Missing Hostname - Port" },
 
   "pattern": { "message": "Pattern" },
