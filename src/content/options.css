@@ -441,11 +441,16 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   column-gap: 0.5em;
 }
 
+.proxy-box button.random {
+  line-height: 1em;
+}
+
 .pac {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.2em 0.5em;
   font-size: 0.9em;
+  grid-row: span 2;
 }
 
 .pac [type="url"] {
@@ -455,13 +460,13 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 .pac button {
   padding: 0.2em 1em;
   min-width: unset;
-  justify-self: end;
+  place-self: center end;
 }
 
 
 /* ----- Pattern ----- */
 .pattern-box {
-  max-height: 10em;
+  max-height: 20em;
   overflow-y: auto;
   padding: 0 0.5em;
 }
@@ -561,6 +566,13 @@ details.proxy[data-type="socks4"] :is(
   user-select: none;
 }
 
+details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Chrome --- */
 details.proxy[data-type="socks5"][data-chrome] :is(
   [data-i18n="username"], [data-id="username"],
   [data-i18n="password"], .password) {
@@ -569,11 +581,15 @@ details.proxy[data-type="socks5"][data-chrome] :is(
   user-select: none;
 }
 
-/* --- Basic --- */
-div.proxy-div.basic :is(.pattern-head, .pattern-box) {
-  opacity: 0;
+details.proxy[data-chrome] :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
+  opacity: 0.3;
   pointer-events: none;
   user-select: none;
+}
+
+/* --- Basic --- */
+div.proxy-div.basic :is(.pattern-head, .pattern-box) {
+  display: none;
 }
 
 /* ----- hide/show elements ----- */

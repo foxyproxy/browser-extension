@@ -40,6 +40,15 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 export class Migrate {
 
   static async init(pref) {
+    // --- 8.7
+    // change global proxyDNS to per-proxy
+    if (Object.hasOwn(pref, 'proxyDNS') && pref.data) {
+      pref.data.forEach(i => i.proxyDNS = !!pref.proxyDNS);
+      delete pref.proxyDNS;
+      await browser.storage.local.remove('proxyDNS');
+      await browser.storage.local.set(pref);
+    }
+
     // --- 8.1
     if (Object.hasOwn(pref, 'globalExcludeWildcard')) {
       delete pref.globalExcludeWildcard;                    // from 8.0, removed in 8.1
@@ -106,7 +115,6 @@ export class Migrate {
       const pxy = {
         active: item.enabled,
         title: item.name || '',
-        color: item.color || Color.getRandom(),             // random color
         type,                                               // convert to actual type: http | https | socks4 | socks5 | + PAC
         hostname: item.host,                                // rename to hostname
         port: item.port,
@@ -114,9 +122,12 @@ export class Migrate {
         password,
         cc: '',                                             // remove country, use CC in country-code.js
         city: '',
+        color: item.color || Color.getRandom(),             // random color
+        pac: type === 'pac' ? item.configUrl : '',
+        pacString: '',
+        proxyDNS: true,
         include: [],
         exclude: [],
-        pac: type === 'pac' ? item.configUrl : ''
       };
 
       // process include/exclude
@@ -173,7 +184,6 @@ export class Migrate {
       const pxy = {
         active: item.active === 'true' || item.active === true, // convert to boolean, some old databases have mixed types
         title: item.title || '',
-        color: item.color || Color.getRandom(),             // random color
         type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
         hostname: item.address,                             // rename to hostname
         port: item.port,
@@ -181,9 +191,12 @@ export class Migrate {
         password: item.password,
         cc: item.cc || '',                                  // remove country, use CC in country-code.js
         city: '',
+        color: item.color || Color.getRandom(),             // random color
+        pac: '',                                            // add PAC option
+        pacString: '',
+        proxyDNS: !!item.proxyDNS,
         include: item.whitePatterns,                        // rename to include
         exclude: item.blackPatterns,                        // rename to exclude
-        pac: ''                                             // add PAC option
       };
 
       pxy.cc === 'UK' && (pxy.cc = 'GB');                   // convert UK to ISO 3166-1 GB

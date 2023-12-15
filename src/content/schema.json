@@ -4,7 +4,7 @@
   "properties": {
     "mode": {"type": "string"},
     "sync": {"type": "boolean"},
-    "proxyDNS": {"type": "boolean"},
+    "showPatternProxy": {"type": "boolean"},
     "passthrough": {"type": "string"},
     "data": {
       "type": "array",
@@ -14,7 +14,6 @@
         "properties": {
           "active": {"type": "boolean"},
           "title": {"type": "string"},
-          "color": {"type": "string"},
           "type": {"type": "string", "enum": ["http", "https", "socks4", "socks5", "pac", "direct"]},
           "hostname": {"type": "string", "format": "hostname"},
           "port": {"type": "string", "pattern": "^\\d*$"},
@@ -22,6 +21,10 @@
           "password": {"type": "string"},
           "cc": {"type": "string", "pattern": "^([A-Z]{2}|)$"},
           "city": {"type": "string"},
+          "color": {"type": "string"},
+          "pac": {"type": "string"},
+          "pacString": {"type": "string"},
+          "proxyDNS": {"type": "boolean"},
           "include": {
             "type": "array",
             "id": "include",
@@ -36,11 +39,10 @@
             },
             "required": ["type", "title",  "pattern", "active"]
           },
-          "exclude": {"$ref": "include"},
-          "pac": {"type": "string"},
-          "pacString": {"type": "string"}
+          "exclude": {"$ref": "include"}
         },
-        "required": [ "active", "title", "color", "type", "hostname", "port", "username", "password", "cc", "city", "include", "exclude", "pac", "pacString"]
+        "required": [ "active", "title", "type", "hostname", "port", "username", "password",
+        "cc", "city", "color", "pac", "pacString", "proxyDNS", "include", "exclude"]
       }
     },
     "container": {

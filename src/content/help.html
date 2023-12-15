@@ -481,9 +481,6 @@
       See also: <a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a></p>
 
 
-    <h2>Proxy DNS <span>(Firefox only)</span></h2>
-    <p>Option to pass DNS to the SOCKS proxy when using SOCKS</p>
-
     <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
     <p>Toggle <a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> browser settings as it has been known to leak real IP</p>
     <p>Toggle changes the browser preferences and does not require SAVE.</p>
@@ -739,6 +736,9 @@
       <dd>To be used for HTTP/HTTPS/SOCKS types</dd>
       <dd>If not set, authentication will be handled by the browser</dd>
       <dd>Username & Password are port specific and different ones can be set for different ports</dd>
+
+      <dt>Proxy DNS <span>(Firefox only)</span></dt>
+      <dd>Option to pass DNS to the SOCKS proxy when using SOCKS</dd>
 
       <dt>PAC URL <span>(not available on Android)</span></dt>
       <dd>Required for PAC type</dd>
@@ -1049,7 +1049,6 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 {
   "mode": "disable",        // mandatory: current option, necessary to enable
   "sync": false,            // optional:  not necessary as it will be disabled on managed storage
-  "proxyDNS": true,         // optional:  Firefox Only and for SOCKS
   "passthrough": "",        // optional:  Global Exclude
   "container": {},          // optional:  Incognito/Container settings
   "commands": {},           // optional:  keyboard shortcut settings
@@ -1165,7 +1164,6 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
   "data": {<mark style="font-size: 1.1em;">
     "mode": "disable",
     "sync": false,
-    "proxyDNS": true,
     "passthrough": "",
     "container": {},
     "commands": {},

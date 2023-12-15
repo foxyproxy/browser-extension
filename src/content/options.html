@@ -64,11 +64,11 @@
         <label class="pointer" data-i18n="enableSync"><input type="checkbox" id="sync"></label>
         <p class="description" data-i18n="enableSyncDescription"></p>
 
-        <label data-i18n="proxyDNS"><input type="checkbox" id="proxyDNS"></label>
-        <p class="description" data-i18n="proxyDNSDescription"></p>
-
         <label data-i18n="limitWebRTC"><input type="checkbox" id="limitWebRTC"></label>
         <p class="description" data-i18n="limitWebRTCDescription"></p>
+
+        <label data-i18n="showPatternProxy"><input type="checkbox" id="showPatternProxy"></label>
+        <p class="description" data-i18n="showPatternProxyDescription"></p>
 
         <label data-i18n="container"></label>
         <p class="description" data-i18n="containerDescription"></p>
@@ -468,13 +468,16 @@
                 <button type="button" class="plain random" data-i18n="random|title">⟳</button>
               </span>
 
-
               <label data-type="pac">PAC URL</label>
               <span class="pac">
                 <input type="url" data-id="pac" data-type="pac" placeholder="PAC URL">
                 <label class="pointer" data-i18n="storeLocally"><input type="checkbox"></label>
                 <button type="button" class="flat" data-i18n="view"></button>
               </span>
+
+              <label data-i18n="proxyDNS"></label>
+              <input type="checkbox" class="toggle" data-id="proxyDNS" checked>
+
 
             </div>
 
@@ -514,7 +517,7 @@
             <option value="regex">Reg Exp</option>
           </select>
           <input type="text" spellcheck="false" placeholder="title">
-          <input type="text" spellcheck="false" placeholder="*://*.example.com/">
+          <input type="text" spellcheck="false" placeholder="://*.example.com/">
           <input type="checkbox" class="toggle" checked>
           <button type="button" class="test" data-i18n="test|title"></button>
           <button type="button" class="bin" data-i18n="delete|title"></button>

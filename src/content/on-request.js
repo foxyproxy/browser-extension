@@ -19,7 +19,8 @@ export class OnRequest {
     this.data = [];                                         // used for Proxy by Pattern
     this.passthrough = [];                                  // RegExp string
     this.net = [];                                          // [start, end] strings
-    this.proxyDNS = true;
+    this.showPatternProxy = false;
+    // this.proxyDNS = true;
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
 
@@ -40,7 +41,8 @@ export class OnRequest {
     this.passthrough = passthrough;
     this.net = net;
 
-    this.proxyDNS = pref.proxyDNS;                          // used in mode pattern or single proxy
+    this.showPatternProxy = pref.showPatternProxy;
+    // this.proxyDNS = pref.proxyDNS;                          // used in mode pattern or single proxy
 
     const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname); // filter data
 
@@ -55,6 +57,7 @@ export class OnRequest {
         port: item.port,
         username: item.username,
         password: item.password,
+        proxyDNS: item.proxyDNS,                            // used in mode pattern or single proxy
         include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
       };
@@ -92,25 +95,41 @@ export class OnRequest {
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns
-        return this.processPattern(e.url);
+        return this.processPattern(e.url, e.tabId);
 
       default:                                              // get the proxy for all
         return this.processProxy(this.proxy);
     }
   }
 
-  static processPattern(url) {
+  static processPattern(url, tabId) {
     const match = array => array.some(i => new RegExp(i, 'i').test(url));
 
     for (const proxy of this.data) {
-      if (!match(proxy.exclude) && match(proxy.include)) { return this.processProxy(proxy); }
+      if (!match(proxy.exclude) && match(proxy.include)) {
+        this.processShowPatternProxy(proxy, tabId);
+        return this.processProxy(proxy);
+      }
     }
 
     return {type: 'direct'};                                // no match
   }
 
+  static processShowPatternProxy(item, tabId) {
+    if (!this.showPatternProxy) { return; }
+
+    const host = [item.hostname, item.port].filter(Boolean).join(':');
+    const title = [item.title, host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
+    const text = item.title || item.hostname;
+    const color = item.color;
+
+    browser.action.setBadgeBackgroundColor({color, tabId});
+    browser.action.setTitle({title, tabId});
+    browser.action.setBadgeText({text, tabId});
+  }
+
   static processProxy(proxy) {
-    const {type, hostname: host, port, username, password} = proxy;
+    const {type, hostname: host, port, username, password, proxyDNS} = proxy;
     if (type === 'direct') { return {type: 'direct'}; }
 
     const response = {type, host, port};
@@ -120,7 +139,7 @@ export class OnRequest {
     response.type === 'socks5' && (response.type = 'socks');
 
     // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#141
-    type.startsWith('socks') && (response.proxyDNS = this.proxyDNS);
+    type.startsWith('socks') && (response.proxyDNS = !!proxyDNS);
 
     if (username && password) {
       response.username = username;

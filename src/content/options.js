@@ -65,7 +65,7 @@ class Options {
 
   static {
     this.sync = document.getElementById('sync');
-    this.proxyDNS = document.getElementById('proxyDNS');
+    // this.proxyDNS = document.getElementById('proxyDNS');
 
     // --- container
     this.container = document.querySelectorAll('.options .container select');
@@ -79,7 +79,8 @@ class Options {
     // --- buttons
     document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
 
-    this.init(['sync', 'proxyDNS', 'passthrough']);
+    // this.init(['sync', 'proxyDNS', 'passthrough']);
+    this.init(['sync', 'showPatternProxy', 'passthrough']);
   }
 
   static init(keys = Object.keys(pref)) {
@@ -161,7 +162,7 @@ class Options {
       const obj = dataChanged ? {...data} : {};
 
       pref.passthrough !== this.passthrough.value && (obj.passthrough = this.passthrough.value);
-      pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
+      // pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
 
       // containerChanged && (obj.container = pref.container);
       // commandsChanged && (obj.commands = pref.commands);
@@ -198,7 +199,6 @@ class Options {
     const obj = {
       active: true,
       title: '',
-      color: '',
       type: 'http',
       hostname: '',
       port: '',
@@ -206,10 +206,12 @@ class Options {
       password: '',
       cc: '',
       city: '',
+      color: '',
+      pac: '',
+      pacString: '',
+      proxyDNS: true,
       include: [],
       exclude: [],
-      pac: '',
-      pacString: ''
     };
 
     // --- populate values
@@ -488,7 +490,7 @@ class Proxies {
     down.addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
     // proxy data
-    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pacSpan] = [...proxyBox.children].filter((e, i) => i%2);
+    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pacSpan, proxyDNS] = [...proxyBox.children].filter((e, i) => i%2);
     title.addEventListener('change', e => sumTitle.textContent = e.target.value);
 
     const [pac, storeLocallyLabel, view] = pacSpan.children;
@@ -601,15 +603,17 @@ class Proxies {
     type.value = item.type;
     port.value = item.port;
     cc.value = item.cc;
-    cc.dataset.hostname = item.hostname;                    // for Get Location
+    cc.dataset.hostname = item.hostname;                    // for "Get Location"
     username.value = item.username;
     city.value = item.city;
-    city.dataset.hostname = item.hostname;                  // for Get Location
+    city.dataset.hostname = item.hostname;                  // for "Get Location"
     passwordSpan.children[0].value = item.password;
 
     pac.value = item.pac;
     storeLocallyLabel.children[0].checked = !!item.pacString;
     view.addEventListener('click', () => this.viewPac(pac.value.trim()));
+
+    proxyDNS.checked = item.proxyDNS;
 
     // patterns
     item.include.forEach(i => this.addPattern(patternBox, i, 'include'));
@@ -820,7 +824,6 @@ class ImportFoxyProxyAccount {
         const pxy = {
           active: true,
           title: '',
-          color: '',                                        // random color will be set
           type: 'https',
           hostname: item.hostname,
           port: '443',
@@ -828,10 +831,12 @@ class ImportFoxyProxyAccount {
           password: item.password,
           cc: item.country_code === 'UK' ? 'GB' : item.country_code, // convert UK to ISO 3166-1 GB
           city: item.city,
+          color: '',                                        // random color will be set
+          pac: '',
+          pacString: '',
+          proxyDNS: true,
           include: [],
           exclude: [],
-          pac: '',
-          pacString: ''
         };
 
         const [title] = item.hostname.split('.');
@@ -956,7 +961,6 @@ class ImportProxyList {
     const pxy = {
       active: true,
       title: '',
-      color: '',
       type: 'http',
       hostname,
       port,
@@ -964,10 +968,12 @@ class ImportProxyList {
       password,
       cc: '',
       city: '',
+      color: '',
+      pac: '',
+      pacString: '',
+      proxyDNS: true,
       include: [],
       exclude: [],
-      pac: '',
-      pacString: ''
     };
 
     return pxy;
@@ -1029,7 +1035,6 @@ class ImportProxyList {
     const pxy = {
       active: pram.active !== 'false',                      // defaults to true
       title: pram.title || '',
-      color: pram.color ? '#' + pram.color : '',
       type: pram.type.toLowerCase(),
       hostname: pram.hostname,
       port: pram.port,
@@ -1037,10 +1042,12 @@ class ImportProxyList {
       password: decodeURIComponent(pram.password),
       cc: (pram.cc || pram.countrycode || '').toUpperCase(),
       city: pram.city || '',
+      color: pram.color ? '#' + pram.color : '',
+      pac: pram.pac || (pram.type === 'pac' && url.origin + url.pathname) || '',
+      pacString: '',
+      proxyDNS: true,
       include: [],
       exclude: [],
-      pac: pram.pac || (pram.type === 'pac' && url.origin + url.pathname) || '',
-      pacString: ''
     };
 
     return pxy;
