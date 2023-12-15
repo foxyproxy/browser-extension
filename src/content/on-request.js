@@ -8,6 +8,7 @@
 
 import {Pattern} from './pattern.js';
 import {PageAction} from './page-action.js';
+import {Location} from './location.js';
 
 // ---------- Firefox Proxy Process ------------------------
 export class OnRequest {
@@ -59,7 +60,13 @@ export class OnRequest {
         password: item.password,
         proxyDNS: item.proxyDNS,                            // used in mode pattern or single proxy
         include: item.include.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
-        exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type))
+        exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
+
+        // used for showPatternProxy
+        title: item.title,
+        cc: item.cc,
+        city: item.city,
+        color: item.color,
       };
     });
 
@@ -116,7 +123,8 @@ export class OnRequest {
   }
 
   static processShowPatternProxy(item, tabId) {
-    if (!this.showPatternProxy) { return; }
+    // Set to -1 if the request isn't related to a tab
+    if (tabId === -1 || !this.showPatternProxy) { return; }
 
     const host = [item.hostname, item.port].filter(Boolean).join(':');
     const title = [item.title, host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
