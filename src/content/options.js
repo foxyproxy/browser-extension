@@ -42,7 +42,7 @@ class IncognitoAccess {
     // Inconsistency: incognito in proxy.settings
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
-    App.firefox && browser.proxy.settings && browser.extension.isAllowedIncognitoAccess()
+    App.firefox && App.hasProxySettings && browser.extension.isAllowedIncognitoAccess()
     .then(response => !response && alert(browser.i18n.getMessage('incognitoAccessError')));
   }
 }
