@@ -49,7 +49,7 @@ export class Proxy {
   static async getSettings() {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
-    if (!browser.proxy.settings) { return {}; }
+    if (!App.hasProxySettings) { return {}; }
 
     const conf = await browser.proxy.settings.get({});
 
@@ -104,7 +104,7 @@ export class Proxy {
 
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
-    if (!browser.proxy.settings) { return; }
+    if (!App.hasProxySettings) { return; }
 
     // Incognito Access
     const allowed = await browser.extension.isAllowedIncognitoAccess();
@@ -124,8 +124,7 @@ export class Proxy {
         value.autoConfigUrl = pref.mode;
         value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', '); // convert to standard comma-separated
         value.proxyDNS = pref.proxyDNS;
-        // no error if levelOfControl: "controlled_by_other_extensions"
-        browser.proxy.settings.set({value});
+        browser.proxy.settings.set({value});                // no error if levelOfControl: "controlled_by_other_extensions"
         break;
 
       // --- disable, direct, pattern, or single proxy

@@ -12,7 +12,6 @@ typeof globalThis.browser === 'undefined' && (globalThis.browser = globalThis.ch
 export const pref = {
   mode: 'disable',
   sync: false,
-  proxyDNS: true,
   passthrough: '',
   container: {},
   commands: {},
@@ -82,7 +81,35 @@ export class App {
     return url;
   }
 
+  static findProxy() {
+/*
+    // action
+    const item = pref.data.find(i => pref.mode === (i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`));
+
+    // commands
+    const proxy = pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
+
+    // on-request
+    this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`)
+    data.find(i => val === `${i.hostname}:${i.port}`)
+
+    // proxy.js
+    pref.data.find(i =>
+      i.active && i.type !== 'pac' && i.hostname && mode === `${i.hostname}:${i.port}`);
+
+      const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
+*/
+  }
+
   static isBasic() {
     return browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
+  }
+
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
+  // proxy.settings is not supported on Android
+  static hasProxySettings = this.checkProxySettings();
+  static checkProxySettings() {
+    try { browser.proxy.settings; return true; }
+    catch { return false; }
   }
 }
