@@ -458,7 +458,8 @@ class Proxies {
     filter.addEventListener('input', e => this.filterProxy(e));
 
     this.proxyCache = {};                                   // used to find proxy
-    Log.proxyCache = this.proxyCache;                       // used to get the denials for the log
+    Log.proxyCache = this.proxyCache;                       // used to get the details for the log
+    Log.mode = pref.mode;
 
     // --- hide elements for Basic
     // App.isBasic && this.proxyDiv.classList.add('basic');

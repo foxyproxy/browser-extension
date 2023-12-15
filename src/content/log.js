@@ -1,4 +1,5 @@
 import {App} from './app.js';
+import {Pattern} from './pattern.js';
 
 // ---------- Log ------------------------------------------
 export class Log {
@@ -14,11 +15,12 @@ export class Log {
     }
 
     this.proxyCache = {};                                   // used to find proxy
+    this.mode = 'disable';
   }
 
   static process(e) {
     const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
-    const [, time, container, method, doc, url, title, type, host, port] = tr.children;
+    const [, time, container, method, doc, url, title, type, host, port, pattern] = tr.children;
 
     time.textContent = this.formatInt(e.timeStamp);
     method.textContent = e.method;
@@ -37,6 +39,16 @@ export class Log {
     type.textContent = info.type.toUpperCase();
     host.textContent = info.host;
     port.textContent = info.port;
+
+    // show matching pattern in pattern mode
+    if (item && this.mode === 'pattern') {
+      const pat = item.include.find(i => new RegExp(Pattern.get(i.pattern, i.type), 'i').test(e.url));
+      if (pat) {
+        const text = pat.title || pat.pattern;
+        pattern.textContent = text;
+        pattern.title = text;
+      }
+    }
 
     this.tbody.prepend(tr);                                 // in reverse order, new on top
   }

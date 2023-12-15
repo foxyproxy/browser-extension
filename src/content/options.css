@@ -746,7 +746,8 @@ section.log {
 }
 
 .log td:nth-of-type(5),
-.log td:nth-of-type(6) {
+.log td:nth-of-type(6),
+.log td:nth-of-type(11) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -758,8 +759,13 @@ section.log {
 }
 
 .log td:nth-of-type(7) {
- border-left: 2px solid var(--border);
+  border-left: 2px solid var(--border);
 }
+
+.log td:nth-of-type(11) {
+  max-width: 5em;
+}
+
 
 .log td.incognito::before {
   content: '';
