@@ -36,7 +36,7 @@ export class OnRequest {
     }
   }
 
-  static init(pref) { console.log(pref);
+  static init(pref) {
     this.mode = pref.mode;
     const [passthrough, , net] = Pattern.getPassthrough(pref.passthrough);
     this.passthrough = passthrough;
