@@ -93,6 +93,11 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 - Find `extensions.update.enabled`
 - Toggle to `false`
 
+## FoxyProxy Older Versions
+
+- Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
+- Download the desired version
+
 ## FoxyProxy Beta
 
 - Go to: `about:confog`
@@ -102,10 +107,6 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 - Create a zip file from the content of `src`
 - Make the file available to the Android device
 
-## FoxyProxy Older Versions
-
-- Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
-- Download the desired version
 
 ## Install add-on from file
 
