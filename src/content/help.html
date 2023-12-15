@@ -481,6 +481,10 @@
       See also: <a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a></p>
 
 
+    <h2>Show Pattern Proxy <span>(Firefox only)</span></h2>
+    <p>Show proxies on the toolbar badge when in Proxy by Patterns mode</p>
+
+
     <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
     <p>Toggle <a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> browser settings as it has been known to leak real IP</p>
     <p>Toggle changes the browser preferences and does not require SAVE.</p>
@@ -1047,12 +1051,13 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <h4>Default Options <span>(v8.2)</span></h4>
 <pre>
 {
-  "mode": "disable",        // mandatory: current option, necessary to enable
-  "sync": false,            // optional:  not necessary as it will be disabled on managed storage
-  "passthrough": "",        // optional:  Global Exclude
-  "container": {},          // optional:  Incognito/Container settings
-  "commands": {},           // optional:  keyboard shortcut settings
-  "data": []                // mandatory: array of proxies and their patterns
+  "mode": "disable",          // mandatory: current option, necessary to enable
+  "sync": false,              // optional:  not necessary as it will be disabled on managed storage
+  "showPatternProxy": false,  // optional:  Show proxies on the toolbar badge when in Proxy by Patterns mode (Firefox only)
+  "passthrough": "",          // optional:  Global Exclude
+  "container": {},            // optional:  Incognito/Container settings
+  "commands": {},             // optional:  keyboard shortcut settings
+  "data": []                  // mandatory: array of proxies and their patterns
 }
 </pre>
 
@@ -1128,7 +1133,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         <tr>
           <th>Location: Linux</th>
           <td>
-            ◦ Chrome: <code>/etc/opt/chrome/policies/</code> <br>
+            ◦ Chrome: <code>/etc/opt/chrome/policies/managed</code> <br>
             ◦ Chromium: <code>/etc/chromium/policies</code></td>
           <td>
             ◦ System-wide: <code>/etc/firefox/policies</code><br>
@@ -1138,6 +1143,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
         <tr>
           <th>See also</th>
           <td>
+            ◦ <a href="https://support.google.com/chrome/a/answer/9027408" target="_blank">Set policies</a><br>
             ◦ <a href="https://www.chromium.org/administrators/configuring-policy-for-extensions" target="_blank">Configuring Apps and Extensions by Policy</a><br>
             ◦ <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md" target="_blank">Enterprise policies</a>
           </td>

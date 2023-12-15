@@ -35,9 +35,9 @@
                 "title": {"type": "string"},
                 "pattern": {"type": "string"},
                 "active": {"type": "boolean"}
-              }
-            },
-            "required": ["type", "title",  "pattern", "active"]
+              },
+              "required": ["type", "title",  "pattern", "active"]
+            }
           },
           "exclude": {"$ref": "include"}
         },
