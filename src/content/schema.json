@@ -40,9 +40,7 @@
             }
           },
           "exclude": {"$ref": "include"}
-        },
-        "required": [ "active", "title", "type", "hostname", "port", "username", "password",
-        "cc", "city", "color", "pac", "pacString", "proxyDNS", "include", "exclude"]
+        }
       }
     },
     "container": {
