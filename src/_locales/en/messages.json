@@ -19,7 +19,7 @@
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
   "syncError": { "message": "Sync Error" },
   "autoBackup": { "message": "Auto Backup" },
-  "autoBackupDescription": { "message": "Automatically backup settings on save" },
+  "autoBackupDescription": { "message": "Automatically backup settings to the Downloads folder on save" },
   "showPatternProxy": { "message": "Show Pattern Proxy" },
   "showPatternProxyDescription": { "message": "Show proxies on the toolbar badge when in Proxy by Patterns mode (Firefox only)" },
 
