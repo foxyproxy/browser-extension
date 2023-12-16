@@ -27,7 +27,7 @@ export class App {
   static firefox = navigator.userAgent.includes('Firefox');
   static android = navigator.userAgent.includes('Android');
   // static chrome = navigator.userAgent.includes('Chrome');
-  // static isBasic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
+  // static basic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
 
   // ---------- User Preferences ---------------------------
   static defaultPref = JSON.stringify(pref);

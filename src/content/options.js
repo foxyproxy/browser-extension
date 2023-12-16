@@ -465,7 +465,7 @@ class Proxies {
     Log.mode = pref.mode;
 
     // --- hide elements for Basic
-    App.isBasic && this.proxyDiv.classList.add('basic');
+    App.basic && this.proxyDiv.classList.add('basic');
 
     this.process();
   }
