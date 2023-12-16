@@ -24,7 +24,9 @@ export const pref = {
 export class App {
 
   static firefox = navigator.userAgent.includes('Firefox');
+  static android = navigator.userAgent.includes('Android');
   // static chrome = navigator.userAgent.includes('Chrome');
+  // static isBasic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
 
   // ---------- User Preferences ---------------------------
   static defaultPref = JSON.stringify(pref);
@@ -100,17 +102,5 @@ export class App {
 
       const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
 */
-  }
-
-  static isBasic() {
-    return browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
-  }
-
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
-  // proxy.settings is not supported on Android
-  static hasProxySettings = this.checkProxySettings();
-  static checkProxySettings() {
-    try { browser.proxy.settings; return true; }
-    catch { return false; }
   }
 }

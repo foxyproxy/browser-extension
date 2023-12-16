@@ -98,7 +98,7 @@ export class OnRequest {
       // --- standard operation
       case this.mode === 'disable':                         // pass direct
       case this.mode === 'direct':                          // pass direct
-      case this.mode.includes('://'):                       // PAC URL is set
+      case this.mode.includes('://') && !/:\d+$/.test(this.mode): // PAC URL is set
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns

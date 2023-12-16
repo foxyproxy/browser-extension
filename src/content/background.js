@@ -30,7 +30,7 @@ class ProcessPref {
 // ---------- /Process Preferences -------------------------
 
 // ---------- Initialisation -------------------------------
-browser.runtime.onInstalled.addListener(e => {
-  // show help
-  // ['install', 'update'].includes(e.reason) && browser.tabs.create({url: '/content/help.html'});
-});
+// browser.runtime.onInstalled.addListener(e => {
+//   // show help
+//   ['install', 'update'].includes(e.reason) && browser.tabs.create({url: '/content/help.html'});
+// });

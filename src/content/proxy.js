@@ -49,7 +49,7 @@ export class Proxy {
   static async getSettings() {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
-    if (!App.hasProxySettings) { return {}; }
+    if (App.android) { return {}; }
 
     const conf = await browser.proxy.settings.get({});
 
@@ -104,7 +104,7 @@ export class Proxy {
 
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
-    if (!App.hasProxySettings) { return; }
+    if (App.android) { return; }
 
     // Incognito Access
     const allowed = await browser.extension.isAllowedIncognitoAccess();
@@ -146,7 +146,7 @@ export class Proxy {
         break;
 
       // --- Proxy Auto-Configuration (PAC) URL
-      case pref.mode.includes('://'):
+      case pref.mode.includes('://') && !/:\d+$/.test(pref.mode):
         config.value.mode = 'pac_script';
         config.value.pacScript = {mandatory: true};
         config.value.pacScript.url = pref.mode;
