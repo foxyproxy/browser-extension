@@ -547,9 +547,7 @@ details.proxy[data-type="pac"] :is(
 }
 
 details.proxy[data-type="pac"] :is(.pattern-head, .pattern-box) {
-  opacity: 0;
-  pointer-events: none;
-  user-select: none;
+  display: none;
 }
 
 details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {

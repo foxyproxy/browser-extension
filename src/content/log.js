@@ -41,14 +41,10 @@ export class Log {
     port.textContent = info.port;
 
     // show matching pattern in pattern mode
-    if (item && this.mode === 'pattern') {
-      const pat = item.include.find(i => new RegExp(Pattern.get(i.pattern, i.type), 'i').test(e.url));
-      if (pat) {
-        const text = pat.title || pat.pattern;
-        pattern.textContent = text;
-        pattern.title = text;
-      }
-    }
+    const pat = this.mode === 'pattern' && item?.include.find(i => new RegExp(Pattern.get(i.pattern, i.type), 'i').test(e.url));
+    const text = pat?.title || pat?.pattern || '';
+    pattern.textContent = text;
+    pattern.title = text;
 
     this.tbody.prepend(tr);                                 // in reverse order, new on top
   }
