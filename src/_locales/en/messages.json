@@ -20,6 +20,8 @@
   "syncError": { "message": "Sync Error" },
   "showPatternProxy": { "message": "Show Pattern Proxy" },
   "showPatternProxyDescription": { "message": "Show proxies on the toolbar badge when in Proxy by Patterns mode (Firefox only)" },
+  "autoBackup": { "message": "Auto Backup" },
+  "autoBackupDescription": { "message": "Automatically backup settings on save" },
 
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "List of hosts that should not be proxied" },
