@@ -481,7 +481,7 @@
       See also: <a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a></p>
 
     <h2>Auto Backup</h2>
-    <p>Automatically backup & export settings on save</p>
+    <p>Automatically backup settings to the browser configured Downloads folder on save</p>
 
 
     <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
@@ -1031,6 +1031,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>It will continue to display while the Options page is open and will stop logging as soon as the page is closed</li>
       <li>Log data is not stored</li>
       <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
+      <li>Patterns will show if FoxyProxy was in Proxy by Patterns mode when the log page is loaded (refresh if necessary)</li>
     </ul>
 
 
