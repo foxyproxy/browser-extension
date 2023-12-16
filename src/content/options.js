@@ -80,7 +80,7 @@ class Options {
     document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
 
     // this.init(['sync', 'proxyDNS', 'passthrough']);
-    this.init(['sync', 'showPatternProxy', 'passthrough']);
+    this.init(['sync', 'showPatternProxy', 'autoBackup', 'passthrough']);
   }
 
   static init(keys = Object.keys(pref)) {
@@ -192,6 +192,9 @@ class Options {
 
     // --- update Proxy
     browser.runtime.sendMessage({id: 'setProxy', pref});
+
+    // --- Auto Backup
+    pref.autoBackup && ImportExport.export(pref, false);
   }
 
   static async getProxyDetails(elem) {

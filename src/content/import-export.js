@@ -36,10 +36,10 @@ export class ImportExport {
   }
 
   // export preferences
-  static export(pref) {
+  static export(pref, saveAs = true) {
     const data = JSON.stringify(pref, null, 2);
     const filename = `${browser.i18n.getMessage('extensionName')}_${new Date().toISOString().substring(0, 10)}.json`;
-    this.saveFile({data, filename, type: 'application/json'});
+    this.saveFile({data, filename, type: 'application/json', saveAs});
   }
 
   static saveFile({data, filename, saveAs = true, type = 'text/plain'}) {

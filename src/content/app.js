@@ -12,6 +12,7 @@ typeof globalThis.browser === 'undefined' && (globalThis.browser = globalThis.ch
 export const pref = {
   mode: 'disable',
   sync: false,
+  autoBackup: false,
   showPatternProxy: false,
   passthrough: '',
   container: {},
