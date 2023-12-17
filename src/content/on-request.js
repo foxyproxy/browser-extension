@@ -140,7 +140,7 @@ export class OnRequest {
     const {type, hostname: host, port, username, password, proxyDNS} = proxy;
     if (type === 'direct') { return {type: 'direct'}; }
 
-    const response = {type, host, port};
+    const response = {type, host, port: parseInt(port)};    // port 'number', prepare for augmented port
 
     // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#49
     // API uses socks for socks5

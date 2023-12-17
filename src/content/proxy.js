@@ -46,9 +46,11 @@ export class Proxy {
     }
   }
 
+  // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207
+  // throw new ExtensionError("proxy.settings is not supported on android.");
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
+  // proxy.settings is not supported on Android
   static async getSettings() {
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
-    // proxy.settings is not supported on Android
     if (App.android) { return {}; }
 
     const conf = await browser.proxy.settings.get({});
@@ -102,8 +104,6 @@ export class Proxy {
     // update OnRequest
     OnRequest.init(pref);
 
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
-    // proxy.settings is not supported on Android
     if (App.android) { return; }
 
     // Incognito Access
@@ -184,7 +184,7 @@ export class Proxy {
       singleProxy: {
         scheme: pxy.type,
         host: pxy.hostname,
-        port: pxy.port*1                                    // must be number
+        port: parseInt(pxy.port)                            // must be number, prepare for augmented port
       },
       bypassList: pref.passthrough ? pref.passthrough.split(/[\s,;]+/) : []
     };
@@ -266,7 +266,7 @@ String.raw`function FindProxyForURL(url, host) {
       default:
         type = type.toUpperCase();
     }
-    return `${type} ${hostname}:${port}`;
+    return `${type} ${hostname}:${parseInt(port)}`;           // prepare for augmented port
   }
 
   // ---------- Quick Add/Exclude Host ---------------------

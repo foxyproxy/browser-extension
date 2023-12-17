@@ -371,6 +371,8 @@
     <h2 class="experimental">Firefox on Android</h2>
     <p>Support is experimental and based on user feedback.</p>
 
+    <h2>Show Hidden Elements</h2>
+    <p>Some elements on the Toolbar Popup and Options page are disabled or hidden in FoxyProxy Basic and/or on Chrome. You can toggle to view/enable them by clicking the FoxyProxy icon (on the top of the page).</p>
 
     <h1 id="how-to-use">How to Use</h1>
 
@@ -687,6 +689,17 @@
 
 
     <h1 id="proxies">Proxies</h1>
+    <div class="note">
+      <p>FoxyProxy identifies proxies by their "hostname:post" or PAC URL.</p>
+      <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later.</p>
+<pre>
+127.0.0.1:9050
+127.0.0.1:9050a
+127.0.0.1:9050b
+127.0.0.1:9050c
+</pre>
+      <p class="warning">For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
+    </div>
 
     <h2>Proxy</h2>
 

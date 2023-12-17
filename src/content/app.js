@@ -85,7 +85,13 @@ export class App {
     return url;
   }
 
-  static findProxy() {
+  static findProxy({pref, value, pac = false}) {
+    const arr = pref.data.filter(i => value === i.pac || [i.hostname, i.port, i.username, i.password].join(':'));
+    // not found [] or found only one
+    if (!arr[1]) { return arr[0]; }
+
+    // found more than one
+
 /*
     // action
     const item = pref.data.find(i => pref.mode === (i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`));

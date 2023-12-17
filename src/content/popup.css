@@ -156,3 +156,26 @@ div.host button:hover {
 div.host select {
   grid-column: span 2;
 }
+
+/* ----- hide/show elements ----- */
+
+/* --- Chrome --- */
+section.chrome .firefox {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---managed --- */
+section.managed .local {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Basic --- */
+section.basic .pattern {
+  display: none;
+}
+
+/* ----- /hide/show elements ----- */

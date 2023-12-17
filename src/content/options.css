@@ -400,6 +400,10 @@ details div.content {
   padding-left: 2em;
 }
 
+details.proxy .content * {
+  transition: opacity 0.5s;
+}
+
 details.proxy.off {
   display: none;
 }
@@ -571,7 +575,7 @@ details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="pr
 }
 
 /* --- Chrome --- */
-details.proxy[data-type="socks5"][data-chrome] :is(
+.chrome details.proxy[data-type="socks5"] :is(
   [data-i18n="username"], [data-id="username"],
   [data-i18n="password"], .password) {
   opacity: 0.3;
@@ -579,18 +583,18 @@ details.proxy[data-type="socks5"][data-chrome] :is(
   user-select: none;
 }
 
-details.proxy[data-chrome] :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
+.chrome :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
 }
 
 /* --- Basic --- */
-div.proxy-div.basic :is(.pattern-head, .pattern-box) {
+.basic :is(.pattern-head, .pattern-box) {
   display: none;
 }
 
-/* ----- hide/show elements ----- */
+/* ----- /hide/show elements ----- */
 
 /* ----- Popup ----- */
 div.popup {

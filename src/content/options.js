@@ -7,6 +7,7 @@ import {Color} from './color.js';
 import {Nav} from './nav.js';
 import {Spinner} from './spinner.js';
 import {Log} from './log.js';
+import './show.js';
 import './i18n.js';
 
 // ---------- Popup --------------------------------------
@@ -465,7 +466,9 @@ class Proxies {
     Log.mode = pref.mode;
 
     // --- hide elements for Basic
-    App.basic && this.proxyDiv.classList.add('basic');
+    // const showJS = document.querySelector('.show-js');
+    // App.basic && showJS.classList.add('basic');
+    // !App.firefox && showJS.classList.add('chrome');
 
     this.process();
   }
@@ -588,7 +591,6 @@ class Proxies {
 
     // hide/show elements
     pxy.dataset.type = item.type;
-    App.firefox || (pxy.dataset.chrome = true);
 
     const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
     this.proxyCache[id] = item;                             // cache to find later

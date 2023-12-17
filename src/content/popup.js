@@ -1,5 +1,6 @@
 import {pref, App} from './app.js';
 import {Location} from './location.js';
+import './show.js';
 import './i18n.js';
 
 // ---------- User Preferences -----------------------------
@@ -16,10 +17,11 @@ class Popup {
     this.select = document.querySelector('select');
     this.proxyCache = {};                                   // used to find proxy
 
+    // this.showJS = document.querySelector('.show-js');
     // disable buttons on Chrome
-    !App.firefox && document.querySelectorAll('.firefox').forEach(i => i.disabled = true);
+    // !App.firefox && this.showJS.classList.add('chrome');
     // disable buttons on storage.managed
-    pref.managed && document.querySelectorAll('.local').forEach(i => i.disabled = true);
+    pref.managed && this.list.parentElement.classList.add('managed');
 
     // --- proxy filter
     const filter = document.querySelector('#filter');
@@ -33,8 +35,8 @@ class Popup {
     const labelTemplate = document.querySelector('template').content.firstElementChild;
     const docFrag = document.createDocumentFragment();
 
-    // check if there are patterns, hide elements for Basic
-    if (App.basic || !pref.data.some(i => i.active && i.include[0])) {
+    // check if there are patterns
+    if (!pref.data.some(i => i.active && i.include[0])) {
       this.list.children[0].style.display = 'none';         // hide option if there are no patterns
       pref.mode === 'pattern' && (pref.mode = 'disable');   // show as disable
     }
