@@ -1,19 +1,26 @@
-# Help! FoxyProxy Updated and All Settings Are Lost
+# FAQ
+
+## Settings not kept after upgrade to v8
 
 Using Firefox and you've lost all FoxyProxy settings?  
-These following options are available if FoxyProxy updated from 7.* to 8.2 and you have encountered an update bug:
+Due to a bug in version 8.2, settings of some users were not migrated after the upgrade.  
+The issue has been fixed in version 8.6.  
+These following options are available if FoxyProxy updated from 7.* to 8.2 and you have encountered the update bug:
 
-## 1. Retrieve Settings and Keep version 8.2
+<details>
+  <summary><b>1. Retrieve Settings and Keep version 8.2</b></summary>
 
 From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#issuecomment-1838719332):
 
 ### Look for old data
+
 1. Go to the FoxyProxy Options page
 2. Open the Dev Tools (F12)
 3. Go to the Console tab
 4. Type the following and hit ENTER
 
-#### With Sync
+
+### With Sync
 
 ```js   
   browser.storage.sync.get().then(console.log)
@@ -35,7 +42,7 @@ browser.storage.sync.get().then(pref => {
 });
 ```
 
-#### Without Sync
+### Without Sync
 
 ```js   
   browser.storage.local.get().then(console.log)
@@ -61,8 +68,10 @@ browser.storage.local.get().then(pref => {
 1. Go to **Import Tab -> Import from older versions**
 2. Import the `FoxyProxy_sync.json` or `FoxyProxy_local.json` file that you have saved
 3. Click SAVE to save the data
+</details>
 
-## 2. Downgrade to 7.*
+<details>
+  <summary><b>2. Downgrade to 7.*</b></summary>
 
 Downgrade may retrieve old settings.
 
@@ -74,12 +83,18 @@ Downgrade may retrieve old settings.
 The settings bug is expected to be fixed in the latest release.
 Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) for more information.
 
+</details>
 
-## 3. Wait For Mozilla to Approve 8.6
 
-It should be available in a few days, but we have no guarantee.
 
-# Firefox for Android
+
+## 📱 Firefox for Android
+
+Due to an unforeseen bug (API throws [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.  
+The issue has been fixed in version 8.7.
+
+<details>
+  <summary><b>Downgrade or Beta Installation</b></summary>
 
 Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) 
 
@@ -92,6 +107,7 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 - Go to: `about:confog`
 - Find `extensions.update.enabled`
 - Toggle to `false`
+- It has been reported that Firefox on Android might ignore this config
 
 ### FoxyProxy Older Versions
 
@@ -111,9 +127,8 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 ### Install add-on from file
 
 - Go to: menu -> Settings -> Advanced -> Install add-on from file
+</details>
 
-
----
 ---
 
 
@@ -162,15 +177,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
 ### Dark Theme
 
 <img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
-<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
-
-<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
-<img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
-
-### Light Theme
-
-<img src="/screenshots/8.1/light-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">https://www.17k.com/chapter/493239/48431099.html
 
 <img src="/screenshots/8.1/light-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="200" alt="">
 <img src="/screenshots/8.1/light-theme/log-tab.jpg" width="200" alt="">
