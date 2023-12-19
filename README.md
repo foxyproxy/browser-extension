@@ -183,7 +183,15 @@ The library is not used in Firefox and will be removed once users migrate to v8+
 ### Dark Theme
 
 <img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
-<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">https://www.17k.com/chapter/493239/48431099.html
+<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
+
+<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
+
+### Light Theme
+
+<img src="/screenshots/8.1/light-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="200" alt="">
 
 <img src="/screenshots/8.1/light-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="200" alt="">
 <img src="/screenshots/8.1/light-theme/log-tab.jpg" width="200" alt="">
