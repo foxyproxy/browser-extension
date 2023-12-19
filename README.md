@@ -1,11 +1,15 @@
 # FAQ
 
-## Settings not kept after upgrade to v8
+## Settings disappeared after the upgrade to v8
 
 Using Firefox and you've lost all FoxyProxy settings?  
-Due to a bug in version 8.2, settings of some users were not migrated after the upgrade.  
+
+FoxyProxy 8.2 went online on Dec 6th.  
+Due to a bug in version 8.2, previous settings of some users were not migrated after the upgrade.  
+Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.  
 The issue has been fixed in version 8.6.  
-These following options are available if FoxyProxy updated from 7.* to 8.2 and you have encountered the update bug:
+
+Previous settings were not removed and are recoverable. The following options are available if FoxyProxy updated from 7.* to 8.2 and you have encountered the update bug.
 
 <details>
   <summary><b>1. Retrieve Settings and Keep version 8.2</b></summary>
@@ -90,8 +94,10 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 ## 📱 Firefox for Android
 
-Due to an unforeseen bug (API throws [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.  
-The issue has been fixed in version 8.7.
+Due to an unforeseen bug (API throws in [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.  
+The issue has been fixed in version 8.7 and were uploaded to AMO on Dec 16th.  
+FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 is awaiting approval by AMO.
+
 
 <details>
   <summary><b>Downgrade or Beta Installation</b></summary>
