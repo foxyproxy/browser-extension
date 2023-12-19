@@ -528,7 +528,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 }
 /* ----- /Pattern ----- */
 
-/* ----- hide/show elements ----- */
+/* ----- show/hide elements ----- */
 details.proxy[data-type="direct"] :is(
   [data-i18n="port"], [data-id="port"],
   [data-i18n="username"], [data-id="username"],
@@ -575,15 +575,15 @@ details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="pr
 }
 
 /* --- Chrome --- */
-.chrome details.proxy[data-type="socks5"] :is(
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
+.chrome .firefox {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
 }
 
-.chrome :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
+.chrome details.proxy[data-type="socks5"] :is(
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
@@ -594,7 +594,7 @@ details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="pr
   display: none;
 }
 
-/* ----- /hide/show elements ----- */
+/* ----- /show/hide elements ----- */
 
 /* ----- Popup ----- */
 div.popup {

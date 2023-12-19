@@ -372,7 +372,8 @@
     <p>Support is experimental and based on user feedback.</p>
 
     <h2>Show Hidden Elements</h2>
-    <p>Some elements on the Toolbar Popup and Options page are disabled or hidden in FoxyProxy Basic and/or on Chrome. You can toggle to view/enable them by clicking the FoxyProxy icon (on the top of the page).</p>
+    <p>Some elements on the Toolbar Popup and Options page are disabled or hidden in FoxyProxy Basic and/or on Chrome.<br>
+    You can toggle to view/enable them by clicking the FoxyProxy icon (on the top of the page).</p>
 
     <h1 id="how-to-use">How to Use</h1>
 
@@ -482,19 +483,19 @@
     <p class="note">There is a discussion to increase the storage sync quota to 1MB.<br>
       See also: <a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a></p>
 
-    <h2>Auto Backup</h2>
+    <h2 id="auto-backup">Auto Backup</h2>
     <p>Automatically backup settings to the browser configured Downloads folder on save</p>
 
 
-    <h2>Limit WebRTC <span>(requires "privacy" permission)</span></h2>
+    <h2 id="limit-webrtc">Limit WebRTC <span>(requires "privacy" permission)</span></h2>
     <p>Toggle <a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> browser settings as it has been known to leak real IP</p>
     <p>Toggle changes the browser preferences and does not require SAVE.</p>
 
 
-    <h2>Show Pattern Proxy <span>(Firefox only)</span></h2>
+    <h2 id="show-pattern-proxy">Show Pattern Proxy <span>(Firefox only)</span></h2>
     <p>Show per-tab proxies on the toolbar badge when in Proxy by Patterns mode</p>
 
-    <h2 class="experimental">Incognito/Container</h2>
+    <h2 id="container" class="experimental">Incognito/Container</h2>
     <p>Set a proxy for Incognito (Private Mode) and/or Containers</p>
     <p>Incognito proxy behaviour is slightly different in Chrome and Firefox.</p>
 
@@ -517,7 +518,7 @@
     </dl>
 
 
-    <h2>Keyboard Shortcut <span>(not available on Android)</span></h2>
+    <h2 id="keyboard-shortcut">Keyboard Shortcut <span>(not available on Android)</span></h2>
     <p>Preselect a proxy to associate with a keyboard shortcut action</p>
     <ul>
       <li>Only active proxies are listed</li>
@@ -532,7 +533,7 @@
     <p>A comma-separated list of hosts which should not be proxied.</p> -->
 
     <ul>
-      <li>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied</li>
+      <li>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied (by the browser)</li>
       <li>The passthrough implementation is slightly different in Chrome and Firefox</li>
       <li>Entries can be separated by comma (as in Firefox), or space, or new line</li>
       <li>The tables shows if the process is handled by the browser or FoxyProxy</li>
@@ -550,6 +551,7 @@
     </ul>
 
     <table>
+      <caption>Who is controlling the passthrough?</caption>
       <thead>
         <tr>
           <th></th>
@@ -560,23 +562,23 @@
       <tbody>
         <tr>
           <th></th>
-          <th>localhost</th>
-          <th>passthrough</th>
-          <th>localhost</th>
-          <th>passthrough</th>
+          <th>localhost & local network</th>
+          <th>passthrough (global exclude)</th>
+          <th>localhost & local network</th>
+          <th>passthrough (global exclude)</th>
         </tr>
         <tr>
           <th>Proxy by Patterns</th>
           <td>browser</td>
           <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
-          <td><mark><s>FoxyProxy</s></mark></td>
+          <td><s><mark>FoxyProxy</mark></s> (v8.4)</td>
           <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>Single Proxy</th>
           <td>browser</td>
           <td>browser<br><i>scheme, host, wildcard, CIDR</i></td>
-          <td><mark><s>FoxyProxy</s></mark></td>
+          <td><s><mark>FoxyProxy</mark></s> (v8.4)</td>
           <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
@@ -590,21 +592,21 @@
           <th>Incognito</th>
           <td>browser</td>
           <td>browser<br><i>scheme, host, wildcard, CIDR</i></td>
-          <td><mark><s>FoxyProxy</s></mark></td>
+          <td><s><mark>FoxyProxy</mark></s> (v8.4)</td>
           <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>Container</th>
           <td>n/a</td>
           <td>n/a</td>
-          <td><mark><s>FoxyProxy</s></mark></td>
+          <td><s><mark>FoxyProxy</mark></s> (v8.4)</td>
           <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
         <tr>
           <th>Tab Proxy</th>
           <td>n/a</td>
           <td>n/a</td>
-          <td><mark><s>FoxyProxy</s></mark></td>
+          <td><s><mark>FoxyProxy</mark></s> (v8.4)</td>
           <td><mark>FoxyProxy</mark><br><i>scheme, host, wildcard, CIDR (IPv4)</i></td>
         </tr>
       </tbody>
@@ -691,13 +693,16 @@
     <h1 id="proxies">Proxies</h1>
     <div class="note">
       <p>FoxyProxy identifies proxies by their "hostname:post" or PAC URL.</p>
-      <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later.</p>
+      <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later. <i>(v8.8)</i></p>
 <pre>
 127.0.0.1:9050
 127.0.0.1:9050a
 127.0.0.1:9050b
 127.0.0.1:9050c
 </pre>
+
+      <p>Another solution is to prepend hostnames where possible e.g. <code>&lt;sometext&gt;.localhost</code> since they all resolve to <code>127.0.0.1</code> internally.</p>
+
       <p class="warning">For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
     </div>
 

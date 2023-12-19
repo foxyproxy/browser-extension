@@ -27,7 +27,7 @@ export class App {
   static firefox = navigator.userAgent.includes('Firefox');
   static android = navigator.userAgent.includes('Android');
   // static chrome = navigator.userAgent.includes('Chrome');
-  // static basic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
+  static basic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
 
   // ---------- User Preferences ---------------------------
   static defaultPref = JSON.stringify(pref);
@@ -83,31 +83,5 @@ export class App {
     }
 
     return url;
-  }
-
-  static findProxy({pref, value, pac = false}) {
-    const arr = pref.data.filter(i => value === i.pac || [i.hostname, i.port, i.username, i.password].join(':'));
-    // not found [] or found only one
-    if (!arr[1]) { return arr[0]; }
-
-    // found more than one
-
-/*
-    // action
-    const item = pref.data.find(i => pref.mode === (i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`));
-
-    // commands
-    const proxy = pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
-
-    // on-request
-    this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`)
-    data.find(i => val === `${i.hostname}:${i.port}`)
-
-    // proxy.js
-    pref.data.find(i =>
-      i.active && i.type !== 'pac' && i.hostname && mode === `${i.hostname}:${i.port}`);
-
-      const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
-*/
   }
 }

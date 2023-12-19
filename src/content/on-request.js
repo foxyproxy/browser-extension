@@ -140,13 +140,16 @@ export class OnRequest {
     const {type, hostname: host, port, username, password, proxyDNS} = proxy;
     if (type === 'direct') { return {type: 'direct'}; }
 
-    const response = {type, host, port: parseInt(port)};    // port 'number', prepare for augmented port
+    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#102
+    // Although API converts to number -> let port = Number.parseInt(proxyData.port, 10);
+    // port 'number', prepare for augmented port
+    const response = {type, host, port: parseInt(port)};
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#49
+    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#43
     // API uses socks for socks5
     response.type === 'socks5' && (response.type = 'socks');
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#141
+    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#135
     type.startsWith('socks') && (response.proxyDNS = !!proxyDNS);
 
     if (username && password) {
@@ -154,7 +157,7 @@ export class OnRequest {
       response.password = password;
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
       // Allow HTTP authentication in proxy.onRequest
-      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#173
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#167
       // proxyAuthorizationHeader on Firefox only applies to HTTPS (not HTTP and it breaks the API and sends DIRECT)
       // proxyAuthorizationHeader added to reduce the authentication request in webRequest.onAuthRequired
       type === 'https' && (response.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));

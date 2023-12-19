@@ -21,7 +21,7 @@ class Popup {
     // disable buttons on Chrome
     // !App.firefox && this.showJS.classList.add('chrome');
     // disable buttons on storage.managed
-    pref.managed && this.list.parentElement.classList.add('managed');
+    pref.managed && document.body.classList.add('managed');
 
     // --- proxy filter
     const filter = document.querySelector('#filter');

@@ -5,22 +5,21 @@ import {App} from './app.js';
 class Show {
 
   static {
-    // --- hide elements for Basic
-    this.showJS = document.querySelector('.show-js');
-    this.add();
-
     const elem = document.querySelector('img[src="../image/icon.svg"]');
     elem?.addEventListener('click', () => this.added ? this.remove() : this.add());
+    this.add();
   }
 
+  // --- hide elements for Basic & Chrome
   static add() {
     this.added = true;
-    App.basic && this.showJS?.classList.add('basic');
-    !App.firefox && this.showJS?.classList.add('chrome');
+    App.basic && document.body.classList.add('basic');
+    !App.firefox && document.body.classList.add('chrome');
   }
 
+  // --- show elements
   static remove() {
     this.added = false;
-    this.showJS?.classList.remove('basic', 'chrome');
+    document.body.classList.remove('basic', 'chrome');
   }
 }

@@ -503,7 +503,7 @@ class Proxies {
     const [pac, storeLocallyLabel, view] = pacSpan.children;
 
     type.addEventListener('change', e => {
-      pxy.dataset.type = e.target.value;                    // hide/show elements
+      pxy.dataset.type = e.target.value;                    // show/hide elements
 
       switch (e.target.options[e.target.selectedIndex].textContent) {
         case 'TOR':
@@ -589,7 +589,7 @@ class Proxies {
       return;
     }
 
-    // hide/show elements
+    // show/hide elements
     pxy.dataset.type = item.type;
 
     const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
