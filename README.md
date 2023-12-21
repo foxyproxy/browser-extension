@@ -1,6 +1,6 @@
 # FAQ
 
-## Settings disappeared after the upgrade to v8
+## 💻 Settings disappeared after the upgrade to v8
 
 Using Firefox and you've lost all FoxyProxy settings?  
 
@@ -95,8 +95,8 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 ## 📱 Firefox for Android
 
 Due to an unforeseen bug (API throws in [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.  
-The issue has been fixed in version 8.7 and were uploaded to AMO on Dec 16th.  
-FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 is awaiting approval by AMO.
+The issue has been fixed in version 8.7 and was uploaded to AMO on Dec 16th.  
+FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was reviewed by AMO on Dec 19th.
 
 
 <details>
