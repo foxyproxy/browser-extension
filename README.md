@@ -102,25 +102,28 @@ FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was review
 <details>
   <summary><b>Downgrade or Beta Installation</b></summary>
 
-Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) 
+#### Install Firefox Nightly
 
-### Enable Debug Menu
+- [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) 
+
+#### Enable Debug Menu
+
 - Go to: menu -> Settings ->  About Firefox Nightly
 - Tap a few times on the Firefox icon to enable debug menu
 
-### Disable Automatic Updates
+#### Disable Automatic Updates
 
 - Go to: `about:confog`
 - Find `extensions.update.enabled`
 - Toggle to `false`
 - It has been reported that Firefox on Android might ignore this config
 
-### FoxyProxy Older Versions
+#### FoxyProxy Older Versions
 
 - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
 - Download the desired version
 
-### FoxyProxy Beta
+#### FoxyProxy Beta
 
 - Go to: `about:confog`
 - Find `xpinstall.signatures.required`
@@ -130,7 +133,7 @@ Install [Firefox Nightly for Developers](https://play.google.com/store/apps/deta
 - Make the file available to the Android device
 
 
-### Install add-on from file
+#### Install add-on from file
 
 - Go to: menu -> Settings -> Advanced -> Install add-on from file
 </details>
