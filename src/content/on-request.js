@@ -21,7 +21,6 @@ export class OnRequest {
     this.passthrough = [];                                  // RegExp string
     this.net = [];                                          // [start, end] strings
     this.showPatternProxy = false;
-    // this.proxyDNS = true;
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
 
@@ -41,9 +40,7 @@ export class OnRequest {
     const [passthrough, , net] = Pattern.getPassthrough(pref.passthrough);
     this.passthrough = passthrough;
     this.net = net;
-
     this.showPatternProxy = pref.showPatternProxy;
-    // this.proxyDNS = pref.proxyDNS;                          // used in mode pattern or single proxy
 
     const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname); // filter data
 

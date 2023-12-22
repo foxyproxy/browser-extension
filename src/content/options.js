@@ -65,9 +65,6 @@ class Toggle {
 class Options {
 
   static {
-    this.sync = document.getElementById('sync');
-    // this.proxyDNS = document.getElementById('proxyDNS');
-
     // --- container
     this.container = document.querySelectorAll('.options .container select');
 
@@ -80,8 +77,7 @@ class Options {
     // --- buttons
     document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
 
-    // this.init(['sync', 'proxyDNS', 'passthrough']);
-    this.init(['sync', 'showPatternProxy', 'autoBackup', 'passthrough']);
+    this.init(['sync', 'autoBackup', 'showPatternProxy', 'passthrough']);
   }
 
   static init(keys = Object.keys(pref)) {
@@ -128,7 +124,6 @@ class Options {
       const id = pxy.type === 'pac' ? pxy.pac : `${pxy.hostname}:${pxy.port}`;
       cache[id] = pxy;
     }
-    const dataChanged = !App.equal(pref.data, data);        // check if proxies & patterns have changed
 
     // no errors, update pref.data
     pref.data = data;
@@ -145,7 +140,6 @@ class Options {
       checkSelect(i);
       container[i.name] = i.value;
     });
-    // const containerChanged = Object.keys(container).some(i => container[i] !== pref.container[i]);
     pref.container = container;                             // set to pref
 
     // --- keyboard shortcut proxy
@@ -154,27 +148,7 @@ class Options {
       checkSelect(i);
       commands[i.name] = i.value;
     });
-    // const commandsChanged = Object.keys(commands).some(i => commands[i] !== pref.commands[i]);
     pref.commands = commands;                               // set to pref
-
-    // --- check sync
-    if (this.sync.checked) {
-      // convert array to object {...data} to avoid sync maximum item size limit
-      const obj = dataChanged ? {...data} : {};
-
-      pref.passthrough !== this.passthrough.value && (obj.passthrough = this.passthrough.value);
-      // pref.proxyDNS !== this.proxyDNS.checked && (obj.proxyDNS = this.proxyDNS.checked);
-
-      // containerChanged && (obj.container = pref.container);
-      // commandsChanged && (obj.commands = pref.commands);
-
-      // save changes to sync
-      Object.keys(obj)[0] && browser.storage.sync.set(obj)
-      .catch(error => {
-        App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message);
-        this.sync.checked = false;                          // disabling sync option to avoid repeated errors
-      });
-    }
 
     // --- check mode
     // get from storage in case it was changed while options page has been open
@@ -196,6 +170,37 @@ class Options {
 
     // --- Auto Backup
     pref.autoBackup && ImportExport.export(pref, false);
+
+    // --- Sync
+    this.sync(pref);
+  }
+
+  static sync(pref) {
+    if (!pref.sync) { return; }
+
+    // convert array to object {...data} to avoid sync maximum item size limit
+    const obj = {...pref.data};
+
+    // add other sync properties
+    App.syncProperties.forEach(i => obj[i] = pref[i]);
+
+    // save changes to sync
+    browser.storage.sync.set(obj)
+    .then(() => {
+      // delete left-over proxies
+      browser.storage.sync.get()
+      .then(syncObj => {
+        // get & delete numerical keys that are equal or larger than data length, the rest are overwritten
+        const del = Object.keys(syncObj).filter(i => /^\d+$/.test(i) && i*1 >= pref.data.length);
+        del[0] && browser.storage.sync.remove(del);
+      });
+    })
+    .catch(error => {
+      App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message);
+      // disabling sync option to avoid repeated errors
+      document.getElementById('sync').checked = false;
+      browser.storage.local.set({sync: false});
+    });
   }
 
   static async getProxyDetails(elem) {

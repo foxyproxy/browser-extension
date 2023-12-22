@@ -40,6 +40,14 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 export class Migrate {
 
   static async init(pref) {
+    // --- 8.8
+    // tidy up left-over obj from 8.0 Sync typo mistake
+    if (Object.hasOwn(pref, 'obj')) {
+      delete pref.obj;
+      await browser.storage.local.remove('obj');
+      await browser.storage.sync.remove('obj');
+    }
+
     // --- 8.7
     // change global proxyDNS to per-proxy
     if (Object.hasOwn(pref, 'proxyDNS') && pref.data) {
@@ -53,7 +61,7 @@ export class Migrate {
     if (Object.hasOwn(pref, 'globalExcludeWildcard')) {
       delete pref.globalExcludeWildcard;                    // from 8.0, removed in 8.1
       delete pref.globalExcludeRegex;                       // from 8.0, removed in 8.1
-      delete pref.obj;                                      // 8.0 Sync typo error
+      delete pref.obj;                                      // 8.0 Sync typo mistake
       await browser.storage.local.remove(['globalExcludeWildcard', 'globalExcludeRegex', 'obj']);
     }
 
