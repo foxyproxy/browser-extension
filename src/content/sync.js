@@ -80,6 +80,6 @@ export class Sync {
       }
     });
 
-    Object.keys(obj)[0] && await browser.storage.local.set({obj}); // update saved pref
+    Object.keys(obj)[0] && await browser.storage.local.set(obj); // update saved pref
   }
 }

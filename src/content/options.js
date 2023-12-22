@@ -175,6 +175,8 @@ class Options {
     this.sync(pref);
   }
 
+  // https://github.com/w3c/webextensions/issues/510
+  // Proposal: Increase maximum item size in Storage sync quotas
   static sync(pref) {
     if (!pref.sync) { return; }
 
