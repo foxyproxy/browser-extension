@@ -4,12 +4,14 @@
 
 Using Firefox and you've lost all FoxyProxy settings?  
 
+FoxyProxy Basic 8.0 was first released in Sep 2023 as a trial run since it had fewer users (26k on Chrome & Firefox).
+We waited for 2 months for any feedback & bug reports before releasing FoxyProxy Standard.
+Unfortunately, we didn't get any bug report about the data migration sync issue, otherwsie we would have fixed it before releasing the standard version.
 FoxyProxy 8.2 went online on Dec 6th.  
 Due to a bug in version 8.2, previous settings of some users were not migrated after the upgrade.  
-Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.  
-The issue has been fixed in version 8.6.  
+Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.   
 
-Previous settings were not removed and are recoverable. The following options are available if FoxyProxy updated from 7.* to 8.2 and you have encountered the update bug.
+Previous settings were not deleted and are recoverable. The following options are available if FoxyProxy updated from 7.* and you have encountered the update bug.
 
 <details>
   <summary><b>1. Retrieve Settings and Keep version 8.2</b></summary>
