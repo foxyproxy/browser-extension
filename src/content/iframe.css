@@ -23,36 +23,46 @@ article {
   background-color: var(--bg);
 }
 
-h1, h2 {
-  font-weight: normal;
-}
 
-h1 {
+/* ----- h1-h5 ----- */
+h2 {
   color: var(--header);
   font-size: 2.2em;
   border-bottom: 1px solid var(--border);
+  font-weight: normal;
 }
 
-h2 {
+h2:first-of-type {
+  margin-top: 0;
+}
+
+h3 {
   color: var(--nav-hover);
   font-size: 1.5em;
+  font-weight: normal;
 }
 
-:not(h1) + h2 {
+h4 {
+  font-size: 1.2em;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+:not(h2) + h3 {
   margin-top: 1.5em;
 }
 
-:is(h1, h2, h3, h4) span {
+:is(h1, h2, h3, h4, h5) span {
   color: var(--dim);
   font-size: 0.8em;
   font-style: italic;
   font-weight: normal;
   margin-left: 0.5em;
 }
+/* ----- /h1-h5 ----- */
 
-/* h3 {
-  font-size: 1.2em;
-} */
 
 p {
   margin-top: 0.5em;
@@ -288,24 +298,25 @@ td.code {
 }
 
 /* ----- Translate ----- */
-div.translate {
+.translate {
   display: grid;
   grid-auto-flow: column;
   justify-content: end;
   align-items: center;
   gap: 0.5em;
+  padding: 1em 1em 0;
+  background-color: var(--bg);
 }
 
-div.translate select {
+.translate select {
   width: auto;
 }
 
-div.translate input[type="submit"] {
+.translate input[type="submit"] {
   color: inherit;
   background-color: var(--alt-bg);
   border: 1px solid var(--border);
   border-radius: 0.3em;
   padding: 0.2em 0.5em;
 }
-
 /* ----- /Translate ----- */

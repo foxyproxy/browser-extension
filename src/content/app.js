@@ -31,6 +31,7 @@ export class App {
 
   // ---------- User Preferences ---------------------------
   static defaultPref = JSON.stringify(pref);
+  // not syncing mode & sync (to have a choice), data (will be broken into parts)
   static syncProperties = Object.keys(pref).filter(i => !['mode', 'sync', 'data'].includes(i));
 
   static getDefaultPref() {

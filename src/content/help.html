@@ -453,9 +453,12 @@
     <p>Some options are not available in Chrome, but have been left for when sharing preferences between Chrome & Firefox.</p>
 
     <h3 id="enable-storage-sync">Enable Storage Sync</h3>
-    <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the
-      Sync will be turned off automatically to avoid repeated errors.</p>
-      <p class="note">Storage Sync is disabled on managed storage.</p>
+    <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the Sync will be turned off automatically to avoid repeated errors.</p>
+    <ul>
+      <li>Sync is disabled on managed storage</li>
+      <li>At the moment, Firefox does not support sync to Firefox on Android</li>
+      <li>Mode & Sync option is not synced to give users choice on different machines</li>
+    </ul>
 
 
     <blockquote>
@@ -488,7 +491,7 @@
     </div>
 
     <h3 id="auto-backup">Auto Backup</h3>
-    <p>Automatically backup settings to the browser configured Downloads folder on save</p>
+    <p>Automatically backup settings to the browser configured downloads folder on save</p>
 
 
     <h3 id="limit-webrtc">Limit WebRTC <span>(requires "privacy" permission)</span></h3>
@@ -533,9 +536,6 @@
     <h3 id="global-exclude">Global Exclude</h3>
     <p>List of hosts that should not be proxied</p>
 
-    <!-- <p>List of hostnames or IP addresses that will not be proxied.</p>
-    <p>A comma-separated list of hosts which should not be proxied.</p> -->
-
     <ul>
       <li>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied (by the browser)</li>
       <li>The passthrough implementation is slightly different in Chrome and Firefox</li>
@@ -544,8 +544,6 @@
       <li>Supported formats are listed under passthrough in each section</li>
       <li>Scheme is supported by FoxyProxy and Chrome, but not Firefox (PAC URL)</li>
       <!-- <li>In Firefox, "*" is supported only at the beginning of domain filters (*.mozilla.org)</li> -->
-      <!-- <li>At the moment, CIDR in passthrough is not supported by FoxyProxy</li> -->
-
       <li>CIDR only applies to URLs that are IP literals and does not block hostnames that resolve to the IP address range (<code>10.0.0.0/8</code> is not "no proxy for intranet hostnames")</li>
       <li>Only IPv4 CIDR is implemented by FoxyProxy</li>
       <li>The literal string <code>&lt;local&gt;</code> matches simple hostnames (no dots)</li>
@@ -698,20 +696,19 @@
 
 
     <h2 id="proxies">Proxies</h2>
-    <div class="note">
-      <p>FoxyProxy identifies proxies by their "hostname:post" or PAC URL.</p>
-      <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later. <i>(v8.8)</i></p>
+
+    <p>FoxyProxy identifies proxies by their "hostname:post" or PAC URL.</p>
+    <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later. <i>(v8.8)</i></p>
 <pre>
 127.0.0.1:9050
 127.0.0.1:9050a
 127.0.0.1:9050b
 127.0.0.1:9050c
 </pre>
+    <p class="warning">For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
 
-      <p>Another solution is to prepend hostnames where possible e.g. <code>&lt;sometext&gt;.localhost</code> since they all resolve to <code>127.0.0.1</code> internally.</p>
+    <p>Another solution is to prepend hostnames where possible e.g. <code>&lt;sometext&gt;.localhost</code> since they all resolve to <code>127.0.0.1</code> internally.</p>
 
-      <p class="warning">For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
-    </div>
 
     <h3>Proxy</h3>
 
@@ -731,12 +728,12 @@
     <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, may result in a mismatch until it is set again.</p>
 
     <dl>
-      <dt>⎘ Duplicate Proxy</dt>
-      <dd>Click to duplicate proxy and its patterns</dd>
-
       <dt>Toggle Button</dt>
       <dd>Toggle proxy active or inactive</dd>
-      <dd>Inactive proxies do not show in toolbar popup select</dd>
+      <dd>Inactive proxies do not show in the toolbar popup select</dd>
+
+      <dt>⎘ Duplicate Proxy</dt>
+      <dd>Click to duplicate proxy and its patterns</dd>
 
       <dt>Delete</dt>
       <dd>Delete the proxy and its patterns</dd>
