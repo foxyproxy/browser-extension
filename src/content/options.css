@@ -93,6 +93,7 @@ textarea {
   font-size: 0.9em;
   min-width: 8em;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .flat:hover {

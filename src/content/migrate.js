@@ -195,16 +195,16 @@ export class Migrate {
         type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
         hostname: item.address,                             // rename to hostname
         port: item.port,
-        username: item.username,
-        password: item.password,
+        username: item.username || '',
+        password: item.password || '',
         cc: item.cc || '',                                  // remove country, use CC in country-code.js
         city: '',
         color: item.color || Color.getRandom(),             // random color
         pac: '',                                            // add PAC option
         pacString: '',
         proxyDNS: !!item.proxyDNS,
-        include: item.whitePatterns,                        // rename to include
-        exclude: item.blackPatterns,                        // rename to exclude
+        include: item.whitePatterns || [],                  // rename to include
+        exclude: item.blackPatterns || [],                  // rename to exclude
       };
 
       pxy.cc === 'UK' && (pxy.cc = 'GB');                   // convert UK to ISO 3166-1 GB

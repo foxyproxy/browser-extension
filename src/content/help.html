@@ -311,6 +311,12 @@
 
     <p>If you upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
+
+    <h3>Unified Code</h3>
+    <p>FoxyProxy 8.* code has been unified for Chrome & Firefox, and Standard & Basic versions.</p>
+    <p>Users can import/export settings between all above mentioned.</p>
+    <p class="warning">FoxyProxy uses user-agent to identify browser-specific code and altering the user-agent at browser level (not webpage level) can interfere with its operation.</p>
+
     <!--
       Inconsistency: incognito in proxy.settings
       https://github.com/w3c/webextensions/issues/429
@@ -372,6 +378,8 @@
     <h3>Show Hidden Elements</h3>
     <p>Some elements on the Toolbar Popup and Options page are disabled or hidden in FoxyProxy Basic and/or on Chrome.<br>
     You can toggle to view/enable them by clicking the FoxyProxy icon (on the top of the page).</p>
+
+
 
     <h2 id="how-to-use">How to Use</h2>
 
@@ -454,6 +462,7 @@
 
     <h3 id="enable-storage-sync">Enable Storage Sync</h3>
     <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the Sync will be turned off automatically to avoid repeated errors.</p>
+    <p><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/sync" target="_blank">storage.sync</a> is not supported on Firefox for Android.</p>
     <ul>
       <li>Sync is disabled on managed storage</li>
       <li>At the moment, Firefox does not support sync to Firefox on Android</li>
@@ -1067,6 +1076,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
 
     <h2 id="enterprise-policy" class="experimental">Enterprise Policy <span>(v8.2)</span></h2>
     <p>FoxyProxy supports enterprise policy and managed storage, and they can be configured to set FoxyProxy options.</p>
+    <p><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/managed" target="_blank">storage.managed</a> is not supported on Firefox for Android.</p>
 
     <ul>
       <li>FoxyProxy checks for enterprise policy and managed storage at start-up, and when background script is reloaded in MV3</li>

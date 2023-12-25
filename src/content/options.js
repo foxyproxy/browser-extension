@@ -1058,7 +1058,7 @@ class ImportProxyList {
       color: pram.color ? '#' + pram.color : '',
       pac: pram.pac || (pram.type === 'pac' && url.origin + url.pathname) || '',
       pacString: '',
-      proxyDNS: true,
+      proxyDNS: pram.proxydns !== 'false',                  // defaults to true
       include: [],
       exclude: [],
     };
