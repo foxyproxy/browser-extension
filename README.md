@@ -290,16 +290,13 @@ The library is not used in Firefox and will be removed once users migrate to v8+
 
 ### With [grunt](https://gruntjs.com/getting-started):
 
-1. Install grunt locally:
-
-`npm i -D grunt-cli`
-
-2. Run one of:
-
-`grunt --target=chrome-standard`<br>
-`grunt --target=chrome-basic`<br>
-`grunt --target=firefox-standard`<br>
-`grunt --target=firefox-basic`
+- Install grunt locally:
+    - `npm i -D grunt-cli`
+- Run one of:
+  - `grunt --target=chrome-standard`<br>
+  - `grunt --target=chrome-basic`<br>
+  - `grunt --target=firefox-standard`<br>
+  - `grunt --target=firefox-basic`
 
 The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.zip`.
 
