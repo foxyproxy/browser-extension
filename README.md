@@ -2,14 +2,14 @@
 
 ## 💻 Settings disappeared after the upgrade to v8
 
-Using Firefox and you've lost all FoxyProxy settings?  
+Using Firefox and you've lost all FoxyProxy settings?
 
 FoxyProxy Basic 8.0 was first released in Sep 2023 as a trial run since it had fewer users (26k on Chrome & Firefox).
 We waited for 2 months for any feedback & bug reports before releasing FoxyProxy Standard.
 Unfortunately, we didn't get any bug report about the data migration sync issue, otherwsie we would have fixed it before releasing the standard version.
-FoxyProxy 8.2 went online on Dec 6th.  
-Due to a bug in version 8.2, previous settings of some users were not migrated after the upgrade.  
-Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.   
+FoxyProxy 8.2 went online on Dec 6th.
+Due to a bug in version 8.2, previous settings of some users were not migrated after the upgrade.
+Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.
 
 Previous settings were not deleted and are recoverable. The following options are available if FoxyProxy updated from 7.* and you have encountered the update bug.
 
@@ -28,7 +28,7 @@ From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#iss
 
 ### With Sync
 
-```js   
+```js
   browser.storage.sync.get().then(console.log)
 ```
 
@@ -44,13 +44,13 @@ browser.storage.sync.get().then(pref => {
     saveAs: true,
     conflictAction: 'uniquify'
   })
-  .catch(() => {}); 
+  .catch(() => {});
 });
 ```
 
 ### Without Sync
 
-```js   
+```js
   browser.storage.local.get().then(console.log)
 ```
 
@@ -66,7 +66,7 @@ browser.storage.local.get().then(pref => {
     saveAs: true,
     conflictAction: 'uniquify'
   })
-  .catch(() => {}); 
+  .catch(() => {});
 });
 ```
 ### Import data
@@ -96,48 +96,37 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 ## 📱 Firefox for Android
 
-Due to an unforeseen bug (API throws in [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.  
-The issue has been fixed in version 8.7 and was uploaded to AMO on Dec 16th.  
+Due to an unforeseen bug (API throws in [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.
+The issue has been fixed in version 8.7 and was uploaded to AMO on Dec 16th.
 FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was reviewed by AMO on Dec 19th.
 
 
 <details>
   <summary><b>Downgrade or Beta Installation</b></summary>
 
-#### Install Firefox Nightly
+  Firefox for Android ignores disabling `extensions.update.enabled` (due to a bug). Therefore, installation of an older version from AMO will get updated.
 
-- [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) 
-
-#### Enable Debug Menu
-
-- Go to: menu -> Settings ->  About Firefox Nightly
-- Tap a few times on the Firefox icon to enable debug menu
-
-#### Disable Automatic Updates
-
-- Go to: `about:confog`
-- Find `extensions.update.enabled`
-- Toggle to `false`
-- It has been reported that Firefox on Android might ignore this config
-
-#### FoxyProxy Older Versions
-
-- Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
-- Download the desired version
-
-#### FoxyProxy Beta
-
-- Go to: `about:confog`
-- Find `xpinstall.signatures.required`
-- Toggle to `false`
-- Follow [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
-- Create a zip file from the content of `src`
-- Make the file available to the Android device
-
-
-#### Install add-on from file
-
-- Go to: menu -> Settings -> Advanced -> Install add-on from file
+- **Install Firefox Nightly**
+  - [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US)
+- **Enable Debug Menu**
+  - Go to: menu -> Settings ->  About Firefox Nightly
+  - Tap a few times on the Firefox icon to enable debug menu
+  - Go to: `about:confog`
+  - Find `xpinstall.signatures.required`
+  - Toggle to `false`
+- **Install older FoxyProxy or Beta version**
+  - **Install older FoxyProxy Versions**
+    - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
+    - Download the desired version
+    - Disable Automatic Updates
+    - Remove `META-INF` folder
+    - Make the file available to the Android device
+  - **Install Beta version**
+    - Follow [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
+    - Create a zip file from the content of `src`
+    - Make the file available to the Android device
+- **Install add-on from file**
+  - Go to: menu -> Settings -> Advanced -> Install add-on from file
 </details>
 
 ---
@@ -146,7 +135,7 @@ FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was review
 
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
-[![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE) 
+[![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension?logo=github&logoColor=fff)
 ![ECMAScript](https://img.shields.io/badge/ECMAScript_2022_(ES13)-blue?style=plastic&logo=javascript)
 
@@ -187,10 +176,10 @@ The library is not used in Firefox and will be removed once users migrate to v8+
 
 ### Dark Theme
 
-<img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt="">
 <img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
 
-<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt=""> 
+<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt="">
 <img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
 
 ### Light Theme
@@ -292,7 +281,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
   - Click "Load Temporary Add-on..."
   - Select above `manifest.json`
 
-- **Firefox for Android**  
+- **Firefox for Android**
   You can try installing FoxyProxy Basic v8.*
   - [Expanded extension support in Firefox for Android Nightly](https://blog.mozilla.org/addons/2020/09/29/expanded-extension-support-in-firefox-for-android-nightly/)
   - [How to Install Any Add-on in Firefox for Android](https://www.maketecheasier.com/install-addon-firefox-android/)
