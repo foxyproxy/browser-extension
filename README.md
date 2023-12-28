@@ -104,29 +104,17 @@ FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was review
 <details>
   <summary><b>Downgrade or Beta Installation</b></summary>
 
-  Firefox for Android ignores disabling `extensions.update.enabled` (due to a bug). Therefore, installation of an older version from AMO will get updated.
+Firefox for Android ignores disabling `extensions.update.enabled` (due to a bug). Therefore, installation of an older version from AMO will get updated.
 
-- **Install Firefox Nightly**
-  - [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US)
-- **Enable Debug Menu**
-  - Go to: menu -> Settings ->  About Firefox Nightly
-  - Tap a few times on the Firefox icon to enable debug menu
-  - Go to: `about:confog`
-  - Find `xpinstall.signatures.required`
-  - Toggle to `false`
-- **Install older FoxyProxy or Beta version**
-  - **Install older FoxyProxy Versions**
-    - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
-    - Download the desired version
-    - Disable Automatic Updates
-    - Remove `META-INF` folder
-    - Make the file available to the Android device
-  - **Install Beta version**
-    - Follow [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
-    - Create a zip file from the content of `src`
-    - Make the file available to the Android device
-- **Install add-on from file**
-  - Go to: menu -> Settings -> Advanced -> Install add-on from file
+- **Downgrade**
+  - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
+  - Download the desired version
+  - Disable Automatic Updates
+  - Remove `META-INF` folder
+  - Make the file available to the Android device
+  - Follow Firefox for Android [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide) but use this zip
+- **Beta Installation**
+  - Follow Firefox for Android [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
 </details>
 
 ---
@@ -282,9 +270,20 @@ The library is not used in Firefox and will be removed once users migrate to v8+
   - Select above `manifest.json`
 
 - **Firefox for Android**
-  You can try installing FoxyProxy Basic v8.*
-  - [Expanded extension support in Firefox for Android Nightly](https://blog.mozilla.org/addons/2020/09/29/expanded-extension-support-in-firefox-for-android-nightly/)
-  - [How to Install Any Add-on in Firefox for Android](https://www.maketecheasier.com/install-addon-firefox-android/)
+  - Install Firefox Nightly
+    - [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US)
+  - Enable Debug Menu
+    - Go to: menu -> Settings ->  About Firefox Nightly
+    - Tap a few times on the Firefox icon to enable debug menu
+    - Go to: `about:confog`
+    - Find `xpinstall.signatures.required`
+    - Toggle to `false`
+  - Install Beta version
+    - Prepare `src` for Firefox as mentioned above
+    - Create a zip file from the content of `src`
+    - Make the file available to the Android device
+  - Install add-on from file
+    - Go to: menu -> Settings -> Advanced -> Install add-on from file
 
 ## Building for Distribution
 
