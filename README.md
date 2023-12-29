@@ -104,7 +104,7 @@ FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was review
 <details>
   <summary><b>Downgrade or Beta Installation</b></summary>
 
-Firefox for Android ignores disabling `extensions.update.enabled` (due to a bug). Therefore, installation of an older version from AMO will get updated.
+Firefox for Android ignores disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated.
 
 - **Downgrade**
   - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
