@@ -164,19 +164,15 @@ The library is not used in Firefox and will be removed once users migrate to v8+
 
 ### Dark Theme
 
-<img src="/screenshots/8.1/dark-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="200" alt="">
-
-<img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/dark-theme/popup.jpg" width="160" alt=""> <img src="/screenshots/8.1/dark-theme/options-tab.jpg" width="160" alt="">
+<img src="/screenshots/8.1/dark-theme/proxies-tab.jpg" width="160" alt=""> <img src="/screenshots/8.1/dark-theme/import-tab.jpg" width="160" alt=""> 
+<img src="/screenshots/8.1/dark-theme/pattern-tester-tab.jpg" width="160" alt=""> <img src="/screenshots/8.1/dark-theme/log-tab.jpg" width="160" alt="">
 
 ### Light Theme
 
-<img src="/screenshots/8.1/light-theme/popup.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="200" alt="">
-
-<img src="/screenshots/8.1/light-theme/import-tab.jpg" width="200" alt=""> <img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="200" alt="">
-<img src="/screenshots/8.1/light-theme/log-tab.jpg" width="200" alt="">
+<img src="/screenshots/8.1/light-theme/popup.jpg" width="160" alt=""> <img src="/screenshots/8.1/light-theme/options-tab.jpg" width="160" alt="">
+<img src="/screenshots/8.1/light-theme/proxies-tab.jpg" width="160" alt=""> <img src="/screenshots/8.1/light-theme/import-tab.jpg" width="160" alt=""> 
+<img src="/screenshots/8.1/light-theme/pattern-tester-tab.jpg" width="160" alt=""> <img src="/screenshots/8.1/light-theme/log-tab.jpg" width="160" alt="">
 
 ## Releases
 
@@ -219,7 +215,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
     </tr>
     <tr>
       <td>Source Code Release</td>
-      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/releases/tag/v8.1">8.1</a></td>
+      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/releases">Releases</a></td>
     </tr>
     <tr>
       <td>Source Code Old</td>
