@@ -109,8 +109,8 @@ Firefox for Android ignores disabling `extensions.update.enabled` (due to a [bug
 - **Downgrade**
   - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
   - Download the desired version
-  - Disable Automatic Updates
-  - Remove `META-INF` folder
+  - ~Disable Automatic Updates~ (not working on Android)
+  - Edit `manifest.json -> browser_specific_settings -> gecko -> id` to prevent update
   - Make the file available to the Android device
   - Follow Firefox for Android [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide) but use this zip
 - **Beta Installation**
@@ -156,7 +156,7 @@ No remote code is used in this extension.
 
 ### Why is there a crypto library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?
 
-The crypto library was already incldued in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentails. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned) to 2023. It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x.
+The crypto library was already included in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentials. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned) to 2023. It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x.
 
 The library is not used in Firefox and will be removed once users migrate to v8+.
 
@@ -276,6 +276,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
     - Toggle to `false`
   - Install Beta version
     - Prepare `src` for Firefox as mentioned above
+    - Edit `manifest.json -> browser_specific_settings -> gecko -> id` to prevent update
     - Create a zip file from the content of `src`
     - Make the file available to the Android device
   - Install add-on from file
