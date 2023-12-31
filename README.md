@@ -96,30 +96,11 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 ## 📱 Firefox for Android
 
-Due to an unforeseen bug (API throws in [ext-proxy.js](https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207)), FoxyProxy did not function properly on Android.
-The issue has been fixed in version 8.7 and was uploaded to AMO on Dec 16th.
-FoxyProxy Basic 8.7 has been online since, and FoxyProxy Standard 8.7 was reviewed by AMO on Dec 19th.
+[Downgrade instructions](https://github.com/foxyproxy/browser-extension/issues/107)
 
-
-<details>
-  <summary><b>Downgrade or Beta Installation</b></summary>
-
-Firefox for Android ignores disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated.
-
-- **Downgrade**
-  - Go to: https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
-  - Download the desired version
-  - ~Disable Automatic Updates~ (not working on Android)
-  - Edit `manifest.json -> browser_specific_settings -> gecko -> id` to prevent update
-  - Make the file available to the Android device
-  - Follow Firefox for Android [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide) but use this zip
-- **Beta Installation**
-  - Follow Firefox for Android [Beta Installation Guide](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
-</details>
+[Beta instructions](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
 
 ---
-
-
 
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
@@ -138,7 +119,7 @@ FoxyProxy has been owned and developed consistently by the same team since 2006.
 
 The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*. Source code for [older versions](https://github.com/foxyproxy/firefox-extension).
 
-## Permissions Justification
+## Permissions
 
 These justifications were provided to Google and Mozilla
 
@@ -271,7 +252,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
   - Enable Debug Menu
     - Go to: menu -> Settings ->  About Firefox Nightly
     - Tap a few times on the Firefox icon to enable debug menu
-    - Go to: `about:confog`
+    - Go to: `about:config`
     - Find `xpinstall.signatures.required`
     - Toggle to `false`
   - Install Beta version
