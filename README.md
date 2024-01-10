@@ -96,6 +96,13 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 ## 📱 Firefox for Android
 
+Firefox for Android ignores disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated.
+The bug is fixed in Firefox 123.
+
+- Go to: `about:confog`
+- Find (or add) `extensions.update.enabled`
+- Toggle to `false`
+
 [Downgrade instructions](https://github.com/foxyproxy/browser-extension/issues/107)
 
 [Beta instructions](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
