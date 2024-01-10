@@ -14,7 +14,7 @@ Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO
 Previous settings were not deleted and are recoverable. The following options are available if FoxyProxy updated from 7.* and you have encountered the update bug.
 
 <details>
-  <summary><b>1. Retrieve Settings and Keep version 8.2</b></summary>
+  <summary><b>Retrieve Settings and Keep version 8.2</b></summary>
 
 From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#issuecomment-1838719332):
 
@@ -77,7 +77,7 @@ browser.storage.local.get().then(pref => {
 </details>
 
 <details>
-  <summary><b>2. Downgrade to 7.*</b></summary>
+  <summary><b>Downgrade to 7.*</b></summary>
 
 Downgrade may retrieve old settings.
 
@@ -96,16 +96,32 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 ## 📱 Firefox for Android
 
-Firefox for Android ignores disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated.
-The bug is fixed in Firefox 123.
+Firefox for Android ignored disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated. The bug is fixed in Firefox 123.
 
-- Go to: `about:confog`
-- Find (or add) `extensions.update.enabled`
-- Toggle to `false`
+<details>
+  <summary><b>Downgrade ot Beta Installation</b></summary>
 
-[Downgrade instructions](https://github.com/foxyproxy/browser-extension/issues/107)
 
-[Beta instructions](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
+- Download 7.5.1 (or older) from https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
+ - Make the file available to the Android device through [Android File Transfer](https://www.android.com/filetransfer/), adb, Android Studio, or a similar tool
+- Install [Firefox Nightly for Developers](https://play.google.com/store/apps/details?id=org.mozilla.fenix&hl=en&gl=US) on Android
+- Enable Debug Menu
+    - Go to:` menu -> Settings ->  About Firefox Nightly`
+    - Tap a few times on the Firefox icon to enable debug menu
+- Navigate to: `about:config`
+    - Find `xpinstall.signatures.required`
+    - Toggle to `false`
+    - Find (or add) `extensions.update.enabled`
+    - Toggle to `false`
+ - Install add-on from file
+    - Go to: `menu -> Settings -> Advanced -> Install add-on from file` and select the `.zip` file you transferred to the android device
+    - Check "Allow in private browsing" then "Okay, Got it"
+
+#### See also:
+- [Downgrade instructions](https://github.com/foxyproxy/browser-extension/issues/107)
+- [Beta instructions](https://github.com/foxyproxy/browser-extension#beta-installation-guide)
+
+</details>
 
 ---
 
