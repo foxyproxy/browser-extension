@@ -33,12 +33,6 @@
     "default_title": "__MSG_extensionName__"
   },
 
-  "page_action": {
-    "browser_style": false,
-    "default_icon": "image/icon.svg",
-    "default_title": "__MSG_extensionName__"
-  },
-
   "permissions": [
     "downloads",
     "notifications",
