@@ -11,15 +11,16 @@ await App.getPref();
 class Popup {
 
   static {
+    // --- theme
+    pref.theme && (document.documentElement.className = pref.theme);
+    document.body.style.opacity = 1;                        // show after
+
     document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
 
     this.list = document.querySelector('div.list');
     this.select = document.querySelector('select');
     this.proxyCache = {};                                   // used to find proxy
 
-    // this.showJS = document.querySelector('.show-js');
-    // disable buttons on Chrome
-    // !App.firefox && this.showJS.classList.add('chrome');
     // disable buttons on storage.managed
     pref.managed && document.body.classList.add('managed');
 
@@ -27,6 +28,11 @@ class Popup {
     const filter = document.querySelector('#filter');
     filter.value = '';                                      // reset after reload
     filter.addEventListener('input', e => this.filterProxy(e));
+
+    // --- store details open toggle
+    const details = document.querySelector('details');
+    details.open = localStorage.getItem('more') !== 'false';    // defaults to true
+    details.addEventListener('toggle', e => localStorage.setItem('more', details.open));
 
     this.process();
   }
@@ -111,6 +117,11 @@ class Popup {
 
       case 'ip':
         this.getIP();
+        break;
+
+      case 'log':
+        browser.tabs.create({url: '/content/options.html?log'});
+        window.close();
         break;
 
       case 'quickAdd':

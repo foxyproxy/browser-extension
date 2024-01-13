@@ -13,8 +13,8 @@ export const pref = {
   mode: 'disable',
   sync: false,
   autoBackup: false,
-  showPatternProxy: false,
   passthrough: '',
+  theme: '',
   container: {},
   commands: {},
   data: []

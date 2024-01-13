@@ -1,6 +1,7 @@
 @import 'default.css';
 @import 'progress-bar.css';
 @import 'spinner.css';
+@import 'theme.css';
 
 /* ----- General ----- */
 :root {
@@ -58,13 +59,6 @@ iframe {
   vertical-align: text-bottom;
 } */
 
-label[for],
-input[type="checkbox"],
-summary,
-.pointer {
-  cursor: pointer;
-}
-
 label > input[type="checkbox"] {
   margin-right: 0.5em;
 }
@@ -80,29 +74,17 @@ textarea {
   resize: vertical;
 }
 
-.flat {
-  background: var(--btn-bg);
+/* .flat {
   color: #fff;
-  cursor: pointer;
-  text-align: center;
-  transition: 0.5s;
   border-radius: 5px;
   padding: 0.4em 1em;
-  border: 0;
-  font-weight: bold;
   font-size: 0.9em;
   min-width: 8em;
   display: inline-block;
-  white-space: nowrap;
-}
-
-.flat:hover {
-  background: var(--btn-hover);
-  /* box-shadow: 0px 1px 5px var(--shadow); */
-}
+} */
 
 fieldset {
-  background: var(--bg);
+  background-color: var(--bg);
   border-radius: 0.5em;
   border: 0;
   padding: 1.5em;
@@ -154,7 +136,7 @@ input[type="checkbox"].control {
 }
 
 div.nav {
-  background: var(--nav-bg);
+  background-color: var(--nav-bg);
 }
 
 nav {
@@ -175,12 +157,12 @@ nav img {
 
 nav > label {
   padding: 0.5em 1em;
-  transition: 0.5s;
+  /* transition: 0.5s; */
   border-radius: 0.5em 0.5em 0 0;
 }
 
 nav > label:hover {
-  background: var(--nav-hover);
+  background-color: var(--nav-hover);
 }
 
 /* nav > label img {
@@ -231,29 +213,19 @@ input[type="file"] {
 /* ----- /Import/Export ----- */
 
 /* ----- Submit Button ----- */
-button[type="submit"] {
+/* button[type="submit"] {
   display: table;
   color: #fff;
-  background: var(--btn-bg);
-  font-size: 0.9em;
-  font-weight: bold;
+  background-color: var(--btn-bg);
+  font-size:0.9em;
   margin: 1em auto 0;
-  padding: 0.5em 3em;
-  text-shadow: 0 -1px 1px #333;
-  border: 0;
+  padding: 0.5em 5em;
   border-radius: 5px;
-  box-shadow: 0 5px var(--body-bg);
 }
 
 button[type="submit"]:hover {
   background-color: var(--btn-hover);
-}
-
-button[type="submit"]:active {
-  /* background-color: #3e8e41; */
-  box-shadow: 0 1px var(--body-bg);
-  transform: translateY(4px);
-}
+} */
 /* ----- /Submit Button ----- */
 
 /* ----- Toggle Switch ----- */
@@ -274,7 +246,7 @@ button[type="submit"]:active {
   z-index: 2;
   width: 14px;
   height: 14px;
-  background: #fff;
+  background-color: #fff;
   left: 1px;
   top: 1px;
   border-radius: 50%;
@@ -292,14 +264,6 @@ button[type="submit"]:active {
 /* ----- /Toggle Switch ----- */
 
 /* ----- Button ----- */
-button.plain {
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  min-width: 1em;
-  border: none;
-}
-
 button.bin,
 button.test,
 button.close {
@@ -344,10 +308,15 @@ textarea {
   font-size: 1em;
 } */
 
+section.options fieldset * {
+  transition: opacity 0.5s;
+}
+
 input[type="color"] {
   border: 0;
 }
 
+.options div.theme,
 .options div.container,
 .options div.commands {
   display: grid;
@@ -355,6 +324,10 @@ input[type="color"] {
   gap: 0.2em 1em;
   margin-left: 1em;
   margin-bottom: 1em;
+}
+
+.options div.theme {
+  margin-left: unset;
 }
 
 .options div.buttons {
@@ -369,7 +342,7 @@ input[type="color"] {
 /* .options div.buttons {
   padding: 0 1.5em;
   margin: 0 -1.5em 1em;
-  background: var(--btn-bg);
+  background-color: var(--btn-bg);
 }
 
 .options div.buttons > * {
@@ -520,7 +493,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 .pattern-box button.bin {
   padding: 0;
   background-color: transparent;
-  border: none;
+  /* border: none; */
   font-size: 1em;
   transition: 0.5s;
   color: #ccc;
@@ -528,74 +501,6 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   text-shadow: 0 -1px 1px #555, 0 1px 0 #fff;
 }
 /* ----- /Pattern ----- */
-
-/* ----- show/hide elements ----- */
-details.proxy[data-type="direct"] :is(
-  [data-i18n="port"], [data-id="port"],
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password,
-  [data-i18n="country"], [data-id="cc"],
-  [data-i18n="city"], [data-id="city"],
-  [data-type="pac"], .pac) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy[data-type="pac"] :is(
-  [data-i18n="port"], [data-id="port"],
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy[data-type="pac"] :is(.pattern-head, .pattern-box) {
-  display: none;
-}
-
-details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy[data-type="socks4"] :is(
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* --- Chrome --- */
-.chrome .firefox {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-.chrome details.proxy[data-type="socks5"] :is(
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* --- Basic --- */
-.basic :is(.pattern-head, .pattern-box) {
-  display: none;
-}
-
-/* ----- /show/hide elements ----- */
 
 /* ----- Popup ----- */
 div.popup {
@@ -718,7 +623,7 @@ section.log {
 
 .log thead th {
   color: #fff;
-  background: #999;
+  background-color: #999;
   padding: 0.5em 0.2em;
   font-size: 0.9em;
   font-weight: normal;
@@ -730,13 +635,13 @@ section.log {
   vertical-align: unset;
 }
 
-.log tbody tr {
-  /* border-bottom: 1px solid var(--border); */
+/* .log tbody tr {
+  /* border-bottom: 1px solid var(--border); * /
   animation: sect 0.5s ease-in-out;
-}
+} */
 
 .log tr:hover {
-  background: var(--hover) !important;
+  background-color: var(--hover) !important;
 }
 
 .log tbody tr:nth-of-type(even) {
@@ -748,27 +653,26 @@ section.log {
   padding: 0.2em;
 }
 
-.log td:nth-of-type(5),
 .log td:nth-of-type(6),
-.log td:nth-of-type(11) {
+.log td:nth-of-type(7),
+.log td:nth-of-type(12) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 20em;
 }
 
-.log td:nth-of-type(6) {
+.log td:nth-of-type(7) {
   max-width: 40em;
 }
 
-.log td:nth-of-type(7) {
+.log td:nth-of-type(8) {
   border-left: 2px solid var(--border);
 }
 
-.log td:nth-of-type(11) {
+.log td:nth-of-type(12) {
   max-width: 5em;
 }
-
 
 .log td.incognito::before {
   content: '';
@@ -795,17 +699,87 @@ section.log {
   content: counter(n);
   font-size: 0.8em;
 }
-
-/* Not Available On Chrome (Firefox Only)" */
-.log td.unavailable {
-  height: 50vh;
-  text-align: center;
-  vertical-align: middle;
-  color: var(--btn-bg);
-  font-size: 3em;
-}
-
-.log td.unavailable::before {
-  content: none !important;
-}
 /* ----- /Log ----- */
+
+/* ----- show/hide elements ----- */
+details.proxy[data-type="direct"] :is(
+  [data-i18n="port"], [data-id="port"],
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password,
+  [data-i18n="country"], [data-id="cc"],
+  [data-i18n="city"], [data-id="city"],
+  [data-type="pac"], .pac) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="pac"] :is(
+  [data-i18n="port"], [data-id="port"],
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="pac"] :is(.pattern-head, .pattern-box) {
+  display: none;
+}
+
+details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="socks4"] :is(
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Chrome --- */
+body.chrome .firefox {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+body.chrome details.proxy[data-type="socks5"] :is(
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+body:not(.chrome) [data-i18n="storeLocally"] {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+caption.firefox {
+  color: var(--nav-color);
+  visibility: hidden;
+}
+
+body.chrome caption.firefox {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- Basic --- */
+.basic :is(.pattern-head, .pattern-box) {
+  display: none;
+}
+/* ----- /show/hide elements ----- */

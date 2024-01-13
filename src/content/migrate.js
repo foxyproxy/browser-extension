@@ -40,30 +40,19 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
 export class Migrate {
 
   static async init(pref) {
-    // --- 8.8
-    // tidy up left-over obj from 8.0 Sync typo mistake
-    if (Object.hasOwn(pref, 'obj')) {
-      delete pref.obj;
-      await browser.storage.local.remove('obj');
-      await browser.storage.sync.remove('obj');
-    }
-
-    // --- 8.7
-    // change global proxyDNS to per-proxy
+    // --- 8.9
+    // 8.9 remove showPatternProxy (from 8.7)
+    // 8.8 tidy up left-over obj Sync typo mistake (from 8.0)
+    // 8.7 change global proxyDNS to per-proxy (from 8.0)
     if (Object.hasOwn(pref, 'proxyDNS') && pref.data) {
       pref.data.forEach(i => i.proxyDNS = !!pref.proxyDNS);
-      delete pref.proxyDNS;
-      await browser.storage.local.remove('proxyDNS');
       await browser.storage.local.set(pref);
     }
-
-    // --- 8.1
-    if (Object.hasOwn(pref, 'globalExcludeWildcard')) {
-      delete pref.globalExcludeWildcard;                    // from 8.0, removed in 8.1
-      delete pref.globalExcludeRegex;                       // from 8.0, removed in 8.1
-      delete pref.obj;                                      // 8.0 Sync typo mistake
-      await browser.storage.local.remove(['globalExcludeWildcard', 'globalExcludeRegex', 'obj']);
-    }
+    // 8.1 remove globalExcludeWildcard, globalExcludeRegex (from 8.0)
+    const keys = ['showPatternProxy', 'obj', 'proxyDNS', 'globalExcludeWildcard', 'globalExcludeRegex'];
+    keys.forEach(i => delete pref[i]);
+    await browser.storage.local.remove(keys);
+    await browser.storage.sync.remove(keys);
 
     // --- 8.0
     if (pref.data) { return; }
@@ -185,7 +174,9 @@ export class Migrate {
     const db = App.getDefaultPref();
     db.sync = !!pref.sync;
 
-    const data = Object.values(pref).filter(i => i && Object.hasOwn(i, 'address')); // null value causes an error
+    // null value causes an error in hasOwn, direct proxies don't have 'address'
+    const data = Object.values(pref).filter(i => i && ['address', 'type'].some(p => Object.hasOwn(i, p)));
+
     data.sort((a, b) => a.index - b.index);                 // sort by index
 
     data.forEach(item => {
@@ -193,8 +184,8 @@ export class Migrate {
         active: item.active === 'true' || item.active === true, // convert to boolean, some old databases have mixed types
         title: item.title || '',
         type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
-        hostname: item.address,                             // rename to hostname
-        port: item.port,
+        hostname: item.address || '',                       // rename to hostname
+        port: item.port || '',
         username: item.username || '',
         password: item.password || '',
         cc: item.cc || '',                                  // remove country, use CC in country-code.js
@@ -208,9 +199,7 @@ export class Migrate {
       };
 
       pxy.cc === 'UK' && (pxy.cc = 'GB');                   // convert UK to ISO 3166-1 GB
-
-      // --- type 'direct'
-      pxy.type === 'direct' && (pxy.hostname = 'DIRECT');
+      pxy.type === 'direct' && (pxy.hostname = 'DIRECT');   // type 'direct'
 
 /*
       {

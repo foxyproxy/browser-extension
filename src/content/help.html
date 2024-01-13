@@ -407,12 +407,16 @@
       <dt>Individual Proxy</dt>
       <dd>Connections are passed through the selected proxy (or PAC)</dd>
 
+      <dt>▶ More</dt>
+      <dd>Show or hide additional options</dd>
+      <dd>User choice is temporarily stored in localStorage (not available in Private/Incognito)</dd>
+
       <dt>Search Filter</dt>
       <dd>Proxy <i>Title</i>, <i>Hostname</i>, & <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
       <dd>Use <i>:port</i> to filter by port</dd>
 
       <dt>Quick Add</dt>
-      <dd>Select a proxy to add a pattern based on the current page URL</dd>
+      <dd>Add current page's host pattern to the selected proxy's include</dd>
       <dd>Only top 10 active proxies are listed</dd>
 
       <dt>Exclude Host</dt>
@@ -494,6 +498,7 @@
       <p>There is a discussion to increase the storage sync quota to 1MB.</p>
       <p>See also:</p>
       <ul>
+        <li><a href="https://github.com/w3c/webextensions/issues/520" target="_blank">Increase maximum total size (QUOTA_BYTES) for storage.sync</a></li>
         <li><a href="https://github.com/w3c/webextensions/issues/351" target="_blank">Discuss limits applied to storage.local and storage.sync API</a></li>
         <li><a href="https://github.com/w3c/webextensions/issues/510">Proposal: Increase maximum item size in Storage sync quotas</a></li>
       </ul>
@@ -508,8 +513,8 @@
     <p>Toggle changes the browser preferences and does not require SAVE.</p>
 
 
-    <h3 id="show-pattern-proxy">Show Pattern Proxy <span>(Firefox only)</span></h3>
-    <p>Show per-tab proxies on the toolbar badge when in Proxy by Patterns mode</p>
+    <!-- <h3 id="show-pattern-proxy">Show Pattern Proxy <span>(Firefox only)</span></h3>
+    <p>Show per-tab proxies on the toolbar badge when in Proxy by Patterns mode</p> -->
 
     <h3 id="container" class="experimental">Incognito/Container</h3>
     <p>Set a proxy for Incognito (Private Mode) and/or Containers</p>
@@ -778,7 +783,7 @@
       <dd>Option to pass DNS to the SOCKS proxy when using SOCKS</dd>
       <dd class="note">See also:
         <ul>
-          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1741375" target="_blank">Proxy DNS by default when using SOCKS v5</a> has landed in Firefox 123</li>
+          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1741375" target="_blank">Proxy DNS by default when using SOCKS v5</a> (Firefox 123)</li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1799411" target="_blank">DNS leaks with proxy extension</a></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1791243" target="_blank">Firefox queries DNS of Proxy destination</a></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1867562" target="_blank">Despite the fact that DNS over HTTPS is switched off on Privacy and Security bar in Settings it still leaks my DNS</a></li>
@@ -788,10 +793,11 @@
       <dt>PAC URL <span>(not available on Android)</span></dt>
       <dd>Required for PAC type</dd>
       <dd>Proxy Auto-Configuration file (PAC) can be used to handle all proxying configurations</dd>
+      <dd>PAC is a configuration file, not a proxy server</dd>
       <dd>Patterns are not applicable in PAC type</dd>
       <dd>See also: <a href="https://developer.mozilla.org/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file" target="_blank">Proxy Auto-Configuration (PAC) file</a></dd>
 
-      <dt id="store-locally" class="experimental">Store Locally</dt>
+      <dt id="store-locally" class="experimental">Store Locally <span>(Chrome only)</span></dt>
       <dd>Option to store PAC locally</dd>
       <dd>Option should only be used for altering remote PAC rules</dd>
       <dd>Storing large or many PACs locally is not recommended and can prevent browser sync</dd>
@@ -1064,14 +1070,23 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <li>Result will be match ✅ or fail ❌</li>
     </ol>
 
-    <h3 id="log">Log <span>(Firefox only)</span></h3>
+    <h3 id="log">Log <span>(Firefox mainly)</span> <span class="experimental">(limited on Chrome v8.9)</span></h3>
     <ul>
       <li>Live Log displays the web requests in reversed order (new one on top)</li>
       <li>It will continue to display while the Options page is open and will stop logging as soon as the page is closed</li>
       <li>Log data is not stored</li>
-      <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li>
+      <!-- <li>Not available on chrome since in Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a></li> -->
       <li>Patterns will show if FoxyProxy was in Proxy by Patterns mode when the log page is loaded (refresh if necessary)</li>
+
+      <li>Limited logging on chrome since Chrome <a href="https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest" target="_blank">webRequest.onBeforeRequest</a> API does not provide <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest" target="_blank">proxyInfo</a> (and some others)
+      <ul>
+        <li>No Incognito or Container data on Chrome</li>
+        <li>No proxy data on Chrome</li>
+      </ul>
+      </li>
+
     </ul>
+
 
 
     <h2 id="enterprise-policy" class="experimental">Enterprise Policy <span>(v8.2)</span></h2>
@@ -1091,14 +1106,14 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       </li>
     </ul>
 
-    <h5>Default Options <span>(v8.7)</span></h5>
+    <h5>Default Options <span>(v8.9)</span></h5>
 <pre>
 {
   "mode": "disable",          // mandatory: current option, necessary to enable
   "sync": false,              // optional:  not necessary as it will be disabled on managed storage
   "autoBackup": false,        // optional:  not necessary as save is disabled on managed storage
-  "showPatternProxy": false,  // optional:  Show proxies on the toolbar badge when in Proxy by Patterns mode (Firefox only)
   "passthrough": "",          // optional:  Global Exclude
+  "theme": "",                // optional:  set the theme
   "container": {},            // optional:  Incognito/Container settings
   "commands": {},             // optional:  keyboard shortcut settings
   "data": []                  // mandatory: array of proxies and their patterns

@@ -70,8 +70,17 @@
         <label data-i18n="limitWebRTC"><input type="checkbox" id="limitWebRTC"></label>
         <p class="description" data-i18n="limitWebRTCDescription"></p>
 
-        <label class="firefox" data-i18n="showPatternProxy"><input type="checkbox" id="showPatternProxy"></label>
-        <p class="description firefox" data-i18n="showPatternProxyDescription"></p>
+        <!-- <label class="firefox" data-i18n="showPatternProxy"><input type="checkbox" id="showPatternProxy"></label>
+        <p class="description firefox" data-i18n="showPatternProxyDescription"></p> -->
+
+        <div class="theme">
+          <label data-i18n="theme"></label>
+          <select id="theme">
+            <option value="" data-i18n="default"></option>
+            <option>moonlight</option>
+            <option>moonlight alt</option>
+          </select>
+        </div>
 
         <label data-i18n="container"></label>
         <p class="description" data-i18n="containerDescription"></p>
@@ -602,12 +611,14 @@
     <!-- log -->
     <section class="log">
       <table>
+        <caption class="firefox" data-i18n="notAvailable"></caption>
         <thead>
           <tr>
             <th style="width: 1.5em;"></th>
             <th style="width: 5em;" data-i18n="time"></th>
             <th style="width: 1em;"><img src="../image/container.svg" alt=""></th>
             <th style="width: 3em;" data-i18n="method"></th>
+            <th style="width: 3em;" data-i18n="type"></th>
             <th data-i18n="documentURL"></th>
             <th data-i18n="url"></th>
             <th><span data-i18n="proxy"></span> <span data-i18n="title"></span></th>
@@ -618,15 +629,13 @@
            </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="unavailable" colspan="11" data-i18n="notAvailable"></td>
-        </tr>
         </tbody>
       </table>
 
       <!-- template -->
       <template>
         <tr>
+          <td></td>
           <td></td>
           <td></td>
           <td></td>

@@ -4,6 +4,7 @@
   --bg: #fff;
   --alt-bg: #f5f5f5;
   --hover: #eaeaea;
+  --highlight: #f90;
 
   --body-bg: #630;
   --header: #c60;
@@ -17,7 +18,7 @@
 
   --link: #e70;
   --border: #ddd;
-  /* --shadow: #0004; */
+  --shadow: #0004;
   --dim: #777;
   --tr: #f5f5f5;
 }
@@ -30,7 +31,7 @@
     --alt-bg: #666;
     --hover: #888;
 
-    --body-bg: #630;
+    /* --body-bg: #630; */
     --header: #e70;
 
     --btn-bg: #f90;
@@ -38,7 +39,7 @@
 
     --link: #f90;
     --border: #777;
-    /* --shadow: #fff8; */
+    --shadow: #fff8;
     --dim: #ccc;
     --tr: #531;
   }
@@ -66,6 +67,11 @@ section {
   padding: 0;
 }
 
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
 select,
 textarea,
 input[type="number"],
@@ -79,9 +85,11 @@ input[type="url"] {
   border-radius: 0.3em;
 }
 
-a {
-  color: var(--link);
-  text-decoration: none;
+label[for],
+input[type="checkbox"],
+summary,
+.pointer {
+  cursor: pointer;
 }
 
 ::placeholder {
@@ -90,16 +98,35 @@ a {
   font-style: italic;
 }
 
-button {
-  background: var(--btn-bg);
+.invalid,
+input:invalid {
+  box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
+}
+
+/* ----- Buttons ----- */
+button,
+label.flat {
+  background-color: var(--btn-bg);
+  border: none;
   color: inherit;
   cursor: pointer;
   text-align: center;
-  transition: 0.5s;
+  white-space: nowrap;
 }
 
-button:hover {
-  background: var(--btn-hover);
+button.flat,
+label.flat {
+  display: inline-block;
+  font-size: 0.9em;
+  color: #fff;
+  border-radius: 5px;
+  padding: 0.4em 1em;
+  min-width: 8em;
+}
+
+button:hover,
+label.flat:hover {
+  background-color: var(--btn-hover);
 }
 
 button:disabled,
@@ -108,7 +135,19 @@ select:disabled {
   opacity: 0.4;
 }
 
-.invalid,
-input:invalid {
-  box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
+button.plain {
+  background-color: unset;
+  padding: 0;
+  margin: 0;
+  min-width: 1em;
 }
+
+button[type="submit"] {
+  display: table;
+  color: #fff;
+  font-size:0.9em;
+  border-radius: 5px;
+  padding: 0.5em 5em;
+  margin: 1em auto 0;
+}
+/* ----- /Buttons ----- */

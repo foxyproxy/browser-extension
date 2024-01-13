@@ -1,8 +1,14 @@
 @import 'default.css';
+@import 'theme.css';
 
 /* ----- Light Theme ----- */
 :root {
   --filter: opacity(0.4) grayscale(1);
+}
+
+/* for the default theme */
+:root:not([class]) {
+  --nav-bg: #630;
 }
 
 /* ----- Dark Theme ----- */
@@ -23,7 +29,7 @@ body {
 
 h1 {
   color: var(--nav-color);
-  background: var(--body-bg);
+  background-color: var(--nav-bg);
   margin: 0;
   padding: 0.5em;
 }
@@ -34,7 +40,7 @@ h1 img {
 }
 
 /* ----- Buttons ----- */
-div.buttons {
+div.popup-buttons {
   display: grid;
   grid-auto-flow: column;
   column-gap: 0.1em;
@@ -42,13 +48,13 @@ div.buttons {
 
 button {
   color: #fff;
-  border: 0;
+  border: none;
   padding: 0.8em;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 button:hover {
-  background: var(--btn-hover);
+  background-color: var(--btn-hover);
 }
 /* ----- /Buttons ----- */
 
@@ -125,11 +131,17 @@ input#filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
   padding-left: 2em;
   margin-bottom: 0.2em;
-  grid-column: span 2;
+  /* grid-column: span 2; */
 }
 
 div.list label.off {
   display: none;
+}
+
+summary {
+  background-color: var(--alt-bg);
+  padding: 0.2em 0.5em;
+  margin-bottom: 0.1em;
 }
 
 div.host {
@@ -141,24 +153,23 @@ div.host {
 }
 
 div.host button {
-  padding: 0.2em;
-  background: unset;
+  background-color: unset;
+  border-radius: 5px;
+  border: 1px solid var(--border);
   color: var(--color);
   font-weight: normal;
-  border: 1px solid var(--border);
-  border-radius: 5px;
+  padding: 0.2em;
 }
 
 div.host button:hover {
-  background: var(--hover);
+  background-color: var(--hover);
 }
 
-div.host select {
+/* div.host select {
   grid-column: span 2;
-}
+} */
 
 /* ----- show/hide elements ----- */
-
 /* --- Chrome --- */
 .chrome .firefox {
   opacity: 0.3;
@@ -177,5 +188,4 @@ div.host select {
 .basic .pattern {
   display: none;
 }
-
 /* ----- /show/hide elements ----- */

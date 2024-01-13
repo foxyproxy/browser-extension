@@ -7,7 +7,6 @@
 // Fixed in Firefox 119
 
 import {Pattern} from './pattern.js';
-import {PageAction} from './page-action.js';
 import {Location} from './location.js';
 
 // ---------- Firefox Proxy Process ------------------------
@@ -16,11 +15,10 @@ export class OnRequest {
   static {
     // --- default values
     this.mode = 'disable';
-    this.proxy = null;                                      // used for Single Proxy
+    this.proxy = {};                                        // used for Single Proxy
     this.data = [];                                         // used for Proxy by Pattern
     this.passthrough = [];                                  // RegExp string
     this.net = [];                                          // [start, end] strings
-    this.showPatternProxy = false;
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
 
@@ -40,12 +38,12 @@ export class OnRequest {
     const [passthrough, , net] = Pattern.getPassthrough(pref.passthrough);
     this.passthrough = passthrough;
     this.net = net;
-    this.showPatternProxy = pref.showPatternProxy;
 
-    const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname); // filter data
+    // filter data
+    const data = pref.data.filter(i => i.active && i.type !== 'pac' && i.hostname);
 
-    // --- single proxy
-    /:\d+$/.test(pref.mode) && (this.proxy = data.find(i => pref.mode === `${i.hostname}:${i.port}`));
+    // --- single proxy (false|undefined|proxy object)
+    this.proxy = /:\d+[^/]*$/.test(pref.mode) && data.find(i => pref.mode === `${i.hostname}:${i.port}`);
 
     // --- proxy by pattern
     this.data = data.filter(i => i.include[0] || i.exclude[0]).map(item => {
@@ -75,34 +73,37 @@ export class OnRequest {
   }
 
   static process(e) {
+    const tabId = e.tabId;
     switch (true) {
       // --- check local & global passthrough
       case this.bypass(e.url):
+        this.setAction(null, tabId);
         return {type: 'direct'};
 
       // --- tab proxy
-      case e.tabId !== -1 && !!this.tabProxy[e.tabId]:
-        return this.processProxy(this.tabProxy[e.tabId]);
+      case tabId !== -1 && !!this.tabProxy[tabId]:
+        return this.processProxy(this.tabProxy[tabId], tabId);
 
       // --- incognito proxy
-      case e.tabId !== -1 && e.incognito && !!this.container.incognito:
-        return this.processProxy(this.container.incognito);
+      case tabId !== -1 && e.incognito && !!this.container.incognito:
+        return this.processProxy(this.container.incognito, tabId);
 
       // --- container proxy
-      case e.tabId !== -1 && e.cookieStoreId && !!this.container[e.cookieStoreId]:
-        return this.processProxy(this.container[e.cookieStoreId]);
+      case tabId !== -1 && e.cookieStoreId && !!this.container[e.cookieStoreId]:
+        return this.processProxy(this.container[e.cookieStoreId], tabId);
 
       // --- standard operation
       case this.mode === 'disable':                         // pass direct
       case this.mode === 'direct':                          // pass direct
       case this.mode.includes('://') && !/:\d+$/.test(this.mode): // PAC URL is set
+        this.setAction(null, tabId);
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns
-        return this.processPattern(e.url, e.tabId);
+        return this.processPattern(e.url, tabId);
 
       default:                                              // get the proxy for all
-        return this.processProxy(this.proxy);
+        return this.processProxy(this.proxy, tabId);
     }
   }
 
@@ -111,31 +112,19 @@ export class OnRequest {
 
     for (const proxy of this.data) {
       if (!match(proxy.exclude) && match(proxy.include)) {
-        this.processShowPatternProxy(proxy, tabId);
-        return this.processProxy(proxy);
+        // this.processShowPatternProxy(proxy, tabId);
+        return this.processProxy(proxy, tabId);
       }
     }
 
+    this.setAction(null, tabId);
     return {type: 'direct'};                                // no match
   }
 
-  static processShowPatternProxy(item, tabId) {
-    // Set to -1 if the request isn't related to a tab
-    if (tabId === -1 || !this.showPatternProxy) { return; }
-
-    const host = [item.hostname, item.port].filter(Boolean).join(':');
-    const title = [item.title, host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
-    const text = item.title || item.hostname;
-    const color = item.color;
-
-    browser.action.setBadgeBackgroundColor({color, tabId});
-    browser.action.setTitle({title, tabId});
-    browser.action.setBadgeText({text, tabId});
-  }
-
-  static processProxy(proxy) {
-    const {type, hostname: host, port, username, password, proxyDNS} = proxy;
-    if (type === 'direct') { return {type: 'direct'}; }
+  static processProxy(proxy, tabId) {
+    this.setAction(proxy, tabId);
+    const {type, hostname: host, port, username, password, proxyDNS} = proxy || {};
+    if (!type || type === 'direct') { return {type: 'direct'}; }
 
     // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#102
     // Although API converts to number -> let port = Number.parseInt(proxyData.port, 10);
@@ -161,6 +150,28 @@ export class OnRequest {
     }
 
     return response;
+  }
+
+  static setAction(item, tabId) {
+    // Set to -1 if the request isn't related to a tab
+    if (tabId === -1) { return; }
+
+    // --- reset values
+    let title = null;
+    let text = null;
+    let color = null;
+
+    // --- set proxy details
+    if (item) {
+      const host = [item.hostname, item.port].filter(Boolean).join(':');
+      title = [item.title, host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
+      text = item.title || item.hostname;
+      color = item.color;
+    }
+
+    browser.action.setBadgeBackgroundColor({color, tabId});
+    browser.action.setTitle({title, tabId});
+    browser.action.setBadgeText({text, tabId});
   }
 
   // ---------- passthrough --------------------------------
@@ -223,13 +234,21 @@ export class OnRequest {
     }
 
     this.tabProxy[tab.id] = pxy;
-    PageAction.set(tab.id, pxy);
+    // PageAction.set(tab.id, pxy);
   }
 
   static async unsetTabProxy() {
     const [tab] = await browser.tabs.query({currentWindow: true, active: true});
     delete this.tabProxy[tab.id];
-    PageAction.unset(tab.id);
+    // PageAction.unset(tab.id);
+  }
+
+  // ---------- Update Page Action -------------------------
+  static onUpdated(tabId, changeInfo, tab) {
+    if (changeInfo.status !== 'complete') { return; }
+
+    const pxy = this.tabProxy[tabId];
+    pxy ? this.setAction(pxy, tabId) : this.checkPageAction(tab);
   }
 
   // ---------- Incognito/Container ------------------------
@@ -237,14 +256,6 @@ export class OnRequest {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; } // not if tab proxy is set
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
-    pxy && PageAction.set(tab.id, pxy);
-  }
-
-  // ---------- Update Page Action -------------------------
-  static onUpdated(tabId, changeInfo, tab) {
-    if (changeInfo.status !== 'complete') { return; }
-
-    const pxy = this.tabProxy[tab.id];
-    pxy ? PageAction.set(tab.id, pxy) : this.checkPageAction(tab);
+    pxy && this.setAction(pxy, tab.id);
   }
 }

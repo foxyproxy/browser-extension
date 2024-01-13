@@ -4,8 +4,8 @@
   "properties": {
     "mode": {"type": "string"},
     "sync": {"type": "boolean"},
-    "showPatternProxy": {"type": "boolean"},
     "passthrough": {"type": "string"},
+    "theme": {"type": "string"},
     "data": {
       "type": "array",
       "minItems": 1,

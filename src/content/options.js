@@ -61,6 +61,22 @@ class Toggle {
 }
 // ---------- /Toggle --------------------------------------
 
+// ---------- Theme ----------------------------------------
+// eslint-disable-next-line no-unused-vars
+class Theme {
+  static {
+    this.elem = [document, ...[...document.querySelectorAll('iframe')].map(i => i.contentDocument)];
+    pref.theme && this.set(pref.theme);
+    document.body.style.opacity = 1;                        // show after
+    document.getElementById('theme').addEventListener('change', e => this.set(e.target.value));
+  }
+
+  static set(value) {
+    this.elem.forEach(i => i.documentElement.className = value);
+  }
+}
+// ---------- /Theme ---------------------------------------
+
 // ---------- Options --------------------------------------
 class Options {
 
@@ -77,7 +93,7 @@ class Options {
     // --- buttons
     document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
 
-    this.init(['sync', 'autoBackup', 'showPatternProxy', 'passthrough']);
+    this.init(['sync', 'autoBackup', 'theme', 'showPatternProxy', 'passthrough']);
   }
 
   static init(keys = Object.keys(pref)) {
@@ -581,7 +597,11 @@ class Proxies {
     });
 
     // patterns
-    pxy.querySelector('button[data-i18n="add|title"]').addEventListener('click', () => this.addPattern(patternBox));
+    pxy.querySelector('button[data-i18n="add|title"]').addEventListener('click', () => {
+      this.addPattern(patternBox);
+      patternBox.lastElementChild.scrollIntoView(false);
+      patternBox.lastElementChild.children[4].focus();
+    });
     pxy.querySelector('input[type="file"]').addEventListener('change', e => this.importPattern(e, patternBox));
     pxy.querySelector('button[data-i18n^="export"]').addEventListener('click', () =>
       this.exportPattern(patternBox, title.value.trim() || hostname.value.trim()));
