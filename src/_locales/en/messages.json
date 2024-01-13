@@ -11,6 +11,7 @@
   "excludeHost": { "message": "Exclude Host" },
   "setTabProxy": { "message": "Set Tab Proxy" },
   "unsetTabProxy": { "message": "Unset Tab Proxy" },
+  "more": { "message": "More" },
 
   "incognitoAccessError": { "message": "Firefox requires private browsing permission for proxy settings." },
   "controlledByOtherExtensions": { "message": "Settings are controlled by other extensions." },
@@ -20,8 +21,8 @@
   "syncError": { "message": "Sync Error" },
   "autoBackup": { "message": "Auto Backup" },
   "autoBackupDescription": { "message": "Automatically backup settings to the Downloads folder on save" },
-  "showPatternProxy": { "message": "Show Pattern Proxy" },
-  "showPatternProxyDescription": { "message": "Show proxies on the toolbar badge when in Proxy by Patterns mode (Firefox only)" },
+  "theme": { "message": "Theme" },
+  "default": { "message": "Default" },
 
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "List of hosts that should not be proxied" },
@@ -94,7 +95,7 @@
   "method": { "message": "Method" },
   "proxy": { "message": "Proxy" },
   "time": { "message": "Time" },
-  "notAvailable": { "message": "Not Available On Chrome (Firefox Only)" },
+  "notAvailable": { "message": "Proxy data is not available on Chrome (Firefox Only)" },
 
   "about": { "message": "About" },
   "error": { "message": "There was an error with the operation" },
