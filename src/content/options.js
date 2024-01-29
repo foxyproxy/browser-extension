@@ -1015,8 +1015,6 @@ class ImportProxyList {
   static parseExtended(item) {
     // https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
     // https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
-
-    // convert old schemes to type
     let url;
     try { url = new URL(item); }
     catch (error) {
@@ -1026,19 +1024,18 @@ class ImportProxyList {
 
     // convert old schemes to type
     let type = url.protocol.slice(0, -1);
-    if (!['http', 'https'].includes(type)) {
-      const scheme = {
-        proxy: 'http',
-        ssl: 'https',
-        socks4: 'socks4',
-        socks5: 'socks5',
-        socks: 'socks5',
-      };
-
-      scheme[type] && (type = scheme[type]);
-      url.protocol = 'http:';
-      url = new URL(url);
-    }
+    const scheme = {
+      proxy: 'http',
+      ssl: 'https',
+      socks: 'socks5',
+    };
+    scheme[type] && (type = scheme[type]);
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1851426
+    // Reland URL: protocol setter needs to be more restrictive around file (fixed in Firefox 120)
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1603699
+    // Enable DefaultURI use for unknown schemes (fixed in Firefox 122)
+    // missing hostname, port with socks protocol (#120)
+    !url.hostname && (url = new URL('http:' + item.substring(url.protocol.length)));
 
     const {hostname, port, username, password} = url;
     // set to pram, can be overridden in searchParams
@@ -1050,19 +1047,13 @@ class ImportProxyList {
     }
 
     // fix missing default port
-    if (!pram.port) {
-      switch (type) {
-        case 'http':
-        case 'ws':
-          pram.port = '80';
-          break;
-
-        case 'https':
-        case 'wss':
-          pram.port = '443';
-          break;
-      }
-    }
+    const defaultPort = {
+      http: '80',
+      https: '443',
+      ws: '80',
+      wss: '443'
+    };
+    !pram.port && defaultPort[type] && (pram.port = defaultPort[type]);
 
     // proxy template
     const pxy = {

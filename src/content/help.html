@@ -712,14 +712,18 @@
     <h2 id="proxies">Proxies</h2>
 
     <p>FoxyProxy identifies proxies by their "hostname:post" or PAC URL.</p>
+
     <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later. <i>(v8.8)</i></p>
+
 <pre>
 127.0.0.1:9050
 127.0.0.1:9050a
 127.0.0.1:9050b
 127.0.0.1:9050c
 </pre>
-    <p class="warning">For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
+
+    <p class="warning">The augmented port method is only only available for SOCKS & HTTPS (not HTTP, due to the limitation of the Firefox API). <br>
+    For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
 
     <p>Another solution is to prepend hostnames where possible e.g. <code>&lt;sometext&gt;.localhost</code> since they all resolve to <code>127.0.0.1</code> internally.</p>
 
