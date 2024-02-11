@@ -120,6 +120,7 @@ figure {
   padding: 0;
 }
 
+img.figure,
 figure img {
   border-radius: 1em;
   border: 4px solid var(--nav-hover);
@@ -151,6 +152,7 @@ dd > dl {
   margin: 1em auto;
 }
 
+th span,
 dt span,
 li span {
   margin-left: 0.5em;

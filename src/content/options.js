@@ -528,42 +528,59 @@ class Proxies {
     type.addEventListener('change', e => {
       pxy.dataset.type = e.target.value;                    // show/hide elements
 
-      switch (e.target.options[e.target.selectedIndex].textContent) {
+      const id = e.target.options[e.target.selectedIndex].textContent;
+      const fillData = () => {
+        flag.textContent = id === 'DIRECT' ? '⮕' : '🌎';
+        sumTitle.textContent = id;
+        title.value = id;
+      };
+
+      switch (id) {
+        case 'PAC':
+          fillData();
+          break;
+
+        case 'DIRECT':
+          fillData();
+          hostname.value = id;
+          break;
+
+        // --- auto-fill helpers
         case 'TOR':
-          flag.textContent = '🌎';
-          sumTitle.textContent = 'TOR';
-          title.value = 'TOR';
+          fillData();
           hostname.value = '127.0.0.1';
           port.value = '9050';
           break;
 
         case 'Psiphon':
-          flag.textContent = '🌎';
-          sumTitle.textContent = 'Psiphon';
-          title.value = 'Psiphon';
+          fillData();
           hostname.value = '127.0.0.1';
           port.value = '60351';
           break;
 
         case 'Privoxy':
-          flag.textContent = '🌎';
-          sumTitle.textContent = 'Privoxy';
-          title.value = 'Privoxy';
+          fillData();
           hostname.value = '127.0.0.1';
           port.value = '8118';
           break;
 
-        case 'PAC':
-          flag.textContent = '🌎';
-          sumTitle.textContent = 'PAC';
-          title.value = 'PAC';
+        // By default v2rayA will open 20170 (socks5), 20171 (http), 20172 (http with shunt rules) ports through the core
+        case 'v2rayA-socks5':
+          fillData();
+          hostname.value = '127.0.0.1';
+          port.value = '20170';
           break;
 
-        case 'DIRECT':
-          flag.textContent = '⮕';
-          sumTitle.textContent = 'DIRECT';
-          title.value = 'DIRECT';
-          hostname.value = 'DIRECT';
+        case 'v2rayA-http':
+          fillData();
+          hostname.value = '127.0.0.1';
+          port.value = '20171';
+          break;
+
+        case 'v2rayA-http-rules':
+          fillData();
+          hostname.value = '127.0.0.1';
+          port.value = '20172';
           break;
         }
     });

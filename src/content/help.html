@@ -830,11 +830,54 @@
     <ul>
       <li>Go to Proxy tab ➤ Add a new proxy</li>
       <li>Fill the details according to own preference e.g. Title: TOR</li>
-      <li>TOR ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 9050</li>
-      <li>Psiphon ➤ Type: SOCKS, Hostname: 127.0.0.1, Port: 60351</li>
-      <li>Privoxy ➤ Type: HTTPS, Hostname: 127.0.0.1, Port: 8118</li>
       <li>Add patterns to limit to some URLs only</li>
     </ul>
+
+    <table>
+      <caption>Examples</caption>
+      <thead>
+        <tr>
+          <th>Server</th>
+          <th>Type</th>
+          <th>Hostname</th>
+          <th>Port <span>(default)</span></th>
+        </tr>
+      </thead>
+      <tbody class="code">
+        <tr>
+          <th>TOR</th>
+          <td>SOCKS5</td>
+          <td>127.0.0.1</td>
+          <td>9050</td>
+        </tr>
+        <tr>
+          <th>Psiphon</th>
+          <td>SOCKS5</td>
+          <td>127.0.0.1</td>
+          <td>60351</td>
+        </tr>
+        <tr>
+          <th>Privoxy</th>
+          <td>HTTPS</td>
+          <td>127.0.0.1</td>
+          <td>8118</td>
+        </tr>
+        <tr>
+          <th>v2rayA</th>
+          <td>SOCKS5</td>
+          <td>127.0.0.1</td>
+          <td>20170</td>
+        </tr>
+        <tr>
+          <th>v2rayA</th>
+          <td>HTTP</td>
+          <td>127.0.0.1</td>
+          <td>20171<br>20172 (http with shunt rules)</td>
+        </tr>
+      </tbody>
+    </table>
+
+
 
     <h3 id="patterns">Patterns</h3>
 
