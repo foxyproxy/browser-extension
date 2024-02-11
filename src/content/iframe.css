@@ -114,23 +114,10 @@ cite::before {
   content: '— source: ';
 }
 
-figure {
-  display: table;
-  text-align: center;
-  padding: 0;
-}
-
-img.figure,
-figure img {
+img.figure {
   border-radius: 1em;
   border: 4px solid var(--nav-hover);
   width: 140px;
-}
-
-figcaption {
-  font-style: italic;
-  font-size: 0.9em;
-  padding-top: 0.5em;
 }
 
 dt {
