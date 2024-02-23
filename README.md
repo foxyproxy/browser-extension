@@ -6,7 +6,7 @@ Using Firefox and you've lost all FoxyProxy settings?
 
 FoxyProxy Basic 8.0 was first released in Sep 2023 as a trial run since it had fewer users (26k on Chrome & Firefox).
 We waited for 2 months for any feedback & bug reports before releasing FoxyProxy Standard.
-Unfortunately, we didn't get any bug report about the data migration sync issue, otherwsie we would have fixed it before releasing the standard version.
+Unfortunately, we didn't get any bug report about the data migration sync issue, otherwise we would have fixed it before releasing the standard version.
 FoxyProxy 8.2 went online on Dec 6th.
 Due to a bug in version 8.2, previous settings of some users were not migrated after the upgrade.
 Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.
@@ -149,12 +149,12 @@ These justifications were provided to Google and Mozilla
 - **downloads**: Required to export the extension settings to a file. Users can import that file to other Chrome/Firefox instances, or share it with colleagues, in order to keep the same settings. It can also be backed up and used later.
 - **proxy**: The core function of the extension is to allow users to set the proxy server used by the browser.
 - **storage**: Required to store proxy server settings (hostname, port, username, and which proxy server is enabled by the user).
-- **tabs**: Required so that users can set separate proxies to use per tab. It is also needed for "QuickAdd" to quickly add a URL pattern that applies to the current/active tab. It is also used to open a URL to getfoxyproxy.org where there is online help.
+- **tabs**: Required so that users can set separate proxies to use per tab. It is also needed for "QuickAdd" to quickly add a URL pattern that applies to the current/active tab. It is also used to open a URL to `getfoxyproxy.org` where there is online help.
 - **webRequest**: Required to authenticate with proxy servers via webRequest.onAuthRequired
 - **webRequestAuthProvider**: Required to authenticate with proxies servers via webRequest.onAuthRequired
 - **browsingData**: Required so the extension can delete cookies, indexedDB, and localStorage when requested by the user on the Options page (*Delete Browsing Data* button)
-- **privacy**: Required so the extension can call browser.privacy.network.webRTCIPHandlingPolicy to turn on/off webRTC in Chrome (*Limit WebRTC* checkbox in Options page)
-- **host permission**: "<all_urls>" permissions is required in order to supply credentials for [Proxy authorization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired#proxy_authorization)
+- **privacy**: Required so the extension can call `browser.privacy.network.webRTCIPHandlingPolicy` to turn on/off webRTC in Chrome (*Limit WebRTC* checkbox in Options page)
+- **host permission**: `"<all_urls>"` permissions is required in order to supply credentials for [Proxy authorization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired#proxy_authorization)
 
 No remote code is used in this extension.
 
@@ -186,6 +186,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
       <th></th>
       <th>Chrome</th>
       <th>Firefox</th>
+      <th>Edge</th>
     </tr>
   </thead>
   <tbody>
@@ -200,6 +201,9 @@ The library is not used in Firefox and will be removed once users migrate to v8+
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/users/foxyproxy-standard" alt=""></a>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/dw/foxyproxy-standard" alt=""></a>
       </td>
+      <td>
+      <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/Edge%20108%2B-v8.9-blue?logo=microsoft" alt=""></a><br><br>
+      </td>
     </tr>
     <tr>
       <td>Basic</td>
@@ -212,19 +216,21 @@ The library is not used in Firefox and will be removed once users migrate to v8+
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"></a><img src="https://img.shields.io/amo/users/foxyproxy-basic" alt="">
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-basic/"></a><img src="https://img.shields.io/amo/dw/foxyproxy-basic" alt="">
       </td>
+      <td></td>
     </tr>
     <tr>
       <td>Source Code Beta</td>
-      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?&url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&logo=github&logoColor=fff&label=FoxyProxy%20Beta&color=f60&prefix=v" alt=""></a></td>
+      <td colspan="3"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?&url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest-firefox.json&query=%24.version&logo=github&logoColor=fff&label=FoxyProxy%20Beta&color=f60&prefix=v" alt=""></a></td>
     </tr>
     <tr>
       <td>Source Code Release</td>
-      <td colspan="2"><a href="https://github.com/foxyproxy/browser-extension/releases">Releases</a></td>
+      <td colspan="3"><a href="https://github.com/foxyproxy/browser-extension/releases">Releases</a></td>
     </tr>
     <tr>
       <td>Source Code Old</td>
       <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
       <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
