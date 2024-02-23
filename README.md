@@ -75,7 +75,7 @@ The library is not used in Firefox and will be removed once users migrate to v8+
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/dw/foxyproxy-standard" alt=""></a>
       </td>
       <td>
-      <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/Edge%20108%2B-v8.9-blue?logo=microsoft" alt=""></a><br><br>
+      <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/Edge%20108%2B-v8.9-blue?logo=microsoftedge" alt=""></a><br><br>
       </td>
     </tr>
     <tr>
