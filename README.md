@@ -6,7 +6,6 @@
 
 
 
-
 [About](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
 After some years of stability, FoxyProxy has been updated to support Manifest Version 3 which is required by Chrome in order for extensions to be compatible with Chrome in 2024. We took advantage of this forced update to implement many feature requests and other changes that were requested over the years.
@@ -17,17 +16,19 @@ The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, an
 
 ## Permissions
 
-These justifications were provided to Google and Mozilla
+- **downloads**: Used to save/export user preferences to file, for backup or sharing
+- **notifications**: Used to inform users (e.g. for errors)
+- **proxy**: Used to set proxies (core function of the extension)
+- **storage**: Used to store user preferences
+- **tabs**: Used to get tab details (e.g. for "Quick Add", "Tab Proxy", & "Incognito/Container Proxy")
+- **webRequest**: Used to provide proxy authentication
+- **webRequestAuthProvider**: Used to provide proxy authentication
+- **host permission**: Used to provide proxy authentication (to any URL `"<all_urls>"`)
 
-- **downloads**: Required to export the extension settings to a file. Users can import that file to other Chrome/Firefox instances, or share it with colleagues, in order to keep the same settings. It can also be backed up and used later.
-- **proxy**: The core function of the extension is to allow users to set the proxy server used by the browser.
-- **storage**: Required to store proxy server settings (hostname, port, username, and which proxy server is enabled by the user).
-- **tabs**: Required so that users can set separate proxies to use per tab. It is also needed for "QuickAdd" to quickly add a URL pattern that applies to the current/active tab. It is also used to open a URL to `getfoxyproxy.org` where there is online help.
-- **webRequest**: Required to authenticate with proxy servers via webRequest.onAuthRequired
-- **webRequestAuthProvider**: Required to authenticate with proxies servers via webRequest.onAuthRequired
-- **browsingData**: Required so the extension can delete cookies, indexedDB, and localStorage when requested by the user on the Options page (*Delete Browsing Data* button)
-- **privacy**: Required so the extension can call `browser.privacy.network.webRTCIPHandlingPolicy` to turn on/off webRTC in Chrome (*Limit WebRTC* checkbox in Options page)
-- **host permission**: `"<all_urls>"` permissions is required in order to supply credentials for [Proxy authorization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired#proxy_authorization)
+### Optional Permissions
+
+- **browsingData**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user 
+- **privacy**: Used for "Limit WebRTC" button to toggle `browser.privacy.network.webRTCIPHandlingPolicy`, only if requested by the user 
 
 No remote code is used in this extension.
 
@@ -183,6 +184,7 @@ The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.
 - copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
 - zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
 
+---
 
 # FAQ
 
