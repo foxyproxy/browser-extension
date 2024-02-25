@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension?logo=github&logoColor=fff)
-![ECMAScript](https://img.shields.io/badge/ECMAScript_2022_(ES13)-blue?style=plastic&logo=javascript)
+![ECMAScript](https://img.shields.io/badge/ECMAScript-2022_(ES13)-blue?style=plastic&logo=javascript)
 
 
 
