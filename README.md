@@ -27,16 +27,16 @@ The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, an
 
 #### Optional Permissions
 
-- **browsingData**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user 
-- **privacy**: Used for "Limit WebRTC" button to toggle `browser.privacy.network.webRTCIPHandlingPolicy`, only if requested by the user 
+- **browsingData**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user
+- **privacy**: Used for "Limit WebRTC" button to toggle `browser.privacy.network.webRTCIPHandlingPolicy`, only if requested by the user
 
 ## Mini FAQ
 
-- **Why is there a [CryptoJS](https://code.google.com/archive/p/crypto-js/) library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?**  
-The CryptoJS library was already included in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentials. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned). It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x -> 8.x.  
-The library is not used in Firefox and will be removed once users migrate to v8+.
+- **Why is there a [CryptoJS](https://code.google.com/archive/p/crypto-js/) library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?**<br>
+The CryptoJS library was already included in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentials. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned). It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x to 8.x.<br>
+The library is not used in Firefox, and will be removed once users migrate to v8+.
 
-- **Remote Code**  
+- **Remote Code**<br>
 No remote code is used in this extension.
 
 ## Screenshots
