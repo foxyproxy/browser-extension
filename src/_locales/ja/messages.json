@@ -11,6 +11,7 @@
   "excludeHost": { "message": "ホストを除外" },
   "setTabProxy": { "message": "タブプロキシーを設定" },
   "unsetTabProxy": { "message": "タブプロキシーを解除" },
+  "more": { "message": "詳細" },
 
   "incognitoAccessError": { "message": "Firefox でプロキシーを設定するためにはプライベートブラウジングでの許可設定が必要です" },
   "controlledByOtherExtensions": { "message": "他の拡張機能によって設定が制御されています" },
@@ -18,9 +19,10 @@
   "enableSync": { "message": "同期を有効化" },
   "enableSyncDescription": { "message": "グローバル除外、プロキシー、パターンを同期する" },
   "syncError": { "message": "同期エラー" },
-
-  "proxyDNS": { "message": "DNS でプロキシーを使用" },
-  "proxyDNSDescription": { "message": "SOCKS v5 を使用するときは DNS もプロキシーを使用する (Firefox のみ)" },
+  "autoBackup": { "message": "自動バックアップ" },
+  "autoBackupDescription": { "message": "保存時に設定をダウンロードフォルダーに自動でバックアップする" },
+  "theme": { "message": "テーマ" },
+  "default": { "message": "デフォルト" },
 
   "globalExclude": { "message": "グローバル除外" },
   "globalExcludeDescription": { "message": "プロキシーを使用しないホストのリスト" },
@@ -49,12 +51,13 @@
 
   "title": { "message": "タイトル" },
   "type": { "message": "種類" },
-  "color": { "message": "カラー" },
+  "color": { "message": "色" },
   "random": { "message": "ランダム" },
   "hostname": { "message": "ホスト名" },
   "port": { "message": "ポート" },
   "city": { "message": "市区町村" },
   "country": { "message": "国" },
+  "proxyDNS": { "message": "DNS でプロキシーを使用" },
   "hostnamePortError": { "message": "ホスト名 - ポートが入力されていません" },
 
   "pattern": { "message": "パターン" },
