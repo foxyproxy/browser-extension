@@ -1,72 +1,54 @@
-
 {
   "extensionName": { "message": "FoxyProxy" },
   "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "Простой инструмент управления прокси" },
 
-
   "proxyByPatterns": { "message": "Прокси из шаблона" },
   "disable": { "message": "Отключить" },
   "ip": { "message": "IP" },
   "location": { "message": "Расположение" },
+  "quickAdd": { "message": "Быстрое добавление" },
+  "excludeHost": { "message": "Исключить хост" },
+  "setTabProxy": { "message": "Установить прокси вкладки" },
+  "unsetTabProxy": { "message": "Отключить прокси вкладки" },
+  "more": { "message": "Больше" },
 
-  "options": { "message": "Настройки" },
-  "proxy": { "message": "Список прокси" },
-  "tester": { "message": "Проверить" },
-  "log": { "message": "Журнал" },
-  "help": { "message": "Помощь" },
-  "about": { "message": "О программе" },
-  "import": { "message": "Импортировать настройки" },
-  "export": { "message": "Экспортировать настройки" },
-  "save": { "message": "Сохранить" },
+  "incognitoAccessError": { "message": "Firefox требует разрешения на приватный просмотр для настроек прокси." },
+  "controlledByOtherExtensions": { "message": "Настройки контролируются другими расширениями." },
 
   "enableSync": { "message": "Включить синхронизацию" },
   "enableSyncDescription": { "message": "Синхронизировать исключения, список прокси и шаблоны" },
   "syncError": { "message": "Ошибка синхронизации" },
-
-  "proxyDNS": { "message": "Прокси DNS" },
-  "proxyDnsDescription": { "message": "Использовать прокси для разрешения DNS-запросов (только для SOCKS в Firefox)" },
+  "autoBackup": { "message": "Автоматическое резервное копирование" },
+  "autoBackupDescription": { "message": "Автоматическое резервное копирование настроек в папку «Загрузки» при сохранении." },
+  "theme": { "message": "Тема" },
+  "default": { "message": "Стандартная" },
 
   "globalExclude": { "message": "Глобальные исключения" },
   "globalExcludeDescription": { "message": "Шаблоны, которые не будут проксироваться" },
-  "globalExcludeError": { "message": "Ошибка шаблона-исключения" },
+
+  "container": { "message": "Контейнер" },
+  "containerDescription": { "message": "Инкогнито и контейнерный прокси (только для Firefox)" },
+  "incognito": { "message": "Инкогнито" },
+
+  "shortcut": { "message": "Сочетание клавиш" },
+  "shortcutDescription": { "message": "Предварительный выбор прокси для ассоциации с действием сочетания клавиш" },
+  "setProxy": { "message": "Установить прокси" },
+
 
   "deleteBrowserData": { "message": "Удалить данные браузера" },
-  "confirmDeleteBrowserData": { "message": "Вы уверены, что хотите удалить cookies, хранилище IndexedDB и хранилище DOM?" },
+  "deleteBrowsingDataConfirm": { "message": "Вы уверены, что хотите удалить cookies, хранилище IndexedDB и хранилище DOM?" },
   "restoreDefaults": { "message": "Восстановить настройки по умолчанию" },
   "restoreDefaultsConfirm": { "message": "Вы уверены, что хотите восстановить все настройки по умолчанию?" },
   "limitWebRTC": { "message": "Ограничить WebRTC" },
-  "resetWebRTC": { "message": "Сбросить WebRTC" },
+  "limitWebRTCDescription": { "message": "Переключить настройки WebRTC браузера" },
 
-
-  "foxyProxyAccount": { "message": "Учетная запись FoxyProxy" },
-  "username": { "message": "Имя пользователя" },
-  "password": { "message": "Пароль пользователя" },
-  "togglePW": { "message": "Показать пароль" },
-  "importAs": { "message": "Импортировать как" },
-  "domain": { "message": "Домен" },
-  "userPassError": { "message": "Введите имя пользователя и пароль." },
-
-  "proxyList": { "message": "Список прокси" },
-  "proxyTypeError": { "message": "Неизвестный тип" },
-  "proxyPortError": { "message": "Отсутствует порт" },
-  "importURL": { "message": "Импорт из URL-адреса" },
-
-  "fromOlderVersions": { "message": "Импорт из предыдущей версии" },
-
-  "regexError": { "message": "Ошибка регулярного выражения для шаблона" },
-
-  "addHostTo": { "message": "Добавить шаблон хоста в ..." },
-
-  "incognitoAccess": { "message": "Для настройки прокси требуется разрешение." },
-
-
-
-
-
-
-  "getLocation": { "message": "Узнать местонахождение" },
+  "proxies": { "message": "Прокси" },
   "add": { "message": "Добавить" },
+  "getLocation": { "message": "Узнать местонахождение" },
+
+  "duplicate": { "message": "Дублировать" },
+
   "title": { "message": "Название" },
   "type": { "message": "Тип прокси" },
   "color": { "message": "Цвет" },
@@ -75,38 +57,54 @@
   "port": { "message": "Порт" },
   "city": { "message": "Город" },
   "country": { "message": "Страна" },
-
-  "pacUrlError": { "message": "Отсутствует URL-адрес PAC нужного типа PAC" },
-  "hostnamePortError": { "message": "Отсутствует IP адрес или порт" },
+  "proxyDNS": { "message": "Прокси DNS" },
+  "hostnamePortError": { "message": "Отсутствует имя хоста - Порт" },
 
   "pattern": { "message": "Шаблон" },
   "patterns": { "message": "Шаблоны" },
-  "quickAdd": { "message": "Быстрое добавление" },
   "include": { "message": "Включить" },
   "exclude": { "message": "Исключить" },
   "all": { "message": "Все" },
   "plainHost": { "message": "Обычный хост" },
   "wildcard": { "message": "Шаблон хоста" },
-  "patternError": { "message": "Ошибка шаблона" },
-
+  "regexError": { "message": "Ошибка регулярного выражения для шаблона" },
 
   "delete": { "message": "Удалить" },
   "deleteConfirm": { "message": "Действительно хотите удалить?" },
 
+  "importFoxyProxyAccount": { "message": "Импортировать FoxyProxy аккаунт" },
+  "username": { "message": "Имя пользователя" },
+  "password": { "message": "Пароль пользователя" },
+  "togglePassword": { "message": "Переключить видимость" },
+  "userPassError": { "message": "Введите имя пользователя и пароль." },
+  "storeLocally": { "message": "Сохранить локально" },
+  "view": { "message": "Просмотр" },
+
+  "importProxyList": { "message": "Импортировать список прокси" },
+  "importFromURL": { "message": "Импортировать из URL" },
+  "importFromOlderVersions": { "message": "Импортировать из старых версий" },
+
+  "tester": { "message": "Проверить" },
   "result": { "message": "Результат" },
   "test": { "message": "Тест" },
+  "back": { "message": "Назад" },
 
-  "documentURL": { "message": "URL-адрес" },
+  "log": { "message": "Журнал" },
+  "documentUrl": { "message": "Document URL" },
+  "url": { "message": "URL" },
   "method": { "message": "Метод" },
+  "proxy": { "message": "Список прокси" },
   "time": { "message": "Время" },
+  "notAvailable": { "message": "Прокси не доступны в Chrome (только в Firefox)" },
 
-  "selectCountry": { "message": "Выбор страны" },
-  "cancel": { "message": "Отмена" },
-  "ok": { "message": "OK" },
-
+  "about": { "message": "О программе" },
   "error": { "message": "Ошибка выполнения операции" },
+  "export": { "message": "Экспортировать настройки" },
   "fileParseError": { "message": "Ошибка содержимого файла" },
   "fileReadError": { "message": "Ошибка чтения файла" },
-  "fileSizeError": { "message": "Размер файла больше допустимого размера в $1kb" },
-  "fileTypeError": { "message": "Неподдерживаемый формат файла" }
+  "fileTypeError": { "message": "Неподдерживаемый формат файла" },
+  "help": { "message": "Помощь" },
+  "import": { "message": "Импортировать настройки" },
+  "options": { "message": "Настройки" },
+  "saveOptions": { "message": "Save" },
 }
