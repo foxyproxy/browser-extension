@@ -9,9 +9,12 @@
   "location": { "message": "Location" },
   "quickAdd": { "message": "Quick Add" },
   "excludeHost": { "message": "Exclude Host" },
+  "tabProxy": { "message": "Tab Proxy" },
+  "more": { "message": "More" },
+  "server": { "message": "Server" },
+
   "setTabProxy": { "message": "Set Tab Proxy" },
   "unsetTabProxy": { "message": "Unset Tab Proxy" },
-  "more": { "message": "More" },
 
   "incognitoAccessError": { "message": "Firefox requires private browsing permission for proxy settings." },
   "controlledByOtherExtensions": { "message": "Settings are controlled by other extensions." },
