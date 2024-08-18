@@ -106,5 +106,5 @@
   "help": { "message": "Помощь" },
   "import": { "message": "Импортировать настройки" },
   "options": { "message": "Настройки" },
-  "saveOptions": { "message": "Save" }
+  "saveOptions": { "message": "Сохранить" }
 }
