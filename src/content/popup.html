@@ -29,16 +29,26 @@
         <details>
           <summary data-i18n="more"></summary>
           <div class="host">
-            <select class="local">
-              <option value="" disabled selected>&nbsp;</option>
-            </select>
-
             <input type="text" id="filter" spellcheck="false" placeholder="filter">
 
-            <button type="button" class="local" data-i18n="quickAdd"></button>
+
+            <!-- <button type="button" class="local" data-i18n="quickAdd"></button> -->
+            <!-- <label data-i18n="quickAdd"></label> -->
+            <select id="quickAdd" class="local">
+              <option value="" data-i18n="quickAdd" disabled selected></option>
+            </select>
+
             <button type="button" class="local" data-i18n="excludeHost"></button>
-            <button type="button" class="firefox local" data-i18n="setTabProxy"></button>
-            <button type="button" class="firefox local" data-i18n="unsetTabProxy"></button>
+            <!-- <button type="button" class="firefox local" data-i18n="setTabProxy"></button> -->
+            <!-- <button type="button" class="firefox local" data-i18n="unsetTabProxy"></button> -->
+
+
+
+            <label class="firefox local" data-i18n="tabProxy"></label>
+            <select id="tabProxy" class="firefox local">
+              <option value="" selected>&nbsp;</option>
+            </select>
+
           </div>
         </details>
 

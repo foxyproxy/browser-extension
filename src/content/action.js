@@ -2,6 +2,7 @@
 import {Location} from './location.js';
 
 export class Action {
+
   // https://github.com/w3c/webextensions/issues/72#issuecomment-1848874359
   // 'prefers-color-scheme' detection in Chrome background service worker
   static dark = false;

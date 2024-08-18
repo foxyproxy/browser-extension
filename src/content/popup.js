@@ -7,7 +7,6 @@ import './i18n.js';
 await App.getPref();
 
 // ---------- Popup ----------------------------------------
-// eslint-disable-next-line no-unused-vars
 class Popup {
 
   static {
@@ -18,8 +17,24 @@ class Popup {
     document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
 
     this.list = document.querySelector('div.list');
-    this.select = document.querySelector('select');
-    this.proxyCache = {};                                   // used to find proxy
+
+    // --- Quick Add (not for storage.managed)
+    this.quickAdd = document.querySelector('select#quickAdd');
+    !pref.managed && this.quickAdd.addEventListener('change', (e) => {
+      if (!this.quickAdd.value) { return; }
+
+      browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.quickAdd.value, tab: this.tab});
+      this.quickAdd.selectedIndex = 0;                      // reset select option
+    });
+
+    // --- Tab Proxy (not for storage.managed, firefox only)
+    this.tabProxy = document.querySelector('select#tabProxy');
+    !pref.managed && App.firefox && this.tabProxy.addEventListener('change', () => {
+      if (!this.tab) { return; }
+
+      const proxy = this.tabProxy.value && this.proxyCache[this.tabProxy.selectedOptions[0].dataset.index];
+      browser.runtime.sendMessage({id: 'setTabProxy', proxy, tab: this.tab});
+    });
 
     // disable buttons on storage.managed
     pref.managed && document.body.classList.add('managed');
@@ -53,12 +68,12 @@ class Popup {
       const id = item.type === 'pac' ? item.pac : `${item.hostname}:${item.port}`;
       const label = labelTemplate.cloneNode(true);
       const [flag, title, portNo, radio, data] = label.children;
-      flag.textContent = App.getFlag(item.cc);
+      flag.textContent = App.showFlag(item);
       title.textContent = item.title || id;
       portNo.textContent = item.port;
       radio.value = item.type === 'direct' ? 'direct' : id;
       radio.checked = id === pref.mode;
-      data.textContent = [item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
+      data.textContent = [item.city, ...Location.get(item.cc)].filter(Boolean).join('\n') || item.hostname;
       docFrag.appendChild(label);
     });
 
@@ -69,26 +84,31 @@ class Popup {
     );
 
     // --- Add Hosts to select
-    // filter out PAC, limit to 10
-    pref.data.filter(i => i.active && i.type !== 'pac').filter((i, idx) => idx < 10).forEach(item => {
-      const flag = App.getFlag(item.cc);
+    // used to find proxy, filter out PAC, limit to 10
+    this.proxyCache = pref.data.filter(i => i.active && i.type !== 'pac').filter((i, idx) => idx < 10);
+
+    this.proxyCache.forEach((item, index) => {
+      const flag = App.showFlag(item);
       const value = `${item.hostname}:${item.port}`;
       const opt = new Option(flag + ' ' + (item.title || value), value);
+      opt.dataset.index = index;
       // opt.style.color = item.color;                         // supported on Chrome, not on Firefox
       docFrag.appendChild(opt);
-
-      this.proxyCache[value] = item;                        // cache to find later
     });
 
-    // add a DIRECT option to the end
-    // const opt = new Option('⮕ Direct', 'DIRECT');
-    // docFrag.appendChild(opt);
-    // this.proxyCache['DIRECT'] = {
-    //   type: 'direct',
-    //   hostname: 'DIRECT'
-    // };
+    this.quickAdd.appendChild(docFrag.cloneNode(true));
+    this.tabProxy.appendChild(docFrag);
 
-    this.select.appendChild(docFrag);
+    App.firefox && this.checkTabProxy();
+  }
+
+  static async checkTabProxy() {
+    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
+    if (!/https?:\/\/.+/.test(tab.url)) { return; }         // unacceptable URLs
+
+    this.tab = tab;                                         // cache tab
+    const item = await browser.runtime.sendMessage({id: 'getTabProxy'});
+    item && (this.tabProxy.value = `${item.hostname}:${item.port}`);
   }
 
   static processSelect(mode) {
@@ -124,34 +144,34 @@ class Popup {
         window.close();
         break;
 
-      case 'quickAdd':
-        if (!this.select.value) { break; }
-        if (pref.managed) { break; }                        // not for storage.managed
+      // case 'quickAdd':
+      //   if (!this.quickAdd.value) { break; }
+      //   if (pref.managed) { break; }                        // not for storage.managed
 
-        browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.select.value});
-        this.select.selectedIndex = 0;                      // reset select option
-        break;
+      //   browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.quickAdd.value});
+      //   this.quickAdd.selectedIndex = 0;                      // reset select option
+      //   break;
 
       case 'excludeHost':
         if (pref.managed) { break; }                        // not for storage.managed
 
-        browser.runtime.sendMessage({id: 'excludeHost', pref});
+        browser.runtime.sendMessage({id: 'excludeHost', pref, tab: this.tab});
         break;
 
-      case 'setTabProxy':
-        if (!App.firefox || !this.select.value) { break; }  // firefox only
-        if (pref.managed) { break; }                        // not for storage.managed
+      // case 'setTabProxy':
+      //   if (!App.firefox || !this.tabProxy.value) { break; }  // firefox only
+      //   if (pref.managed) { break; }                        // not for storage.managed
 
-        browser.runtime.sendMessage({id: 'setTabProxy', proxy: this.proxyCache[this.select.value]});
-        this.select.selectedIndex = 0;                      // reset select option
-        break;
+      //   this.tabId && browser.runtime.sendMessage({id: 'setTabProxy', proxy: this.proxyCache[this.tabProxy.value], tabId: this.tabId});
+      //   // this.tabProxy.selectedIndex = 0;                      // reset select option
+      //   break;
 
-      case 'unsetTabProxy':
-        if (!App.firefox) { break; }                        // firefox only
-        if (pref.managed) { break; }                        // not for storage.managed
+      // case 'unsetTabProxy':
+      //   if (!App.firefox) { break; }                        // firefox only
+      //   if (pref.managed) { break; }                        // not for storage.managed
 
-        browser.runtime.sendMessage({id: 'unsetTabProxy'});
-        break;
+      //   browser.runtime.sendMessage({id: 'unsetTabProxy'});
+      //   break;
     }
   }
 

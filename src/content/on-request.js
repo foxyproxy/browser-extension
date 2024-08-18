@@ -2,10 +2,19 @@
 // Dynamic import is not available yet in MV3 service worker
 // Once implemented, module will be dynamically imported for Firefox only
 
-// Support non-ASCII username/password for socks proxy
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1853203
+// Support non-ASCII username/password for socks proxy
 // Fixed in Firefox 119
 
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
+// Allow HTTP authentication in proxy.onRequest
+// Fixed in Firefox 125
+
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1741375
+// Proxy DNS by default when using SOCKS v5
+// Firefox 128: defaults to true for SOCKS5 & false for SOCKS4
+
+import {App} from './app.js';
 import {Pattern} from './pattern.js';
 import {Location} from './location.js';
 
@@ -21,6 +30,7 @@ export class OnRequest {
     this.net = [];                                          // [start, end] strings
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
+    this.browserVersion = 0;                                // used HTTP authentication
 
     // --- Firefox only
     if (browser?.proxy?.onRequest) {
@@ -30,6 +40,8 @@ export class OnRequest {
       browser.tabs.onRemoved.addListener(tabId => delete this.tabProxy[tabId]);
       // mark incognito/container
       browser.tabs.onCreated.addListener(e => this.checkPageAction(e));
+      // check for HTTP authentication use
+      browser.runtime.getBrowserInfo().then(info => this.browserVersion = parseInt(info.version));
     }
   }
 
@@ -77,7 +89,7 @@ export class OnRequest {
     switch (true) {
       // --- check local & global passthrough
       case this.bypass(e.url):
-        this.setAction(null, tabId);
+        this.setAction(tabId);
         return {type: 'direct'};
 
       // --- tab proxy
@@ -96,7 +108,7 @@ export class OnRequest {
       case this.mode === 'disable':                         // pass direct
       case this.mode === 'direct':                          // pass direct
       case this.mode.includes('://') && !/:\d+$/.test(this.mode): // PAC URL is set
-        this.setAction(null, tabId);
+        this.setAction(tabId);
         return {type: 'direct'};
 
       case this.mode === 'pattern':                         // check if url matches patterns
@@ -117,12 +129,12 @@ export class OnRequest {
       }
     }
 
-    this.setAction(null, tabId);
+    this.setAction(tabId);
     return {type: 'direct'};                                // no match
   }
 
   static processProxy(proxy, tabId) {
-    this.setAction(proxy, tabId);
+    this.setAction(tabId, proxy);
     const {type, hostname: host, port, username, password, proxyDNS} = proxy || {};
     if (!type || type === 'direct') { return {type: 'direct'}; }
 
@@ -146,13 +158,15 @@ export class OnRequest {
       // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#167
       // proxyAuthorizationHeader on Firefox only applies to HTTPS (not HTTP and it breaks the API and sends DIRECT)
       // proxyAuthorizationHeader added to reduce the authentication request in webRequest.onAuthRequired
-      type === 'https' && (response.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
+      // HTTP authentication fixed in Firefox 125
+      (type === 'https' || this.browserVersion >= 125) &&
+        (response.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
     }
 
     return response;
   }
 
-  static setAction(item, tabId) {
+  static setAction(tabId, item) {
     // Set to -1 if the request isn't related to a tab
     if (tabId === -1) { return; }
 
@@ -193,31 +207,12 @@ export class OnRequest {
   // it can't catch a domain set by user to 127.0.0.1 in the hosts file
   static localhost(url) {
     const [, host] = url.split(/:\/\/|\//, 2);              // hostname with/without port
-    const isIP = /^[\d.:]+$/.test(host);
-
-    switch (true) {
-      // --- localhost & <local>
-      // case host === 'localhost':
-      case !host.includes('.'):                             // plain hostname (no dots)
-      case host.endsWith('.localhost'):                     // *.localhost
-
-      // --- IPv4
-      // case host === '127.0.0.1':
-      case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
-      case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16
-      case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16   192.168.0.0   192.168.255.255
-
-      // --- IPv6
-      // case host === '[::1]':
-      case host.startsWith('[::1]'):                        // literal IPv6 [::1]:80 with/without port
-      case host.startsWith('[FE80::]'):                     // literal IPv6 [FE80::]/10
-        return true;
-    }
+    return App.isLocal(host);
   }
 
   static isInNet(url) {
     // check if IP address
-    if(!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; }
+    if (!/^[a-z]+:\/\/\d+(\.\d+){3}(:\d+)?\//.test(url)) { return; }
 
     const ipa = url.split(/[:/.]+/, 5).slice(1);            // IP array
     const ip = ipa.map(i => i.padStart(3, '0')).join('');   // convert to padded string
@@ -225,30 +220,31 @@ export class OnRequest {
   }
 
   // ---------- Tab Proxy ----------------------------------
-  static async setTabProxy(pxy) {
-    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
+  static setTabProxy(tab, pxy) {
+    // const [tab] = await browser.tabs.query({currentWindow: true, active: true});
     switch (true) {
       case !/https?:\/\/.+/.test(tab.url):                  // unacceptable URLs
       case this.bypass(tab.url):                            // check local & global passthrough
         return;
     }
 
-    this.tabProxy[tab.id] = pxy;
-    // PageAction.set(tab.id, pxy);
+    // set or unset
+    pxy ? this.tabProxy[tab.id] = pxy : delete this.tabProxy[tab.id];
+    this.setAction(tab.id, pxy);
   }
 
-  static async unsetTabProxy() {
-    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
-    delete this.tabProxy[tab.id];
-    // PageAction.unset(tab.id);
-  }
+  // static async unsetTabProxy() {
+  //   const [tab] = await browser.tabs.query({currentWindow: true, active: true});
+  //   delete this.tabProxy[tab.id];
+  //   // PageAction.unset(tab.id);
+  // }
 
   // ---------- Update Page Action -------------------------
   static onUpdated(tabId, changeInfo, tab) {
     if (changeInfo.status !== 'complete') { return; }
 
     const pxy = this.tabProxy[tabId];
-    pxy ? this.setAction(pxy, tabId) : this.checkPageAction(tab);
+    pxy ? this.setAction(tab.id, pxy) : this.checkPageAction(tab);
   }
 
   // ---------- Incognito/Container ------------------------
@@ -256,6 +252,6 @@ export class OnRequest {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; } // not if tab proxy is set
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
-    pxy && this.setAction(pxy, tab.id);
+    pxy && this.setAction(tab.id, pxy);
   }
 }

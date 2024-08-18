@@ -33,7 +33,6 @@
   background-color: var(--hover);
 }
 
-
 @media screen and (prefers-color-scheme: dark) {
   :root.moonlight {
     --bg: #333;

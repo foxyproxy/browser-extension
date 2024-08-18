@@ -33,7 +33,6 @@ export class Popup {
 await App.getPref();
 
 // ---------- Incognito Access -----------------------------
-// eslint-disable-next-line no-unused-vars
 class IncognitoAccess {
 
   static {
@@ -62,7 +61,6 @@ class Toggle {
 // ---------- /Toggle --------------------------------------
 
 // ---------- Theme ----------------------------------------
-// eslint-disable-next-line no-unused-vars
 class Theme {
   static {
     this.elem = [document, ...[...document.querySelectorAll('iframe')].map(i => i.contentDocument)];
@@ -82,6 +80,9 @@ class Options {
 
   static {
     // --- container
+    // using generic names
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1386673
+    // Make Contextual Identity extensions be an optional permission
     this.container = document.querySelectorAll('.options .container select');
 
     // --- keyboard Shortcut
@@ -209,7 +210,7 @@ class Options {
       browser.storage.sync.get()
       .then(syncObj => {
         // get & delete numerical keys that are equal or larger than data length, the rest are overwritten
-        const del = Object.keys(syncObj).filter(i => /^\d+$/.test(i) && i*1 >= pref.data.length);
+        const del = Object.keys(syncObj).filter(i => /^\d+$/.test(i) && i * 1 >= pref.data.length);
         del[0] && browser.storage.sync.remove(del);
       });
     })
@@ -247,7 +248,7 @@ class Options {
       Object.hasOwn(obj, i.dataset.id) && (obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim());
     });
 
-    // --- check type: http | https | socks4 | socks5 | pac | direct
+    // --- check type: http | https | socks4 | socks5 | quic | pac | direct
     switch (true) {
       // DIRECT
       case obj.type === 'direct':
@@ -266,7 +267,7 @@ class Options {
         obj.port = port;
         break;
 
-      // http | https | socks4 | socks5
+      // http | https | socks4 | socks5 | quic
       case !obj.hostname:
         this.setInvalid(elem, 'hostname');
         alert(browser.i18n.getMessage('hostnamePortError'));
@@ -384,7 +385,6 @@ class Options {
 // ---------- /Options -------------------------------------
 
 // ---------- browsingData ---------------------------------
-// eslint-disable-next-line no-unused-vars
 class BrowsingData {
 
   static {
@@ -420,7 +420,6 @@ class BrowsingData {
 // ---------- /browsingData --------------------------------
 
 // ---------- WebRTC ---------------------------------------
-// eslint-disable-next-line no-unused-vars
 class WebRTC {
 
   static {
@@ -520,7 +519,7 @@ class Proxies {
     down.addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
     // proxy data
-    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pacSpan, proxyDNS] = [...proxyBox.children].filter((e, i) => i%2);
+    const [title, hostname, type, port, cc, username, city, passwordSpan, colorSpan, pacSpan, proxyDNS] = [...proxyBox.children].filter((e, i) => i % 2);
     title.addEventListener('change', e => sumTitle.textContent = e.target.value);
 
     const [pac, storeLocallyLabel, view] = pacSpan.children;
@@ -529,59 +528,82 @@ class Proxies {
       pxy.dataset.type = e.target.value;                    // show/hide elements
 
       const id = e.target.options[e.target.selectedIndex].textContent;
-      const fillData = () => {
-        flag.textContent = id === 'DIRECT' ? '⮕' : '🌎';
+      const fillData = (local) => {
         sumTitle.textContent = id;
         title.value = id;
+
+        if (local) {
+          flag.textContent = '🖥️';
+          hostname.value = '127.0.0.1';
+        }
       };
 
       switch (id) {
         case 'PAC':
           fillData();
+          flag.textContent = '🌎';
           break;
 
         case 'DIRECT':
           fillData();
+          flag.textContent = '⮕';
           hostname.value = id;
           break;
 
-        // --- auto-fill helpers
-        case 'TOR':
-          fillData();
-          hostname.value = '127.0.0.1';
-          port.value = '9050';
-          break;
-
-        case 'Psiphon':
-          fillData();
-          hostname.value = '127.0.0.1';
-          port.value = '60351';
+        // --- server auto-fill helpers
+        case 'Burp':
+          fillData(true);
+          port.value = '8080';
           break;
 
         case 'Privoxy':
-          fillData();
-          hostname.value = '127.0.0.1';
+          fillData(true);
           port.value = '8118';
+          break;
+
+        case 'Psiphon':
+          fillData(true);
+          port.value = '60351';
+          break;
+
+        case 'TOR':
+          fillData(true);
+          port.value = '9050';
           break;
 
         // By default v2rayA will open 20170 (socks5), 20171 (http), 20172 (http with shunt rules) ports through the core
         case 'v2rayA-socks5':
-          fillData();
-          hostname.value = '127.0.0.1';
+          fillData(true);
           port.value = '20170';
           break;
 
         case 'v2rayA-http':
-          fillData();
-          hostname.value = '127.0.0.1';
+          fillData(true);
           port.value = '20171';
           break;
 
         case 'v2rayA-http-rules':
-          fillData();
-          hostname.value = '127.0.0.1';
+          fillData(true);
           port.value = '20172';
           break;
+
+        case 'NekoRay-socks5':
+          fillData(true);
+          port.value = '2080';
+          break;
+
+        case 'NekoRay-http':
+          fillData(true);
+          port.value = '2081';
+          break;
+
+        case 'Shadowsocks':
+          fillData(true);
+          port.value = '1080';
+          break;
+
+        default:
+          flag.textContent = App.getFlag(cc.value);
         }
     });
 
@@ -643,7 +665,7 @@ class Proxies {
     const pxyTitle = item.title || id;
 
     // --- summary
-    flag.textContent = App.getFlag(item.cc);
+    flag.textContent = App.showFlag(item);
     sumTitle.textContent = pxyTitle;
     active.checked = item.active;
 
@@ -742,7 +764,7 @@ class Proxies {
 
     ImportExport.fileReader(file, data => {
       try { data = JSON.parse(data); }
-      catch(e) {
+      catch {
         App.notify(browser.i18n.getMessage('fileParseError')); // display the error
         return;
       }
@@ -820,7 +842,6 @@ class Proxies {
 // ---------- /Proxies -------------------------------------
 
 // ---------- Drag and Drop --------------------------------
-// eslint-disable-next-line no-unused-vars
 class Drag {
 
   static {
@@ -845,7 +866,6 @@ class Drag {
 // ---------- /Drag and Drop -------------------------------
 
 // ---------- Import FP Account ----------------------------
-// eslint-disable-next-line no-unused-vars
 class ImportFoxyProxyAccount {
 
   static {
@@ -917,7 +937,7 @@ class ImportFoxyProxyAccount {
     return fetch('https://getfoxyproxy.org/webservices/get-accounts.php', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `username=${encodeURIComponent(username)}&password=${(encodeURIComponent(password))}`
+      body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
     })
     .then(response => response.json())
     .then(data => {
@@ -936,7 +956,6 @@ class ImportFoxyProxyAccount {
 // ---------- /Import FP Account ---------------------------
 
 // ---------- Import From URL ------------------------------
-// eslint-disable-next-line no-unused-vars
 class importFromUrl {
 
   static {
@@ -971,7 +990,6 @@ class importFromUrl {
 // ---------- /Import From URL -----------------------------
 
 // ---------- Import List ----------------------------------
-// eslint-disable-next-line no-unused-vars
 class ImportProxyList {
 
   static {
@@ -1002,7 +1020,7 @@ class ImportProxyList {
   static parseSimple(item) {
     // example.com:3128:user:pass
     const [hostname, port, username = '', password = ''] = item.split(':');
-    if (!hostname || !port || !(port*1)) {
+    if (!hostname || !port || !(port * 1)) {
       alert(`Error: ${item}`);
       return;
     }
@@ -1097,7 +1115,6 @@ class ImportProxyList {
 // ---------- /Import List ---------------------------------
 
 // ---------- Import Older Export --------------------------
-// eslint-disable-next-line no-unused-vars
 class importFromOlder {
 
   static {
@@ -1121,7 +1138,7 @@ class importFromOlder {
 
   static parseJSON(data) {
     try { data = JSON.parse(data); }
-    catch(e) {
+    catch {
       App.notify(browser.i18n.getMessage('fileParseError')); // display the error
       return;
     }
@@ -1156,7 +1173,7 @@ class Tester {
 
     this.url.value = this.url.value.trim();
     this.pattern.value = this.pattern.value.trim();
-    if(!this.url.value || !this.pattern.value ) {
+    if (!this.url.value || !this.pattern.value) {
       this.result.textContent = '❌';
       return;
     }
@@ -1199,3 +1216,10 @@ ImportExport.init(pref, () => {
 
 // ---------- Navigation -----------------------------------
 Nav.get();
+
+// globalThis.FP = {
+//   proxies: document.querySelectorAll('details.proxy'),
+//   delete(n) {
+//     n.forEach(i => i.remove());
+//   }
+// };

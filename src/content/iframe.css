@@ -220,15 +220,11 @@ th,
 td {
   border: 1px solid var(--border);
   vertical-align: top;
-}
-
-td {
   padding: 0.5em;
 }
 
 thead th {
   font-size: 1.2em;
-  padding: 0.5em;
 }
 
 tbody th {

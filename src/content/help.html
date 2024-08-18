@@ -423,10 +423,11 @@
       <dd>Add host (with its protocol) to the Global Exclude</dd>
 
       <dt>Set Tab Proxy <span>(Firefox only)</span></dt>
+      <dd>Select a proxy from the drop-down list for the current tab</dd>
+      <dd>Click button to set</dd>
       <dd>Tab Proxy is processed before normal proxy settings</dd>
-      <dd>Select a proxy for the current tab</dd>
       <dd>Only top 10 active proxies are listed</dd>
-      <dd>FoxyProxy icon will show in the selected tab and mouse-over title displays selection details</dd>
+      <dd>Toolbar badge shows the proxy and mouse-over title displays the selection details</dd>
 
       <dt>Unset Tab Proxy <span>(Firefox only)</span></dt>
       <dd>Unset proxy for the current tab</dd>
@@ -534,7 +535,7 @@
 
       <dt>Firefox</dt>
       <dd>Incognito/Container are processed before standard proxy settings (and after Tab Proxy)</dd>
-      <dd>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user</dd>
+      <dd>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1386673" title="Make Contextual Identity extensions be an optional permission" target="_blank">ⓘ</a></dd>
 
     </dl>
 
@@ -701,7 +702,7 @@
     <p class="note">Browser settings are not changed (e.g. previously set proxy values or Limit WebRTC).</p>
 
     <h3 id="import-export">Preferences: Import/Export</h3>
-    <p>You can import/export Preferences (for backup or share) from/to a local file on your computer.</p>
+    <p>You can import/export Preferences (for backup or sharing) from/to a local file on your computer.</p>
     <p class="note">Import is non-destructive. Click <b>Save</b> to apply the changes.</p>
 
     <h3 id="save">Save</h3>
@@ -714,7 +715,7 @@
 
     <p>FoxyProxy identifies proxies by their "hostname:post" or PAC URL.</p>
 
-    <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later. <i>(v8.8)</i></p>
+    <p>In case more than one proxy with the same "hostname:post" is needed, one or more letters can be added to the port to separate them, and FoxyProxy will remove the letters later. <i>(v8.8)</i> (Firefox only, not practical on Chrome)</p>
 
 <pre>
 127.0.0.1:9050
@@ -766,6 +767,7 @@
       <dt>Type</dt>
       <dd>HTTP/HTTPS/SOCKS4/SOCKS5 to be used with hostname & port</dd>
       <dd>PAC to be used with PAC URL</dd>
+      <dd class="experimental">QUIC (HTTP/3) proxy is only supported by Chrome (not available on Firefox). Support for QUIC proxies in Chrome is currently experimental and not ready for production use. <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#QUIC-proxy-scheme" title="QUIC proxy scheme" target="_blank">ⓘ</a></dd>
 
       <dt>Country</dt>
       <dd>Set the proxy country flag</dd>
@@ -781,10 +783,11 @@
 
       <dt>Username & Password</dt>
       <dd>To be used for HTTP/HTTPS/SOCKS types</dd>
-      <dd>If not set, authentication will be handled by the browser</dd>
+      <dd>SOCKS5 username & password is only supported by Firefox (not available on Chrome)</dd>
+      <dd>If not set, HTTP/HTTPS authentication will be handled by the browser</dd>
       <dd>Username & Password are port specific and different ones can be set for different ports</dd>
 
-      <dt>Proxy DNS <span>(Firefox only)</span></dt>
+      <dt id="proxydns">Proxy DNS <span>(Firefox only)</span></dt>
       <dd>Option to pass DNS to the SOCKS proxy when using SOCKS</dd>
       <dd class="note">See also:
         <ul>
@@ -792,8 +795,12 @@
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1799411" target="_blank">DNS leaks with proxy extension</a></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1791243" target="_blank">Firefox queries DNS of Proxy destination</a></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1867562" target="_blank">Despite the fact that DNS over HTTPS is switched off on Privacy and Security bar in Settings it still leaks my DNS</a></li>
+          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1579985" target="_blank">Impossible to use proxies with DoH</a></li>
+          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1470411" target="_blank">DNS search domain bypassing SOCKS proxy</a></li>
+          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1540584" target="_blank">"Proxy DNS when using SOCKS v5" should be greyed out when "Enable DNS over HTTPS" is enabled</a></li>
         </ul>
       </dd>
+
 
       <dt>PAC URL <span>(not available on Android)</span></dt>
       <dd>Required for PAC type</dd>
@@ -825,6 +832,57 @@
 
     </dl>
 
+
+
+    <h4 id="dns">DNS (Domain Name System) Resolution</h4>
+    <p>Following table demonstrates the DNS resolution when a proxy is used.</p>
+
+    <table>
+      <caption>Is name resolution (DNS) done client side, or proxy side?</caption>
+      <thead>
+        <tr>
+          <th>Scheme</th>
+          <th style="min-width: 30%;">Chrome</th>
+          <th style="min-width: 30%;">Firefox</th>
+          <th style="min-width: 30%;">DoH <span>(DNS over HTTPS)</span></th>
+        </tr>
+      </thead>
+      <tbody class="">
+        <tr>
+          <th>HTTP</th>
+          <td>Name resolution is always done proxy side <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#http-proxy-scheme" title="HTTP proxy scheme" target="_blank">ⓘ</a></td>
+          <td>proxy side</td>
+          <td>See <a href="#proxydns">Proxy DNS</a></td>
+        </tr>
+        <tr>
+          <th>HTTPS</th>
+          <td><i>(expected to be proxy side)</i></td>
+          <td>proxy side</td>
+          <td>See <a href="#proxydns">Proxy DNS</a></td>
+        </tr>
+        <tr>
+          <th>SOCKS4</th>
+          <td>Name resolution for target hosts is always done client side, and moreover must resolve to an IPv4 address (SOCKSv4 encodes target address as 4 octets, so IPv6 targets are not possible). <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#socksv4-proxy-scheme" title="SOCKSv4 proxy scheme" target="_blank">ⓘ</a></td>
+          <td>See <a href="#proxydns">Proxy DNS</a></td>
+          <td>See <a href="#proxydns">Proxy DNS</a></td>
+        </tr>
+        <tr>
+          <th>SOCKS5</th>
+          <td>Name resolution is always done proxy side <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#socksv5-proxy-scheme" title="SOCKSv5 proxy scheme" target="_blank">ⓘ</a></td>
+          <td>See <a href="#proxydns">Proxy DNS</a></td>
+          <td>See <a href="#proxydns">Proxy DNS</a></td>
+        </tr>
+        <tr>
+          <th>QUIC</th>
+          <td>A QUIC proxy uses QUIC (UDP) as the underlying transport, but otherwise behaves as an HTTP proxy. <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#quic-proxy-scheme" title="QUIC proxy scheme" target="_blank">ⓘ</a></td>
+          <td>n/a</td>
+          <td>n/a</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
     <h4 id="local-servers">Local Servers</h4>
     <p>FoxyProxy can be used with local proxy servers:</p>
 
@@ -846,10 +904,16 @@
       </thead>
       <tbody class="code">
         <tr>
-          <th>TOR</th>
-          <td>SOCKS5</td>
+          <th>Burp Suit</th>
+          <td>HTTP</td>
           <td>127.0.0.1</td>
-          <td>9050</td>
+          <td>8080</td>
+        </tr>
+        <tr>
+          <th>Privoxy</th>
+          <td>HTTP</td>
+          <td>127.0.0.1</td>
+          <td>8118</td>
         </tr>
         <tr>
           <th>Psiphon</th>
@@ -858,22 +922,28 @@
           <td>60351</td>
         </tr>
         <tr>
-          <th>Privoxy</th>
-          <td>HTTPS</td>
-          <td>127.0.0.1</td>
-          <td>8118</td>
-        </tr>
-        <tr>
-          <th>v2rayA</th>
+          <th>TOR</th>
           <td>SOCKS5</td>
           <td>127.0.0.1</td>
-          <td>20170</td>
+          <td>9050</td>
         </tr>
         <tr>
           <th>v2rayA</th>
-          <td>HTTP</td>
+          <td>SOCKS5<br>http<br>http with shunt rules</td>
           <td>127.0.0.1</td>
-          <td>20171<br>20172 (http with shunt rules)</td>
+          <td>20170<br>20171<br>20172</td>
+        </tr>
+        <tr>
+          <th>NekoRay/NekoBox</th>
+          <td>SOCKS5<br>http</td>
+          <td>127.0.0.1</td>
+          <td>2080<br>2081</td>
+        </tr>
+        <tr>
+          <th>Shadowsocks</th>
+          <td>SOCKS5</td>
+          <td>127.0.0.1</td>
+          <td>1080</td>
         </tr>
       </tbody>
     </table>

@@ -1,7 +1,6 @@
 import {App} from './app.js';
 
 // ---------- Show (Side Effect) -----------
-// eslint-disable-next-line no-unused-vars
 class Show {
 
   static {

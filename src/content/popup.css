@@ -27,11 +27,16 @@ body {
   transition: opacity 0.5s;
 }
 
+/*
+  https://bugzilla.mozilla.org/show_bug.cgi?id=1883896
+  Remove UA styles for :is(article, aside, nav, section) h1
+*/
 h1 {
   color: var(--nav-color);
   background-color: var(--nav-bg);
   margin: 0;
   padding: 0.5em;
+  font-size: 1.2em;
 }
 
 h1 img {
@@ -116,6 +121,10 @@ div.list label:hover {
   color: var(--dim);
 }
 
+.data.off {
+  display: none;
+}
+
 input[name="server"] {
   grid-row: span 2;
   transition: 0.5s ease-in-out;
@@ -131,7 +140,7 @@ input#filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
   padding-left: 2em;
   margin-bottom: 0.2em;
-  /* grid-column: span 2; */
+  grid-column: span 2;
 }
 
 div.list label.off {

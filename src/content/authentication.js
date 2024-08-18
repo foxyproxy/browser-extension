@@ -5,6 +5,7 @@
 // webRequest.onAuthRequired on Chrome mv3 is not usable due to removal of 'blocking'
 // https://source.chromium.org/chromium/chromium/src/+/main:extensions/browser/api/web_request/web_request_api.cc;l=2857
 // Chrome 108 new permission 'webRequestAuthProvider'
+// Firefox 126 added 'webRequestAuthProvider' permission support
 
 import './app.js';
 

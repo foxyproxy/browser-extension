@@ -23,7 +23,7 @@ export class Proxy {
   }
 
   static onMessage(message) {
-    const {id, pref, host, proxy, dark} = message;
+    const {id, pref, host, proxy, dark, tab} = message;
     switch (id) {
       case 'setProxy':
         Action.dark = dark;
@@ -31,20 +31,23 @@ export class Proxy {
         break;
 
       case 'quickAdd':
-        this.quickAdd(pref, host);
+        this.quickAdd(pref, host, tab);
         break;
 
       case 'excludeHost':
-        this.excludeHost(pref);
+        this.excludeHost(pref, tab);
         break;
 
       case 'setTabProxy':
-        OnRequest.setTabProxy(proxy);
+        OnRequest.setTabProxy(tab, proxy);
         break;
 
-      case 'unsetTabProxy':
-        OnRequest.unsetTabProxy();
-        break;
+      case 'getTabProxy':
+        return OnRequest.tabProxy[tab.id];
+
+      // case 'unsetTabProxy':
+      //   OnRequest.unsetTabProxy();
+      //   break;
     }
   }
 
@@ -233,6 +236,7 @@ if (find${idx} !== 'DIRECT') { return find${idx}; }`).join('\n\n');
     // https://developer.chrome.com/docs/extensions/reference/proxy/#type-PacScript
     // https://github.com/w3c/webextensions/issues/339
     // Chrome pacScript doesn't support bypassList
+    // https://issues.chromium.org/issues/40286640
 
     // isInNet(host, "192.0.2.172", "255.255.255.255")
 
@@ -268,13 +272,13 @@ String.raw`function FindProxyForURL(url, host) {
       default:
         type = type.toUpperCase();
     }
-    return `${type} ${hostname}:${parseInt(port)}`;           // prepare for augmented port
+    return `${type} ${hostname}:${parseInt(port)}`;         // prepare for augmented port
   }
 
   // ---------- Quick Add/Exclude Host ---------------------
-  static async quickAdd(pref, host) {
-    const activeTab = await this.getActiveTab();
-    const url = this.getURL(activeTab[0].url);
+  static quickAdd(pref, host, tab) {
+    // const activeTab = tab ? [tab] : await this.getActiveTab();
+    const url = this.getURL(tab.url);
     if (!url) { return; }
 
     const pattern = '^' + url.origin.replaceAll('.', '\\.') + '/';
@@ -294,9 +298,9 @@ String.raw`function FindProxyForURL(url, host) {
   }
 
   // Chrome commands returns command, tab
-  static async excludeHost(pref, tab) {
-    const activeTab = tab ? [tab] : await this.getActiveTab();
-    const url = this.getURL(activeTab[0].url);
+  static excludeHost(pref, tab) {
+    // const activeTab = tab ? [tab] : await this.getActiveTab();
+    const url = this.getURL(tab.url);
     if (!url) { return; }
 
     const pattern = url.host;
@@ -313,9 +317,9 @@ String.raw`function FindProxyForURL(url, host) {
     this.set(pref);                                         // update Proxy
   }
 
-  static getActiveTab() {
-    return browser.tabs.query({currentWindow: true, active: true});
-  }
+  // static getActiveTab() {
+  //   return browser.tabs.query({currentWindow: true, active: true});
+  // }
 
   static getURL(str) {
     const url = new URL(str);

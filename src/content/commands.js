@@ -2,7 +2,7 @@
 // https://developer.chrome.com/docs/extensions/reference/commands/#event-onCommand
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1843866
 // Add tab parameter to commands.onCommand
-// Firefox commands only returns command name
+// Firefox commands only returns command name (tab added in FF126)
 // Chrome commands returns command, tab
 
 import {App} from './app.js';
@@ -10,7 +10,6 @@ import {Proxy} from './proxy.js';
 import {OnRequest} from './on-request.js';
 
 // ---------- Commands (Side Effect) ------------------------
-// eslint-disable-next-line no-unused-vars
 class Commands {
 
   static {
@@ -21,6 +20,8 @@ class Commands {
   static async process(name, tab) {
     const pref = await browser.storage.local.get();
     const host = pref.commands[name];
+    const needTab = ['quickAdd', 'excludeHost', 'setTabProxy', 'unsetTabProxy'].includes(name);
+    tab ||= needTab && await browser.tabs.query({currentWindow: true, active: true});
 
     switch (name) {
       case 'proxyByPatterns':
@@ -36,7 +37,7 @@ class Commands {
         break;
 
       case 'quickAdd':
-        host && Proxy.quickAdd(pref, host);
+        host && Proxy.quickAdd(pref, host, tab);
         break;
 
       case 'excludeHost':
@@ -47,13 +48,13 @@ class Commands {
         if (!App.firefox || !host) { break; }               // firefox only
 
         const proxy = pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
-        proxy && OnRequest.setTabProxy(proxy);
+        proxy && OnRequest.setTabProxy(tab, proxy);
         break;
 
       case 'unsetTabProxy':
         if (!App.firefox) { break; }                        // firefox only
 
-        OnRequest.unsetTabProxy();
+        OnRequest.setTabProxy(tab);
         break;
     }
   }

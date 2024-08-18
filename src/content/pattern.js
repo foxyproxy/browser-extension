@@ -6,7 +6,7 @@ export class Pattern {
       new RegExp(pat);
       return true;
     }
-    catch(error) {
+    catch (error) {
       showError && alert([browser.i18n.getMessage('regexError'), str, error].join('\n'));
     }
   }
@@ -80,7 +80,7 @@ export class Pattern {
     return [...Array(4)].map(() => {
       const n = Math.min(mask, 8);
       mask -= n;
-      return 256 - Math.pow(2, 8-n);
+      return 256 - Math.pow(2, 8 - n);
     }).join('.');
   }
 
@@ -88,7 +88,7 @@ export class Pattern {
   static getRange(ip, mask) {
     let st = ip.split('.');                                 // ip array
     const ma = mask.split('.');                             // mask array
-    let end = st.map((v, i) => Math.min(v-ma[i]+255, 255) + ''); // netmask wildcard array
+    let end = st.map((v, i) => Math.min(v - ma[i] + 255, 255) + ''); // netmask wildcard array
     st = st.map(i => i.padStart(3, '0')).join('');
     end = end.map(i => i.padStart(3, '0')).join('');
 

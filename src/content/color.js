@@ -1,7 +1,7 @@
 export class Color {
 
   static getRandom() {
-    return this.colors[Math.floor(Math.random()*this.colors.length)];
+    return this.colors[Math.floor(Math.random() * this.colors.length)];
   }
 
   static colors = [

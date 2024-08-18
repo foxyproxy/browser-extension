@@ -24,7 +24,7 @@ export class ImportExport {
 
   static readData(data, pref) {
     try { data = JSON.parse(data); }
-    catch(e) {
+    catch {
       App.notify(browser.i18n.getMessage('fileParseError')); // display the error
       return;
     }
@@ -58,7 +58,8 @@ export class ImportExport {
       saveAs,
       conflictAction: 'uniquify'
     })
-    .catch(() => {});                                       // Suppress Error: Download canceled by the user
+    // eslint-disable-next-line no-console
+    .catch(console.log);
   }
 
   static fileReader(file, callback) {

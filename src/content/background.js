@@ -4,7 +4,6 @@ import {Proxy} from './proxy.js';
 import './commands.js';
 
 // ---------- Process Preferences --------------------------
-// eslint-disable-next-line no-unused-vars
 class ProcessPref {
 
   static {
