@@ -288,7 +288,7 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 Firefox for Android ignored disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated. The bug is fixed in Firefox 123.
 
 <details>
-  <summary><b>Downgrade ot Beta Installation</b></summary>
+  <summary><b>Downgrade or Beta Installation</b></summary>
 
 
 - Download 7.5.1 (or older) from https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
