@@ -22,7 +22,7 @@
 body {
   opacity: 0;
   font-size: 12px;
-  width: 25em;
+  width: 30em;
   background-color: var(--bg);
   transition: opacity 0.5s;
 }
