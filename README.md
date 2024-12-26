@@ -1,8 +1,8 @@
 # ![FoxyProxy](/src/image/icon.svg) FoxyProxy Browser Extension
 
 [![license](https://img.shields.io/github/license/foxyproxy/browser-extension.svg)](https://github.com/foxyproxy/browser-extension/blob/master/LICENSE)
-![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension?logo=github&logoColor=fff)
-![ECMAScript](https://img.shields.io/badge/ECMAScript-2022_(ES13)-blue?style=plastic&logo=javascript)
+[![GitHub repo size](https://img.shields.io/github/repo-size/foxyproxy/browser-extension?logo=github&logoColor=fff)](https://github.com/foxyproxy/browser-extension)
+[![ECMAScript](https://img.shields.io/badge/ECMAScript-2022_(ES13)-blue?style=plastic&logo=javascript)](https://262.ecma-international.org/13.0/index.html)
 
 
 
