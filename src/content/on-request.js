@@ -223,8 +223,8 @@ export class OnRequest {
   static setTabProxy(tab, pxy) {
     // const [tab] = await browser.tabs.query({currentWindow: true, active: true});
     switch (true) {
-      case !/https?:\/\/.+/.test(tab.url):                  // unacceptable URLs
-      case this.bypass(tab.url):                            // check local & global passthrough
+      case !/https?:\/\/.+|about:blank|about:newtab/.test(tab.url): // unacceptable URLs
+      case this.bypass(tab.url):                                    // check local & global passthrough
         return;
     }
 
