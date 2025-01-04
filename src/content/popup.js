@@ -104,7 +104,7 @@ class Popup {
 
   static async checkTabProxy() {
     const [tab] = await browser.tabs.query({currentWindow: true, active: true});
-    if (!/https?:\/\/.+/.test(tab.url)) { return; }         // unacceptable URLs
+    if (!/https?:\/\/.+|about:blank|about:newtab/.test(tab.url)) { return; } // unacceptable URLs
 
     this.tab = tab;                                         // cache tab
     const item = await browser.runtime.sendMessage({id: 'getTabProxy'});
