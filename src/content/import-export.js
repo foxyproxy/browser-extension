@@ -2,6 +2,7 @@ import {App} from './app.js';
 
 // ---------- Import/Export Preferences --------------------
 export class ImportExport {
+
   // 'pref' references the same object in the memory and its value gets updated
   static init(pref, callback) {
     this.callback = callback;
@@ -30,15 +31,15 @@ export class ImportExport {
     }
 
     // update pref with the saved version
-    Object.keys(pref).forEach(item => Object.hasOwn(data, item) && (pref[item] = data[item]));
+    Object.keys(pref).forEach(i => Object.hasOwn(data, i) && (pref[i] = data[i]));
 
     this.callback();                                        // successful import
   }
 
   // export preferences
-  static export(pref, saveAs = true) {
+  static export(pref, saveAs = true, folder = '') {
     const data = JSON.stringify(pref, null, 2);
-    const filename = `${browser.i18n.getMessage('extensionName')}_${new Date().toISOString().substring(0, 10)}.json`;
+    const filename = `${folder}${browser.i18n.getMessage('extensionName')}_${new Date().toISOString().substring(0, 10)}.json`;
     this.saveFile({data, filename, type: 'application/json', saveAs});
   }
 

@@ -34,7 +34,7 @@ export class Action {
           // const flag = App.getFlag(item.cc);
           // const host = flag + ' ' + [item.hostname, item.port].filter(Boolean).join(':');
           const host = [item.hostname, item.port].filter(Boolean).join(':');
-          title = [item.title, host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
+          title = [item.title, host, item.city, Location.get(item.cc)].filter(Boolean).join('\n');
           // text = item.cc ? flag : item.hostname;
           text = item.title || item.hostname;
           color = item.color;

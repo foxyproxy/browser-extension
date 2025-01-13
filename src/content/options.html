@@ -112,6 +112,15 @@
             <option value="">&nbsp;</option>
           </select>
 
+          <button type="button" class="flat" data-i18n="add"></button>
+
+          <!-- container template -->
+          <template>
+            <label class="firefox"><span data-i18n="container"></span> </label>
+            <select class="firefox" name="container-">
+              <option value="">&nbsp;</option>
+            </select>
+          </template>
         </div>
 
 
@@ -197,21 +206,21 @@
                   <option value="socks4">SOCKS4</option>
                   <option value="socks5">SOCKS5</option>
                   <option value="quic">QUIC</option>
-                  <option value="pac">PAC</option>
-                  <option value="direct">DIRECT</option>
+                  <option value="pac" data-flag="🌎">PAC</option>
+                  <option value="direct" data-hostname="DIRECT" data-flag="⮕">DIRECT</option>
                 </optgroup>
                 <optgroup data-i18n="server|label">
-                  <option value="http">Burp</option>
-                  <option value="http">Privoxy</option>
-                  <option value="socks5">Psiphon</option>
-                  <option value="socks5">TOR</option>
-                  <option value="socks5">v2rayA-socks5</option>
-                  <option value="http">v2rayA-http</option>
-                  <option value="http">v2rayA-http-rules</option>
-                  <option value="socks5">NekoRay-socks5</option>
-                  <option value="http">NekoRay-http</option>
-                  <option value="socks5">Shadowsocks</option>
-
+                  <!-- By default v2rayA will open 20170 (socks5), 20171 (http), 20172 (http with shunt rules) ports through the core -->
+                  <option value="http" data-hostname="127.0.0.1" data-port="8080" data-flag="🖥️">Burp</option>
+                  <option value="http" data-hostname="127.0.0.1" data-port="8118" data-flag="🖥️">Privoxy</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="60351" data-flag="🖥️">Psiphon</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="1080" data-flag="🖥️">Shadowsocks</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="9050" data-flag="🖥️">TOR</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="2080" data-flag="🖥️">NekoRay-socks5</option>
+                  <option value="http" data-hostname="127.0.0.1" data-port="2081" data-flag="🖥️">NekoRay-http</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="20170" data-flag="🖥️">v2rayA-socks5</option>
+                  <option value="http" data-hostname="127.0.0.1" data-port="20171" data-flag="🖥️">v2rayA-http</option>
+                  <option value="http" data-hostname="127.0.0.1" data-port="20172" data-flag="🖥️">v2rayA-http-rules</option>
                 </optgroup>
               </select>
 
@@ -351,6 +360,7 @@
                 <option value="LR">🇱🇷 Liberia</option>
                 <option value="LY">🇱🇾 Libya</option>
                 <option value="LI">🇱🇮 Liechtenstein</option>
+                <option value="LT">🇱🇹 Lithuania</option>
                 <option value="LU">🇱🇺 Luxembourg</option>
                 <option value="MO">🇲🇴 Macao</option>
                 <option value="MG">🇲🇬 Madagascar</option>
@@ -495,7 +505,7 @@
               <label data-type="pac">PAC URL</label>
               <span class="pac">
                 <input type="url" data-id="pac" data-type="pac" placeholder="PAC URL">
-                <label class="pointer" data-i18n="storeLocally"><input type="checkbox"></label>
+                <label class="pointer chrome" data-i18n="storeLocally"><input type="checkbox"></label>
                 <button type="button" class="flat" data-i18n="view"></button>
               </span>
 

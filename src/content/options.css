@@ -294,7 +294,7 @@ button.close::before {
 }
 
 button.random {
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 /* ----- /Button ----- */
 
@@ -314,6 +314,8 @@ section.options fieldset * {
 
 input[type="color"] {
   border: 0;
+  width: 4em;
+  height: 1.7em;
 }
 
 .options div.theme,
@@ -336,6 +338,13 @@ input[type="color"] {
   justify-content: end;
   column-gap: 0.2em;
   margin-bottom: 1em;
+}
+
+.options div.container button {
+  grid-column: span 2;
+  justify-self: right;
+  padding: 0.2em;
+  min-width: 6em;
 }
 
 /* button strip */
@@ -454,14 +463,15 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 4em;
   column-gap: 0.2em;
   place-items: center;
-  align-items: end;
   background-color: var(--bg);
   padding: 0.2em 0.5em;
+  font-size: 0.9em;
 }
 
 .pattern-head button {
   padding: 0.2em 1em;
   min-width: unset;
+  font-size: 0.8em;
 }
 
 .pattern-head button span.plus {
@@ -475,6 +485,11 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   cursor: pointer;
   padding: 0.2em 0.5em;
 }
+
+/* hide when there are no patterns */
+/* .pattern-head:has(+ .pattern-box:empty) > :not([data-i18n="pattern"], button.flat) {
+  opacity: 0;
+} */
 
 .pattern-row {
   display: grid;
@@ -762,7 +777,7 @@ body.chrome details.proxy[data-type="socks5"] :is(
   user-select: none;
 }
 
-body:not(.chrome) [data-i18n="storeLocally"] {
+body:not(.chrome) .chrome {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;

@@ -22,7 +22,8 @@ export class Proxy {
     browser.runtime.onMessage.addListener((...e) => this.onMessage(...e)); // from popup options
   }
 
-  static onMessage(message) {
+  // need async for the return message
+  static async onMessage(message) {
     const {id, pref, host, proxy, dark, tab} = message;
     switch (id) {
       case 'setProxy':
@@ -44,14 +45,10 @@ export class Proxy {
 
       case 'getTabProxy':
         return OnRequest.tabProxy[tab.id];
-
-      // case 'unsetTabProxy':
-      //   OnRequest.unsetTabProxy();
-      //   break;
     }
   }
 
-  // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#207
+  // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#236
   // throw new ExtensionError("proxy.settings is not supported on android.");
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
   // proxy.settings is not supported on Android

@@ -313,7 +313,7 @@
 
 
     <h3>Unified Code</h3>
-    <p>FoxyProxy 8.* code has been unified for Chrome & Firefox, and Standard & Basic versions.</p>
+    <p>FoxyProxy 8 code has been unified for Chrome & Firefox, and Standard & Basic versions.</p>
     <p>Users can import/export settings between all above mentioned.</p>
     <p class="warning">FoxyProxy uses user-agent to identify browser-specific code and altering the user-agent at browser level (not webpage level) can interfere with its operation.</p>
 
@@ -334,6 +334,58 @@
       <dd>How to: <a href="https://support.mozilla.org/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></dd>
 
     </dl>
+
+
+    <h3>Chrome vs Firefox</h3>
+    <p>There are certain operational differences between Chrome and Firefox.</p>
+
+    <h4>Manifest V3 (MV3)</h4>
+    <p>MV3 introduced by Chrome, unloads the extensions' background scripts (service-worker) after 30 seconds of inactivity. MV2 had a persistent background script which did not get unloaded.</p>
+    <p>The authentication process is a background process. If the background script has been unloaded, the next time an authentication request is received, the background script has to be restarted, adn then the extension has to get the user-pass data from its storage, before being able to respond to the authentication request.</p>
+    <p>Restarting the background script, and getting data from storage, takes time which could be as long as 0.5 second. During this time, as the extension is not providing the authentication details to the request, the request is left to the browser to respond to and an authentication prompt appears.</p>
+
+    <dl class="plain">
+      <dt>Chrome</dt>
+      <dd>FoxyProxy on Chrome (MV3) sets the proxy directly in the Chrome's setting and from then on, proxying is handled by the browser. FoxyProxy's only background process on Chrome is authentication.</dd>
+      <dd></dd>
+
+      <dt>Firefox</dt>
+      <dd>FoxyProxy on Firefox (MV2) sets the proxy directly in Firefox's setting if a PAC option is selected. Otherwise proxying is handled by FoxyProxy. FoxyProxy's background processes on Firefox are authentication and proxying. Therefore, unless PAC is used, even in MV3, as long as network connections are being made, its background script should not get unloaded.</dd>
+      <dd>Firefox's MV3 implementation will be using an event-page background script which should mean events (such as authentication listener) should remain active and not get unloaded.</dd>
+    </dl>
+
+    <table>
+      <tr>
+        <th></th>
+        <th>Chrome (Chromium)</th>
+        <th>Firefox</th>
+      </tr>
+      <tr>
+        <th>manifest</th>
+        <td>MV3</td>
+        <td>MV2</td>
+      </tr>
+      <tr>
+        <th>background process</th>
+        <td>authentication</td>
+        <td>authentication & proxying</td>
+      </tr>
+      <tr>
+        <th>MV3 background type</th>
+        <td>service-worker</td>
+        <td>event-page</td>
+      </tr>
+      <tr>
+        <th>proxy by pattern method</th>
+        <td>PAC</td>
+        <td>API</td>
+      </tr>
+      <tr>
+        <th>browser start-up</th>
+        <td>Proxying is active but no authentication until extension loads</td>
+        <td>if not PAC, API is not active until extension loads</td>
+      </tr>
+    </table>
 
 
     <h3>Non-Destructive Editing</h3>
@@ -415,31 +467,31 @@
       <dd>Proxy <i>Title</i>, <i>Hostname</i>, & <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
       <dd>Use <i>:port</i> to filter by port</dd>
 
+      <dt>Exclude Host</dt>
+      <dd>Add host (with its protocol) to the Global Exclude</dd>
+
       <dt>Quick Add</dt>
       <dd>Add current page's host pattern to the selected proxy's include</dd>
       <dd>Only top 10 active proxies are listed</dd>
 
-      <dt>Exclude Host</dt>
-      <dd>Add host (with its protocol) to the Global Exclude</dd>
-
-      <dt>Set Tab Proxy <span>(Firefox only)</span></dt>
+      <dt>Tab Proxy <span>(Firefox only)</span></dt>
       <dd>Select a proxy from the drop-down list for the current tab</dd>
-      <dd>Click button to set</dd>
+      <dd>Select the blank option to unset</dd>
       <dd>Tab Proxy is processed before normal proxy settings</dd>
       <dd>Only top 10 active proxies are listed</dd>
       <dd>Toolbar badge shows the proxy and mouse-over title displays the selection details</dd>
 
-      <dt>Unset Tab Proxy <span>(Firefox only)</span></dt>
-      <dd>Unset proxy for the current tab</dd>
-
       <dt>Options</dt>
       <dd>Open the Options page</dd>
+
+      <dt>Location</dt>
+      <dd>Open FoxyProxy site in a new tab to show location as well as any WebRTC leaks</dd>
 
       <dt>IP</dt>
       <dd>Get IP from FoxyProxy servers</dd>
 
-      <dt>Location</dt>
-      <dd>Open FoxyProxy site in a new tab to show location as well as any WebRTC leaks</dd>
+      <dt>Log</dt>
+      <dd>Open the Options page, Log Tab</dd>
     </dl>
 
 
@@ -521,11 +573,14 @@
     <p>Set a proxy for Incognito (Private Mode) and/or Containers</p>
     <p>Incognito proxy behaviour is slightly different in Chrome and Firefox.</p>
 
+
     <ul>
       <li>Only active proxies are listed</li>
       <li>Set proxy will clear if it is deleted or deactivated</li>
       <li>Patterns are not applicable in incognito/container settings</li>
       <li>Incognito/Container are processed independently, therefore they function even with normal operation set to "Disable"</li>
+      <li>Click "Add" for a new custom container option</li>
+      <li>Custom containers without a proxy will be deleted</li>
     </ul>
 
     <dl class="plain">
@@ -677,12 +732,12 @@
   Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
 -->
     <h5>See also</h5>
-    <ul>
+    <ul style="columns: 2;">
       <li><a href="https://developer.chrome.com/docs/extensions/reference/proxy/#bypass-list" target="_blank">Chrome Bypass list</a></li>
       <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Proxy-bypass-rules" target="_blank">Proxy bypass rules</a></li>
       <li><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#Implicit-bypass-rules" target="_blank">Implicit bypass rules</a></li>
 
-      <li style="margin-top: 1em;"><a href="https://www-archive.mozilla.org/quality/networking/docs/aboutno_proxy_for" target="_blank">No Proxy for</a></li>
+      <li><a href="https://www-archive.mozilla.org/quality/networking/docs/aboutno_proxy_for" target="_blank">No Proxy for</a></li>
       <li><a href="https://support.mozilla.org/kb/connection-settings-firefox" target="_blank">Connection settings in Firefox</a></li>
       <li><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/proxy/settings" target="_blank">Firefox passthrough</a></li>
 
@@ -724,7 +779,7 @@
 127.0.0.1:9050c
 </pre>
 
-    <p class="warning">The augmented port method is only only available for SOCKS & HTTPS (not HTTP, due to the limitation of the Firefox API). <br>
+    <p class="warning">The augmented port method is only only available for SOCKS & HTTPS (for Firefox &lt; 125, due to the limitation of the Firefox API) and HTTP (for Firefox &gt;= 125). <br>
     For Unix Domain Sockets, where port is ignored, only numbers should be used.</p>
 
     <p>Another solution is to prepend hostnames where possible e.g. <code>&lt;sometext&gt;.localhost</code> since they all resolve to <code>127.0.0.1</code> internally.</p>
@@ -988,7 +1043,7 @@
 
 
 
-    <h3>Pattern Guide</h3>
+    <h3 id="pattern-guide">Pattern Guide</h3>
 
     <ul>
       <li>Patterns can be Wildcard (<a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts#globs" target="_blank">globs</a>) or <a href="https://developer.mozilla.org/docs/Web/JavaScript/Guide/Regular_expressions" target="_blank">Regular Expression</a></li>
@@ -1051,7 +1106,7 @@
 
         <tr>
           <th>Wildcard</th>
-          <td>://*.example.com<br>*://*.example.com</td>
+          <td>://*.example.com/<br>*://*.example.com/</td>
           <td>http://help.example.com/<br>https://help.example.com/</td>
           <td>https://example.com/<br>https://google.com/ref=help.example.com</td>
         </tr>
@@ -1325,7 +1380,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
             ◦ <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md" target="_blank">Enterprise policies</a>
           </td>
           <td>
-            ◦ <a href="https://extensionworkshop.com/documentation/enterprise/adding-policy-support-to-your-extension/" target="_blank">How to add policy support</a><br>
+            ◦ <a href="https://extensionworkshop.com/documentation/enterprise/enterprise-development/#how-to-add-policy" target="_blank">How to add policy support</a><br>
             ◦ <a href="https://mozilla.github.io/policy-templates/" target="_blank">policy-templates</a>
           </td>
         </tr>

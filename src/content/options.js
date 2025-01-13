@@ -62,6 +62,7 @@ class Toggle {
 
 // ---------- Theme ----------------------------------------
 class Theme {
+
   static {
     this.elem = [document, ...[...document.querySelectorAll('iframe')].map(i => i.contentDocument)];
     pref.theme && this.set(pref.theme);
@@ -79,12 +80,6 @@ class Theme {
 class Options {
 
   static {
-    // --- container
-    // using generic names
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1386673
-    // Make Contextual Identity extensions be an optional permission
-    this.container = document.querySelectorAll('.options .container select');
-
     // --- keyboard Shortcut
     this.commands = document.querySelectorAll('.options .commands select');
 
@@ -113,7 +108,7 @@ class Options {
     });
 
     save && !ProgressBar.show() && browser.storage.local.set(pref); // update saved pref
-    this.fillContainerCommands();
+    this.fillContainerCommands(save);
   }
 
   static async check() {
@@ -152,10 +147,11 @@ class Options {
     const checkSelect = i => i.value && !cache[i.value]?.active && (i.value = '');
 
     // --- container proxy
+    const containerList = document.querySelectorAll('.options .container select');
     const container = {};
-    this.container.forEach(i => {
+    containerList.forEach(i => {
       checkSelect(i);
-      container[i.name] = i.value;
+      i.value && (container[i.name] = i.value);
     });
     pref.container = container;                             // set to pref
 
@@ -186,7 +182,7 @@ class Options {
     browser.runtime.sendMessage({id: 'setProxy', pref});
 
     // --- Auto Backup
-    pref.autoBackup && ImportExport.export(pref, false);
+    pref.autoBackup && ImportExport.export(pref, false, `${browser.i18n.getMessage('extensionName')}/`);
 
     // --- Sync
     this.sync(pref);
@@ -347,24 +343,39 @@ class Options {
   }
 
   // --- container & commands
-  static fillContainerCommands() {
-    // reset
-    this.clearSelect(this.container);
-    this.clearSelect(this.commands);
-
+  static fillContainerCommands(save) {
+    // create proxy option
     const docFrag = document.createDocumentFragment();
-
     // filter out PAC
-    pref.data.filter(i => i.active && i.type !== 'pac').forEach(item => {
-      const flag = App.getFlag(item.cc);
-      const value = `${item.hostname}:${item.port}`;
-      const opt = new Option(flag + ' ' + (item.title || value), value);
+    pref.data.filter(i => i.active && i.type !== 'pac').forEach(i => {
+      const flag = App.getFlag(i.cc);
+      const value = `${i.hostname}:${i.port}`;
+      const opt = new Option(flag + ' ' + (i.title || value), value);
       // opt.style.color = item.color;                         // supported on Chrome, not on Firefox
 
       docFrag.appendChild(opt.cloneNode(true));
     });
 
-    this.container.forEach(i => {
+    // not when clicking save
+    if (!save) {
+      this.addCustomContainer();
+
+      // populate the template select
+      this.containerSelect.appendChild(docFrag.cloneNode(true));
+
+      // add custom containers
+      Object.keys(pref.container).filter(i => !this.defaultContainer(i)).sort()
+        .forEach(i => this.addContainer(i.substring(10)));
+    }
+
+    // cache container list
+    const containerList = document.querySelectorAll('.options .container select');
+
+    // reset
+    this.clearSelect(containerList);
+    this.clearSelect(this.commands);
+
+    containerList.forEach(i => {
       i.appendChild(docFrag.cloneNode(true));
       pref.container[i.name] && (i.value = pref.container[i.name]);
     });
@@ -375,11 +386,36 @@ class Options {
     });
   }
 
+  static defaultContainer(i) {
+    return /^(incognito|container-[1-4])$/.test(i);
+  }
+
   static clearSelect(elem) {
     // remove children except the first one
-    elem.forEach(i =>
-      [...i.children].forEach((opt, idx) => idx && opt.remove())
-    );
+    elem.forEach(i => i.replaceChildren(i.firstElementChild));
+  }
+
+  static addCustomContainer() {
+    // using generic names
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1386673
+    // Make Contextual Identity extensions be an optional permission
+    const temp = document.querySelector('.options .container template').content;
+    this.containerLabel = temp.firstElementChild;
+    this.containerSelect = temp.lastElementChild;
+    this.containerButton = document.querySelector('.options .container button');
+    this.containerButton.addEventListener('click', () => this.addContainer(prompt(browser.i18n.getMessage('addContainerPrompt'))));
+  }
+
+  static addContainer(n) {
+    n *= 1;
+    if (!n || n < 5) { return; }                            // not a number or i-4
+
+    const label = this.containerLabel.cloneNode(true);
+    const select = this.containerSelect.cloneNode(true);
+
+    label.append(n);
+    select.name = `container-${n}`;
+    this.containerButton.before(label, select);
   }
 }
 // ---------- /Options -------------------------------------
@@ -487,11 +523,6 @@ class Proxies {
     Log.proxyCache = this.proxyCache;                       // used to get the details for the log
     Log.mode = pref.mode;
 
-    // --- hide elements for Basic
-    // const showJS = document.querySelector('.show-js');
-    // App.basic && showJS.classList.add('basic');
-    // !App.firefox && showJS.classList.add('chrome');
-
     this.process();
   }
 
@@ -527,79 +558,16 @@ class Proxies {
     type.addEventListener('change', e => {
       pxy.dataset.type = e.target.value;                    // show/hide elements
 
-      const id = e.target.options[e.target.selectedIndex].textContent;
-      const fillData = (local) => {
-        sumTitle.textContent = id;
-        title.value = id;
-
-        if (local) {
-          flag.textContent = '🖥️';
-          hostname.value = '127.0.0.1';
-        }
-      };
-
-      switch (id) {
-        case 'PAC':
-          fillData();
-          flag.textContent = '🌎';
-          break;
-
-        case 'DIRECT':
-          fillData();
-          flag.textContent = '⮕';
-          hostname.value = id;
-          break;
-
-        // --- server auto-fill helpers
-        case 'Burp':
-          fillData(true);
-          port.value = '8080';
-          break;
-
-        case 'Privoxy':
-          fillData(true);
-          port.value = '8118';
-          break;
-
-        case 'Psiphon':
-          fillData(true);
-          port.value = '60351';
-          break;
-
-        case 'TOR':
-          fillData(true);
-          port.value = '9050';
-          break;
-
-        // By default v2rayA will open 20170 (socks5), 20171 (http), 20172 (http with shunt rules) ports through the core
-        case 'v2rayA-socks5':
-          fillData(true);
-          port.value = '20170';
-          break;
-
-        case 'v2rayA-http':
-          fillData(true);
-          port.value = '20171';
-          break;
-
-        case 'v2rayA-http-rules':
-          fillData(true);
-          port.value = '20172';
-          break;
-
-        case 'NekoRay-socks5':
-          fillData(true);
-          port.value = '2080';
-          break;
-
-        case 'NekoRay-http':
-          fillData(true);
-          port.value = '2081';
-          break;
-
-        case 'Shadowsocks':
-          fillData(true);
-          port.value = '1080';
+      const elem = e.target.options[e.target.selectedIndex];
+      const data = elem.dataset;
+      // --- server auto-fill helpers
+      switch (true) {
+        case ['flag', 'hostname', 'port'].some(i => data[i]):
+          sumTitle.textContent = elem.textContent;
+          title.value = elem.textContent;
+          data.flag && (flag.textContent = data.flag);
+          data.hostname && (hostname.value = data.hostname);
+          data.port && (port.value = data.port);
           break;
 
         default:
@@ -751,6 +719,8 @@ class Proxies {
 
     this.addProxy(pxy);
     item.after(this.docFrag);
+    item.open = false;                                      // close orig proxy
+    item.nextElementSibling.open = true;                    // open duplicated proxy
   }
 
   static importPattern(e, patternBox) {
@@ -813,11 +783,11 @@ class Proxies {
 
   static updateLocation(json) {
     // update display
-    this.proxyDiv.querySelectorAll('[data-id="cc"], [data-id="city"]').forEach(item => {
-      const {hostname, id} = item.dataset;
-      const value = item.value;                             // cache old value to compare
-      json[hostname]?.[id] && (item.value = json[hostname][id]);
-      id === 'cc' && item.value !== value && item.dispatchEvent(new Event('change')); // dispatch change event
+    this.proxyDiv.querySelectorAll('[data-id="cc"], [data-id="city"]').forEach(i => {
+      const {hostname, id} = i.dataset;
+      const value = i.value;                                // cache old value to compare
+      json[hostname]?.[id] && (i.value = json[hostname][id]);
+      id === 'cc' && i.value !== value && i.dispatchEvent(new Event('change')); // dispatch change event
     });
 
     Spinner.hide();
@@ -1216,10 +1186,3 @@ ImportExport.init(pref, () => {
 
 // ---------- Navigation -----------------------------------
 Nav.get();
-
-// globalThis.FP = {
-//   proxies: document.querySelectorAll('details.proxy'),
-//   delete(n) {
-//     n.forEach(i => i.remove());
-//   }
-// };

@@ -21,7 +21,7 @@ class Commands {
     const pref = await browser.storage.local.get();
     const host = pref.commands[name];
     const needTab = ['quickAdd', 'excludeHost', 'setTabProxy', 'unsetTabProxy'].includes(name);
-    tab ||= needTab && await browser.tabs.query({currentWindow: true, active: true});
+    tab ||= needTab && (await browser.tabs.query({currentWindow: true, active: true}))[0];
 
     switch (name) {
       case 'proxyByPatterns':

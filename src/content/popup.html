@@ -19,7 +19,7 @@
             <input type="radio" name="server" value="pattern">
           </label>
 
-          <label>
+          <label class="disable">
             <span class="flag"><img class="off" src="../image/power.svg" alt=""></span>
             <span class="title" data-i18n="disable"></span>
             <input type="radio" name="server" value="disable" checked>
@@ -31,21 +31,13 @@
           <div class="host">
             <input type="text" id="filter" spellcheck="false" placeholder="filter">
 
-
-            <!-- <button type="button" class="local" data-i18n="quickAdd"></button> -->
-            <!-- <label data-i18n="quickAdd"></label> -->
+            <button type="button" class="local" data-i18n="excludeHost"></button>
             <select id="quickAdd" class="local">
               <option value="" data-i18n="quickAdd" disabled selected></option>
             </select>
 
-            <button type="button" class="local" data-i18n="excludeHost"></button>
-            <!-- <button type="button" class="firefox local" data-i18n="setTabProxy"></button> -->
-            <!-- <button type="button" class="firefox local" data-i18n="unsetTabProxy"></button> -->
-
-
-
-            <label class="firefox local" data-i18n="tabProxy"></label>
-            <select id="tabProxy" class="firefox local">
+            <label class="firefox"><span data-i18n="tabProxy"></span> ⮞</label>
+            <select id="tabProxy" class="firefox">
               <option value="" selected>&nbsp;</option>
             </select>
 

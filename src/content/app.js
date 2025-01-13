@@ -31,7 +31,6 @@ export class App {
   // moz-extension: | chrome-extension: | safari-web-extension:
   static firefox = browser.runtime.getURL('').startsWith('moz-extension:');
   static android = navigator.userAgent.includes('Android');
-  // static chrome = navigator.userAgent.includes('Chrome');
   static basic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
 
   // ---------- User Preferences ---------------------------
@@ -129,5 +128,9 @@ export class App {
       default:
         return '🌎';
     }
+  }
+
+  static allowedTabProxy(url) {
+    return /^https?:\/\/.+|^about:(blank|newtab)$/.test(url);
   }
 }

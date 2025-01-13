@@ -85,6 +85,10 @@ div.list label:hover {
   background-color: var(--hover);
 }
 
+div.list label.off {
+  display: none;
+}
+
 .flag img {
   width: 1em;
 }
@@ -93,11 +97,17 @@ div.list label:hover {
   filter: var(--filter);
 }
 
+/* div.list :is(.pattern, .disable ) :is(.flag, input[name="server"]) {
+  grid-row: unset;
+} */
+
 .flag {
   display: grid;
   grid-row: span 2;
   justify-content: center;
   font-size: 2em;
+  align-self: start;
+  line-height: 1em;
 }
 
 .title {
@@ -128,7 +138,7 @@ div.list label:hover {
 input[name="server"] {
   grid-row: span 2;
   transition: 0.5s ease-in-out;
-  align-self: center;
+  align-self: start;
   cursor: pointer;
 }
 
@@ -143,10 +153,6 @@ input#filter {
   grid-column: span 2;
 }
 
-div.list label.off {
-  display: none;
-}
-
 summary {
   background-color: var(--alt-bg);
   padding: 0.2em 0.5em;
@@ -157,8 +163,13 @@ div.host {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0.5em;
-  gap: 0.2em;
+  gap: 0.2em 1em;
   align-items: center;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+div.host label {
+  justify-self: center;
 }
 
 div.host button {
@@ -174,9 +185,6 @@ div.host button:hover {
   background-color: var(--hover);
 }
 
-/* div.host select {
-  grid-column: span 2;
-} */
 
 /* ----- show/hide elements ----- */
 /* --- Chrome --- */

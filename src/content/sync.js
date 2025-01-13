@@ -73,10 +73,10 @@ export class Sync {
       pref.data = data;
     }
 
-    App.syncProperties.forEach(item => {
-      if (Object.hasOwn(syncPref, item)) {
-        obj[item] = syncPref[item];
-        pref[item] = syncPref[item];
+    App.syncProperties.forEach(i => {
+      if (Object.hasOwn(syncPref, i)) {
+        obj[i] = syncPref[i];
+        pref[i] = syncPref[i];
       }
     });
 

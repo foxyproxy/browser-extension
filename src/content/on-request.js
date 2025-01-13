@@ -13,6 +13,8 @@
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1741375
 // Proxy DNS by default when using SOCKS v5
 // Firefox 128: defaults to true for SOCKS5 & false for SOCKS4
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1893670
+// Proxy DNS by default for SOCK4 proxies. Defaulting to SOCKS4a
 
 import {App} from './app.js';
 import {Pattern} from './pattern.js';
@@ -33,7 +35,7 @@ export class OnRequest {
     this.browserVersion = 0;                                // used HTTP authentication
 
     // --- Firefox only
-    if (browser?.proxy?.onRequest) {
+    if (browser.proxy?.onRequest) {
       browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
       // check Tab for tab proxy
       browser.tabs.onUpdated.addListener((...e) => this.onUpdated(...e));
@@ -124,7 +126,6 @@ export class OnRequest {
 
     for (const proxy of this.data) {
       if (!match(proxy.exclude) && match(proxy.include)) {
-        // this.processShowPatternProxy(proxy, tabId);
         return this.processProxy(proxy, tabId);
       }
     }
@@ -159,7 +160,7 @@ export class OnRequest {
       // proxyAuthorizationHeader on Firefox only applies to HTTPS (not HTTP and it breaks the API and sends DIRECT)
       // proxyAuthorizationHeader added to reduce the authentication request in webRequest.onAuthRequired
       // HTTP authentication fixed in Firefox 125
-      (type === 'https' || this.browserVersion >= 125) &&
+      (type === 'https' || (type === 'http' && this.browserVersion >= 125)) &&
         (response.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
     }
 
@@ -178,7 +179,7 @@ export class OnRequest {
     // --- set proxy details
     if (item) {
       const host = [item.hostname, item.port].filter(Boolean).join(':');
-      title = [item.title, host, item.city, ...Location.get(item.cc)].filter(Boolean).join('\n');
+      title = [item.title, host, item.city, Location.get(item.cc)].filter(Boolean).join('\n');
       text = item.title || item.hostname;
       color = item.color;
     }
@@ -223,7 +224,7 @@ export class OnRequest {
   static setTabProxy(tab, pxy) {
     // const [tab] = await browser.tabs.query({currentWindow: true, active: true});
     switch (true) {
-      case !/https?:\/\/.+/.test(tab.url):                  // unacceptable URLs
+      case !App.allowedTabProxy(tab.url):                   // unacceptable URLs
       case this.bypass(tab.url):                            // check local & global passthrough
         return;
     }
@@ -232,12 +233,6 @@ export class OnRequest {
     pxy ? this.tabProxy[tab.id] = pxy : delete this.tabProxy[tab.id];
     this.setAction(tab.id, pxy);
   }
-
-  // static async unsetTabProxy() {
-  //   const [tab] = await browser.tabs.query({currentWindow: true, active: true});
-  //   delete this.tabProxy[tab.id];
-  //   // PageAction.unset(tab.id);
-  // }
 
   // ---------- Update Page Action -------------------------
   static onUpdated(tabId, changeInfo, tab) {

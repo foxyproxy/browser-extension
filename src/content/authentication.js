@@ -22,9 +22,9 @@ export class Authentication {
 
   static init(data) {
     this.data = {};                                         // reset data
-    data.forEach(item => {                                  // filter out no user/pass or host
-      item.hostname && item.port && item.username && item.password &&
-        (this.data[`${item.hostname}:${item.port}`] = {username: item.username, password: item.password});
+    data.forEach(i => {                                     // filter out no user/pass or host
+      i.hostname && i.port && i.username && i.password &&
+        (this.data[`${i.hostname}:${i.port}`] = {username: i.username, password: i.password});
     });
   }
 
