@@ -77,7 +77,9 @@ No remote code is used in this extension.
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/dw/foxyproxy-standard" alt=""></a>
       </td>
       <td>
-      <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/Edge%20108%2B-v8.9-blue?logo=microsoftedge" alt=""></a><br><br>
+       <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/dynamic/json?label=Edge%20108%2B%20&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fflcnoalcefgkhkinjkffipfdhglnpnem" alt=""></a><br>
+       <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/dynamic/json?label=users&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fflcnoalcefgkhkinjkffipfdhglnpnem" alt=""></a>
+       <a href="https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem"><img src="https://img.shields.io/badge/dynamic/json?label=rating&suffix=/5&query=%24.averageRating&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fflcnoalcefgkhkinjkffipfdhglnpnem" alt=""></a>
       </td>
     </tr>
     <tr>
