@@ -91,10 +91,10 @@ div.list label.off {
 }
 
 /* :has() FF121 (2023-12-19), Ch105 */
-/* div.list label:has(input[name="server"]:checked) {
+div.list label:has(input[name="server"]:checked) {
   background-color: var(--selected);
-} */
-
+}
+/* for Firefox < 121 */
 div.list label.selected {
   background-color: var(--selected);
 }

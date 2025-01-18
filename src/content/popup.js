@@ -52,7 +52,7 @@ class Popup {
     this.process();
   }
 
-  static process() {
+  static async process() {
     const labelTemplate = document.querySelector('template').content.firstElementChild;
     const docFrag = document.createDocumentFragment();
 
@@ -63,6 +63,13 @@ class Popup {
     }
 
     pref.mode === 'pattern' && (this.list.children[0].children[2].checked = true);
+
+    // :has() FF121 (2023-12-19), Ch105
+    this.supportCssHas = true;
+    if (App.firefox) {
+      const info = await browser.runtime.getBrowserInfo();
+      this.supportCssHas = parseInt(info.version) >= 121;
+    }
 
     pref.data.filter(i => i.active).forEach(i => {
       const id = i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`;
@@ -76,8 +83,7 @@ class Popup {
       data.textContent = [i.city, Location.get(i.cc)].filter(Boolean).join(', ') || ' ';
       docFrag.appendChild(label);
 
-      // :has() FF121 (2023-12-19), Ch105, using JS for now
-      radio.checked && label.classList.add('selected');
+      !this.supportCssHas && radio.checked && label.classList.add('selected');
     });
 
     this.list.appendChild(docFrag);
@@ -125,9 +131,11 @@ class Popup {
     browser.storage.local.set({mode});                      // save mode
     browser.runtime.sendMessage({id: 'setProxy', pref, dark});
 
-    // :has() FF121 (2023-12-19), Ch105, using JS for now
-    [...this.list.children].forEach(i => i.classList.remove('selected'));
-    e.target.parentElement.classList.add('selected');
+    // :has() FF121 (2023-12-19), Ch105
+    if (!this.supportCssHas) {
+      [...this.list.children].forEach(i => i.classList.remove('selected'));
+      e.target.parentElement.classList.add('selected');
+    }
   }
 
   static processButtons(e) {
