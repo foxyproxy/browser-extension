@@ -16,9 +16,20 @@ export class Log {
     const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
     const [, time, container, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
 
+    // shortened forms similar to Developer Tools
+    const shortType = {
+      'main_frame': 'html',
+      'sub_frame': 'iframe',
+      image: 'img',
+      script: 'js',
+      stylesheet: 'css',
+      websocket: 'ws',
+      xmlhttprequest: 'xhr',
+    };
+
     time.textContent = this.formatInt(e.timeStamp);
     method.textContent = e.method;
-    reqType.textContent = e.type;
+    reqType.textContent = shortType[e.type] || e.type;
     // For a top-level document, documentUrl is undefined, chrome uses e.initiator
     this.prepareOverflow(doc, e.documentUrl || e.initiator || '');
     this.prepareOverflow(url, decodeURIComponent(e.url));
@@ -30,7 +41,7 @@ export class Log {
     const flag = item?.cc ? App.getFlag(item.cc) + ' ' : '';
     title.textContent = flag + (item?.title || '');
     title.style.borderLeftColor = item?.color || 'var(--border)';
-    type.textContent = info.type.toUpperCase();
+    type.textContent = info.type;
     host.textContent = info.host;
     port.textContent = info.port;
 

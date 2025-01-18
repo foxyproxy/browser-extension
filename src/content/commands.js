@@ -1,9 +1,8 @@
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/commands/onCommand
 // https://developer.chrome.com/docs/extensions/reference/commands/#event-onCommand
-// https://bugzilla.mozilla.org/show_bug.cgi?id=1843866
-// Add tab parameter to commands.onCommand
-// Firefox commands only returns command name (tab added in FF126)
 // Chrome commands returns command, tab
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1843866
+// Add tab parameter to commands.onCommand (fixed in Firefox 126)
 
 import {App} from './app.js';
 import {Proxy} from './proxy.js';

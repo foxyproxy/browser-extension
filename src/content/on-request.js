@@ -3,16 +3,14 @@
 // Once implemented, module will be dynamically imported for Firefox only
 
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1853203
-// Support non-ASCII username/password for socks proxy
-// Fixed in Firefox 119
+// Support non-ASCII username/password for socks proxy (fixed in Firefox 119)
 
+// proxyAuthorizationHeader on Firefox only applied to HTTPS (not HTTP and HTTP broke the API and sent DIRECT)
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
-// Allow HTTP authentication in proxy.onRequest
-// Fixed in Firefox 125
+// Allow HTTP authentication in proxy.onRequest (fixed in Firefox 125)
 
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1741375
-// Proxy DNS by default when using SOCKS v5
-// Firefox 128: defaults to true for SOCKS5 & false for SOCKS4
+// Proxy DNS by default when using SOCKS v5 (fixed in Firefox 128, defaults to true for SOCKS5 & false for SOCKS4)
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1893670
 // Proxy DNS by default for SOCK4 proxies. Defaulting to SOCKS4a
 
@@ -139,30 +137,34 @@ export class OnRequest {
     const {type, hostname: host, port, username, password, proxyDNS} = proxy || {};
     if (!type || type === 'direct') { return {type: 'direct'}; }
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#102
-    // Although API converts to number -> let port = Number.parseInt(proxyData.port, 10);
-    // port 'number', prepare for augmented port
-    const response = {type, host, port: parseInt(port)};
+    const up = username && password;
+    const auth = up && (type === 'https' || (type === 'http' && this.browserVersion >= 125));
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#43
-    // API uses socks for socks5
-    response.type === 'socks5' && (response.type = 'socks');
+    const response = {
+      host,
 
-    // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#135
-    type.startsWith('socks') && (response.proxyDNS = !!proxyDNS);
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#102
+      // Although API converts to number -> let port = Number.parseInt(proxyData.port, 10);
+      // port 'number', prepare for augmented port
+      port: parseInt(port),
 
-    if (username && password) {
-      response.username = username;
-      response.password = password;
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1794464
-      // Allow HTTP authentication in proxy.onRequest
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#43
+      // API uses socks for socks5
+      type: type === 'socks5' ? 'socks' : type,
+
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#135
+      ...(type.startsWith('socks') && {proxyDNS: !!proxyDNS}),
+
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#117
+      ...(up && {username}),
+
+      // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#126
+      ...(up && {password}),
+
       // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#167
-      // proxyAuthorizationHeader on Firefox only applies to HTTPS (not HTTP and it breaks the API and sends DIRECT)
       // proxyAuthorizationHeader added to reduce the authentication request in webRequest.onAuthRequired
-      // HTTP authentication fixed in Firefox 125
-      (type === 'https' || (type === 'http' && this.browserVersion >= 125)) &&
-        (response.proxyAuthorizationHeader = 'Basic ' + btoa(proxy.username + ':' + proxy.password));
-    }
+      ...(auth && {proxyAuthorizationHeader: 'Basic ' + btoa(proxy.username + ':' + proxy.password)}),
+    };
 
     return response;
   }
@@ -192,7 +194,7 @@ export class OnRequest {
   // ---------- passthrough --------------------------------
   static bypass(url) {
     switch (true) {
-      // case this.localhost(url):                             // localhost passthrough
+      case this.defaultLocal(url):                          // default localhost passthrough
       case this.passthrough.some(i => new RegExp(i, 'i').test(url)): // global passthrough
       case this.net[0] && this.isInNet(url):                // global passthrough CIDR
         return true;
@@ -206,9 +208,9 @@ export class OnRequest {
   // Connections to localhost, 127.0.0.1/8, and ::1 are never proxied.
   // proxy.onRequest only applies to http/https/ws/wss
   // it can't catch a domain set by user to 127.0.0.1 in the hosts file
-  static localhost(url) {
-    const [, host] = url.split(/:\/\/|\//, 2);              // hostname with/without port
-    return App.isLocal(host);
+  static defaultLocal(url) {
+    const {hostname} = new URL(url);
+    return ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
   }
 
   static isInNet(url) {

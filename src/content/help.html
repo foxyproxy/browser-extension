@@ -306,10 +306,12 @@
     <h2 id="introduction">Introduction</h2>
 
     <p>First released in 2006, FoxyProxy is the original proxy switching tool, used by millions daily!<br>
-      To support this free software, please <a href="https://www.paypal.me/ericjung2/5.99" target="_blank">donate</a> or <a href="https://getfoxyproxy.org/order/" target="_blank">buy VPN/Proxy Servers</a> in over 100 countries (including such remote places as <a href="https://wikipedia.org/wiki/Réunion" target="_blank">Reunion Island</a>).
+      To support this free software, please please donate (<a href="https://buy.stripe.com/00gcNd1YQ2NQbKM148" target="_blank">Stripe</a>, <a href="https://www.paypal.me/ericjung2/5.99" target="_blank">PayPal</a>) or
+      <a href="https://getfoxyproxy.org/order/" target="_blank">buy dedicated VPN/Proxy Servers</a> in over 100 countries.<br>
+      <i>(including such remote places like <a href="https://wikipedia.org/wiki/Réunion" target="_blank">Reunion Island</a>)</i>
     </p>
 
-    <p>If you upgraded from a previous version, and your proxy settings are missing, please import them.</p>
+    <p>If you have upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
 
     <h3>Unified Code</h3>
@@ -350,8 +352,8 @@
       <dd></dd>
 
       <dt>Firefox</dt>
-      <dd>FoxyProxy on Firefox (MV2) sets the proxy directly in Firefox's setting if a PAC option is selected. Otherwise proxying is handled by FoxyProxy. FoxyProxy's background processes on Firefox are authentication and proxying. Therefore, unless PAC is used, even in MV3, as long as network connections are being made, its background script should not get unloaded.</dd>
-      <dd>Firefox's MV3 implementation will be using an event-page background script which should mean events (such as authentication listener) should remain active and not get unloaded.</dd>
+      <dd>FoxyProxy on Firefox (MV2) sets the proxy directly in Firefox's setting if a PAC option is selected. Otherwise proxying is handled by FoxyProxy. FoxyProxy's background processes on Firefox are authentication and proxying.</dd>
+      <dd>Firefox's MV3 implementation will be using an event-page background script which should mean events (such as authentication listener) should remain active. Therefore, unless PAC is used, as long as network connections are being made, its background script should not get unloaded.</dd>
     </dl>
 
     <table>
@@ -386,6 +388,9 @@
         <td>if not PAC, API is not active until extension loads</td>
       </tr>
     </table>
+
+    <p>See also: <a href="https://github.com/w3c/webextensions/issues/557" target="_blank">Proposal: Extension Loading Priority</a></p>
+
 
 
     <h3>Non-Destructive Editing</h3>
@@ -458,6 +463,7 @@
 
       <dt>Individual Proxy</dt>
       <dd>Connections are passed through the selected proxy (or PAC)</dd>
+      <dd>Patterns are not applicable in this case</dd>
 
       <dt>▶ More</dt>
       <dd>Show or hide additional options</dd>
@@ -465,7 +471,7 @@
 
       <dt>Search Filter</dt>
       <dd>Proxy <i>Title</i>, <i>Hostname</i>, & <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
-      <dd>Use <i>:port</i> to filter by port</dd>
+      <dd>Use <code>:port-number</code> to filter by port</dd>
 
       <dt>Exclude Host</dt>
       <dd>Add host (with its protocol) to the Global Exclude</dd>
@@ -591,6 +597,7 @@
       <dt>Firefox</dt>
       <dd>Incognito/Container are processed before standard proxy settings (and after Tab Proxy)</dd>
       <dd>Generic names are used for containers since getting their details requires "contextualIdentities" permissions which would enable containers automatically for the user <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1386673" title="Make Contextual Identity extensions be an optional permission" target="_blank">ⓘ</a></dd>
+      <dd>The numbers corresponds to container IDs and not their order. If containers are not deleted or reordered, IDs should match the order. Otherwise, user should get the correct ID (e.g. from <code>containers.json</code>).</dd>
 
     </dl>
 

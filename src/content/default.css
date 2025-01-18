@@ -18,7 +18,7 @@
 
   --link: #e70;
   --border: #ddd;
-  --shadow: #0004;
+  /* --shadow: #0004; */
   --dim: #777;
   --tr: #f5f5f5;
 }
@@ -29,7 +29,7 @@
     --color: #fff;
     --bg: #420;
     --alt-bg: #666;
-    --hover: #888;
+    --hover: #444;
 
     /* --body-bg: #630; */
     --header: #e70;
@@ -39,7 +39,7 @@
 
     --link: #f90;
     --border: #777;
-    --shadow: #fff8;
+    /* --shadow: #fff8; */
     --dim: #ccc;
     --tr: #531;
   }

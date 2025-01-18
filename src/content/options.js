@@ -363,12 +363,12 @@ class Options {
       // populate the template select
       this.containerSelect.appendChild(docFrag.cloneNode(true));
 
-      // add custom containers
-      Object.keys(pref.container).filter(i => !this.defaultContainer(i)).sort()
+      // add custom containers, sort by number
+      const list = [...document.querySelectorAll('.options .container select')].map(i => i.name);
+      Object.keys(pref.container).filter(i => !list.includes(i)).sort()
         .forEach(i => this.addContainer(i.substring(10)));
     }
 
-    // cache container list
     const containerList = document.querySelectorAll('.options .container select');
 
     // reset
@@ -384,10 +384,6 @@ class Options {
       i.appendChild(docFrag.cloneNode(true));
       pref.commands[i.name] && (i.value = pref.commands[i.name]);
     });
-  }
-
-  static defaultContainer(i) {
-    return /^(incognito|container-[1-4])$/.test(i);
   }
 
   static clearSelect(elem) {
@@ -408,7 +404,7 @@ class Options {
 
   static addContainer(n) {
     n *= 1;
-    if (!n || n < 5) { return; }                            // not a number or i-4
+    if (!n || this.hasContainer(n)) { return; }
 
     const label = this.containerLabel.cloneNode(true);
     const select = this.containerSelect.cloneNode(true);
@@ -416,6 +412,10 @@ class Options {
     label.append(n);
     select.name = `container-${n}`;
     this.containerButton.before(label, select);
+  }
+
+  static hasContainer(n) {
+    return document.querySelector(`.options .container select[name="container-${n}"]`);
   }
 }
 // ---------- /Options -------------------------------------

@@ -47,7 +47,7 @@ class Popup {
     // --- store details open toggle
     const details = document.querySelector('details');
     details.open = localStorage.getItem('more') !== 'false';    // defaults to true
-    details.addEventListener('toggle', e => localStorage.setItem('more', details.open));
+    details.addEventListener('toggle', () => localStorage.setItem('more', details.open));
 
     this.process();
   }
@@ -75,12 +75,15 @@ class Popup {
       radio.checked = id === pref.mode;
       data.textContent = [i.city, Location.get(i.cc)].filter(Boolean).join(', ') || ' ';
       docFrag.appendChild(label);
+
+      // :has() FF121 (2023-12-19), Ch105, using JS for now
+      radio.checked && label.classList.add('selected');
     });
 
     this.list.appendChild(docFrag);
     this.list.addEventListener('click', e =>
       // fires twice (click & label -> input)
-      e.target.name === 'server' && this.processSelect(e.target.value)
+      e.target.name === 'server' && this.processSelect(e.target.value, e)
     );
 
     // --- Add Hosts to select
@@ -111,7 +114,7 @@ class Popup {
     item && (this.tabProxy.value = `${item.hostname}:${item.port}`);
   }
 
-  static processSelect(mode) {
+  static processSelect(mode, e) {
     if (mode === pref.mode) { return; }                     // disregard re-click
     if (pref.managed) { return; }                           // not for storage.managed
 
@@ -121,6 +124,10 @@ class Popup {
     pref.mode = mode;
     browser.storage.local.set({mode});                      // save mode
     browser.runtime.sendMessage({id: 'setProxy', pref, dark});
+
+    // :has() FF121 (2023-12-19), Ch105, using JS for now
+    [...this.list.children].forEach(i => i.classList.remove('selected'));
+    e.target.parentElement.classList.add('selected');
   }
 
   static processButtons(e) {
@@ -154,14 +161,13 @@ class Popup {
 
   static filterProxy(e) {
     const str = e.target.value.toLowerCase().trim();
+    const elem = [...this.list.children].slice(2);          // not the first 2
     if (!str) {
-      [...this.list.children].forEach(i => i.classList.remove('off'));
+      elem.forEach(i => i.classList.remove('off'));
       return;
     }
 
-    [...this.list.children].forEach((item, idx) => {
-      if (idx < 2) { return; }                              // not the first 2
-
+    elem.forEach(item => {
       const title = item.children[1].textContent;
       const host = item.children[3].value;
       item.classList.toggle('off', ![title, host].some(i => i.toLowerCase().includes(str)));

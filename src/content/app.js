@@ -25,13 +25,10 @@ export const pref = {
 export class App {
 
   // https://github.com/foxyproxy/firefox-extension/issues/220
-  // Proxy by patterns not working if firefox users change their userAgent to another platform
+  // navigator.userAgent identification fails in custom userAgent and browser forks
   // Chrome does not support runtime.getBrowserInfo()
-  // Object.hasOwn(browser.runtime, 'getBrowserInfo')
-  // moz-extension: | chrome-extension: | safari-web-extension:
+  // getURL: moz-extension: | chrome-extension: | safari-web-extension:
   static firefox = browser.runtime.getURL('').startsWith('moz-extension:');
-  static android = navigator.userAgent.includes('Android');
-  static basic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
 
   // ---------- User Preferences ---------------------------
   static defaultPref = JSON.stringify(pref);
@@ -91,6 +88,22 @@ export class App {
     return cc ? String.fromCodePoint(...[...cc].map(i => i.charCodeAt() + 127397)) : '🌎';
   }
 
+  static showFlag(item) {
+    switch (true) {
+      case !!item.cc:
+        return this.getFlag(item.cc);
+
+      case item.type === 'direct':
+        return '⮕';
+
+      case this.isLocal(item.hostname):
+        return '🖥️';
+
+      default:
+        return '🌎';
+    }
+  }
+
   static isLocal(host) {
     // check local network
     const isIP = /^[\d.:]+$/.test(host);
@@ -111,22 +124,6 @@ export class App {
       case host.startsWith('[::1]'):                        // literal IPv6 [::1]:80 with/without port
       case host.toUpperCase().startsWith('[FE80::]'):       // literal IPv6 [FE80::]/10
         return true;
-    }
-  }
-
-  static showFlag(item) {
-    switch (true) {
-      case !!item.cc:
-        return this.getFlag(item.cc);
-
-      case item.type === 'direct':
-        return '⮕';
-
-      case this.isLocal(item.hostname):
-        return '🖥️';
-
-      default:
-        return '🌎';
     }
   }
 

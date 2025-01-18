@@ -17,26 +17,14 @@ export class Pattern {
 
   // convert wildcard to regex string
   static convertWildcard(str) {
+    // catch all
     if (str === '*') { return '\\S+'; }
 
     // escape regular expression special characters, minus * ?
-    str = str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
-              .replace(/\*/g, '.*')
-              .replace(/\?/g, '.')
-              .replace(/:\/\/\.\*\\./g, '://([^/]+\\.)?');
-
-    // convert leading '://' or '.*://'
-    switch (true) {
-      case str.startsWith('://'):
-        str = '^[^:]+' + str;
-        break;
-
-      case str.startsWith('.*://'):
-        str = '^[^:]+' + str.substring(2);
-        break;
-    }
-
-    return str;
+    return str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
+              .replace(/^\*?:\/\//, '^[^:]+://')            // convert leading :// or *://
+              .replaceAll('*', '.*')
+              .replaceAll('?', '.');
   }
 
   static getPassthrough(str) {

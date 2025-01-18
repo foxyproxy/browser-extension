@@ -18,6 +18,12 @@ import {Action} from './action.js';
 
 export class Proxy {
 
+  // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#236
+  // throw new ExtensionError("proxy.settings is not supported on android.");
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
+  // Support proxy.settings API on Android
+  static android = navigator.userAgent.includes('Android');
+
   static {
     browser.runtime.onMessage.addListener((...e) => this.onMessage(...e)); // from popup options
   }
@@ -48,12 +54,8 @@ export class Proxy {
     }
   }
 
-  // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#236
-  // throw new ExtensionError("proxy.settings is not supported on android.");
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
-  // proxy.settings is not supported on Android
   static async getSettings() {
-    if (App.android) { return {}; }
+    if (this.android) { return {}; }
 
     const conf = await browser.proxy.settings.get({});
 
@@ -106,7 +108,7 @@ export class Proxy {
     // update OnRequest
     OnRequest.init(pref);
 
-    if (App.android) { return; }
+    if (this.android) { return; }
 
     // Incognito Access
     const allowed = await browser.extension.isAllowedIncognitoAccess();

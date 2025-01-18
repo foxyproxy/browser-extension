@@ -4,6 +4,7 @@
 /* ----- Light Theme ----- */
 :root {
   --filter: opacity(0.4) grayscale(1);
+  --selected: #fec8;
 }
 
 /* for the default theme */
@@ -15,6 +16,7 @@
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --filter: opacity(1) grayscale(1);
+    --selected: #222;
   }
 }
 
@@ -74,11 +76,10 @@ div.list {
 
 div.list label {
   display: grid;
-  grid-template-columns: 3em 1fr auto auto;
+  grid-template-columns: 2.5em 1fr auto auto;
   column-gap: 0.5em;
   padding: 0.2em 0.5em;
   cursor: pointer;
-  transition: 0.5s ease-in-out;
 }
 
 div.list label:hover {
@@ -89,8 +90,17 @@ div.list label.off {
   display: none;
 }
 
+/* :has() FF121 (2023-12-19), Ch105 */
+/* div.list label:has(input[name="server"]:checked) {
+  background-color: var(--selected);
+} */
+
+div.list label.selected {
+  background-color: var(--selected);
+}
+
 .flag img {
-  width: 1em;
+  width: 1.2em;
 }
 
 .flag img.off {
@@ -102,12 +112,10 @@ div.list label.off {
 } */
 
 .flag {
-  display: grid;
   grid-row: span 2;
-  justify-content: center;
-  font-size: 2em;
-  align-self: start;
+  font-size: 1.8em;
   line-height: 1em;
+  place-self: start center;
 }
 
 .title {
@@ -136,15 +144,16 @@ div.list label.off {
 }
 
 input[name="server"] {
-  grid-row: span 2;
+  /* grid-row: span 2;
   transition: 0.5s ease-in-out;
-  align-self: start;
-  cursor: pointer;
+  place-self: start center;
+  cursor: pointer; */
+  display: none;
 }
 
-input[name="server"]:not(:checked) {
+/* input[name="server"]:not(:checked) {
   opacity: 0;
-}
+} */
 
 input#filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
