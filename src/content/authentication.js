@@ -1,7 +1,6 @@
 // https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired
 // webRequest.onAuthRequired on Firefox applies to HTTP/HTTPS/WS/WSS (not SOCKS)
-
-// new 'webRequestAuthProvider' permission Chrome 108, Firefox 126
+// 'webRequestAuthProvider' permission Chrome 108, Firefox 126
 
 import './app.js';
 
