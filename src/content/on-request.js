@@ -30,7 +30,7 @@ export class OnRequest {
     this.net = [];                                          // [start, end] strings
     this.tabProxy = {};                                     // tab proxy, may be lost in MV3 if bg is unloaded
     this.container = {};                                    // incognito/container proxy
-    this.browserVersion = 0;                                // used HTTP authentication
+    this.browserVersion = 0;                                // used for HTTP authentication
 
     // --- Firefox only
     if (browser.proxy.onRequest) {
