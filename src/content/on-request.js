@@ -33,7 +33,7 @@ export class OnRequest {
     this.browserVersion = 0;                                // used HTTP authentication
 
     // --- Firefox only
-    if (browser.proxy?.onRequest) {
+    if (browser.proxy.onRequest) {
       browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
       // check Tab for tab proxy
       browser.tabs.onUpdated.addListener((...e) => this.onUpdated(...e));
