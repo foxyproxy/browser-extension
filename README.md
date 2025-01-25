@@ -191,7 +191,8 @@ The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.
 
 # FAQ
 
-## 💻 Settings disappeared after the upgrade to v8
+<details>
+  <summary><b>💻 Settings disappeared after the upgrade to v8</b></summary>
 
 Using Firefox and you've lost all FoxyProxy settings?
 
@@ -203,6 +204,7 @@ Due to a bug in version 8.2, previous settings of some users were not migrated a
 Versions 8.3-8.6 created with fixes for the bugs immediately, but due to the AMO approval waiting time, version 8.6 came online on Dec 12th.
 
 Previous settings were not deleted and are recoverable. The following options are available if FoxyProxy updated from 7.* and you have encountered the update bug.
+</details>
 
 <details>
   <summary><b>Retrieve Settings and Keep version 8.2</b></summary>
