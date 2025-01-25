@@ -337,62 +337,6 @@
 
     </dl>
 
-    <!-- https://searchfox.org/mozilla-central/rev/e46f8390a67732e08d6c04729f27631edec98aeb/toolkit/components/extensions/parent/ext-backgroundPage.js#27-36 -->
-    <h3>Chrome vs Firefox</h3>
-    <p>There are certain operational differences between Chrome and Firefox.</p>
-
-    <h4>Manifest V3 (MV3)</h4>
-    <p>MV3 introduced by Chrome, unloads the extensions' background scripts (service-worker) after 30 seconds of inactivity. MV2 had a persistent background script which did not get unloaded.</p>
-    <p>The authentication process is a background process. If the background script has been unloaded, the next time an authentication request is received, the background script has to be restarted, adn then the extension has to get the user-pass data from its storage, before being able to respond to the authentication request.</p>
-    <p>Restarting the background script, and getting data from storage, takes time which could be as long as 0.5 second. During this time, as the extension is not providing the authentication details to the request, the request is left to the browser to respond to and an authentication prompt appears.</p>
-
-    <dl class="plain">
-      <dt>Chrome</dt>
-      <dd>FoxyProxy on Chrome (MV3) sets the proxy directly in the Chrome's setting and from then on, proxying is handled by the browser. FoxyProxy's only background process on Chrome is authentication.</dd>
-      <dd></dd>
-
-      <dt>Firefox</dt>
-      <dd>FoxyProxy on Firefox (MV2) sets the proxy directly in Firefox's setting if a PAC option is selected. Otherwise proxying is handled by FoxyProxy. FoxyProxy's background processes on Firefox are authentication and proxying.</dd>
-      <dd>Firefox's MV3 implementation will be using an event-page background script which should mean events (such as authentication listener) should remain active. Therefore, unless PAC is used, as long as network connections are being made, its background script should not get unloaded.</dd>
-    </dl>
-
-    <table>
-      <tr>
-        <th></th>
-        <th>Chrome (Chromium)</th>
-        <th>Firefox</th>
-      </tr>
-      <tr>
-        <th>manifest</th>
-        <td>MV3</td>
-        <td>MV2</td>
-      </tr>
-      <tr>
-        <th>background process</th>
-        <td>authentication</td>
-        <td>authentication & proxying</td>
-      </tr>
-      <tr>
-        <th>MV3 background type</th>
-        <td>service-worker</td>
-        <td>event-page</td>
-      </tr>
-      <tr>
-        <th>proxy by pattern method</th>
-        <td>PAC</td>
-        <td>API</td>
-      </tr>
-      <tr>
-        <th>browser start-up</th>
-        <td>Proxying is active but no authentication until extension loads</td>
-        <td>if not PAC, API is not active until extension loads</td>
-      </tr>
-    </table>
-
-    <p>See also: <a href="https://github.com/w3c/webextensions/issues/557" target="_blank">Proposal: Extension Loading Priority</a></p>
-
-
-
     <h3>Non-Destructive Editing</h3>
     <p>Editing & importing are non-destructive. <b>Save</b> must be clicked to apply changes.</p>
     <p>See also: <a href="https://github.com/foxyproxy/browser-extension/issues/25" target="_blank">Destructive vs Nondestructive Editing</a></p>

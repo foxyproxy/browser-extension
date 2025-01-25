@@ -127,7 +127,7 @@ export class App {
     }
   }
 
-  static allowedTabProxy(url) {
+  static allowedTabUrl(url) {
     return /^https?:\/\/.+|^about:(blank|newtab)$/.test(url);
   }
 }

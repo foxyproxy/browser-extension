@@ -21,6 +21,7 @@ class Popup {
     // --- Quick Add (not for storage.managed)
     this.quickAdd = document.querySelector('select#quickAdd');
     !pref.managed && this.quickAdd.addEventListener('change', () => {
+      if (!this.tab) { return; }
       if (!this.quickAdd.value) { return; }
 
       browser.runtime.sendMessage({id: 'quickAdd', pref, host: this.quickAdd.value, tab: this.tab});
@@ -53,6 +54,10 @@ class Popup {
   }
 
   static async process() {
+    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
+    // set this.tab only if tab.url is acceptable
+    App.allowedTabUrl(tab.url) && (this.tab = tab);
+
     const labelTemplate = document.querySelector('template').content.firstElementChild;
     const docFrag = document.createDocumentFragment();
 
@@ -112,10 +117,8 @@ class Popup {
   }
 
   static async checkTabProxy() {
-    const [tab] = await browser.tabs.query({currentWindow: true, active: true});
-    if (!App.allowedTabProxy(tab.url)) { return; }          // unacceptable URLs
+    if (!this.tab) { return; }
 
-    this.tab = tab;                                         // cache tab
     const item = await browser.runtime.sendMessage({id: 'getTabProxy', tab: this.tab});
     item && (this.tabProxy.value = `${item.hostname}:${item.port}`);
   }
