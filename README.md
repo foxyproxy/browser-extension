@@ -192,7 +192,7 @@ The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.
 # FAQ
 
 <details>
-  <summary><b>💻 Settings disappeared after the upgrade to v8</b></summary>
+  <summary>💻 Settings disappeared after the upgrade to v8</summary>
 
 Using Firefox and you've lost all FoxyProxy settings?
 
@@ -207,7 +207,7 @@ Previous settings were not deleted and are recoverable. The following options ar
 </details>
 
 <details>
-  <summary><b>Retrieve Settings and Keep version 8.2</b></summary>
+  <summary>Retrieve Settings and Keep version 8.2</summary>
 
 From [this comment](https://github.com/foxyproxy/browser-extension/issues/45#issuecomment-1838719332):
 
@@ -270,7 +270,7 @@ browser.storage.local.get().then(pref => {
 </details>
 
 <details>
-  <summary><b>Downgrade to 7.*</b></summary>
+  <summary>Downgrade to 7.*</summary>
 
 Downgrade may retrieve old settings.
 
@@ -287,12 +287,12 @@ Check [About](https://foxyproxy.github.io/browser-extension/src/content/about.ht
 
 
 
-## 📱 Firefox for Android
+### 📱 Firefox for Android
 
 Firefox for Android ignored disabling `extensions.update.enabled` (due to a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1872169)). Therefore, installation of an older version from AMO will get updated. The bug is fixed in Firefox 123.
 
 <details>
-  <summary><b>Downgrade or Beta Installation</b></summary>
+  <summary>Downgrade or Beta Installation</summary>
 
 
 - Download 7.5.1 (or older) from https://addons.mozilla.org/firefox/addon/foxyproxy-standard/versions/
