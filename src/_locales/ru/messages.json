@@ -25,7 +25,7 @@
   "default": { "message": "Стандартная" },
 
   "globalExclude": { "message": "Глобальные исключения" },
-  "globalExcludeDescription": { "message": "Шаблоны, которые не будут проксироваться" },
+  "globalExcludeDescription": { "message": "Список хостов (доменов), которые не следует проксировать" },
 
   "container": { "message": "Контейнер" },
   "containerDescription": { "message": "Инкогнито и контейнерный прокси (только для Firefox)" },
