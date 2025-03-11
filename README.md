@@ -119,6 +119,7 @@ No remote code is used in this extension.
 <table>
   <thead>
     <tr>
+      <th>version</th>
       <th>Chrome</th>
       <th>Firefox</th>
       <th>Firefox for Android</th>
@@ -126,9 +127,16 @@ No remote code is used in this extension.
   </thead>
   <tbody>
     <tr>
+      <td>8.0 - 8.10</td>
       <td>version 108<br><i>(released 2022-11-29)</i></td>
       <td>version 93<br><i>(released 2021-10-05)</i></td>
       <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
+    </tr>
+    <tr>
+      <td>8.11<br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
+      <td>version 108<br><i>(released 2022-11-29)</i></td>
+      <td>version 128<br><i>(released 2024-07-09)</i></td>
+      <td>version 128<br><i>(released 2024-07-09)</i></td>
     </tr>
   </tbody>
 </table>
