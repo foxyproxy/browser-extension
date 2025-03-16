@@ -73,7 +73,7 @@ No remote code is used in this extension.
       </td>
       <td>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/v/foxyproxy-standard?logo=firefoxbrowser&logoColor=fff&label=Firefox" alt=""></a>
-        <img src="/screenshots/recommended.png" width="105" alt=""><br>
+        <a href="https://support.mozilla.org/kb/add-on-badges#w_recommended-extensions"><img src="/screenshots/recommended.png" width="105" alt=""></a><br>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/users/foxyproxy-standard" alt=""></a>
         <a href="https://addons.mozilla.org/firefox/addon/foxyproxy-standard/"><img src="https://img.shields.io/amo/dw/foxyproxy-standard" alt=""></a>
       </td>
