@@ -133,7 +133,7 @@ No remote code is used in this extension.
       <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
     </tr>
     <tr>
-      <td>8.11<br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
+      <td>9.0 - *<br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
       <td>version 108<br><i>(released 2022-11-29)</i></td>
       <td>version 128<br><i>(released 2024-07-09)</i></td>
       <td>version 128<br><i>(released 2024-07-09)</i></td>
