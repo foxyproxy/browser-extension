@@ -134,7 +134,7 @@ No remote code is used in this extension.
     </tr>
     <tr>
       <td>9.0 - *</td>
-      <td>version 112<br><i>(released 2023-04-04)</i><br><i>due to CSS Neting feature</i></td>
+      <td>version 108<br><i>(released 2022-11-29)</i></td>
       <td>version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
       <td>version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
     </tr>
