@@ -175,9 +175,18 @@ No remote code is used in this extension.
   - Install add-on from file
     - Go to: menu -> Settings -> Advanced -> Install add-on from file
 
-## Building for Distribution
+## Building for Distribution on the Chrome, Edge, and Firefox web stores
 
-### With [grunt](https://gruntjs.com/getting-started):
+### Version 9.0 and above
+
+- zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
+
+###  Version 8.0 to 8.10: without grunt:
+
+- copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
+- zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
+
+### Version 8.0 to 8.10: with [grunt](https://gruntjs.com/getting-started):
 
 - Install grunt locally:
     - `npm i -D grunt-cli`
@@ -188,11 +197,6 @@ No remote code is used in this extension.
   - `grunt --target=firefox-basic`
 
 The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.zip`.
-
-### Without grunt:
-
-- copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
-- zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
 
 ---
 
