@@ -63,7 +63,7 @@ class Popup {
     const docFrag = document.createDocumentFragment();
 
     // check if there are patterns
-    if (!pref.data.some(i => i.active && i.include[0])) {
+    if (!pref.data.some(i => i.active && (i.include[0] || i.tabProxy?.[0]))) {
       // hide option if there are no patterns
       this.list.children[0].style.display = 'none';
       // show as disable
