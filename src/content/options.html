@@ -42,8 +42,11 @@
 
     <!-- popup -->
     <div class="popup">
-      <button type="button" class="plain">❌</button>
-      <textarea></textarea>
+      <span>✕</span>
+      <textarea autocomplete="off" spellcheck="false"></textarea>
+      <select autocomplete="off">
+        <option value="" data-i18n="quickAdd" disabled selected></option>
+      </select>
     </div>
 
     <!-- Help/About -->
@@ -52,7 +55,6 @@
 
     <!-- user options -->
     <section class="options">
-
       <fieldset>
         <div class="buttons">
           <label class="flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
@@ -61,20 +63,29 @@
           <button type="button" class="flat" data-i18n="restoreDefaults"></button>
         </div>
 
-        <label class="pointer" data-i18n="enableSync"><input type="checkbox" id="sync"></label>
+        <label data-i18n="enableSync"><input type="checkbox" id="sync"></label>
         <p class="description" data-i18n="enableSyncDescription"></p>
 
         <label data-i18n="autoBackup"><input type="checkbox" id="autoBackup"></label>
         <p class="description" data-i18n="autoBackupDescription"></p>
 
-        <label data-i18n="limitWebRTC"><input type="checkbox" id="limitWebRTC"></label>
+        <div class="theme" style="margin-bottom: 0;">
+          <label data-i18n="limitWebRTC" data-link="#limit-webrtc"></label>
+          <select id="limitWebRTC">
+            <option value="default" data-i18n="default"></option>
+            <option value="default_public_interface_only" data-i18n="publicInterfaceOnly"></option>
+            <option value="default_public_and_private_interfaces" data-i18n="publicPrivateInterfaces"></option>
+            <option value="disable_non_proxied_udp" data-i18n="disableNonProxied"></option>
+            <option value="proxy_only" data-i18n="proxyOnly"></option>
+          </select>
+        </div>
         <p class="description" data-i18n="limitWebRTCDescription"></p>
 
         <!-- <label class="firefox" data-i18n="showPatternProxy"><input type="checkbox" id="showPatternProxy"></label>
         <p class="description firefox" data-i18n="showPatternProxyDescription"></p> -->
 
         <div class="theme">
-          <label data-i18n="theme"></label>
+          <label data-i18n="theme" data-link="#theme"></label>
           <select id="theme">
             <option value="" data-i18n="default"></option>
             <option>moonlight</option>
@@ -82,7 +93,7 @@
           </select>
         </div>
 
-        <label data-i18n="container"></label>
+        <label data-i18n="container" data-link="#container"></label>
         <p class="description" data-i18n="containerDescription"></p>
 
         <div class="container">
@@ -102,7 +113,7 @@
             <option value="">&nbsp;</option>
           </select>
 
-          <button type="button" class="flat firefox" data-i18n="add"></button>
+          <button type="button" class="flat slim firefox" data-i18n="add"></button>
 
           <!-- container template -->
           <template>
@@ -113,8 +124,8 @@
           </template>
         </div>
 
-
-        <label data-i18n="shortcut"></label>
+        <!-- openShortcutSettings Firefox 137 -->
+        <label data-i18n="shortcut" data-link="#keyboard-shortcut"></label> <button type="button" class="plain shortcut-link" style="margin-left: 0.5em; display: none;">🔗</button>
         <p class="description" data-i18n="shortcutDescription"></p>
 
         <div class="commands">
@@ -129,15 +140,19 @@
             <option value="">&nbsp;</option>
           </select>
 
-          <label data-i18n="quickAdd"></label>
-          <select name="quickAdd">
+          <label data-i18n="includeHost"></label>
+          <select name="includeHost">
             <option value="">&nbsp;</option>
           </select>
 
+          <label data-i18n="excludeHost"></label>
+          <select name="excludeHost">
+            <option value="">&nbsp;</option>
+          </select>
         </div>
 
 
-        <label data-i18n="globalExclude"></label>
+        <label data-i18n="globalExclude" data-link="#global-exclude"></label>
         <p class="description" data-i18n="globalExcludeDescription"></p>
         <textarea id="passthrough"></textarea>
 
@@ -150,20 +165,47 @@
     <!-- /user options -->
 
     <!-- proxy -->
-    <section class="proxySection">
-
-      <fieldset class="proxySection">
-
+    <section class="proxy-section">
+      <fieldset>
         <div class="proxy-top">
           <button type="button" class="flat" data-i18n="add"></button>
-          <input type="text" id="filter" spellcheck="false" placeholder="filter">
+          <input type="text" class="filter" autocomplete="off" spellcheck="false" placeholder="filter">
           <span></span>
+          <button type="button" class="flat" data-i18n="ping">🛜 </button>
           <button type="button" class="flat" data-i18n="getLocation"></button>
         </div>
 
         <div class="proxy-div"></div>
 
+        <div class="bulk-edit">
+          <input type="number" autocomplete="off" min="1" step="1">
+          <input type="number" autocomplete="off" min="1" step="1">
+          <input type="number" autocomplete="off" min="1" step="1">
+          <input type="text" autocomplete="off" spellcheck="false">
+
+          <select autocomplete="off">
+            <option value="" disabled selected data-i18n="bulkEdit"></option>
+            <option value="openAll" data-i18n="openAll"></option>
+            <option value="closeAll" data-i18n="closeAll"></option>
+            <hr>
+            <option value="deleteProxy" data-i18n="deleteProxy"></option>
+            <option value="moveProxy" data-i18n="moveProxy"></option>
+            <option value="movePattern" data-i18n="movePattern"></option>
+            <hr>
+            <option value="setTitle" data-i18n="setTitle"></option>
+            <option value="setType" data-i18n="setType"></option>
+            <option value="setPort" data-i18n="setPort"></option>
+            <option value="setUsername" data-i18n="setUsername"></option>
+            <option value="setPassword" data-i18n="setPassword"></option>
+
+          </select>
+        </div>
+
         <button type="submit" data-i18n="saveOptions"></button>
+
+        <footer>
+          <span data-i18n="help" data-link="#proxies"></span>
+        </footer>
       </fieldset>
 
       <!-- template -->
@@ -191,7 +233,7 @@
               <label data-i18n="type"></label>
               <select data-id="type">
                 <optgroup data-i18n="type|label">
-                  <option value="http" selected>HTTP</option>
+                  <option value="http">HTTP</option>
                   <option value="https">HTTPS</option>
                   <option value="socks4">SOCKS4</option>
                   <option value="socks5">SOCKS5</option>
@@ -199,6 +241,7 @@
                   <option value="pac" data-flag="🌎">PAC</option>
                   <option value="direct" data-hostname="DIRECT" data-flag="⮕">DIRECT</option>
                 </optgroup>
+
                 <optgroup data-i18n="server|label">
                   <!-- By default v2rayA will open 20170 (socks5), 20171 (http), 20172 (http with shunt rules) ports through the core -->
                   <option value="http" data-hostname="127.0.0.1" data-port="8080" data-flag="🖥️">Burp</option>
@@ -206,11 +249,13 @@
                   <option value="socks5" data-hostname="127.0.0.1" data-port="60351" data-flag="🖥️">Psiphon</option>
                   <option value="socks5" data-hostname="127.0.0.1" data-port="1080" data-flag="🖥️">Shadowsocks</option>
                   <option value="socks5" data-hostname="127.0.0.1" data-port="9050" data-flag="🖥️">TOR</option>
-                  <option value="socks5" data-hostname="127.0.0.1" data-port="2080" data-flag="🖥️">NekoRay-socks5</option>
-                  <option value="http" data-hostname="127.0.0.1" data-port="2081" data-flag="🖥️">NekoRay-http</option>
-                  <option value="socks5" data-hostname="127.0.0.1" data-port="20170" data-flag="🖥️">v2rayA-socks5</option>
-                  <option value="http" data-hostname="127.0.0.1" data-port="20171" data-flag="🖥️">v2rayA-http</option>
-                  <option value="http" data-hostname="127.0.0.1" data-port="20172" data-flag="🖥️">v2rayA-http-rules</option>
+
+                  <option value="http" data-hostname="127.0.0.1" data-port="2081" data-flag="🖥️">NekoRay HTTP</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="2080" data-flag="🖥️">NekoRay SOCKS5</option>
+
+                  <option value="http" data-hostname="127.0.0.1" data-port="20171" data-flag="🖥️">V2RayA HTTP</option>
+                  <option value="http" data-hostname="127.0.0.1" data-port="20172" data-flag="🖥️">V2RayA HTTP (with Rule)</option>
+                  <option value="socks5" data-hostname="127.0.0.1" data-port="20170" data-flag="🖥️">V2RayA SOCKS5</option>
                 </optgroup>
               </select>
 
@@ -219,7 +264,7 @@
 
               <label data-i18n="country"></label>
               <select data-id="cc">
-                <option value="" selected>&nbsp;</option>
+                <option value="">&nbsp;</option>
                 <option value="AF">🇦🇫 Afghanistan</option>
                 <option value="AL">🇦🇱 Albania</option>
                 <option value="DZ">🇩🇿 Algeria</option>
@@ -496,7 +541,7 @@
               <span class="pac">
                 <input type="url" data-id="pac" data-type="pac" placeholder="PAC URL">
                 <label class="pointer chrome" data-i18n="storeLocally"><input type="checkbox"></label>
-                <button type="button" class="flat" data-i18n="view"></button>
+                <button type="button" class="flat slim" data-i18n="view"></button>
               </span>
 
               <label class="firefox" data-i18n="proxyDNS"></label>
@@ -506,14 +551,12 @@
             </div>
 
             <div class="pattern-head">
-              <span data-i18n="quickAdd"></span>
-              <span data-i18n="include"></span>
-              <span data-i18n="type"></span>
+              <button type="button" class="flat slim" data-i18n="add|title"><span class="plus">➕</span></button>
+              <span data-i18n="proxyByPatterns"></span>
               <span data-i18n="title"></span>
               <span data-i18n="pattern"></span>
               <label class="plain" data-i18n="import|title"><input type="file" accept=".json">📥</label>
               <button type="button" class="plain" data-i18n="export|title">📤</button>
-              <button type="button" class="flat" data-i18n="add|title"><span class="plus">➕</span></button>
             </div>
 
             <div class="pattern-box"></div>
@@ -523,9 +566,9 @@
         <div class="pattern-row">
           <select>
             <option value="" disabled selected>&nbsp;</option>
-            <option data-type="regex" value="\S+" data-i18n="all"></option>
-            <option data-type="regex" value="^(http|ws)://.+">HTTP/WS</option>
-            <option data-type="regex" value="^(http|ws)s://.+">HTTPS/WSS</option>
+            <option data-type="wildcard" value="*" data-i18n="all"></option>
+            <option data-type="wildcard" value="http://">HTTP</option>
+            <option data-type="wildcard" value="https://">HTTPS</option>
             <option data-type="regex" value="^(http|ws)s?://[^.]+/" data-i18n="plainHost"></option>
             <option data-type="regex" value="^(http|ws)s?://10(\.\d+){3}/">10.*.*.*</option>
             <option data-type="regex" value="^(http|ws)s?://127(\.\d+){3}/">127.*.*.*</option>
@@ -535,13 +578,15 @@
           <select>
             <option value="include" data-i18n="include"></option>
             <option value="exclude" data-i18n="exclude"></option>
+            <option value="tabProxy" data-i18n="tabProxy"></option>
           </select>
           <select>
             <option value="wildcard" data-i18n="wildcard"></option>
+            <option value="match">Match</option>
             <option value="regex">Reg Exp</option>
           </select>
           <input type="text" spellcheck="false" placeholder="title">
-          <input type="text" spellcheck="false" placeholder="://*.example.com/">
+          <input type="text" spellcheck="false" placeholder="://example.com/">
           <input type="checkbox" class="toggle" checked>
           <button type="button" class="test" data-i18n="test|title"></button>
           <button type="button" class="bin" data-i18n="delete|title"></button>
@@ -554,17 +599,34 @@
     <!-- import -->
     <section class="import">
       <fieldset>
-
         <details class="import-account">
           <summary data-i18n="importFoxyProxyAccount"></summary>
           <div class="content">
             <label data-i18n="username"></label>
             <input id="username" type="text" spellcheck="false" placeholder="username">
-            <span></span>
 
             <label data-i18n="password"></label>
             <input id="password" type="password" spellcheck="false" placeholder="*****">
             <button type="button" class="plain" data-i18n="togglePassword|title">👁</button>
+
+            <label data-i18n="options"></label>
+            <div class="account-options">
+              <select>
+                <option value="http">HTTP</option>
+                <option value="https">HTTPS</option>
+                <option value="socks5">SOCKS5</option>
+              </select>
+              <select>
+                <option value="hostname" data-i18n="hostname"></option>
+                <option value="ip">IP</option>
+              </select>
+              <select>
+                <option value="main" data-i18n="mainServer"></option>
+                <option value="alt" data-i18n="altServer"></option>
+              </select>
+            </div>
+
+
             <button type="button" class="flat" data-i18n="import"></button>
           </div>
         </details>
@@ -592,7 +654,13 @@
           </div>
         </details>
 
-        <button type="submit" data-i18n="saveOptions"></button>
+        <footer>
+          <span data-i18n="help" data-link="#import"></span>
+        </footer>
+
+
+        <!-- no need for submit SAVE button as all imports forward to Proxies Tab -->
+        <!-- <button type="submit" data-i18n="saveOptions"></button> -->
       </fieldset>
     </section>
     <!-- /import -->
@@ -600,21 +668,39 @@
     <!-- tester -->
     <section class="tester">
       <fieldset>
-        <label>URL</label>
-        <input type="url" placeholder="URL to test ...">
 
-        <label data-i18n="pattern"></label>
-        <select name="type">
-          <option value="wildcard" data-i18n="wildcard"></option>
-          <option value="regex">Reg Exp</option>
-        </select>
-        <input type="text" placeholder="://*.example.com/">
+        <h3 data-i18n="pattern"></h3>
+        <p class="description" data-i18n="testerDescription"></p>
+        <div class="tester-pattern">
+          <select>
+            <option value="wildcard" data-i18n="wildcard"></option>
+            <option value="match">Match</option>
+            <option value="regex">Reg Exp</option>
+          </select>
+          <input type="text" spellcheck="false" value="*://*.example.com/">
+        </div>
+        <pre contenteditable="true">https://example.com/
+https://example.org/
+http://help.example.com/
+https://help.example.com/abc
+https://google.com/ref=help.example.com</pre>
 
-        <label data-i18n="result"></label>
-        <span class="test-result"></span>
+        <div class="buttons">
+          <button type="button" class="flat" data-i18n="test"></button>
+          <button type="button" class="flat" data-i18n="back">◁ </button>
+        </div>
 
-        <button type="button" class="flat" data-i18n="test"></button>
-        <button type="button" class="flat" data-i18n="back">◁ </button>
+
+        <h3 data-i18n="proxyByPatterns"></h3>
+        <p class="description" data-i18n="proxyByPatternsDescription"></p>
+        <input type="url" spellcheck="false" pattern="https?://.*" placeholder="https://example.com/abc">
+        <pre></pre>
+        <button type="button" class="flat proxyByPatterns" data-i18n="test"></button>
+
+        <footer>
+          <span data-i18n="help" data-link="#pattern-tester"></span>
+        </footer>
+
       </fieldset>
     </section>
     <!-- /tester -->
@@ -622,6 +708,11 @@
 
     <!-- log -->
     <section class="log">
+      <div class="domain">
+        <input type="text" autocomplete="off" spellcheck="false" placeholder="example.com">
+        <button type="button" class="flat slim" data-i18n="getAssociatedDomains"></button>
+      </div>
+
       <table>
         <caption class="firefox" data-i18n="notAvailable"></caption>
         <thead>

@@ -1,36 +1,46 @@
-// https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired
-// webRequest.onAuthRequired on Firefox applies to HTTP/HTTPS/WS/WSS (not SOCKS)
+// webRequest.onAuthRequired: Firefox HTTP/HTTPS/WS/WSS | Chrome: HTTP/HTTPS
 // 'webRequestAuthProvider' permission Chrome 108, Firefox 126
-
-import './app.js';
 
 export class Authentication {
 
   static {
     this.data = {};
-    this.pending = {};                                      // prevent bad authentication loop
-    const urls = ['*://*/*'];                               // limit to HTTP, HTTPS and WebSocket URLs
+    // prevent bad authentication loop
+    this.pending = {};
+    // webRequest.onAuthRequired is only called for HTTP and HTTPS/TLS proxy servers
+    const urls = ['<all_urls>'];
     browser.webRequest.onAuthRequired.addListener(e => this.process(e), {urls}, ['blocking']);
     browser.webRequest.onCompleted.addListener(e => this.clearPending(e), {urls});
     browser.webRequest.onErrorOccurred.addListener(e => this.clearPending(e), {urls});
   }
 
   static init(data) {
-    this.data = {};                                         // reset data
-    data.forEach(i => {                                     // filter out no user/pass or host
-      i.hostname && i.port && i.username && i.password &&
-        (this.data[`${i.hostname}:${i.port}`] = {username: i.username, password: i.password});
+    // reset data
+    this.data = {};
+    data.forEach(i => {
+      const {hostname, port, username, password} = i;
+      hostname && port && username && password &&
+        (this.data[`${hostname}:${port}`] = {username, password});
     });
   }
 
   static process(e) {
-    if (!e.isProxy) { return; }                             // true for Proxy-Authenticate, false for WWW-Authenticate
-    if (this.pending[e.requestId]) { return {cancel: true}; } // already sent once and pending
+    // true for Proxy-Authenticate, false for WWW-Authenticate
+    if (!e.isProxy) { return; }
+
+    // sending message to log.js
+    browser.runtime.sendMessage({id: 'onAuthRequired', e});
+
+    // already sent once and pending
+    if (this.pending[e.requestId]) {
+      return {cancel: true};
+    }
 
     const {host, port} = e.challenger;
     const authCredentials = this.data[`${host}:${port}`];
     if (authCredentials) {
-      this.pending[e.requestId] = 1;                        // prevent bad authentication loop
+      // prevent bad authentication loop
+      this.pending[e.requestId] = 1;
       return {authCredentials};
     }
   }

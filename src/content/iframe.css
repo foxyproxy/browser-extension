@@ -63,7 +63,6 @@ h5 {
 }
 /* ----- /h1-h5 ----- */
 
-
 p {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -121,26 +120,24 @@ img.figure {
 }
 
 dt {
-  /* color: var(--nav-bg); */
-  background-color: var(--alt-bg);
-  display: table;
-  padding: 0.2em 0.5em;
+  font-size: 1.1em;
 }
 
 dd + dt {
-  margin-top: 0.5em;
-}
-
-dd dl dt {
-  background-color: unset;
+  margin-top: 1em;
 }
 
 dd > dl {
   margin: 1em auto;
 }
 
+ol, ul {
+  margin: 0;
+}
+
 th span,
 dt span,
+dd span,
 li span {
   margin-left: 0.5em;
   color: var(--dim);
@@ -155,23 +152,20 @@ mark {
   background-color: unset;
 }
 
+.scroll {
+  max-height: 25em;
+  overflow: auto;
+}
+
 /* ----- About ----- */
 .about dt {
-  background-color: unset;
-  color: var(--h3);
-  font-weight: bold;
-  margin-bottom: 0.2em;
-  font-size: 1.1em;
+  display: table;
   border-bottom: 1px solid var(--border);
+  margin-bottom: 0.2em;
   min-width: 15vw;
+  font-weight: bold;
 }
 /* ----- /About ----- */
-
-dl.plain dt {
-  /* color: var(--color); */
-  background-color: unset;
-  font-weight: bold;
-}
 
 /* ----- Navigation ----- */
 nav {
@@ -190,7 +184,6 @@ nav {
 nav a {
   color: var(--color);
   padding: 0.5em 1em;
-  /* transition: 0.5s; */
 }
 
 nav a:hover {
@@ -229,6 +222,7 @@ thead th {
 
 tbody th {
   min-width: 10em;
+  text-align: left;
 }
 
 td pre,
@@ -237,31 +231,32 @@ td.code {
   font-family: monospace;
   font-size: 1.2em;
 }
+
+.slim th,
+.slim td {
+  padding: 0.2em 0.5em;
+}
 /* ----- /Table ----- */
 
 /* ----- note, footnote, warning, experimental ----- */
 .note,
-.footnote,
 .warning {
+  border: 1px solid var(--border);
+  border-radius: 0.5em;
   border-left: 3px solid #17f;
   padding: 0.3em 0.5em 0.3em 2em;
   margin-top: 0.5em;
   position: relative;
+  display: table;
 }
 
 .note::before,
-.footnote::before,
 .warning::before {
   content: 'ⓘ';
   color: #17f;
   position: absolute;
   top: 0;
   left: 0.5em;
-}
-
-.footnote {
-  font-size: 0.9em;
-  font-style: italic;
 }
 
 .warning {
@@ -279,8 +274,13 @@ td.code {
   width: 1em;
   height: 1em;
   margin-left: 0.5em;
-  vertical-align: text-bottom;
 }
+
+.footnote {
+  font-size: 0.9em;
+  font-style: italic;
+}
+
 
 /* ----- Translate ----- */
 .translate {

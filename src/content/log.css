@@ -1,0 +1,114 @@
+/* ----- Log ----- */
+/* ----- Light Theme ----- */
+:root {
+  --mark: #080;
+}
+
+/* ----- Dark Theme ----- */
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --mark: #0c0;
+  }
+}
+
+section.log {
+  padding: 0 0.5em;
+  max-width: unset;
+}
+
+.log .domain {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.5em;
+  place-content: end;
+}
+
+.log table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+  background-color: var(--bg);
+}
+
+.log thead  {
+  position: sticky;
+  top: 0;
+}
+
+.log thead th {
+  color: #fff;
+  background-color: #999;
+  padding: 0.5em 0.2em;
+  font-size: 0.9em;
+  font-weight: normal;
+  text-align: left;
+}
+
+.log thead th img {
+  width: 1em;
+  vertical-align: unset;
+}
+
+.log tr:hover {
+  background-color: var(--hover) !important;
+}
+
+.log tr:has(td[title*="407 Proxy"]) {
+  color: var(--mark);
+}
+
+.log tbody tr:nth-of-type(even) {
+  background-color: var(--tr);
+}
+
+.log td {
+  font-size: 0.8em;
+  padding: 0.2em;
+}
+
+.log td:nth-of-type(6),
+.log td:nth-of-type(7),
+.log td:nth-of-type(12) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 20em;
+}
+
+.log td:nth-of-type(7) {
+  max-width: 40em;
+}
+
+.log td:nth-of-type(8) {
+  border-left: 2px solid var(--border);
+}
+
+.log td:nth-of-type(12) {
+  max-width: 5em;
+}
+
+.log td.incognito::before {
+  content: '';
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: text-bottom;
+  background: url('../image/privateBrowsing.svg') no-repeat center / contain;
+}
+
+.log tbody {
+  counter-reset: n;
+}
+
+.log tbody tr td:first-child::before {
+  display: inline-block;
+  color: #aaa;
+  min-width: 1.5em;
+  text-align: right;
+  vertical-align: middle;
+  margin-right: 0.4em;
+  pointer-events: none;
+  counter-increment: n;
+  content: counter(n);
+  font-size: 0.8em;
+}

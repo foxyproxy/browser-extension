@@ -3,7 +3,7 @@ import {App} from './app.js';
 // ---------- Import/Export Preferences --------------------
 export class ImportExport {
 
-  // 'pref' references the same object in the memory and its value gets updated
+  // pref references the same object in the memory and its value gets updated
   static init(pref, callback) {
     this.callback = callback;
     document.getElementById('file').addEventListener('change', e => this.import(e, pref));
@@ -14,8 +14,10 @@ export class ImportExport {
   static import(e, pref) {
     const file = e.target.files[0];
     switch (true) {
-      case !file: App.notify(browser.i18n.getMessage('error')); return;
-      case !['text/plain', 'application/json'].includes(file.type): // check file MIME type
+      case !file: App.notify(browser.i18n.getMessage('error'));
+        return;
+      // check file MIME type
+      case !['text/plain', 'application/json'].includes(file.type):
         App.notify(browser.i18n.getMessage('fileTypeError'));
         return;
     }
@@ -26,14 +28,16 @@ export class ImportExport {
   static readData(data, pref) {
     try { data = JSON.parse(data); }
     catch {
-      App.notify(browser.i18n.getMessage('fileParseError')); // display the error
+      // display the error
+      App.notify(browser.i18n.getMessage('fileParseError'));
       return;
     }
 
     // update pref with the saved version
     Object.keys(pref).forEach(i => Object.hasOwn(data, i) && (pref[i] = data[i]));
 
-    this.callback();                                        // successful import
+    // successful import
+    this.callback();
   }
 
   // export preferences

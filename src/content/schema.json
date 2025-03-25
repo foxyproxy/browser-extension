@@ -4,6 +4,7 @@
   "properties": {
     "mode": {"type": "string"},
     "sync": {"type": "boolean"},
+    "autoBackup": {"type": "boolean"},
     "passthrough": {"type": "string"},
     "theme": {"type": "string"},
     "data": {
@@ -31,7 +32,7 @@
             "items": {
               "type": "object",
               "properties": {
-                "type": {"type": "string", "enum": ["wildcard", "regex"]},
+                "type": {"type": "string", "enum": ["wildcard", "regex", "match"]},
                 "title": {"type": "string"},
                 "pattern": {"type": "string"},
                 "active": {"type": "boolean"}
@@ -39,7 +40,8 @@
               "required": ["type", "title",  "pattern", "active"]
             }
           },
-          "exclude": {"$ref": "include"}
+          "exclude": {"$ref": "include"},
+          "tabProxy": {"$ref": "include"}
         }
       }
     },
@@ -58,7 +60,7 @@
       "properties": {
         "setProxy": {"type": "string"},
         "setTabProxy": {"type": "string"},
-        "quickAdd": {"type": "string"}
+        "includeHost": {"type": "string"}
       }
     }
   }

@@ -1,0 +1,75 @@
+/* ----- Navigation ----- */
+input[name="nav"],
+input[type="checkbox"].control {
+  display: none;
+}
+
+.nav {
+  background-color: var(--nav-bg);
+}
+
+nav {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: end;
+  color: var(--nav-color);
+  height: var(--nav-height);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+nav img {
+  width: 2em;
+  margin: 0.2em 0.5em;
+}
+
+nav > label {
+  padding: 0.5em 1em;
+  /* transition: 0.5s; */
+  border-radius: 0.5em 0.5em 0 0;
+}
+
+nav > label:hover {
+  background-color: var(--nav-hover);
+}
+
+/* nav > label img {
+  width: 1em;
+}
+
+nav label a {
+  color: inherit;
+}
+
+nav label a:hover {
+  text-decoration: none;
+} */
+
+#nav1:checked ~ article section:nth-of-type(1),
+#nav2:checked ~ article section:nth-of-type(2),
+#nav3:checked ~ article section:nth-of-type(3),
+#nav4:checked ~ article section:nth-of-type(4),
+#nav5:checked ~ article section:nth-of-type(5),
+#nav6:checked ~ article section:nth-of-type(6),
+#nav7:checked ~ article section:nth-of-type(7),
+#nav8:checked ~ article section:nth-of-type(8) {
+  display: block;
+  /* animation: sect 0.5s ease-in-out; */
+}
+
+#nav1:checked ~ .nav label[for="nav1"],
+#nav2:checked ~ .nav label[for="nav2"],
+#nav3:checked ~ .nav label[for="nav3"],
+#nav4:checked ~ .nav label[for="nav4"],
+#nav5:checked ~ .nav label[for="nav5"],
+#nav6:checked ~ .nav label[for="nav6"],
+#nav7:checked ~ .nav label[for="nav7"],
+#nav8:checked ~ .nav label[for="nav8"] {
+  background-color: var(--body-bg);
+}
+
+@keyframes sect {
+  0%  { opacity: 0; }
+100%  { opacity: 1; }
+}

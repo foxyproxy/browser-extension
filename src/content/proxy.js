@@ -1,3 +1,6 @@
+// https://source.chromium.org/chromium/chromium/src/+/main:chrome/common/extensions/api/proxy.json
+// https://searchfox.org/mozilla-central/source/toolkit/components/extensions/schemas/proxy.json
+
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1804693
 // Setting single proxy for all fails
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1495756
@@ -10,39 +13,39 @@
 // Chrome: pac_script data, not possible for URL
 // Firefox proxy.onRequest
 
+// https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#236
+// throw new ExtensionError("proxy.settings is not supported on android.");
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
+// Support proxy.settings API on Android
+
 import {App} from './app.js';
-import {Pattern} from './pattern.js';
 import {Authentication} from './authentication.js';
 import {OnRequest} from './on-request.js';
+import {Location} from './location.js';
+import {Pattern} from './pattern.js';
 import {Action} from './action.js';
+import {Menus} from './menus.js';
 
 export class Proxy {
 
-  // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/parent/ext-proxy.js#236
-  // throw new ExtensionError("proxy.settings is not supported on android.");
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
-  // Support proxy.settings API on Android
-  static android = navigator.userAgent.includes('Android');
-
   static {
-    browser.runtime.onMessage.addListener((...e) => this.onMessage(...e)); // from popup options
+    // from popup.js & options.js
+    browser.runtime.onMessage.addListener((...e) => this.onMessage(...e));
   }
 
-  // need async for the return message
-  static async onMessage(message) {
-    const {id, pref, host, proxy, dark, tab} = message;
+  static onMessage(message) {
+    const {id, pref, host, proxy, dark, tab, noMenuUpdate} = message;
     switch (id) {
       case 'setProxy':
         Action.dark = dark;
-        this.set(pref);
+        this.set(pref, noMenuUpdate);
         break;
 
-      case 'quickAdd':
-        this.quickAdd(pref, host, tab);
-        break;
-
+      case 'includeHost':
       case 'excludeHost':
-        this.excludeHost(pref, tab);
+        // proxy object reference to pref is lost in chrome when sent from popup.js
+        const pxy = pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
+        this.includeHost(pref, pxy, tab, id);
         break;
 
       case 'setTabProxy':
@@ -50,41 +53,26 @@ export class Proxy {
         break;
 
       case 'getTabProxy':
-        return OnRequest.tabProxy[tab.id];
+        // need to return a promise for 'getTabProxy' from popup.js
+        return Promise.resolve(OnRequest.tabProxy[tab.id]);
+
+      case 'getIP':
+        this.getIP();
+        break;
     }
   }
 
-  static async getSettings() {
-    if (this.android) { return {}; }
-
-    const conf = await browser.proxy.settings.get({});
-
-    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
-    // Issue 29683: Extension icons should support SVG (Dec 8, 2009)
-    // SVG is not supported by Chrome
-    // Firefox: If each one of imageData and path is one of undefined, null or empty object,
-    // the global icon will be reset to the manifest icon
-    // Chrome -> Error: Either the path or imageData property must be specified.
-
-    // check if proxy.settings is controlled_by_this_extension
-    const ext = App.firefox ? 'svg' : 'png';
-    const control = ['controlled_by_this_extension', 'controllable_by_this_extension'].includes(conf.levelOfControl);
-    const path = control ? `/image/icon.${ext}` : `/image/icon-off.${ext}`;
-    browser.action.setIcon({path});
-    !control && browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
-
-    // return null if Chrome and no control, allow Firefox to continue regardless
-    return !App.firefox && !control ? null : conf;
-  }
-
-  static async set(pref) {
+  static async set(pref, noMenuUpdate) {
     // check if proxy.settings is controlled_by_this_extension
     const conf = await this.getSettings();
-    if (!conf) { return; }                                  // not controlled_by_this_extension
+    // not controlled_by_this_extension
+    if (!conf) { return; }
 
     // --- update authentication data
     Authentication.init(pref.data);
+
+    // --- update menus
+    noMenuUpdate || Menus.init(pref);
 
     // --- check mode
     switch (true) {
@@ -100,19 +88,93 @@ export class Proxy {
         break;
     }
 
-    App.firefox ? this.setFirefox(pref, conf) : this.setChrome(pref);
+    App.firefox ? Firefox.set(pref, conf) : Chrome.set(pref);
     Action.set(pref);
   }
 
-  static async setFirefox(pref, conf) {
+  static async getSettings() {
+    if (App.android) { return {}; }
+
+    const conf = await browser.proxy.settings.get({});
+
+    // https://developer.chrome.com/docs/extensions/mv3/manifest/icons/
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=29683
+    // Issue 29683: Extension icons should support SVG (Dec 8, 2009)
+    // SVG is not supported by Chrome
+    // Firefox: If each one of imageData and path is one of undefined, null or empty object,
+    // the global icon will be reset to the manifest icon
+    // Chrome -> Error: Either the path or imageData property must be specified.
+
+    // check if proxy.settings is controlled_by_this_extension
+    const control = ['controlled_by_this_extension', 'controllable_by_this_extension'].includes(conf.levelOfControl);
+    const path = control ? `/image/icon.png` : `/image/icon-off.png`;
+    browser.action.setIcon({path});
+    !control && browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
+
+    // return null if Chrome and no control, allow Firefox to continue regardless
+    return !App.firefox && !control ? null : conf;
+  }
+
+  // ---------- Include/Exclude Host ----------------------
+  static includeHost(pref, proxy, tab, inc) {
+    // not for storage.managed
+    if (pref.managed) { return; }
+
+    const url = this.getURL(tab.url);
+    if (!url) { return; }
+
+    const pattern = url.origin + '/';
+    const pat = {
+      active: true,
+      pattern,
+      title: url.hostname,
+      type: 'wildcard',
+    };
+
+    inc === 'includeHost' ? proxy.include.push(pat) : proxy.exclude.push(pat);
+    browser.storage.local.set({data: pref.data});
+    // update Proxy, noMenuUpdate
+    pref.mode === 'pattern' && proxy.active && this.set(pref, true);
+  }
+
+  static getURL(str) {
+    const url = new URL(str);
+    // unacceptable URLs
+    if (!['http:', 'https:'].includes(url.protocol)) { return; }
+
+    return url;
+  }
+
+  // from popup.js
+  static getIP() {
+    fetch('https://getfoxyproxy.org/webservices/lookup.php')
+    .then(response => response.json())
+    .then(data => {
+      if (!Object.keys(data)) {
+        App.notify(browser.i18n.getMessage('error'));
+        return;
+      }
+
+      const [ip, {cc, city}] = Object.entries(data)[0];
+      const text = [ip, city, Location.get(cc)].filter(Boolean).join('\n');
+      App.notify(text);
+    })
+    .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
+  }
+}
+
+class Firefox {
+
+  static async set(pref, conf) {
     // update OnRequest
     OnRequest.init(pref);
 
-    if (this.android) { return; }
+    if (App.android) { return; }
 
-    // Incognito Access
-    const allowed = await browser.extension.isAllowedIncognitoAccess();
-    if (!allowed) { return; }
+    // incognito access
+    if (!await browser.extension.isAllowedIncognitoAccess()) {
+      return;
+    }
 
     // retain settings as Network setting is partially customisable
     const value = conf.value;
@@ -122,24 +184,30 @@ export class Proxy {
       // Unix domain socket SOCKS proxy support
       // regard file:///run/user/1000/proxy.socks:9999 as normal proxy (not PAC)
 
+      // sanitizeNoProxiesPref() "network.proxy.no_proxies_on"
+      // https://searchfox.org/mozilla-central/source/browser/components/preferences/dialogs/connection.js#338
+
       // --- Proxy Auto-Configuration (PAC) URL
       case pref.mode.includes('://') && !/:\d+$/.test(pref.mode):
         value.proxyType = 'autoConfig';
         value.autoConfigUrl = pref.mode;
-        value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', '); // convert to standard comma-separated
+        // convert to standard comma-separated
+        value.passthrough = pref.passthrough.split(/[\s,;]+/).join(', ');
         value.proxyDNS = pref.proxyDNS;
-        browser.proxy.settings.set({value});                // no error if levelOfControl: "controlled_by_other_extensions"
+        // no error if levelOfControl: "controlled_by_other_extensions"
+        browser.proxy.settings.set({value});
         break;
 
       // --- disable, direct, pattern, or single proxy
       default:
         browser.proxy.settings.clear({});
-        // if (conf.value.proxyType === 'system') { return; }  // no need to set again
-        // value.proxyType = 'system';
     }
   }
+}
 
-  static async setChrome(pref) {
+class Chrome {
+
+  static async set(pref) {
     // https://developer.chrome.com/docs/extensions/reference/types/
     // Scope and life cycle: regular | regular_only | incognito_persistent | incognito_session_only
     const config = {value: {}, scope: 'regular'};
@@ -175,33 +243,24 @@ export class Proxy {
     browser.proxy.settings.set(config);
 
     // --- incognito
-    this.setChromeIncognito(pref);
+    this.setIncognito(pref);
   }
 
-  static findProxy(pref, mode = pref.mode) {
+  static findProxy(pref, host = pref.mode) {
     return pref.data.find(i =>
-      i.active && i.type !== 'pac' && i.hostname && mode === `${i.hostname}:${i.port}`);
+      i.active && i.type !== 'pac' && i.hostname && host === `${i.hostname}:${i.port}`);
   }
 
-  static getSingleProxyRule(pref, pxy) {
-    return {
-      singleProxy: {
-        scheme: pxy.type,
-        host: pxy.hostname,
-        port: parseInt(pxy.port)                            // must be number, prepare for augmented port
-      },
-      bypassList: pref.passthrough ? pref.passthrough.split(/[\s,;]+/) : []
-    };
-  }
-
-  static async setChromeIncognito(pref) {
-    // Incognito Access
-    const allowed = await browser.extension.isAllowedIncognitoAccess();
-    if (!allowed) { return; }
+  static async setIncognito(pref) {
+    // incognito access
+    if (!await browser.extension.isAllowedIncognitoAccess()) {
+      return;
+    }
 
     const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
     if (!pxy) {
-      browser.proxy.settings.clear({scope: 'incognito_persistent'}); // unset incognito
+      // unset incognito
+      browser.proxy.settings.clear({scope: 'incognito_persistent'});
       return;
     }
 
@@ -209,6 +268,36 @@ export class Proxy {
     config.value.mode = 'fixed_servers';
     config.value.rules = this.getSingleProxyRule(pref, pxy);
     browser.proxy.settings.set(config);
+  }
+
+  static getSingleProxyRule(pref, pxy) {
+    return {
+      singleProxy: {
+        scheme: pxy.type,
+        host: pxy.hostname,
+        // must be number, prepare for augmented port
+        port: parseInt(pxy.port),
+      },
+      bypassList: pref.passthrough ? pref.passthrough.split(/[\s,;]+/) : []
+    };
+  }
+
+  static getProxyString(proxy) {
+    let {type, hostname, port} = proxy;
+    switch (type) {
+      case 'direct':
+        return 'DIRECT';
+
+      // chrome PAC doesn't support HTTP
+      case 'http':
+        type = 'PROXY';
+        break;
+
+      default:
+        type = type.toUpperCase();
+    }
+    // prepare for augmented port
+    return `${type} ${hostname}:${parseInt(port)}`;
   }
 
   static getPacString(pref) {
@@ -256,74 +345,5 @@ String.raw`function FindProxyForURL(url, host) {
 }`;
 
     return pacString;
-  }
-
-  static getProxyString(proxy) {
-    let {type, hostname, port} = proxy;
-    switch (type) {
-      case 'direct':
-        return 'DIRECT';
-
-      case 'http':
-        type = 'PROXY';                                     // chrome PAC doesn't support HTTP
-        break;
-
-      default:
-        type = type.toUpperCase();
-    }
-    return `${type} ${hostname}:${parseInt(port)}`;         // prepare for augmented port
-  }
-
-  // ---------- Quick Add/Exclude Host ---------------------
-  static quickAdd(pref, host, tab) {
-    // const activeTab = tab ? [tab] : await this.getActiveTab();
-    const url = this.getURL(tab.url);
-    if (!url) { return; }
-
-    const pattern = '^' + url.origin.replaceAll('.', '\\.') + '/';
-    const pat = {
-      active: true,
-      pattern,
-      title: url.hostname,
-      type: 'regex',
-    };
-
-    const pxy = pref.data.find(i => host === `${i.hostname}:${i.port}`);
-    if (!pxy) { return; }
-
-    pxy.include.push(pat);
-    browser.storage.local.set({data: pref.data});
-    pref.mode === 'pattern' && pxy.active && this.set(pref); // update Proxy
-  }
-
-  // Chrome commands returns command, tab
-  static excludeHost(pref, tab) {
-    // const activeTab = tab ? [tab] : await this.getActiveTab();
-    const url = this.getURL(tab.url);
-    if (!url) { return; }
-
-    const pattern = url.host;
-
-    // add host pattern, remove duplicates
-    const [separator] = pref.passthrough.match(/[\s,;]+/) || ['\n'];
-    const arr = pref.passthrough.split(/[\s,;]+/);
-    if (arr.includes(pattern)) { return; }                  // already added
-
-    arr.push(pattern);
-    pref.passthrough = [...new Set(arr)].join(separator).trim(); // remove duplicates
-
-    browser.storage.local.set({passthrough: pref.passthrough});
-    this.set(pref);                                         // update Proxy
-  }
-
-  // static getActiveTab() {
-  //   return browser.tabs.query({currentWindow: true, active: true});
-  // }
-
-  static getURL(str) {
-    const url = new URL(str);
-    if (!['http:', 'https:'].includes(url.protocol)) { return; } // unacceptable URLs
-
-    return url;
   }
 }

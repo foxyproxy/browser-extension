@@ -17,10 +17,17 @@ class Commands {
   }
 
   static async process(name, tab) {
+    // firefox only Tab Proxy
+    const tabProxy = ['setTabProxy', 'unsetTabProxy'].includes(name);
+    if (!App.firefox && tabProxy) { return; }
+
     const pref = await browser.storage.local.get();
+
+    // only Tab Proxy allowed for storage.managed
+    if (pref.managed && !tabProxy) { return; }
+
     const host = pref.commands[name];
-    const needTab = ['quickAdd', 'excludeHost', 'setTabProxy', 'unsetTabProxy'].includes(name);
-    tab ||= needTab && (await browser.tabs.query({currentWindow: true, active: true}))[0];
+    let proxy;
 
     switch (name) {
       case 'proxyByPatterns':
@@ -35,32 +42,36 @@ class Commands {
         host && this.set(pref, host);
         break;
 
-      case 'quickAdd':
-        host && Proxy.quickAdd(pref, host, tab);
-        break;
-
+      case 'includeHost':
       case 'excludeHost':
-        Proxy.excludeHost(pref, tab);
+        if (!host) { break; }
+
+        proxy = this.findProxy(pref, host);
+        proxy && Proxy.includeHost(pref, proxy, tab, name);
         break;
 
       case 'setTabProxy':
-        if (!App.firefox || !host) { break; }               // firefox only
+        if (!host) { break; }
 
-        const proxy = pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
+        proxy = this.findProxy(pref, host);
         proxy && OnRequest.setTabProxy(tab, proxy);
         break;
 
       case 'unsetTabProxy':
-        if (!App.firefox) { break; }                        // firefox only
-
         OnRequest.setTabProxy(tab);
         break;
     }
   }
 
+  static findProxy(pref, host) {
+    return host && pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
+  }
+
   static set(pref, mode) {
     pref.mode = mode;
-    browser.storage.local.set({mode});                      // save mode
-    Proxy.set(pref);
+    // save mode
+    browser.storage.local.set({mode});
+    // set proxy without menus update
+    Proxy.set(pref, true);
   }
 }

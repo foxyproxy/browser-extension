@@ -1,0 +1,47 @@
+/* ----- Popup ----- */
+.popup {
+  display: none;
+  background-color: #0003;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  transition: all 0.5s ease-in-out;
+}
+
+.popup.on {
+  display: grid;
+  place-content: center;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+.popup span {
+  background-color: var(--alt-bg);
+  display: grid;
+  place-content: center end;
+  padding: 0 0.8em;
+  cursor: pointer;
+  font-size: 0.9em;
+  border-radius: 0.5em 0.5em 0 0;
+  /* set height to maintain the same result in chrome/firefox */
+  height: 2em;
+}
+
+.popup span:hover {
+  background-color: var(--hover);
+}
+
+.popup textarea {
+  width: 50vw;
+  height: 50vh;
+  resize: both;
+  padding: 0.5em;
+}
+
+@keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}

@@ -1,0 +1,71 @@
+/* ----- show/hide elements ----- */
+details.proxy[data-type="direct"] :is(
+  [data-i18n="port"], [data-id="port"],
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password,
+  [data-i18n="country"], [data-id="cc"],
+  [data-i18n="city"], [data-id="city"],
+  [data-type="pac"], .pac) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="pac"] :is(
+  [data-i18n="port"], [data-id="port"],
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="pac"] :is(.pattern-head, .pattern-box) {
+  display: none;
+}
+
+details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy[data-type="socks4"] :is(
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Chrome/Firefox --- */
+body.chrome .firefox,
+body:not(.chrome) .chrome,
+body.chrome details.proxy[data-type="socks5"] :is(
+  [data-i18n="username"], [data-id="username"],
+  [data-i18n="password"], .password) {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+caption.firefox {
+  color: var(--nav-color);
+  visibility: hidden;
+}
+
+body.chrome caption.firefox {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- Basic --- */
+.basic :is(.pattern-head, .pattern-box) {
+  display: none;
+}

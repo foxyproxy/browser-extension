@@ -4,7 +4,8 @@ class I18n {
   static {
     document.querySelectorAll('template').forEach(i => this.set(i.content));
     this.set();
-    // document.body.style.opacity = 1;                        // show after i18n
+    // show after i18n
+    // document.body.style.opacity = 1;
   }
 
   static set(target = document) {

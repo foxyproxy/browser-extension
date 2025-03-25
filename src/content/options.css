@@ -1,14 +1,31 @@
 @import 'default.css';
 @import 'progress-bar.css';
 @import 'spinner.css';
+@import 'nav.css';
 @import 'theme.css';
+@import 'options-show.css';
+@import 'options-popup.css';
+@import 'toggle-switch.css';
+@import 'tester.css';
+@import 'log.css';
 
-/* ----- General ----- */
+/* ----- Light Theme ----- */
 :root {
   --nav-height: 3rem;
   --max-width: 75rem;
+  --pass: #080;
+  --fail: #f00;
 }
 
+/* ----- Dark Theme ----- */
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --pass: #0c0;
+    --fail: #f90;
+  }
+}
+
+/* ----- General ----- */
 html {
   scroll-padding-top: var(--nav-height);
 }
@@ -59,6 +76,10 @@ iframe {
   vertical-align: text-bottom;
 } */
 
+label:has(input[type="checkbox"]) {
+  cursor: pointer;
+}
+
 label > input[type="checkbox"] {
   margin-right: 0.5em;
 }
@@ -73,15 +94,6 @@ textarea {
   min-height: 6em;
   resize: vertical;
 }
-
-/* .flat {
-  color: #fff;
-  border-radius: 5px;
-  padding: 0.4em 1em;
-  font-size: 0.9em;
-  min-width: 8em;
-  display: inline-block;
-} */
 
 fieldset {
   background-color: var(--bg);
@@ -129,83 +141,6 @@ details[open] summary ~ * {
   opacity: 1;
 }
 
-/* ----- Navigation ----- */
-input[name="nav"],
-input[type="checkbox"].control {
-  display: none;
-}
-
-div.nav {
-  background-color: var(--nav-bg);
-}
-
-nav {
-  display: grid;
-  grid-auto-flow: column;
-  justify-content: start;
-  align-items: end;
-  color: var(--nav-color);
-  height: var(--nav-height);
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-nav img {
-  width: 2em;
-  margin: 0.2em 0.5em;
-}
-
-nav > label {
-  padding: 0.5em 1em;
-  /* transition: 0.5s; */
-  border-radius: 0.5em 0.5em 0 0;
-}
-
-nav > label:hover {
-  background-color: var(--nav-hover);
-}
-
-/* nav > label img {
-  width: 1em;
-}
-
-nav label a {
-  color: inherit;
-}
-
-nav label a:hover {
-  text-decoration: none;
-} */
-
-#nav1:checked ~ article section:nth-of-type(1),
-#nav2:checked ~ article section:nth-of-type(2),
-#nav3:checked ~ article section:nth-of-type(3),
-#nav4:checked ~ article section:nth-of-type(4),
-#nav5:checked ~ article section:nth-of-type(5),
-#nav6:checked ~ article section:nth-of-type(6),
-#nav7:checked ~ article section:nth-of-type(7),
-#nav8:checked ~ article section:nth-of-type(8) {
-  display: block;
-  /* animation: sect 0.5s ease-in-out; */
-}
-
-#nav1:checked ~ div.nav label[for="nav1"],
-#nav2:checked ~ div.nav label[for="nav2"],
-#nav3:checked ~ div.nav label[for="nav3"],
-#nav4:checked ~ div.nav label[for="nav4"],
-#nav5:checked ~ div.nav label[for="nav5"],
-#nav6:checked ~ div.nav label[for="nav6"],
-#nav7:checked ~ div.nav label[for="nav7"],
-#nav8:checked ~ div.nav label[for="nav8"] {
-  background-color: var(--body-bg);
-}
-
-@keyframes sect {
-  0%  { opacity: 0; }
-100%  { opacity: 1; }
-}
-/* ----- /Navigation ----- */
-
 /* ----- Import/Export ----- */
 input[type="file"] {
   display: none;
@@ -227,41 +162,6 @@ button[type="submit"]:hover {
   background-color: var(--btn-hover);
 } */
 /* ----- /Submit Button ----- */
-
-/* ----- Toggle Switch ----- */
-.toggle {
-  appearance: none;
-  width: 31px;
-  height: 16px;
-  position: relative;
-  border-radius: 50px;
-  background-color: #ccc;
-  transition: background-color 0.5s;
-}
-
-.toggle::before {
-  content: '';
-  display: block;
-  position: absolute;
-  z-index: 2;
-  width: 14px;
-  height: 14px;
-  background-color: #fff;
-  left: 1px;
-  top: 1px;
-  border-radius: 50%;
-  color: #fff;
-  transition: 0.5s;
-}
-
-.toggle:checked {
-  background-color: var(--btn-bg);
-}
-
-.toggle:checked::before {
-  left: 16px;
-}
-/* ----- /Toggle Switch ----- */
 
 /* ----- Button ----- */
 button.bin,
@@ -296,7 +196,44 @@ button.close::before {
 button.random {
   font-size: 1.3em;
 }
+
+button.slim {
+  padding: 0.2em 1em;
+  min-width: unset;
+}
 /* ----- /Button ----- */
+
+/* ----- data-link ----- */
+[data-link] {
+  cursor: pointer;
+}
+
+[data-link]:hover {
+  text-decoration: underline;
+}
+
+[data-link]::before {
+  content: '#';
+  display: inline-block;
+  width: 0.8em;
+  margin-left: -0.8em;
+  opacity: 0.5;
+  visibility: hidden;
+}
+
+[data-link]:hover::before {
+  visibility: visible;
+}
+
+footer {
+  display: grid;
+}
+
+footer span[data-link] {
+  font-size: 0.9em;
+  place-self: end;
+}
+/* ----- /data-link ----- */
 
 /* ----- Options ----- */
 /*
@@ -318,21 +255,7 @@ input[type="color"] {
   height: 1.7em;
 }
 
-.options div.theme,
-.options div.container,
-.options div.commands {
-  display: grid;
-  grid-template-columns: minmax(8em, max-content) max-content;
-  gap: 0.2em 1em;
-  margin-left: 1em;
-  margin-bottom: 1em;
-}
-
-.options div.theme {
-  margin-left: unset;
-}
-
-.options div.buttons {
+.options .buttons {
   display: grid;
   grid-auto-flow: column;
   justify-content: end;
@@ -340,45 +263,59 @@ input[type="color"] {
   margin-bottom: 1em;
 }
 
-.options div.container button {
+.options .theme,
+.options .container,
+.options .commands {
+  display: grid;
+  grid-template-columns: minmax(10em, max-content) max-content;
+  gap: 0.2em 1em;
+  margin-bottom: 1em;
+}
+
+.options .container label,
+.options .commands label {
+  margin-left: 1em;
+}
+
+.container button {
   grid-column: span 2;
   justify-self: right;
-  padding: 0.2em;
-  min-width: 6em;
+  /* padding: 0.2em;
+  min-width: 6em; */
 }
 
 /* button strip */
-/* .options div.buttons {
+/* .options .buttons {
   padding: 0 1.5em;
   margin: 0 -1.5em 1em;
   background-color: var(--btn-bg);
 }
 
-.options div.buttons > * {
+.options .buttons > * {
   border-left: 2px solid var(--bg);
   border-radius: 0;
 }
 
-.options div.buttons > *:last-child {
+.options .buttons > *:last-child {
   border-right: 2px solid var(--bg);
 } */
 
+
+
 /* ----- /Options ----- */
-
-
-details div.content {
+details .content {
   padding: 0.5em;
 }
 
 /* ----- Proxy ----- */
 .proxy-top {
   display: grid;
-  grid-template-columns: auto 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr auto auto;
   column-gap: 0.5em;
   margin: 0 0 0.5em;
 }
 
-.proxy-top input#filter {
+.proxy-top input.filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
   padding-left: 2em;
 }
@@ -445,63 +382,76 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 }
 
 .pac button {
-  padding: 0.2em 1em;
-  min-width: unset;
+  /* padding: 0.2em 1em;
+  min-width: unset; */
   place-self: center end;
 }
 
 
 /* ----- Pattern ----- */
 .pattern-box {
+  padding: 0.2em;
   max-height: 20em;
   overflow-y: auto;
-  padding: 0 0.5em;
 }
 
-.pattern-head {
+.pattern-head,
+.pattern-row {
   display: grid;
-  grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 4em;
+  grid-template-columns: 3em 6em 6em 1fr 2fr 2em 1em 1em;
   column-gap: 0.2em;
   place-items: center;
-  background-color: var(--bg);
-  padding: 0.2em 0.5em;
   font-size: 0.9em;
 }
 
+.pattern-head {
+  background-color: var(--bg);
+  padding: 0.2em;
+}
+
 .pattern-head button {
-  padding: 0.2em 1em;
-  min-width: unset;
+  /* padding: 0.2em 1em;
+  min-width: unset; */
   font-size: 0.8em;
 }
+
+/* .pattern-head button[data-i18n="add|title"] {
+  grid-column: span 3;
+} */
 
 .pattern-head button span.plus {
   filter: brightness(0) invert(1);
 }
+
+.pattern-head :nth-child(2) {
+  grid-column: span 2;
+}
+
 
 /* import & export (label & button) */
 .pattern-head .plain {
   font-size: 1em;
   line-height: 1em;
   cursor: pointer;
-  padding: 0.2em 0.5em;
+}
+
+.pattern-head :last-child {
+  grid-column: span 2;
 }
 
 /* hide when there are no patterns */
-/* .pattern-head:has(+ .pattern-box:empty) > :not([data-i18n="pattern"], button.flat) {
+.pattern-head:has(+ .pattern-box:empty) :nth-child(n+3) {
   opacity: 0;
-} */
+}
 
 .pattern-row {
-  display: grid;
-  grid-template-columns: 6em 5em 5em 1fr 2fr 1.5em 1.5em 2em 1em 1em;
-  column-gap: 0.2em;
-  align-items: center;
-  margin-top: 0.3em;
+  margin-top: 0.2em;
+  padding: 0 0.4em;
 }
 
-.pattern-row input:nth-of-type(2) {
+/* .pattern-row input:nth-of-type(2) {
   grid-column: span 3;
-}
+} */
 
 .proxy summary button,
 .pattern-box button.test,
@@ -517,51 +467,33 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 }
 /* ----- /Pattern ----- */
 
-/* ----- Popup ----- */
-div.popup {
-  display: none;
-  background-color: #0003;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  transition: all 0.5s ease-in-out;
+/* ----- bulk edit ----- */
+.bulk-edit {
+  display: grid;
+  grid-template-columns: repeat(3, 3.5em) 10em auto;
+  justify-content: end;
+  gap: 0.2em;
 }
 
-div.popup button {
-  font-size: 2em;
-  background-color: var(--bg);
-  border-radius: 100%;
-  padding: 0.3em;
-  position: absolute;
-  right: 0.5em;
-  top: 0.5em;
+details.proxy.t1 {
+  outline: 1px solid red;
 }
 
-.popup textarea {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  resize: both;
-  padding: 0.5em;
+details.proxy:is(.t1, .s1) .pattern-row.t2 {
+  outline: 1px solid blue;
+  outline-offset: -1px;
 }
 
-.popup.on {
-  display: block;
-  animation: fade-in 0.5s ease-in-out;
+details.proxy.s1 {
+  outline: 1px solid green;
 }
 
-@keyframes fade-in {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+.proxy-div:empty ~ .bulk-edit {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
 }
-/* ----- /Popup ----- */
+/* ----- /bulk-edit ----- */
 
 /* ----- Import ----- */
 .import textarea {
@@ -572,229 +504,45 @@ div.popup button {
   color: var(--header);
 }
 
-.import details.import-account div.content {
+.import details.import-account .content {
   display: grid;
   grid-template-columns: 1fr 3fr 1em;
   gap: 0.5em;
+}
+
+.import details.import-account input#username {
+  grid-column: span 2;
+}
+
+.import .import-account .account-options {
+  display: grid;
+  grid-auto-flow: column;
+  grid-column: span 2;
+  justify-content: start;
+  gap: 0.5em;
+}
+
+.import details button.flat {
+  margin-top: 0.5em;
 }
 
 .import details.import-account button.flat {
   justify-self: start;
 }
 
-.import details .flat {
-  margin-top: 0.5em;
-}
+
 /* ----- /import ----- */
 
-/* ----- Tester ----- */
-.tester fieldset,
-.tester fieldset div {
-  display: grid;
-  grid-template-columns: 10em 10em 1fr;
-  gap: 0.8em 0.5em;
-}
-
-.tester input[type] {
-  font-size: 1em;
-}
-
-.tester input[type="url"] {
-  grid-column: span 2;
-}
-
-.tester .test-result {
-  min-height: 4em;
-  grid-column: span 2;
-}
-
-.tester button:nth-of-type(1) {
-  justify-self: start;
-}
-
-.tester button:nth-of-type(2) {
-  justify-self: end;
-  grid-column: span 2;
-}
-/* ----- /Tester ----- */
-
-/* ----- Log ----- */
-section.log {
-  padding: 0 0.5em;
-  max-width: unset;
-}
-
-.log table {
-  border-collapse: collapse;
-  margin: 0 auto;
-  width: 100%;
-  background-color: var(--bg);
-}
-
-.log thead  {
-  position: sticky;
-  top: 0;
-}
-
-.log thead th {
-  color: #fff;
-  background-color: #999;
-  padding: 0.5em 0.2em;
-  font-size: 0.9em;
-  font-weight: normal;
-  text-align: left;
-}
-
-.log thead th img {
-  width: 1em;
-  vertical-align: unset;
-}
-
-/* .log tbody tr {
-  /* border-bottom: 1px solid var(--border); * /
-  animation: sect 0.5s ease-in-out;
-} */
-
-.log tr:hover {
-  background-color: var(--hover) !important;
-}
-
-.log tbody tr:nth-of-type(even) {
-  background-color: var(--tr);
-}
-
-.log td {
-  font-size: 0.8em;
-  padding: 0.2em;
-}
-
-.log td:nth-of-type(6),
-.log td:nth-of-type(7),
-.log td:nth-of-type(12) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 20em;
-}
-
-.log td:nth-of-type(7) {
-  max-width: 40em;
-}
-
-.log td:nth-of-type(8) {
-  border-left: 2px solid var(--border);
-}
-
-.log td:nth-of-type(12) {
-  max-width: 5em;
-}
-
-.log td.incognito::before {
-  content: '';
-  width: 1em;
-  height: 1em;
-  display: inline-block;
-  vertical-align: text-bottom;
-  background: url('../image/privateBrowsing.svg') no-repeat center / contain;
-}
-
-.log tbody {
+/* ----- Counter ----- */
+/* .proxy-section {
   counter-reset: n;
 }
 
-.log tbody tr td:first-child::before {
-  display: inline-block;
-  color: #aaa;
-  min-width: 1.5em;
-  text-align: right;
-  vertical-align: middle;
-  margin-right: 0.4em;
-  pointer-events: none;
+.proxy-section details summary :first-child::before {
   counter-increment: n;
   content: counter(n);
-  font-size: 0.8em;
-}
-/* ----- /Log ----- */
-
-/* ----- show/hide elements ----- */
-details.proxy[data-type="direct"] :is(
-  [data-i18n="port"], [data-id="port"],
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password,
-  [data-i18n="country"], [data-id="cc"],
-  [data-i18n="city"], [data-id="city"],
-  [data-type="pac"], .pac) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy[data-type="pac"] :is(
-  [data-i18n="port"], [data-id="port"],
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy[data-type="pac"] :is(.pattern-head, .pattern-box) {
-  display: none;
-}
-
-details.proxy:not([data-type="pac"]) :is([data-type="pac"], .pac) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy[data-type="socks4"] :is(
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-details.proxy:not([data-type="socks5"]) :is([data-i18n="proxyDNS"], [data-id="proxyDNS"]) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* --- Chrome --- */
-body.chrome .firefox {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-body.chrome details.proxy[data-type="socks5"] :is(
-  [data-i18n="username"], [data-id="username"],
-  [data-i18n="password"], .password) {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-body:not(.chrome) .chrome {
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
-
-caption.firefox {
-  color: var(--nav-color);
-  visibility: hidden;
-}
-
-body.chrome caption.firefox {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* --- Basic --- */
-.basic :is(.pattern-head, .pattern-box) {
-  display: none;
-}
-/* ----- /show/hide elements ----- */
+  display: inline-block;
+  margin-right: 0.5em;
+  color: var(--dim);
+} */
+/* ----- /Counter ----- */

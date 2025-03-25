@@ -85,6 +85,14 @@ input[type="url"] {
   border-radius: 0.3em;
 }
 
+:is(select,
+input[type="number"],
+input[type="text"],
+input[type="password"],
+input[type="url"]):hover {
+  background-color: var(--hover);
+}
+
 label[for],
 input[type="checkbox"],
 summary,

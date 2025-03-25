@@ -1,12 +1,8 @@
 // ---------- Polyfill (Side Effect) -----------------------
-// Promise based 'browser' namespace is used to avoid conflict between
-// callback 'chrome' API in MV2 & promise 'chrome' API in MV3
-// In case of callback 'chrome' API in MV3, 'chrome' namespace is used
-// Firefox & Edge: browser namespace
-// Chrome & Opera: chrome namespace
-typeof globalThis.browser === 'undefined' && (globalThis.browser = globalThis.chrome);
-// MV3 action API
-!browser.action && (browser.action = browser.browserAction);
+// Promise based 'browser' namespace is used to avoid conflict
+// Firefox 'chrome' API: MV2 callback | MV3 promise
+// Firefox/Edge: browser namespace | Chrome/Opera: chrome namespace
+globalThis.browser ??= chrome;
 
 // ---------- Default Preferences --------------------------
 export const pref = {
@@ -29,11 +25,14 @@ export class App {
   // Chrome does not support runtime.getBrowserInfo()
   // getURL: moz-extension: | chrome-extension: | safari-web-extension:
   static firefox = browser.runtime.getURL('').startsWith('moz-extension:');
+  static basic = browser.runtime.getManifest().name === browser.i18n.getMessage('extensionNameBasic');
+  static android = navigator.userAgent.includes('Android');
 
   // ---------- User Preferences ---------------------------
-  static defaultPref = JSON.stringify(pref);
   // not syncing mode & sync (to have a choice), data (will be broken into parts)
   static syncProperties = Object.keys(pref).filter(i => !['mode', 'sync', 'data'].includes(i));
+
+  static defaultPref = JSON.stringify(pref);
 
   static getDefaultPref() {
     return JSON.parse(this.defaultPref);
@@ -60,7 +59,7 @@ export class App {
     });
   }
 
-  static equal(a, b) {                                      // bg options
+  static equal(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);
   }
 
@@ -81,50 +80,6 @@ export class App {
     }
 
     return url;
-  }
-
-  static getFlag(cc) {
-    cc = /^[A-Z]{2}$/i.test(cc) && cc.toUpperCase();
-    return cc ? String.fromCodePoint(...[...cc].map(i => i.charCodeAt() + 127397)) : '🌎';
-  }
-
-  static showFlag(item) {
-    switch (true) {
-      case !!item.cc:
-        return this.getFlag(item.cc);
-
-      case item.type === 'direct':
-        return '⮕';
-
-      case this.isLocal(item.hostname):
-        return '🖥️';
-
-      default:
-        return '🌎';
-    }
-  }
-
-  static isLocal(host) {
-    // check local network
-    const isIP = /^[\d.:]+$/.test(host);
-    switch (true) {
-      // --- localhost & <local>
-      // case host === 'localhost':
-      case !host.includes('.'):                             // plain hostname (no dots)
-      case host.endsWith('.localhost'):                     // *.localhost
-
-      // --- IPv4
-      // case host === '127.0.0.1':
-      case isIP && host.startsWith('127.'):                 // 127.0.0.1 up to 127.255.255.254
-      case isIP && host.startsWith('169.254.'):             // 169.254.0.0/16 - 169.254.0.0 to 169.254.255.255
-      case isIP && host.startsWith('192.168.'):             // 192.168.0.0/16 - 192.168.0.0 to 192.168.255.255
-
-      // --- IPv6
-      // case host === '[::1]':
-      case host.startsWith('[::1]'):                        // literal IPv6 [::1]:80 with/without port
-      case host.toUpperCase().startsWith('[FE80::]'):       // literal IPv6 [FE80::]/10
-        return true;
-    }
   }
 
   static allowedTabProxy(url) {

@@ -1,20 +1,8 @@
-import {App} from './app.js';
-import {Pattern} from './pattern.js';
-import {Color} from './color.js';
-
-/*
-  Chrome v3 (current) encrypts username/passwords using CryptoJS 3.1.2
-  CryptoJS library is used to migrate preferences to v8.0 but will be removed in future upgrades
-  Original CryptoJS 3.1.2 aes.js  https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js
-  `export {CryptoJS};` was added to be able to import as ES6 module
-*/
-import {CryptoJS} from '../lib/aes.3.1.2.js';
-
 /*
   ----- Patterns -----
-  Chrome v3 (current) features full/partial url match pattern
-  Firefox v4 to v7 (current) features host only match pattern
-  - Migrating v4 to v7 storage data to full/partial url match pattern
+  Chrome FoxyProxy v3 (old) featured full/partial url match pattern
+  Firefox FoxyProxy v4 - v7 (old) featured host only match pattern
+  - Migrating v4 - v7 storage data to full/partial url match pattern
   - Dropping select for http|https|all
 
   ----- SOCKS keyword -----
@@ -36,6 +24,19 @@ import {CryptoJS} from '../lib/aes.3.1.2.js';
   JavaScript uses 'hostname' for for domain/ip & 'host' for domain:port/ip:port
   Code uses JavaScript 'hostname' domain/ip
 */
+
+import {App} from './app.js';
+import {Pattern} from './pattern.js';
+import {Color} from './color.js';
+
+/*
+  Chrome v3 (old) encrypts username/passwords using CryptoJS 3.1.2
+  CryptoJS library is used to migrate preferences to v8.0 but will be removed in future upgrades
+  Original CryptoJS 3.1.2 aes.js  https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js
+  `export {CryptoJS};` was added to be able to import as ES6 module
+*/
+// removed in v9.0
+// import {CryptoJS} from '../lib/aes.3.1.2.js';
 
 export class Migrate {
 
@@ -85,9 +86,9 @@ export class Migrate {
     // return pref;
   }
 
-  static decrypt(str, key) {
-    return CryptoJS.AES.decrypt(str, key).toString(CryptoJS.enc.Utf8).split(/(?<!\\):/).map(i => i.replace(/\\:/g, ':'));
-  }
+  // static decrypt(str, key) {
+  //   return CryptoJS.AES.decrypt(str, key).toString(CryptoJS.enc.Utf8).split(/(?<!\\):/).map(i => i.replace(/\\:/g, ':'));
+  // }
 
   // --- Chrome v3
   static convert3(pref) {
@@ -98,45 +99,56 @@ export class Migrate {
     const db = App.getDefaultPref();
     db.sync = !!pref?.settings?.useSyncStorage;
 
-    const sk = pref.settings.sk;                            // CryptoJS key
+    // CryptoJS key
+    // const sk = pref.settings.sk;
     pref.proxyList?.forEach(key => {
       const item = pref[key].data;
-      if (key === 'default' || !item?.patterns) { return; } // skip
-
+      // skip
+      if (key === 'default' || !item?.patterns) { return; }
+      // convert to actual type: http | https | socks4 | socks5 | + PAC
+      // default HTTP (no HTTPS option in FP Chrome v3)
       const type = item.isSocks ? (item.socks === '5' ? 'socks5' : 'socks4') :
-        (item.type === 'auto' ? 'pac' : 'http');            // default HTTP (no HTTPS option in FP Chrome v3)
+        (item.type === 'auto' ? 'pac' : 'http');
 
+      // removed in v9.0
       // decrypt username, password
-      const [username = '', password = ''] = sk ? this.decrypt(item.credentials, sk) : [];
+      // const [username = '', password = ''] = sk ? this.decrypt(item.credentials, sk) : [];
 
+      // proxy template
       const pxy = {
         active: item.enabled,
         title: item.name || '',
-        type,                                               // convert to actual type: http | https | socks4 | socks5 | + PAC
-        hostname: item.host,                                // rename to hostname
+        type,
+        // rename to hostname
+        hostname: item.host,
         port: item.port,
-        username,
-        password,
-        cc: '',                                             // remove country, use CC in country-code.js
+        username: '',
+        password: '',
+        // remove country, use CC in location.js
+        cc: '',
         city: '',
-        color: item.color || Color.getRandom(),             // random color
+        color: item.color || Color.getRandom(),
         pac: type === 'pac' ? item.configUrl : '',
         pacString: '',
         proxyDNS: true,
         include: [],
         exclude: [],
+        tabProxy: [],
       };
 
       // process include/exclude
       item.patterns.forEach(elem => {
         const p = elem.data;
-        if (!p?.type) { return; }                           // skip
+        // skip
+        if (!p?.type) { return; }
 
         const pat = {
           active: true,
-          pattern: p.url,                                   // v3 keep patterns as they are
+          // v3 keep patterns as they are
+          pattern: p.url,
           title: p.name || '',
-          type: p.type === 'wildcard' ? 'wildcard' : 'regex' // uses wildcard | regexp  -> change to regex
+          // uses wildcard | regexp  -> change to regex
+          type: p.type === 'wildcard' ? 'wildcard' : 'regex'
         };
 
         // Validate RegExp, deactivate on error
@@ -164,9 +176,12 @@ export class Migrate {
 
     // new database format
     pref.mode ||= 'disable';
-    pref.mode === 'disabled' && (pref.mode = 'disable');    // rename disabled -> disable
-    pref.mode === 'patterns' && (pref.mode = 'pattern');    // rename patterns -> pattern
-    if (pref[pref.mode]) {                                  // convert old mode
+    // rename disabled -> disable
+    pref.mode === 'disabled' && (pref.mode = 'disable');
+    // rename patterns -> pattern
+    pref.mode === 'patterns' && (pref.mode = 'pattern');
+    // convert old mode
+    if (pref[pref.mode]) {
       const i = pref[pref.mode];
       pref.mode = `${i.address}:${i.port}`;
     }
@@ -177,29 +192,41 @@ export class Migrate {
     // null value causes an error in hasOwn, direct proxies don't have 'address'
     const data = Object.values(pref).filter(i => i && ['address', 'type'].some(p => Object.hasOwn(i, p)));
 
-    data.sort((a, b) => a.index - b.index);                 // sort by index
+    // sort by index
+    data.sort((a, b) => a.index - b.index);
 
-    data.forEach(item => {
+    data.forEach(i => {
+      // proxy template
       const pxy = {
-        active: item.active === 'true' || item.active === true, // convert to boolean, some old databases have mixed types
-        title: item.title || '',
-        type: typeSet[item.type],                           // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
-        hostname: item.address || '',                       // rename to hostname
-        port: item.port || '',
-        username: item.username || '',
-        password: item.password || '',
-        cc: item.cc || '',                                  // remove country, use CC in country-code.js
+        // convert to boolean, some old databases have mixed types
+        active: i.active === 'true' || i.active === true,
+        title: i.title || '',
+        // convert to actual type: http | https | socks4 | socks5 | direct | + add PAC
+        type: typeSet[i.type],
+        // rename to hostname
+        hostname: i.address || '',
+        port: i.port || '',
+        username: i.username || '',
+        password: i.password || '',
+        // remove country, use CC in location.js
+        cc: i.cc || '',
         city: '',
-        color: item.color || Color.getRandom(),             // random color
-        pac: '',                                            // add PAC option
+        color: i.color || Color.getRandom(),
+        // add PAC option
+        pac: '',
         pacString: '',
-        proxyDNS: !!item.proxyDNS,
-        include: item.whitePatterns || [],                  // rename to include
-        exclude: item.blackPatterns || [],                  // rename to exclude
+        proxyDNS: !!i.proxyDNS,
+        // rename to include
+        include: i.whitePatterns || [],
+        // rename to exclude
+        exclude: i.blackPatterns || [],
+        tabProxy: [],
       };
 
-      pxy.cc === 'UK' && (pxy.cc = 'GB');                   // convert UK to ISO 3166-1 GB
-      pxy.type === 'direct' && (pxy.hostname = 'DIRECT');   // type 'direct'
+      // convert UK to ISO 3166-1 GB
+      pxy.cc === 'UK' && (pxy.cc = 'GB');
+      // type 'direct'
+      pxy.type === 'direct' && (pxy.hostname = 'DIRECT');
 
 /*
       {
@@ -207,7 +234,7 @@ export class Migrate {
         "pattern": "*.example.com",
         "title": "example",
         "type": 1,
-       // "protocols": 1,
+        // "protocols": 1,
       },
 */
 
@@ -216,16 +243,24 @@ export class Migrate {
         2: 'regex'
       };
       // process include/exclude
-      [...pxy.include, ...pxy.exclude].forEach(item => {
-        item.type = patternSet[item.type];                  // convert to actual type: wildcard | regex
+      [...pxy.include, ...pxy.exclude].forEach(i => {
+        // convert to actual type: wildcard | regex
+        i.type = patternSet[i.type];
 
         // convert wildcard all | http | https to v3 patterns
-        item.pattern = item.type === 'wildcard' ?
-          this.convertWildcard(item.pattern, item.protocols) : this.convertRegEx(item.pattern, item.protocols);
-        delete item.protocols;                              // no longer needed
+        i.pattern = i.type === 'wildcard' ?
+          this.convertWildcard(i.pattern, i.protocols) : this.convertRegEx(i.pattern, i.protocols);
+        // no longer needed
+        delete i.protocols;
 
         // Validate RegExp, deactivate on error
-        !Pattern.validate(item.pattern, item.type) && (item.active = false);
+        !Pattern.validate(i.pattern, i.type) && (i.active = false);
+
+        // convert v6-7 patterns to match pattern (v9.0)
+        if (i.type === 'wildcard' && Pattern.validMatchPattern(i.pattern + '*')) {
+          i.type === 'match';
+          i.pattern += '*';
+        }
       });
 
       db.data.push(pxy);
@@ -241,23 +276,27 @@ export class Migrate {
 */
   static convertWildcard(pat, protocol) {
     const protocolSet = {
-      1: '*://',            // all
-      2: 'http://',         // http
-      4: 'https://'         // https
+      // all | http | https
+      1: '*://',
+      2: 'http://',
+      4: 'https://'
     };
 
-    return protocolSet[protocol] + (pat[0] === '.' ? '*' : '') + pat + '/';
+    return protocolSet[protocol] + (pat.startsWith('.') ? '*' : '') + pat + '/';
   }
 
   static convertRegEx(pat, protocol) {
     const protocolSet = {
-      1: '^[^:]+://',       // all
-      2: '^http://',        // http
-      4: '^https://'        // https
+      // all | http | https
+      1: '.+://',
+      2: 'http://',
+      4: 'https://'
     };
 
-    pat.startsWith('^') && (pat = pat.substring(1));        // remove the start marker
-    pat.endsWith('$') && (pat = pat.slice(0, -1));          // remove end marker
+    // remove start assertion
+    pat.startsWith('^') && (pat = pat.substring(1));
+    // remove end assertion
+    pat.endsWith('$') && (pat = pat.slice(0, -1));
 
     return protocolSet[protocol] + pat + '/';
   }

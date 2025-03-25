@@ -1,4 +1,4 @@
-// import {App} from './app.js';
+// import {Flag} from './flag.js';
 import {Location} from './location.js';
 
 export class Action {
@@ -31,7 +31,7 @@ export class Action {
         const item = pref.data.find(i => pref.mode === (i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`));
         if (item) {
           // Chrome 113-114 started having a bug showing unicode flags
-          // const flag = App.getFlag(item.cc);
+          // const flag = Flag.get(item.cc);
           // const host = flag + ' ' + [item.hostname, item.port].filter(Boolean).join(':');
           const host = [item.hostname, item.port].filter(Boolean).join(':');
           title = [item.title, host, item.city, Location.get(item.cc)].filter(Boolean).join('\n');

@@ -31,7 +31,10 @@ body {
 
 /*
   https://bugzilla.mozilla.org/show_bug.cgi?id=1883896
-  Remove UA styles for :is(article, aside, nav, section) h1
+  Remove UA styles for :is(article, aside, nav, section) h1 (Nightly only) Firefox 125
+
+  https://bugzilla.mozilla.org/show_bug.cgi?id=1885509
+  Remove UA styles for :is(article, aside, nav, section) h1 (staged rollout)
 */
 h1 {
   color: var(--nav-color);
@@ -76,7 +79,7 @@ div.list {
 
 div.list label {
   display: grid;
-  grid-template-columns: 2.5em 1fr auto auto;
+  grid-template-columns: 2.5em auto 1fr;
   column-gap: 0.5em;
   padding: 0.2em 0.5em;
   cursor: pointer;
@@ -90,12 +93,7 @@ div.list label.off {
   display: none;
 }
 
-/* :has() FF121 (2023-12-19), Ch105 */
 div.list label:has(input[name="server"]:checked) {
-  background-color: var(--selected);
-}
-/* for Firefox < 121 */
-div.list label.selected {
   background-color: var(--selected);
 }
 
@@ -106,10 +104,6 @@ div.list label.selected {
 .flag img.off {
   filter: var(--filter);
 }
-
-/* div.list :is(.pattern, .disable ) :is(.flag, input[name="server"]) {
-  grid-row: unset;
-} */
 
 .flag {
   grid-row: span 2;
@@ -128,7 +122,7 @@ div.list label.selected {
 
 .port {
   color: var(--dim);
-  text-align: right;
+  place-self: end start;
 }
 
 .data {
@@ -144,24 +138,10 @@ div.list label.selected {
 }
 
 input[name="server"] {
-  /* grid-row: span 2;
-  transition: 0.5s ease-in-out;
-  place-self: start center;
-  cursor: pointer; */
   display: none;
 }
 
-/* input[name="server"]:not(:checked) {
-  opacity: 0;
-} */
-
-input#filter {
-  background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
-  padding-left: 2em;
-  margin-bottom: 0.2em;
-  grid-column: span 2;
-}
-
+/* --- more section --- */
 summary {
   background-color: var(--alt-bg);
   padding: 0.2em 0.5em;
@@ -172,13 +152,13 @@ div.host {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0.5em;
-  gap: 0.2em 1em;
+  gap: 0.3em 0.5em;
   align-items: center;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-div.host label {
-  justify-self: center;
+div.host input.filter {
+  background: url('../image/filter.svg') no-repeat left 0.5em center/1em;
+  padding-left: 2em;
 }
 
 div.host button {
@@ -211,7 +191,15 @@ div.host button:hover {
 }
 
 /* --- Basic --- */
-.basic .pattern {
+.basic .not-basic {
   display: none;
+}
+
+/* --- scheme --- */
+.not-http select.http,
+.not-tab-proxy .tab-proxy {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
 }
 /* ----- /show/hide elements ----- */

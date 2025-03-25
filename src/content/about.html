@@ -16,6 +16,61 @@
 
     <h2 id="changelog">Changelog</h2>
     <dl>
+
+      <dt>9.0</dt>
+      <dd>Added "407 Proxy Authentication Required" to the log (#145)</dd>
+      <dd>Added "Get Associated Domains" feature to Log (#191)</dd>
+      <dd>Added "Get Associated Domains" option to add patterns</dd>
+      <dd>Added Bulk Edit user interface feature (#131, #137, #169)</dd>
+      <dd>Added Context Menu feature</dd>
+      <dd>Added Ctrl-Click option to Add Pattern (#169)</dd>
+      <dd>Added Ctrl-Click option to Add Proxy</dd>
+      <dd>Added extra options to Import FoxyProxy Account</dd>
+      <dd>Added link to Open Shortcut Settings link (Firefox 137)</dd>
+      <dd>Added Match Pattern support (#177)</dd>
+      <dd>Added Open Link in New Tab Proxy feature (#149)</dd>
+      <dd>Added Ping feature</dd>
+      <dd>Added Proxy by Pattern tester</dd>
+      <dd>Added show/hide feature to toolbar popup elements based on Tab URL</dd>
+      <dd>Added Tab Proxy by patterns feature (Firefox only) (#180)</dd>
+      <dd>Changed Firefox icons to PNG for compatibility with Chrome</dd>
+      <dd>Enabled sending username without password for SOCKS (Firefox only)</dd>
+      <dd>Fixed a Drag and Drop issue (#183)</dd>
+      <dd>Fixed an issue with resetting containers (from 8.10) (#185)</dd>
+      <dd>Increased minimum version to Firefox 128 (released 2024-07-09) due to Firefox root certificate expiry on 14 March</dd>
+      <dd>Removed Chrome v3 to v8 data migration decryption code</dd>
+      <dd>Removed default network passthrough on Firefox in favour of <code>about:config</code> setting (Firefox 137+) (#178)</dd>
+      <dd>Renamed "Quick Add" to "Include Host"</dd>
+      <dd>Repurposed "Exclude Host" to match "Include Host" function</dd>
+      <dd>Unified Firefox and Chrome "manifest.json"</dd>
+      <dd>Updated browser badge code to reflect Global Exclude</dd>
+      <dd>Updated data migration for Match Pattern use (#177)</dd>
+      <dd>Updated Firefox manifest to MV3</dd>
+      <dd>Updated Include/Exclude Host to generate Glob patterns</dd>
+      <dd>Updated Limit WebRTC options (#162)</dd>
+      <dd>Updated Options page user interface</dd>
+      <dd>Updated Pattern Tester</dd>
+      <dd>Updated Tab Proxy for MV3</dd>
+      <dd>Updated toolbar popup user interface</dd>
+      <dd>Added links to Help from Options</dd>
+
+<!--
+  https://blog.mozilla.org/addons/2025/03/10/root-certificate-will-expire-on-14-march-users-need-to-update-firefox-to-prevent-add-on-breakage/
+  https://blog.mozilla.org/addons/2024/07/10/manifest-v3-updates-landed-in-firefox-128/
+  minimum version to Firefox 128:
+  -----
+  FF109, Ch88: "host_permissions": Property "host_permissions" is unsupported in Manifest Version 2
+  FF112, Ch92: Added Background script module, removed "content/background.html"
+  FF115: Deprecate browser_style in MV3 defaults to false
+  FF115, Ch102: storage.session 10mb (Ch102-Ch114 1mb)
+  FF121, Ch105: :has()
+  FF126, Ch108: webRequestAuthProvider
+
+  FF117, Ch112 (2023-04-04): CSS nesting ?
+-->
+
+
+
       <dt>8.10</dt>
       <dd>Added console log for Save file errors (#144)</dd>
       <dd>Added custom container option (#33, #161)</dd>
@@ -23,8 +78,9 @@
       <dd>Added folder to Auto Backup (#156)</dd>
       <dd>Added new options to the proxy types</dd>
       <dd>Added QUIC (HTTP) option (Chrome only) (experimental) (#124)</dd>
+      <dd>Removed a bug that caused Glob wildcard to match domains with subdomains</dd>
       <dd>Updated browser detection (firefox-extension/issues/220, #139, #141)</dd>
-      <dd>Updated default network passthrough on Firefox to include <code>localhost, 127.0.0.1/8, ::1</code> (firefox-extension/issues/159, #20, #134)</dd>
+      <dd>Updated default network passthrough on Firefox to include <code>localhost, 127.0.0.1, ::1</code> (firefox-extension/issues/159, #20, #134)</dd>
       <dd>Updated managed storage to allow Tab Proxy (#172)</dd>
       <dd>Updated Options page user interface</dd>
       <dd>Updated Tab Proxy to include new tab (#157)</dd>
@@ -82,11 +138,11 @@
       <dt>8.4</dt>
       <dd>Added light/dark theme detection for badge background color (#61)</dd>
       <dd>Enabled to run with "controlled_by_other_extensions" on Firefox (#68)</dd>
-      <dd>Removed localhost & local network passthrough in Firefox (#50, #63, #64, #66, #71)</dd>
+      <dd>Removed localhost and local network passthrough in Firefox (#50, #63, #64, #66, #71)</dd>
       <dd>Updated Options save process to fill blank proxy header title display (#74)</dd>
 
       <dt>8.3</dt>
-      <dd>Added enterprise policy & managed storage feature (experimental) (#42)</dd>
+      <dd>Added enterprise policy and managed storage feature (experimental) (#42)</dd>
       <dd>Added PAC "Store Locally" feature (#46) (experimental) (Chrome only)</dd>
       <dd>Added PAC view feature</dd>
       <dd>Fixed an issue with empty Global Exclude</dd>
@@ -103,8 +159,8 @@
       <dt>8.1</dt>
       <dd>Added Drag and Drop sorting of proxies (#29)</dd>
       <dd>Added duplicate proxy feature</dd>
-      <dd>Added Incognito/Container proxy (#33)</dd>
-      <dd>Added Keyboard Shortcut feature</dd>
+      <dd>Added Incognito/Container proxy (firefox-extension/issues/22, #33)</dd>
+      <dd>Added Keyboard Shortcut feature (firefox-extension/issues/217)</dd>
       <dd>Added pattern import/export</dd>
       <dd>Added port search to search filter</dd>
       <dd>Added search filter to toolbar popup (#23)</dd>
@@ -125,15 +181,15 @@
       <dd>Added Host Pattern to proxy feature</dd>
       <dd>Added Import FoxyProxy Account (Chrome)</dd>
       <dd>Added Import From URL</dd>
-      <dd>Added Limit WebRTC feature</dd>
+      <dd>Added Limit WebRTC feature (Foxyproxy_Chrome/issues/4)</dd>
       <dd>Added live Log (Firefox only)</dd>
       <dd>Added Tab Proxy feature (Firefox only)</dd>
       <dd>Changed "browsingData" to optional permissions</dd>
       <dd>Dropped "browser_style" in preparation for MV3</dd>
       <dd>Increased minimum version to Firefox 93 (released 2021-10-05)</dd>
       <dd>Unified code for Firefox, Chrome, and other Chromium-based browsers</dd>
-      <dd>Unified storage to share between Firefox & Chrome</dd>
-      <dd>Updated code & style for manifest v3 (MV3) compatibility</dd>
+      <dd>Unified storage to share between Firefox and Chrome</dd>
+      <dd>Updated code and style for manifest v3 (MV3) compatibility</dd>
       <dd>Updated Import Proxy List</dd>
       <dd>Updated User Interface</dd>
     </dl>

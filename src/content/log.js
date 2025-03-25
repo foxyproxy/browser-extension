@@ -1,15 +1,55 @@
-import {App} from './app.js';
+import {Flag} from './flag.js';
 import {Pattern} from './pattern.js';
+import {Popup} from './options-popup.js';
+import {Nav} from './nav.js';
 
-// ---------- Log ------------------------------------------
 export class Log {
 
   static {
     this.trTemplate = document.querySelector('.log template').content.firstElementChild;
     this.tbody = document.querySelector('.log tbody');
-    this.proxyCache = {};                                   // used to find proxy
+    // used to find proxy
+    this.proxyCache = {};
     this.mode = 'disable';
+
     browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
+
+    // onAuthRequired message from authentication.js
+    browser.runtime.onMessage.addListener((...e) => this.onMessage(...e));
+
+    // Get Associated Domains
+    this.input = document.querySelector('.log input');
+    document.querySelector('.log button').addEventListener('click', () => this.getDomains());
+    document.querySelector('.popup select').addEventListener('change', e => this.addPatterns(e));
+  }
+
+  static onMessage(message) {
+    const {id, e} = message;
+    if (id !== 'onAuthRequired') { return; }
+
+    const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
+    const [, time, container, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
+
+    time.textContent = new Date(e.timeStamp).toLocaleTimeString();
+    container.classList.toggle('incognito', !!e.incognito);
+    container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
+    method.textContent = e.method;
+    reqType.textContent = e.statusCode;
+    this.prepareOverflow(doc, e.statusLine || '');
+    this.prepareOverflow(url, decodeURIComponent(e.url));
+
+    const info = e.challenger || {host: '', port: ''};
+    const item = this.proxyCache[`${info.host}:${info.port}`];
+    const flag = item?.cc ? Flag.get(item.cc) + ' ' : '';
+    title.textContent = flag + (item?.title || '');
+    title.style.borderLeftColor = item?.color || 'var(--border)';
+    type.textContent = item?.type || '';
+    host.textContent = info.host;
+    port.textContent = info.port;
+    pattern.textContent = '';
+
+    // in reverse order, new on top
+    this.tbody.prepend(tr);
   }
 
   static process(e) {
@@ -27,18 +67,18 @@ export class Log {
       xmlhttprequest: 'xhr',
     };
 
-    time.textContent = this.formatInt(e.timeStamp);
+    time.textContent = new Date(e.timeStamp).toLocaleTimeString();
+    container.classList.toggle('incognito', !!e.incognito);
+    container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
     method.textContent = e.method;
     reqType.textContent = shortType[e.type] || e.type;
     // For a top-level document, documentUrl is undefined, chrome uses e.initiator
     this.prepareOverflow(doc, e.documentUrl || e.initiator || '');
     this.prepareOverflow(url, decodeURIComponent(e.url));
-    container.classList.toggle('incognito', !!e.incognito);
-    container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
 
     const info = e.proxyInfo || {host: '', port: '', type: ''};
     const item = this.proxyCache[`${info.host}:${info.port}`];
-    const flag = item?.cc ? App.getFlag(item.cc) + ' ' : '';
+    const flag = item?.cc ? Flag.get(item.cc) + ' ' : '';
     title.textContent = flag + (item?.title || '');
     title.style.borderLeftColor = item?.color || 'var(--border)';
     type.textContent = info.type;
@@ -50,17 +90,55 @@ export class Log {
     const text = pat?.title || pat?.pattern || '';
     this.prepareOverflow(pattern, text);
 
-    this.tbody.prepend(tr);                                 // in reverse order, new on top
-  }
-
-  static formatInt(d) {
-    return new Intl.DateTimeFormat(navigator.language,
-            {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).format(new Date(d));
+    // in reverse order, new on top
+    this.tbody.prepend(tr);
   }
 
   // set title, in case text overflows
   static prepareOverflow(elem, value) {
     elem.textContent = value;
     elem.title = value;
+  }
+
+  static getDomains() {
+    const input = this.input.value.trim();
+    if (!input) {
+      // allow showing empty popup
+      Popup.show('', true);
+      return;
+    }
+
+    // search Document URL column
+    let list = document.querySelectorAll(`.log table td:nth-child(6)[title*="${input}" i]`);
+    list = [...list].map(i => i.nextElementSibling.title.split(/\/+/)[1]);
+    list = [...new Set(list)].sort();
+
+    // true -> show select
+    Popup.show(list.join('\n'), true);
+  }
+
+  static addPatterns(e) {
+    const host = e.target.value;
+    if (!host) { return; }
+
+    const text = e.target.previousElementSibling.value.trim();
+    if (!text) { return; }
+
+    const title = this.input.value.trim();
+    const data = text.split(/\s+/).map(i => ({
+      include: 'include',
+      type: 'wildcard',
+      title,
+      pattern: `://${i}/`,
+      active: true
+    }));
+
+    Popup.hide();
+    Nav.get('proxies');
+
+    const ev = new CustomEvent('importPatternCustom', {
+      detail: {host, data}
+    });
+    window.dispatchEvent(ev);
   }
 }

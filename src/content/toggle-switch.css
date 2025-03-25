@@ -1,0 +1,36 @@
+/* ----- Toggle Switch ----- */
+.toggle {
+  --toggle-h: 14px;
+  --toggle-w: 30px;
+  --toggle-dot-margin: 1px;
+  --toggle-dot: calc(var(--toggle-h) - var(--toggle-dot-margin) * 2);
+  --toggle-trans: calc(var(--toggle-w) - var(--toggle-h));
+
+  appearance: none;
+  width: var(--toggle-w);
+  height: var(--toggle-h);
+  position: relative;
+  border-radius: 50px;
+  background-color: #ccc;
+  transition: background-color 0.5s;
+}
+
+.toggle::before {
+  content: '';
+  display: block;
+  margin: var(--toggle-dot-margin);
+  width: var(--toggle-dot);
+  height: var(--toggle-dot);
+  background-color: #fff;
+  border-radius: 50%;
+  color: #fff;
+  transition: 0.5s;
+}
+
+.toggle:checked {
+  background-color: var(--btn-bg);
+}
+
+.toggle:checked::before {
+  transform: translateX(var(--toggle-trans));
+}

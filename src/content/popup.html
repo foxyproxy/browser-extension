@@ -13,7 +13,7 @@
         <h1 data-i18n="extensionName"><img src="../image/icon.svg" alt=""> </h1>
 
         <div class="list">
-          <label class="pattern">
+          <label class="pattern not-basic">
             <span class="flag"><img src="../image/power.svg" alt=""></span>
             <span class="title" data-i18n="proxyByPatterns"></span>
             <input type="radio" name="server" value="pattern">
@@ -29,17 +29,21 @@
         <details>
           <summary data-i18n="more"></summary>
           <div class="host">
-            <input type="text" id="filter" spellcheck="false" placeholder="filter">
 
-            <button type="button" class="local" data-i18n="excludeHost"></button>
-            <select id="quickAdd" class="local">
-              <option value="" data-i18n="quickAdd" disabled selected></option>
+            <select id="includeHost" class="local http not-basic">
+              <option value="" data-i18n="includeHost" disabled selected></option>
             </select>
 
-            <label class="firefox"><span data-i18n="tabProxy"></span> ⮞</label>
-            <select id="tabProxy" class="firefox">
-              <option value="" selected>&nbsp;</option>
+            <select id="excludeHost" class="local http not-basic">
+              <option value="" data-i18n="excludeHost" disabled selected></option>
             </select>
+
+            <select id="tabProxy" class="firefox tab-proxy">
+              <option value="" data-i18n="tabProxy" disabled selected></option>
+              <option value="">&nbsp;</option>
+            </select>
+
+            <input type="text" class="filter" autocomplete="off" spellcheck="false" placeholder="filter">
 
           </div>
         </details>
