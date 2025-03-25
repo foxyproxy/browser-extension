@@ -58,10 +58,7 @@ class Popup {
     e.target.selectedIndex = 0;
   }
 
-  static async process() {
-    const labelTemplate = document.querySelector('template').content.firstElementChild;
-    const docFrag = document.createDocumentFragment();
-
+  static checkProxyByPatterns() {
     // check if there are patterns
     if (!pref.data.some(i => i.active && (i.include[0] || i.tabProxy?.[0]))) {
       // hide option if there are no patterns
@@ -71,6 +68,13 @@ class Popup {
     }
 
     pref.mode === 'pattern' && (this.list.children[0].children[2].checked = true);
+  }
+
+  static async process() {
+    this.checkProxyByPatterns();
+
+    const labelTemplate = document.querySelector('template').content.firstElementChild;
+    const docFrag = document.createDocumentFragment();
 
     pref.data.filter(i => i.active).forEach(i => {
       const id = i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`;
