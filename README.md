@@ -149,17 +149,15 @@ No remote code is used in this extension.
   - Unzip the downloaded file
 
 - **Chrome**
-  - Rename `manifest-chrome.json` in `src` folder to `manifest.json`
   - Go to `chrome://extensions/`
   - Enable Developer Mode *(top right)*
   - Click "Load Unpacked"
-  - Select above `manifest.json` *(or `src` folder)*
+  - Select `manifest.json` *(or `src` folder)*
 
 - **Firefox** *(Nightly/Beta/Developer Edition)*
-  - Rename `manifest-firefox.json` in `src` folder to `manifest.json`
   - Go to `about:debugging#/runtime/this-firefox`
   - Click "Load Temporary Add-on..."
-  - Select above `manifest.json`
+  - Select `manifest.json`
 
 - **Firefox for Android**
   - Install Firefox Nightly
