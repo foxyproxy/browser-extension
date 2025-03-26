@@ -6,13 +6,14 @@
 
 
 
-[About/Changelog](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
+[About (Changelog)](https://foxyproxy.github.io/browser-extension/src/content/about.html) | [Help](https://foxyproxy.github.io/browser-extension/src/content/help.html) | [Issues](https://github.com/foxyproxy/browser-extension/issues)
 
 After some years of stability, FoxyProxy has been updated to support Manifest Version 3 which is required by Chrome in order for extensions to be compatible with Chrome in 2024. We took advantage of this forced update to implement many feature requests and other changes that were requested over the years.
 
 FoxyProxy has been owned and developed consistently by the same team since 2006.
 
-The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*. Source code for [older versions](https://github.com/foxyproxy/firefox-extension).
+The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, and other Chromium-based browsers like *Chromium*, *Brave* and *Edge*.   
+Source code for [older versions](https://github.com/foxyproxy/firefox-extension).
 
 ## Permissions
 
@@ -30,14 +31,8 @@ The repository has the source code for version 8.0+  for *Firefox*, *Chrome*, an
 - **browsingData**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user
 - **privacy**: Used for "Limit WebRTC" button to toggle `browser.privacy.network.webRTCIPHandlingPolicy`, only if requested by the user
 
-## Mini FAQ
-
-- **Why is there a [CryptoJS](https://code.google.com/archive/p/crypto-js/) library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?**<br>
-The CryptoJS library was already included in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentials. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned). It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x to 8.x.<br>
-The library is not used in Firefox, and will be removed once users migrate to v8+.
-
-- **Remote Code**<br>
-No remote code is used in this extension.
+#### Remote Code
+- No remote code is used in this extension.
 
 ## Screenshots
 
@@ -97,15 +92,19 @@ No remote code is used in this extension.
       <td></td>
     </tr>
     <tr>
-      <td>Source Code Beta</td>
+      <th>Source Code</th>
+      <td colspan="3"></td>
+    </tr>
+    <tr>
+      <td>Beta</td>
       <td colspan="3"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?&url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest.json&query=%24.version&logo=github&logoColor=fff&label=FoxyProxy%20Beta&color=f60&prefix=v" alt=""></a></td>
     </tr>
     <tr>
-      <td>Source Code Release</td>
+      <td>Release</td>
       <td colspan="3"><a href="https://github.com/foxyproxy/browser-extension/releases">Releases</a></td>
     </tr>
     <tr>
-      <td>Source Code Old</td>
+      <td>Old</td>
       <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
       <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
       <td></td>
@@ -120,7 +119,7 @@ No remote code is used in this extension.
   <thead>
     <tr>
       <th>version</th>
-      <th>Chrome</th>
+      <th>Chrome/Edge</th>
       <th>Firefox</th>
       <th>Firefox for Android</th>
     </tr>
@@ -179,21 +178,23 @@ No remote code is used in this extension.
 
 ### Version 9.0 and above
 
-- zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
+- zip the contents of the `src` directory into the top of an archive.  
+  The `src/` directory should **not** be in the zip archive.
 
 ###  Version 8.0 to 8.10: without grunt:
 
 - copy the appropriate manifest-xxx.json file to manifest.json; e.g. `mv manifest-chrome.json manifest.json`
-- zip the `src` directory into the top of an archive. The `src/` directory should **not** be in the zip archive.
+- zip the contents of the `src` directory into the top of an archive.  
+  The `src/` directory should **not** be in the zip archive.
 
 ### Version 8.0 to 8.10: with [grunt](https://gruntjs.com/getting-started):
 
 - Install grunt locally:
     - `npm i -D grunt-cli`
 - Run one of:
-  - `grunt --target=chrome-standard`<br>
-  - `grunt --target=chrome-basic`<br>
-  - `grunt --target=firefox-standard`<br>
+  - `grunt --target=chrome-standard`
+  - `grunt --target=chrome-basic`
+  - `grunt --target=firefox-standard`
   - `grunt --target=firefox-basic`
 
 The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.zip`.
@@ -201,6 +202,10 @@ The target is built in `foxyproxy-XXX-YYY.zip`; e.g. `foxyproxy-chrome-standard.
 ---
 
 # FAQ
+
+**Why is there a [CryptoJS](https://code.google.com/archive/p/crypto-js/) library in [lib](https://github.com/foxyproxy/browser-extension/tree/main/src/lib)?** *(removed in v9.0)*<br>
+The CryptoJS library was already included in [FoxyProxy 3.x](https://github.com/foxyproxy/Foxyproxy_Chrome/blob/f1bca1c50dfa30908c79a9ea477f31eda2abacf4/app/scripts/stored-credentials.js#L4) to encrypt user credentials. It is needed to migrate encrypted settings from the old version (which had no updates for many years, as you mentioned). It is not used to encrypt anything; only to decrypt old data when upgrading from version 3.x to 8.x.<br>
+The library is not used in Firefox, and will be removed once users migrate to v8+.
 
 <details>
   <summary>💻 Settings disappeared after the upgrade to v8</summary>
