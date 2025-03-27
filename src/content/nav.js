@@ -22,8 +22,10 @@ export class Nav {
       );
     }
 
+    const help = document.querySelector('iframe[src="help.html"]').contentDocument;
+
     // --- data-link
-    const helpLink = document.querySelector('iframe[src="help.html"]').contentDocument.querySelector('.nav-link');
+    const helpLink = help.querySelector('.nav-link');
     document.querySelectorAll('[data-link]').forEach(i => i.addEventListener('click', e => {
       const {link} = e.target.dataset;
       if (!link) { return; }
@@ -32,5 +34,13 @@ export class Nav {
       helpLink.href = link;
       helpLink.click();
     }));
+
+    // --- Extension link in Help
+    const chromeExtension = help.querySelector('.chrome-extension');
+    if (!App.firefox) {
+      chromeExtension.style.display = 'unset';
+      chromeExtension.addEventListener('click', () =>
+        browser.tabs.create({url: 'chrome://extensions/?id=' + location.hostname}));
+    }
   }
 }
