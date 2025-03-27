@@ -1,8 +1,8 @@
 /* ----- Toggle Switch ----- */
 .toggle {
-  --toggle-h: 14px;
-  --toggle-w: 30px;
   --toggle-dot-margin: 1px;
+  --toggle-h: 14px;
+  --toggle-w: calc(var(--toggle-h) * 2 + var(--toggle-dot-margin) * 2);
   --toggle-dot: calc(var(--toggle-h) - var(--toggle-dot-margin) * 2);
   --toggle-trans: calc(var(--toggle-w) - var(--toggle-h));
 
@@ -33,4 +33,9 @@
 
 .toggle:checked::before {
   transform: translateX(var(--toggle-trans));
+}
+
+/* smaller toggle switch for patterns */
+.pattern-row .toggle {
+  --toggle-h: 12px;
 }
