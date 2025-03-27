@@ -91,23 +91,25 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
       </td>
       <td></td>
     </tr>
+  </tbody>
+</table>
+
+### Source Code
+
+<table>
+  <thead>
     <tr>
-      <th>Source Code</th>
-      <td colspan="3"></td>
+      <th>Beta</th>
+      <th>Release</th>
+      <th colspan="2">Old</th>
     </tr>
+  </thead>
+  <tbody>
     <tr>
-      <td>Beta</td>
-      <td colspan="3"><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?&url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest.json&query=%24.version&logo=github&logoColor=fff&label=FoxyProxy%20Beta&color=f60&prefix=v" alt=""></a></td>
-    </tr>
-    <tr>
-      <td>Release</td>
-      <td colspan="3"><a href="https://github.com/foxyproxy/browser-extension/releases">Releases</a></td>
-    </tr>
-    <tr>
-      <td>Old</td>
+      <td><a href="https://github.com/foxyproxy/browser-extension/tree/main/src"><img src="https://img.shields.io/badge/dynamic/json?&url=https%3A%2F%2Fraw.githubusercontent.com%2Ffoxyproxy%2Fbrowser-extension%2Fmain%2Fsrc%2Fmanifest.json&query=%24.version&logo=github&logoColor=fff&label=FoxyProxy%20Beta&color=f60&prefix=v" alt=""></a></td>
+      <td><a href="https://github.com/foxyproxy/browser-extension/releases">Releases</a></td>
       <td><a href="https://github.com/foxyproxy/Foxyproxy_Chrome">3.0.7.1</a></td>
       <td><a href="https://github.com/foxyproxy/firefox-extension/">7.5.1</a></td>
-      <td></td>
     </tr>
   </tbody>
 </table>
@@ -177,7 +179,8 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
 ## Building for Distribution on the Chrome, Edge, and Firefox web stores
 
 ### Version 9.0 and above
-
+- FoxyProxy Standard: remove `manifes-basic.json`
+- FoxyProxy Baisc: remove `manifes.json`, and rename `manifes-basic.json` to `manifes.json`
 - zip the contents of the `src` directory into the top of an archive.  
   The `src/` directory should **not** be in the zip archive.
 
