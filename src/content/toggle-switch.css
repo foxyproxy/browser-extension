@@ -1,9 +1,10 @@
 /* ----- Toggle Switch ----- */
+/* round() FF118, Ch125 */
 .toggle {
   --toggle-dot: 12px;
   --toggle-dot-margin: 1px;
+  --toggle-w: calc(var(--toggle-dot) * 2.5);
   --toggle-h: calc(var(--toggle-dot) + var(--toggle-dot-margin) * 2);
-  --toggle-w: calc((var(--toggle-dot) + var(--toggle-dot-margin)) * 2);
   --toggle-trans: calc(var(--toggle-w) - var(--toggle-h));
 
   appearance: none;
