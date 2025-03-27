@@ -3,7 +3,8 @@
 .toggle {
   --toggle-dot: 12px;
   --toggle-dot-margin: 1px;
-  --toggle-w: calc(var(--toggle-dot) * 2.5);
+  --toggle-wh-ratio: 2.4;
+  --toggle-w: calc(var(--toggle-dot) * var(--toggle-wh-ratio) + var(--toggle-dot-margin) * 2);
   --toggle-h: calc(var(--toggle-dot) + var(--toggle-dot-margin) * 2);
   --toggle-trans: calc(var(--toggle-w) - var(--toggle-h));
 
