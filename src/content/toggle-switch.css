@@ -2,7 +2,7 @@
 .toggle {
   --toggle-dot-margin: 1px;
   --toggle-h: 14px;
-  --toggle-w: calc(var(--toggle-h) * 2 + var(--toggle-dot-margin) * 2);
+  --toggle-w: calc((var(--toggle-h) + var(--toggle-dot-margin)) * 2);
   --toggle-dot: calc(var(--toggle-h) - var(--toggle-dot-margin) * 2);
   --toggle-trans: calc(var(--toggle-w) - var(--toggle-h));
 
