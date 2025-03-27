@@ -59,9 +59,8 @@ export class OnRequest {
   }
 
   static persist() {
-    // reset previous interval
+    // clear the previous interval & set a new one
     clearInterval(this.interval);
-    // start new interval
     this.interval = setInterval(() => browser.runtime.getPlatformInfo(), 25_000);
   }
 
