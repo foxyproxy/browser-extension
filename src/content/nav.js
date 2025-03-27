@@ -22,6 +22,7 @@ export class Nav {
       );
     }
 
+    // help document
     const help = document.querySelector('iframe[src="help.html"]').contentDocument;
 
     // --- data-link
@@ -36,6 +37,10 @@ export class Nav {
     }));
 
     // --- Extension link in Help
+    // not for firefox ATM
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1956860
+
+    // chrome
     const chromeExtension = help.querySelector('.chrome-extension');
     if (!App.firefox) {
       chromeExtension.style.display = 'unset';
