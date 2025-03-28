@@ -16,6 +16,9 @@ export class Proxies {
     [this.proxyTemplate, this.patternTemplate] =
       document.querySelector('.proxy-section template').content.children;
 
+    // firefox only, disabling Tab Proxy in the template for chrome
+    !App.firefox && (this.patternTemplate.children[1].lastElementChild.disabled = true);
+
     // --- buttons
     document.querySelector('.proxy-top button[data-i18n="add"]').addEventListener('click', e => {
       // this.addProxy(null, e.ctrlKey)
@@ -182,9 +185,6 @@ export class Proxies {
     // --- make a blank pattern with all event listeners
     const div = this.patternTemplate.cloneNode(true);
     const [quickAdd, include, type, title, pattern, active, test, del] = div.children;
-
-    // Tab Proxy, firefox only
-    !App.firefox && (include.lastElementChild.disabled = true);
 
     quickAdd.addEventListener('change', e => {
       const opt = e.target.selectedOptions[0];

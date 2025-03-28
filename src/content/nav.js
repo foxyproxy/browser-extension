@@ -36,15 +36,15 @@ export class Nav {
       helpLink.click();
     }));
 
-    // --- Extension link in Help
-    // not for firefox ATM
+    // --- Extension link in the Help
+    // not for Firefox
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1956860
 
     // chrome
-    const chromeExtension = help.querySelector('.chrome-extension');
     if (!App.firefox) {
-      chromeExtension.style.display = 'unset';
-      chromeExtension.addEventListener('click', () =>
+      const link = help.querySelector('.chrome-extension');
+      link.style.display = 'unset';
+      link.addEventListener('click', () =>
         browser.tabs.create({url: 'chrome://extensions/?id=' + location.hostname}));
     }
   }

@@ -281,6 +281,14 @@ td.code {
   font-style: italic;
 }
 
+/* ----- span links ----- */
+.chrome-extension,
+.moz-extension {
+  cursor: pointer;
+  font-style: normal;
+  font-size: 0.8em;
+  display: none;
+}
 
 /* ----- Translate ----- */
 .translate {
