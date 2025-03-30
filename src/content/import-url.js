@@ -1,7 +1,5 @@
 import {App} from './app.js';
-// import {Proxies} from './options-proxies.js';
 import {Spinner} from './spinner.js';
-// import {Nav} from './nav.js';
 
 // ---------- Import from URL ------------------------------
 export class ImportUrl {

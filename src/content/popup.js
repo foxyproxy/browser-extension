@@ -142,7 +142,7 @@ class Popup {
     // save mode
     pref.mode = mode;
     browser.storage.local.set({mode});
-    browser.runtime.sendMessage({id: 'setProxy', pref, dark, noMenuUpdate: true});
+    browser.runtime.sendMessage({id: 'setProxy', pref, dark, noDataChange: true});
   }
 
   static processButtons(e) {

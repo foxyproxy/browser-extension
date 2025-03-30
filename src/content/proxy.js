@@ -34,11 +34,12 @@ export class Proxy {
   }
 
   static onMessage(message) {
-    const {id, pref, host, proxy, dark, tab, noMenuUpdate} = message;
+    // noDataChange comes from popup.js
+    const {id, pref, host, proxy, dark, tab, noDataChange} = message;
     switch (id) {
       case 'setProxy':
         Action.dark = dark;
-        this.set(pref, noMenuUpdate);
+        this.set(pref, noDataChange);
         break;
 
       case 'includeHost':
@@ -62,17 +63,17 @@ export class Proxy {
     }
   }
 
-  static async set(pref, noMenuUpdate) {
+  static async set(pref, noDataChange) {
     // check if proxy.settings is controlled_by_this_extension
     const conf = await this.getSettings();
     // not controlled_by_this_extension
     if (!conf) { return; }
 
     // --- update authentication data
-    Authentication.init(pref.data);
+    noDataChange || Authentication.init(pref.data);
 
     // --- update menus
-    noMenuUpdate || Menus.init(pref);
+    noDataChange || Menus.init(pref);
 
     // --- check mode
     switch (true) {
@@ -133,7 +134,7 @@ export class Proxy {
 
     inc === 'includeHost' ? proxy.include.push(pat) : proxy.exclude.push(pat);
     browser.storage.local.set({data: pref.data});
-    // update Proxy, noMenuUpdate
+    // update Proxy, noDataChange
     pref.mode === 'pattern' && proxy.active && this.set(pref, true);
   }
 
