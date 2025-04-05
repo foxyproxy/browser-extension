@@ -29,6 +29,12 @@
         <details>
           <summary data-i18n="more"></summary>
           <div class="host">
+            <input type="text" class="filter" autocomplete="off" spellcheck="false" placeholder="filter">
+
+            <select id="tabProxy" class="firefox tab-proxy">
+              <option value="" data-i18n="tabProxy" disabled selected></option>
+              <option value="">&nbsp;</option>
+            </select>
 
             <select id="includeHost" class="local http not-basic">
               <option value="" data-i18n="includeHost" disabled selected></option>
@@ -37,14 +43,6 @@
             <select id="excludeHost" class="local http not-basic">
               <option value="" data-i18n="excludeHost" disabled selected></option>
             </select>
-
-            <select id="tabProxy" class="firefox tab-proxy">
-              <option value="" data-i18n="tabProxy" disabled selected></option>
-              <option value="">&nbsp;</option>
-            </select>
-
-            <input type="text" class="filter" autocomplete="off" spellcheck="false" placeholder="filter">
-
           </div>
         </details>
 

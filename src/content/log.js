@@ -12,7 +12,7 @@ export class Log {
     this.proxyCache = {};
     this.mode = 'disable';
 
-    browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['*://*/*']});
+    browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
 
     // onAuthRequired message from authentication.js
     browser.runtime.onMessage.addListener((...e) => this.onMessage(...e));
@@ -20,7 +20,8 @@ export class Log {
     // Get Associated Domains
     this.input = document.querySelector('.log input');
     document.querySelector('.log button').addEventListener('click', () => this.getDomains());
-    document.querySelector('.popup select').addEventListener('change', e => this.addPatterns(e));
+    this.select = document.querySelector('.popup select.popup-log-proxy');
+    this.select.addEventListener('change', () => this.addPatterns());
   }
 
   static onMessage(message) {
@@ -101,10 +102,11 @@ export class Log {
   }
 
   static getDomains() {
+    this.select.classList.add('on');
     const input = this.input.value.trim();
     if (!input) {
       // allow showing empty popup
-      Popup.show('', true);
+      Popup.show('');
       return;
     }
 
@@ -114,14 +116,14 @@ export class Log {
     list = [...new Set(list)].sort();
 
     // true -> show select
-    Popup.show(list.join('\n'), true);
+    Popup.show(list.join('\n'));
   }
 
-  static addPatterns(e) {
-    const host = e.target.value;
+  static addPatterns() {
+    const host = this.select.value;
     if (!host) { return; }
 
-    const text = e.target.previousElementSibling.value.trim();
+    const text = this.select.previousElementSibling.value.trim();
     if (!text) { return; }
 
     const title = this.input.value.trim();

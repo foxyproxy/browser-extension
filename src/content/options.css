@@ -310,14 +310,15 @@ details .content {
 /* ----- Proxy ----- */
 .proxy-top {
   display: grid;
-  grid-template-columns: auto 1fr 1fr auto auto;
-  column-gap: 0.5em;
-  margin: 0 0 0.5em;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 0.2em;
+  margin-bottom: 0.5em;
 }
 
 .proxy-top input.filter {
   background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
   padding-left: 2em;
+  justify-self: start;
 }
 
 details.proxy .content * {
@@ -333,7 +334,7 @@ details.proxy > summary {
   border-left: 1.5em solid var(--btn-bg);
   display: grid;
   grid-template-columns: auto 1fr repeat(5, auto);
-  column-gap: 0.2em;
+  gap: 0.2em;
   align-items: center;
 }
 
@@ -362,7 +363,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 .password {
   display: grid;
   grid-template-columns: 1fr 1em;
-  column-gap: 0.5em;
+  gap: 0.5em;
 }
 
 .proxy-box button.random {
@@ -399,7 +400,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
 .pattern-row {
   display: grid;
   grid-template-columns: 3em 6em 6em 1fr 2fr 2em 1em 1em;
-  column-gap: 0.2em;
+  gap: 0.2em;
   place-items: center;
   font-size: 0.9em;
 }

@@ -34,7 +34,7 @@ export class Proxy {
   }
 
   static onMessage(message) {
-    // noDataChange comes from popup.js
+    // noDataChange comes from popup.js & test.js
     const {id, pref, host, proxy, dark, tab, noDataChange} = message;
     switch (id) {
       case 'setProxy':

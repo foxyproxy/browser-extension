@@ -14,6 +14,7 @@ import './options-filter.js';
 import './bulk-edit.js';
 import './drag-drop.js';
 import './ping.js';
+import './test.js';
 import './import-account.js';
 import './import-list.js';
 import './show.js';
@@ -68,7 +69,7 @@ class Options {
     // --- global exclude, clean up, remove path, remove duplicates
     const passthrough = this.passthrough.value.trim();
     const [separator] = passthrough.match(/[\s,;]+/) || ['\n'];
-    const arr = passthrough.split(/[\s,;]+/)
+    const arr = passthrough.split(/[\s,;]+/).filter(Boolean)
       .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/(?<=[a-z\d])\/[^\s,;]*/gi, ''));
     this.passthrough.value = [...new Set(arr)].join(separator);
     pref.passthrough = this.passthrough.value;
@@ -237,8 +238,8 @@ class Options {
       pref.commands[i.name] && (i.value = pref.commands[i.name]);
     });
 
-    // help fill log select
-    document.querySelector('.popup select').append(docFrag.cloneNode(true));
+    // help fill log select elements
+    document.querySelectorAll('.popup select:not(.popup-server)').forEach(i => i.append(docFrag.cloneNode(true)));
   }
 
   static clearSelect(elem) {

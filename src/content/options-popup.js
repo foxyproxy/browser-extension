@@ -1,21 +1,24 @@
 export class Popup {
 
-  static popup = document.querySelector('.popup');
-
   static {
-    [this.close, this.textarea, this.select] = this.popup.children;
+    this.popup = document.querySelector('.popup');
+    [this.close, this.textarea] = this.popup.children;
     this.close.addEventListener('click', () => this.hide());
   }
 
-  static show(text, showSelect) {
-    this.select.style.display = showSelect ? 'unset' : 'none';
-    this.textarea.value += text;
+  static show(text) {
+    this.textarea.value += text + '\n';
     this.popup.classList.add('on');
   }
 
   static hide() {
     this.popup.classList.remove('on');
     this.textarea.value = '';
-    this.select.selectedIndex = 0;
+    [...this.popup.children].forEach(i => {
+      if (i.nodeName === 'SELECT') {
+        i.selectedIndex = 0;
+        i.classList.remove('on');
+      }
+    });
   }
 }

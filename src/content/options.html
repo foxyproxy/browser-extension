@@ -44,8 +44,28 @@
     <div class="popup">
       <span>✕</span>
       <textarea autocomplete="off" spellcheck="false"></textarea>
-      <select autocomplete="off">
-        <option value="" data-i18n="quickAdd" disabled selected></option>
+      <select class="popup-log-proxy" autocomplete="off">
+        <option value="" data-i18n="proxy" disabled selected></option>
+      </select>
+      <select class="popup-test-proxy" autocomplete="off">
+        <option value="" data-i18n="proxy" disabled selected></option>
+      </select>
+      <select class="popup-server" autocomplete="off">
+        <option value="" data-i18n="server" disabled selected></option>
+        <option value="https://api.ipify.org/">ipify.org</option>
+        <option value="https://checkip.amazonaws.com/">amazonaws.com (Amazon)</option>
+        <option value="https://icanhazip.com/">icanhazip.com (Cloudflare)</option>
+        <option value="https://ident.me/">ident.me</option>
+        <option value="https://www.l2.io/ip">l2.io</option>
+        <option value="https://www.trackip.net/ip">trackip.net</option>
+        <option value="https://myip.dnsomatic.com/">dnsomatic.com</option>
+        <hr>
+        <option value="https://getfoxyproxy.org/geoip/?raw=1">getfoxyproxy.org</option>
+        <option value="https://ipinfo.io/ip">ipinfo.io</option>
+        <!-- <option value="https://ifconfig.co/">ifconfig.co</option> -->
+        <option value="https://ipecho.net/plain">ipecho.net</option>
+        <option value="https://whatismyip.akamai.com/">akamai.com</option>
+        <option value="https://myexternalip.com/raw">myexternalip.com</option>
       </select>
     </div>
 
@@ -170,8 +190,9 @@
         <div class="proxy-top">
           <button type="button" class="flat" data-i18n="add"></button>
           <input type="text" class="filter" autocomplete="off" spellcheck="false" placeholder="filter">
-          <span></span>
+
           <button type="button" class="flat" data-i18n="ping">🛜 </button>
+          <button type="button" class="flat" data-i18n="test"></button>
           <button type="button" class="flat" data-i18n="getLocation"></button>
         </div>
 

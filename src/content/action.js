@@ -9,7 +9,8 @@ export class Action {
 
   static set(pref) {
     // --- set action/browserAction
-    let title = '', text = '';
+    let title = '';
+    let text = '';
     let color = this.dark ? '#444' : '#fff';
     switch (pref.mode) {
       case 'disable':

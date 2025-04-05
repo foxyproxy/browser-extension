@@ -50,9 +50,7 @@
       "properties": {
         "incognito": {"type": "string"},
         "container-1": {"type": "string"},
-        "container-2": {"type": "string"},
-        "container-3": {"type": "string"},
-        "container-4": {"type": "string"}
+        "container-2": {"type": "string"}
       }
     },
     "commands": {
@@ -60,7 +58,8 @@
       "properties": {
         "setProxy": {"type": "string"},
         "setTabProxy": {"type": "string"},
-        "includeHost": {"type": "string"}
+        "includeHost": {"type": "string"},
+        "excludeHost": {"type": "string"}
       }
     }
   }

@@ -41,6 +41,14 @@
   padding: 0.5em;
 }
 
+.popup select {
+  display: none;
+}
+
+.popup select.on {
+  display: unset;
+}
+
 @keyframes fade-in {
   0%   { opacity: 0; }
   100% { opacity: 1; }
