@@ -7,7 +7,7 @@ FoxyProxy extension is free and open source software. We care about user privacy
 ### Your Personal Information
 
 FoxyProxy extension does not collect any personal identifiable information (PII), visited sites, traffic, or any other usage.
-All user-entered data (such as proxy server IP addresses) is stored locally in the browser and not logged or sent anywhere else.
+All user-entered data (such as proxy server IP addresses) are stored locally in the browser and not logged or sent anywhere else.
 Once the extension is uninstalled, all data is deleted by the browser.
 
 
