@@ -14,10 +14,11 @@ export class Nav {
   static {
     // --- openShortcutSettings FF137
     const shortcut = document.querySelector('.shortcut-link');
-    if (!App.firefox || browser.commands.openShortcutSettings) {
+    // commands is not supported on Android
+    if (!App.firefox || browser.commands?.openShortcutSettings) {
       shortcut.style.display = 'unset';
       shortcut.addEventListener('click', () =>
-        App.firefox ? browser.commands.openShortcutSettings() :
+        App.firefox ? browser.commands?.openShortcutSettings() :
           browser.tabs.create({url: 'chrome://extensions/shortcuts'})
       );
     }
