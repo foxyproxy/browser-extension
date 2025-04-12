@@ -403,4 +403,11 @@ export class Proxies {
 
     return obj;
   }
+
+  static setInvalid(parent, id) {
+    parent.open = true;
+    const elem = parent.querySelector(`[data-id="${id}"]`);
+    elem.classList.add('invalid');
+    parent.scrollIntoView({behavior: 'smooth'});
+  }
 }

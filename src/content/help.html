@@ -588,7 +588,6 @@
 
     <h3 id="global-exclude">Global Exclude</h3>
     <p>List of hosts that should not be proxied</p>
-    <!-- <p>Users can also set values in Firefox <code>Settings ➤ Network Settings ➤ Connection Settings ➤ No proxy for</code>. (Firefox 137)</p> -->
 
     <ul>
       <li>Connections to <code>localhost</code>, <code>127.0.0.1/8</code>, and <code>::1</code> are never proxied (by the browser)<br>
@@ -596,6 +595,7 @@
           Chrome: <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#bypass-rule_subtract-implicit-rules" target="_blank">Bypass rule: Subtract implicit rules</a><br>
           Edge and Firefox: <a href="https://learn.microsoft.com/en-us/microsoft-cloud/dev/dev-proxy/how-to/intercept-localhost-requests" target="_blank">Intercept requests to localhost</a></p>
       </li>
+      <li>Firefox will not proxy values set in <code>Settings ➤ Network Settings ➤ Connection Settings ➤ No proxy for</code> <i>(Firefox 137)</i></li>
       <li>The passthrough implementation is slightly different in Chrome and Firefox</li>
       <li>Entries can be separated by comma (as in Firefox), or space, or new line</li>
       <li>The following table shows if the process is handled by the browser or FoxyProxy</li>

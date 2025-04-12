@@ -171,13 +171,6 @@ class Options {
     });
   }
 
-  static setInvalid(parent, id) {
-    parent.open = true;
-    const elem = parent.querySelector(`[data-id="${id}"]`);
-    elem.classList.add('invalid');
-    parent.scrollIntoView({behavior: 'smooth'});
-  }
-
   static restoreDefaults() {
     if (!confirm(browser.i18n.getMessage('restoreDefaultsConfirm'))) { return; }
 

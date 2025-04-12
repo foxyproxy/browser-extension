@@ -69,7 +69,7 @@ nav label a:hover {
   background-color: var(--body-bg);
 }
 
-@keyframes sect {
+/* @keyframes sect {
   0%  { opacity: 0; }
 100%  { opacity: 1; }
-}
+} */

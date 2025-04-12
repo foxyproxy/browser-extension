@@ -10,7 +10,7 @@ import {Flag} from './flag.js';
 export class Menus {
 
   static {
-    // not available on Android
+    // contextMenus is not supported on Android
     browser.contextMenus?.onClicked.addListener((...e) => this.process(...e));
     this.data = [];
   }
