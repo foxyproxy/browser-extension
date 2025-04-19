@@ -33,7 +33,7 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
   <dt>webRequestAuthProvider</dt>
   <dd>Used to provide proxy authentication</dd>
   <dt>host permission</dt>
-  <dd>Used to provide proxy authentication (to any URL `"<all_urls>"`)</dd>
+  <dd>Used to provide proxy authentication (to any URL `"&lt;all_urls&gt;"`)</dd>
 </dl>
 
 
