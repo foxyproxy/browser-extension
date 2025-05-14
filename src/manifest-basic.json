@@ -55,6 +55,10 @@
     "privacy"
   ],
 
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+
   "commands": {
     "proxyByPatterns": {
       "description": "__MSG_proxyByPatterns__"
