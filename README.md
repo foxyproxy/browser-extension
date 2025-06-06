@@ -33,7 +33,7 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
   <dt>webRequestAuthProvider</dt>
   <dd>Used to provide proxy authentication</dd>
   <dt>host permission</dt>
-  <dd>Used to provide proxy authentication (to any URL `"&lt;all_urls&gt;"`)</dd>
+  <dd>Used to provide proxy authentication (to any URL <code>"&lt;all_urls&gt;"</code>)</dd>
 </dl>
 
 
@@ -43,7 +43,7 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
   <dt>browsingData</dt>
   <dd>Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user</dd>
   <dt>privacy</dt>
-  <dd>Used for "Limit WebRTC" button to toggle `browser.privacy.network.webRTCIPHandlingPolicy`, only if requested by the user</dd>
+  <dd>Used for "Limit WebRTC" button to toggle <code>browser.privacy.network.webRTCIPHandlingPolicy</code>, only if requested by the user</dd>
 </dl>
 
 ### Remote Code
@@ -143,16 +143,16 @@ No remote code is used in this extension.
   </thead>
   <tbody>
     <tr>
-      <td>8.0 - 8.10</td>
-      <td>version 108<br><i>(released 2022-11-29)</i></td>
-      <td>version 93<br><i>(released 2021-10-05)</i></td>
-      <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
-    </tr>
-    <tr>
       <td>9.0 - *</td>
       <td>version 108<br><i>(released 2022-11-29)</i></td>
       <td>version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
       <td>version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
+    </tr>
+    <tr>
+      <td>8.0 - 8.10</td>
+      <td>version 108<br><i>(released 2022-11-29)</i></td>
+      <td>version 93<br><i>(released 2021-10-05)</i></td>
+      <td>version 113 (manifest)<br><i>(API minimum 102)</i></td>
     </tr>
   </tbody>
 </table>
