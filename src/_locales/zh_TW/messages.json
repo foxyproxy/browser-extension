@@ -3,6 +3,14 @@
   "extensionNameBasic": { "message": "FoxyProxy Basic" },
   "extensionDescription": { "message": "任誰都能快速上手的進階代理伺服器管理工具" },
 
+  "enableSync": { "message": "啟用同步" },
+  "enableSyncDescription": { "message": "同步全域排除、包含之規則以及代理伺服器" },
+  "syncError": { "message": "同步錯誤" },
+  "autoBackup": { "message": "自動備份" },
+  "autoBackupDescription": { "message": "儲存時自動備份設定至 Downloads 資料夾" },
+  "theme": { "message": "主題" },
+  "default": { "message": "預設" },
+
   "error": { "message": "錯誤" },
   "erroNoSettings": { "message": "找不到設定檔。 請重新安裝 FoxyProxy。" },
 
