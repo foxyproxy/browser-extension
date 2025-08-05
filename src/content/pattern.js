@@ -121,19 +121,29 @@ export class Pattern {
         return;
       }
 
-      // --- pattern
-      i = i.replaceAll('.', '\\.')                          // literal '.'
-            .replaceAll('*', '.*');                         // wildcard
+      /**
+       * Create RegEx from wildcard pattern.
+       * @param {string} wildcard the wildcard pattern (`*`s and `?`s)
+       * @returns corresponding regular expression
+       */
+      const toRegEx = (wildcard) => {
+        const escape = wildcard.replace(/[.+^${}()|[\]\\]/g, '\\$&')
+        const regex = escape.replace(/\*/g, '.*').replace(/\?/g, '.')
+        return new RegExp(`^${regex}$`)
+      }
 
-      // starting with '.'
-      i.startsWith('\\.') && (i = '.+://.+' + i);
-      // add scheme
-      !i.includes('://') && (i = '.+://' + i);
-      // add start assertion
-      // !i.startsWith('^') && (i = '^' + i);
-      // add pathname
-      i += '/';
-      regex.push(i);
+      const pieces = ('' + i).split('://')
+      const [scheme, host_and_path] = pieces.length >= 2 ? [pieces[0], pattern.slice(pieces[0].length)] : [null, pieces[0]]
+      const host = host_and_path.split('/')[0]
+      const path = host_and_path.slice(host.length)
+
+      const scheme_pat = `${scheme ?? '*'}://`
+      const host_pat = host.startsWith('.') ? `*${host}` : host
+      const path_pat = path || '/*'
+
+      const wildcard = `${scheme_pat}${host_pat}${path_pat}`
+
+      regex.push(toRegEx(wildcard));
     });
 
     return [regex, ipMask, stEnd];
