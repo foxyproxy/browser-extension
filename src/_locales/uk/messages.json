@@ -5,7 +5,7 @@
 
   "proxyByPatterns": { "message": "Проксі за шаблонами" },
   "disable": { "message": "Вимкнути" },
-  "ip": { "message": "IP-адреса" },
+  "ip": { "message": "IP" },
   "location": { "message": "Розташування" },
   "quickAdd": { "message": "Швидке додавання" },
   "includeHost": { "message": "Включити хост" },
@@ -23,7 +23,7 @@
   "enableSync": { "message": "Увімкнути синхронізацію" },
   "enableSyncDescription": { "message": "Синхронізувати глобальні виключення, проксі-сервери та шаблони" },
   "syncError": { "message": "Помилка синхронізації" },
-  "autoBackup": { "message": "Автоматичні резервні копії" },
+  "autoBackup": { "message": "Автоматичне резервне копіювання" },
   "autoBackupDescription": { "message": "Автоматично зберігати резервну копію налаштувань у папку «Завантаження» під час збереження" },
   "theme": { "message": "Тема" },
   "default": { "message": "За замовчуванням" },
@@ -50,7 +50,7 @@
   "publicInterfaceOnly": { "message": "Лише публічний інтерфейс" },
   "publicPrivateInterfaces": { "message": "Публічний та приватний інтерфейси" },
   "disableNonProxied": { "message": "Вимкнути з’єднання без проксі" },
-  "proxyOnly": { "message": "Тільки через проксі" },
+  "proxyOnly": { "message": "Лише через проксі" },
 
   "proxies": { "message": "Проксі" },
   "add": { "message": "Додати" },
@@ -74,7 +74,7 @@
   "hostnamePortError": { "message": "Відсутнє ім’я хоста або порт" },
   "city": { "message": "Місто" },
   "country": { "message": "Країна" },
-  "proxyDNS": { "message": "Проксіювати DNS" },
+  "proxyDNS": { "message": "DNS через проксі" },
   "storeLocally": { "message": "Зберігати локально" },
 
   "pattern": { "message": "Шаблон" },
@@ -101,7 +101,7 @@
   "movePattern": { "message": "Перемістити шаблон" },
   "deleteProxy": { "message": "Видалити проксі" },
 
-  "importFoxyProxyAccount": { "message": "Імпортувати акаунт FoxyProxy" },
+  "importFoxyProxyAccount": { "message": "Імпортувати обліковий запис FoxyProxy" },
   "mainServer": { "message": "Головний сервер" },
   "altServer": { "message": "Альтернативний сервер" },
 
@@ -109,7 +109,7 @@
   "importFromURL": { "message": "Імпортувати з URL" },
   "importFromOlderVersions": { "message": "Імпортувати зі старіших версій" },
 
-  "tester": { "message": "Тестувальник шаблонів" },
+  "tester": { "message": "Тестувати шаблони" },
   "testerDescription": { "message": "Перевірити шаблон на URL-адресах" },
   "test": { "message": "Перевірити" },
   "result": { "message": "Результат" },
@@ -139,6 +139,6 @@
   "fileTypeError": { "message": "Непідтримуваний формат файлу" },
   "help": { "message": "Довідка" },
   "import": { "message": "Імпортувати" },
-  "options": { "message": "Налаштування" },
+  "options": { "message": "Параметри" },
   "saveOptions": { "message": "Зберегти" }
 }
