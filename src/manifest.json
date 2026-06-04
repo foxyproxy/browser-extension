@@ -3,7 +3,7 @@
 
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "9.2",
+  "version": "9.3",
   "default_locale": "en",
   "homepage_url": "https://getfoxyproxy.org/",
   "author": "Eric Jung",
@@ -15,10 +15,15 @@
     "128": "image/icon128.png"
   },
 
-  "background": {
-    "scripts": ["content/background.js"],
-    "service_worker": "content/background.js",
-    "type": "module"
+  "action": {
+    "default_icon": {
+      "16": "image/icon.png",
+      "32": "image/icon32.png",
+      "48": "image/icon48.png",
+      "128": "image/icon128.png"
+    },
+    "default_popup": "content/popup.html",
+    "default_title": "__MSG_extensionName__"
   },
 
   "options_ui": {
@@ -26,13 +31,10 @@
     "page": "content/options.html"
   },
 
-  "action": {
-    "default_icon": {
-      "16": "image/icon.png",
-      "32": "image/icon32.png"
-    },
-    "default_popup": "content/popup.html",
-    "default_title": "__MSG_extensionName__"
+  "background": {
+    "scripts": ["content/background.js"],
+    "service_worker": "content/background.js",
+    "type": "module"
   },
 
   "permissions": [
@@ -83,12 +85,19 @@
     "managed_schema": "content/schema.json"
   },
 
-  "minimum_chrome_version": "108",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+
+  "minimum_chrome_version": "126",
 
   "browser_specific_settings": {
     "gecko": {
       "id": "foxyproxy@eric.h.jung",
-      "strict_min_version": "128.0"
+      "strict_min_version": "128.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     },
     "gecko_android": {
       "strict_min_version": "128.0"
