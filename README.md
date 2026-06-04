@@ -26,7 +26,7 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
 
 - **Clear recent browsing history, cookies, and related data**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user
 - **Read and modify privacy settings**: Used for Limit/Toggle WebRTC, only if requested by the user
-- **Access your data for all websites**: Used to provide proxy authentication
+- **Access your data for all websites**: Used to set proxies and provide authentication (core function of the extension)
 
 
 ### Remote Code
