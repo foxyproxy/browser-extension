@@ -17,34 +17,20 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
 
 ## Permissions
 
-<dl>
-  <dt>downloads</dt>
-  <dd>Used to save/export user preferences to file, for backup or sharing</dd>
-  <dt>notifications</dt>
-  <dd>Used to inform users (e.g. for errors)</dd>
-  <dt>proxy</dt>
-  <dd>Used to set proxies (core function of the extension)</dd>
-  <dt>storage</dt>
-  <dd>Used to store user preferences</dd>
-  <dt>tabs</dt>
-  <dd>Used to get tab details (e.g. for "Quick Add", "Tab Proxy", & "Incognito/Container Proxy")</dd>
-  <dt>webRequest</dt>
-  <dd>Used to provide proxy authentication</dd>
-  <dt>webRequestAuthProvider</dt>
-  <dd>Used to provide proxy authentication</dd>
-  <dt>host permission</dt>
-  <dd>Used to provide proxy authentication (to any URL <code>"&lt;all_urls&gt;"</code>)</dd>
-</dl>
-
+- **downloads**: Used to save/export user preferences to file, for backup or sharing
+- **notifications**: Used to inform users (e.g. for errors)
+- **proxy**: Used to set proxies (core function of the extension)
+- **storage**: Used to store user preferences
+- **tabs**: Used to get tab details (e.g. for "Quick Add", "Tab Proxy", & "Incognito/Container Proxy")
+- **webRequest**: Used to provide proxy authentication
+- **webRequestAuthProvider**: Used to provide proxy authentication
+- **host permission**: Used to provide proxy authentication (to any URL `"&lt;all_urls&gt;"`)
 
 ### Optional Permissions
 
-<dl>
-  <dt>browsingData</dt>
-  <dd>Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user</dd>
-  <dt>privacy</dt>
-  <dd>Used for "Limit WebRTC" button to toggle <code>browser.privacy.network.webRTCIPHandlingPolicy</code>, only if requested by the user</dd>
-</dl>
+- **browsingData**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user
+- **privacy**: Used for "Limit WebRTC" button to toggle `privacy.network.webRTCIPHandlingPolicy`, only if requested by the user
+
 
 ### Remote Code
 No remote code is used in this extension.
