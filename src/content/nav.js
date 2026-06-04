@@ -3,8 +3,8 @@ import {App} from './app.js';
 export class Nav {
 
   static {
-    document.querySelectorAll('label[for^="nav"]').forEach(i =>
-      this[i.dataset.i18n] = i.control);
+    document.querySelectorAll('nav input[name="nav"]').forEach(i =>
+      this[i.parentElement.dataset.i18n] = i);
   }
 
   static get(pram = location.search.substring(1)) {
@@ -12,17 +12,6 @@ export class Nav {
   }
 
   static {
-    // --- openShortcutSettings FF137
-    const shortcut = document.querySelector('.shortcut-link');
-    // commands is not supported on Android
-    if (!App.firefox || browser.commands?.openShortcutSettings) {
-      shortcut.style.display = 'unset';
-      shortcut.addEventListener('click', () =>
-        App.firefox ? browser.commands?.openShortcutSettings() :
-          browser.tabs.create({url: 'chrome://extensions/shortcuts'})
-      );
-    }
-
     // help document
     const help = document.querySelector('iframe[src="help.html"]').contentDocument;
 
@@ -47,6 +36,17 @@ export class Nav {
       link.style.display = 'unset';
       link.addEventListener('click', () =>
         browser.tabs.create({url: 'chrome://extensions/?id=' + location.hostname}));
+    }
+
+    // --- openShortcutSettings FF137
+    const shortcut = document.querySelector('.shortcut-link');
+    // commands is not supported on Android
+    if (!App.firefox || browser.commands?.openShortcutSettings) {
+      shortcut.style.display = 'unset';
+      shortcut.addEventListener('click', () =>
+        App.firefox ? browser.commands.openShortcutSettings() :
+          browser.tabs.create({url: 'chrome://extensions/shortcuts'})
+      );
     }
   }
 }

@@ -1,4 +1,4 @@
-// ---------- Unicode flag ---------------------------------
+// ---------- unicode flag ---------------------------------
 export class Flag {
 
    static get(cc) {
@@ -6,15 +6,15 @@ export class Flag {
     return cc ? String.fromCodePoint(...[...cc].map(i => i.charCodeAt() + 127397)) : '🌎';
   }
 
-  static show(item) {
+  static show(i) {
     switch (true) {
-      case !!item.cc:
-        return this.get(item.cc);
+      case !!i.cc:
+        return this.get(i.cc);
 
-      case item.type === 'direct':
+      case i.type === 'direct':
         return '⮕';
 
-      case this.isLocal(item.hostname):
+      case this.isLocal(i.hostname):
         return '🖥️';
 
       default:

@@ -24,6 +24,7 @@ import {OnRequest} from './on-request.js';
 import {Location} from './location.js';
 import {Pattern} from './pattern.js';
 import {Action} from './action.js';
+import {Commands} from './commands.js';
 import {Menus} from './menus.js';
 
 export class Proxy {
@@ -31,22 +32,33 @@ export class Proxy {
   static {
     // from popup.js & options.js
     browser.runtime.onMessage.addListener((...e) => this.onMessage(...e));
+
+    // cant runtime.sendMessage to the same context
+    Commands.callback = e => this.onMessage(e);
+    Menus.callback = e => this.onMessage(e);
   }
 
   static onMessage(message) {
-    // noDataChange comes from popup.js & test.js
-    const {id, pref, host, proxy, dark, tab, noDataChange} = message;
-    switch (id) {
+    // no dataChange from commands.js, popup.js & test.js
+    const {update, pref, host, proxy, tab, dataChange} = message;
+    switch (update) {
       case 'setProxy':
-        Action.dark = dark;
-        this.set(pref, noDataChange);
+        this.set(pref, dataChange);
         break;
 
       case 'includeHost':
       case 'excludeHost':
-        // proxy object reference to pref is lost in chrome when sent from popup.js
+        // proxy object reference to pref is lost in chrome when sent in sendMessage
         const pxy = pref.data.find(i => i.active && host === `${i.hostname}:${i.port}`);
-        this.includeHost(pref, pxy, tab, id);
+        this.includeHost(pref, pxy, tab, update);
+        break;
+
+      case 'setContainerProxy':
+        // not for storage.managed
+        if (pref.managed) { return; }
+
+        browser.storage.local.set({container: pref.container});
+        this.set(pref);
         break;
 
       case 'setTabProxy':
@@ -63,17 +75,17 @@ export class Proxy {
     }
   }
 
-  static async set(pref, noDataChange) {
+  static async set(pref, dataChange) {
     // check if proxy.settings is controlled_by_this_extension
     const conf = await this.getSettings();
     // not controlled_by_this_extension
     if (!conf) { return; }
 
     // --- update authentication data
-    noDataChange || Authentication.init(pref.data);
+    dataChange && Authentication.init(pref.data);
 
     // --- update menus
-    noDataChange || Menus.init(pref);
+    dataChange && Menus.init(pref);
 
     // --- check mode
     switch (true) {
@@ -83,7 +95,7 @@ export class Proxy {
         break;
 
       // no include pattern, set proxy to the first entry
-      case pref.mode === 'pattern' && !pref.data.some(i => i.include[0] || i.exclude[0]):
+      case pref.mode === 'pattern' && !pref.data.some(i => i.include[0] || i.exclude[0] || i.tabProxy?.[0]):
         const pxy = pref.data[0];
         pref.mode = pxy.type === 'pac' ? pxy.pac : `${pxy.hostname}:${pxy.port}`;
         break;
@@ -94,7 +106,7 @@ export class Proxy {
   }
 
   static async getSettings() {
-    if (App.android) { return {}; }
+    if (App.android) { return {value: {}}; }
 
     const conf = await browser.proxy.settings.get({});
 
@@ -113,10 +125,11 @@ export class Proxy {
     !control && browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
 
     // return null if Chrome and no control, allow Firefox to continue regardless
-    return !App.firefox && !control ? null : conf;
+    // return !App.firefox && !control ? null : conf;
+    return control || App.firefox ? conf : null;
   }
 
-  // ---------- Include/Exclude Host ----------------------
+  // ---------- include/exclude host ----------------------
   static includeHost(pref, proxy, tab, inc) {
     // not for storage.managed
     if (pref.managed) { return; }
@@ -134,7 +147,7 @@ export class Proxy {
 
     inc === 'includeHost' ? proxy.include.push(pat) : proxy.exclude.push(pat);
     browser.storage.local.set({data: pref.data});
-    // update Proxy, noDataChange
+    // update Proxy, dataChange
     pref.mode === 'pattern' && proxy.active && this.set(pref, true);
   }
 
@@ -160,7 +173,7 @@ export class Proxy {
       const text = [ip, city, Location.get(cc)].filter(Boolean).join('\n');
       App.notify(text);
     })
-    .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
+    .catch(e => App.notify(`fetch: ${e}`));
   }
 }
 

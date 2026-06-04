@@ -1,4 +1,4 @@
-// ---------- Internationalization (Side Effect) -----------
+// ---------- internationalization (side effect) -----------
 class I18n {
 
   static {
@@ -9,10 +9,10 @@ class I18n {
   }
 
   static set(target = document) {
-    target.querySelectorAll('[data-i18n]').forEach(elem => {
-      let [text, attr] = elem.dataset.i18n.split('|');
+    target.querySelectorAll('[data-i18n]').forEach(i => {
+      let [text, attr] = i.dataset.i18n.split('|');
       text = browser.i18n.getMessage(text);
-      attr ? elem.setAttribute(attr, text) : elem.append(text);
+      attr ? i.setAttribute(attr, text) : i.append(text);
     });
   }
 }

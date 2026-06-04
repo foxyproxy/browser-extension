@@ -12,9 +12,7 @@ export class PAC {
 
   static async get(url) {
     Spinner.show();
-    const text = await fetch(url)
-      .then(response => response.text())
-      .catch(error => error);
+    const text = await fetch(url).then(r => r.text()).catch(e => alert(`fetch: ${e}`));
     Spinner.hide();
     return text;
   }

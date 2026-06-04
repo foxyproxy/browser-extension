@@ -1,10 +1,10 @@
 import {pref, App} from './app.js';
-import {Proxies} from './options-proxies.js';
-import {ImportExport} from './import-export.js';
-import {ImportUrl} from './import-url.js';
-import {ImportOlder} from './import-older.js';
-import {Flag} from './flag.js';
 import {ProgressBar} from './progress-bar.js';
+import {FS} from './fs.js';
+import {Proxies} from './options-proxies.js';
+import {Spinner} from './spinner.js';
+import {Migrate} from './migrate.js';
+import {Flag} from './flag.js';
 import {Nav} from './nav.js';
 import './get-location.js';
 import './incognito-access.js';
@@ -21,21 +21,26 @@ import './show.js';
 import './i18n.js';
 import './theme.js';
 
-// ---------- User Preferences -----------------------------
+// ---------- user preferences -----------------------------
 await App.getPref();
 
-// ---------- Options --------------------------------------
+// ---------- options --------------------------------------
 class Options {
 
   static {
-    // --- keyboard Shortcut
+    // submit button
+    document.querySelectorAll('button[type="submit"]').forEach(i =>
+      i.addEventListener('click', () => this.check()));
+
+    // keyboard Shortcut
     this.commands = document.querySelectorAll('.options .commands select');
 
-    // --- global passthrough
+    // global passthrough
     this.passthrough = document.getElementById('passthrough');
 
-    // --- buttons
-    document.querySelector('.options button[data-i18n="restoreDefaults"]').addEventListener('click', () => this.restoreDefaults());
+    // buttons
+    document.querySelector('.options button[data-i18n="restoreDefaults"]')
+    .addEventListener('click', () => this.restoreDefaults());
 
     this.init(['sync', 'autoBackup', 'theme', 'showPatternProxy', 'passthrough']);
   }
@@ -43,10 +48,9 @@ class Options {
   static init(keys = Object.keys(pref)) {
      // defaults to pref keys
     this.prefNode = document.querySelectorAll('#' + keys.join(',#'));
-    // submit button
-    document.querySelectorAll('button[type="submit"]').forEach(i => i.addEventListener('click', () => this.check()));
 
     this.process();
+    Proxies.process(pref);
   }
 
   static process(save) {
@@ -58,7 +62,11 @@ class Options {
     });
 
     // update saved pref
-    save && !ProgressBar.show() && browser.storage.local.set(pref);
+    if (save) {
+      ProgressBar.show();
+      browser.storage.local.set(pref);
+    }
+
     this.fillContainerCommands(save);
   }
 
@@ -69,8 +77,9 @@ class Options {
     // --- global exclude, clean up, remove path, remove duplicates
     const passthrough = this.passthrough.value.trim();
     const [separator] = passthrough.match(/[\s,;]+/) || ['\n'];
+    // split into array, check if CIDR netmask, otherwise remove path
     const arr = passthrough.split(/[\s,;]+/).filter(Boolean)
-      .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/(?<=[a-z\d])\/[^\s,;]*/gi, ''));
+      .map(i => /[\d.]+\/\d+/.test(i) ? i : i.replace(/([a-z\d])\/[^\s,;]*/gi, '$1'));
     this.passthrough.value = [...new Set(arr)].join(separator);
     pref.passthrough = this.passthrough.value;
 
@@ -130,12 +139,10 @@ class Options {
     this.process(true);
 
     // --- update Proxy
-    // check 'prefers-color-scheme' since it is not available in background service worker
-    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    browser.runtime.sendMessage({id: 'setProxy', pref, dark});
+    browser.runtime.sendMessage({update: 'setProxy', pref, dataChange: true});
 
     // --- Auto Backup
-    pref.autoBackup && ImportExport.export(pref, false, `${browser.i18n.getMessage('extensionName')}/`);
+    pref.autoBackup && FS.export(pref);
 
     // --- Sync
     this.sync(pref);
@@ -163,8 +170,8 @@ class Options {
         del[0] && browser.storage.sync.remove(del);
       });
     })
-    .catch(error => {
-      App.notify(browser.i18n.getMessage('syncError') + '\n\n' + error.message);
+    .catch(e => {
+      App.notify(`Sync: ${e}`);
       // disabling sync option to avoid repeated errors
       document.getElementById('sync').checked = false;
       browser.storage.local.set({sync: false});
@@ -172,8 +179,6 @@ class Options {
   }
 
   static restoreDefaults() {
-    if (!confirm(browser.i18n.getMessage('restoreDefaultsConfirm'))) { return; }
-
     const db = App.getDefaultPref();
     Object.keys(db).forEach(i => pref[i] = db[i]);
     this.process();
@@ -270,33 +275,53 @@ class Options {
     return document.querySelector(`.options .container select[name="container-${n}"]`);
   }
 }
-// ---------- /Options -------------------------------------
+// ---------- /options -------------------------------------
 
-// ---------- Proxies --------------------------------------
-Proxies.process(pref);
+// ---------- import from url ------------------------------
+document.querySelector('.import-from-url button').addEventListener('click', async e => {
+  const input = e.target.previousElementSibling;
+  const url = input.value.trim();
+  if (!url) { return; }
 
-// ---------- Import From URL ------------------------------
-ImportUrl.init(pref, () => {
+  Spinner.show();
+  const data = await fetch(url).then(r => r.json()).catch(e => alert(`fetch: ${e}`));
+  Spinner.hide();
+  if (!data) { return; }
+
+  Object.keys(pref).forEach(i => Object.hasOwn(data, i) && (pref[i] = data[i]));
   // set options after the pref update, update page display, show Proxy tab
   Options.process();
   Proxies.process(pref);
   Nav.get('proxies');
 });
+// ---------- /import from url -----------------------------
 
-// ---------- Import Older Preferences ---------------------
-ImportOlder.init(pref, () => {
+// ---------- import older preferences ---------------------
+document.querySelector('.import-from-older input').addEventListener('change', async e => {
+  let data = await FS.import(e);
+  if (!data) { return; }
+
+  data = Object.hasOwn(data, 'settings') ? Migrate.convert3(data) : Migrate.convert7(data);
+  Object.keys(pref).forEach(i => Object.hasOwn(data, i) && (pref[i] = data[i]));
   // set options after the pref update, update page display, show Proxy tab
   Options.process();
   Proxies.process(pref);
   Nav.get('proxies');
 });
+// ---------- /import older preferences --------------------
 
-// ---------- Import/Export Preferences --------------------
-ImportExport.init(pref, () => {
+// ---------- import/export preferences --------------------
+document.getElementById('export').addEventListener('click', () => FS.export(pref, true));
+document.getElementById('file').addEventListener('change', async e => {
+  const data = FS.import(e);
+  if (!data) { return; }
+
   // set options after the pref update, update page display
+  Object.assign(pref, data);
   Options.process();
   Proxies.process(pref);
 });
+// ---------- /import/export preferences -------------------
 
-// ---------- Navigation -----------------------------------
+// ---------- navigation -----------------------------------
 Nav.get();

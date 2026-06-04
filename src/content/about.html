@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>About</title>
-    <link href="iframe.css" rel="stylesheet">
+    <link href="help.css" rel="stylesheet">
   </head>
   <body>
 
@@ -13,9 +13,30 @@
   </nav>
 
   <article class="about">
+    <section>
 
     <h2 id="changelog">Changelog</h2>
     <dl>
+
+      <dt>9.3</dt>
+      <dd>Added "Container Proxy" feature to toolbar popup and context menu (#224)</dd>
+      <dd>Added "default" option to container proxy</dd>
+      <dd>Added Toggle WebRTC feature (Firefox only) (#228)</dd>
+      <dd>Enabled Tab Proxy on <code>about:home</code> (#201)</dd>
+      <dd>Enabled Tab Proxy on <code>about:privatebrowsing</code> (#199)</dd>
+      <dd>Fixed a Tab Proxy context menu issue on private windows (#199)</dd>
+      <dd>Fixed Context Menu issue (#253)</dd>
+      <dd>Fixed export on Android (#244)</dd>
+      <dd>Fixed IPv6 Ping (#198)</dd>
+      <dd>Increased displayed proxies to 100 in Include/Exclude/Tab Proxy on Toolbar popup (#242)</dd>
+      <dd>Increased minimum version to Chrome 126 (released 2024-06-11)</dd>
+      <dd>Update Auto-fill process (#246)</dd>
+      <dd>Updated "Proxy by Patterns" to allow Tab Proxy only (#252)</dd>
+      <dd>Updated code to proxy non-tab requests (#218)</dd>
+      <dd>Updated Match Pattern conversion (#238)</dd>
+      <dd>Updated MV3 content security policy for Firefox (#202)</dd>
+      <dd>Updated Options page user interface</dd>
+      <dd>Updated Toolbar popup user interface</dd>
 
       <dt>9.2</dt>
       <dd>Fixed an error when saving incomplete proxies (#197)</dd>
@@ -60,21 +81,6 @@
       <dd>Updated Pattern Tester</dd>
       <dd>Updated Tab Proxy for MV3</dd>
       <dd>Updated toolbar popup user interface</dd>
-
-<!--
-  https://blog.mozilla.org/addons/2025/03/10/root-certificate-will-expire-on-14-march-users-need-to-update-firefox-to-prevent-add-on-breakage/
-  https://blog.mozilla.org/addons/2024/07/10/manifest-v3-updates-landed-in-firefox-128/
-  minimum version to Firefox 128:
-  -----
-  FF109, Ch88: "host_permissions": Property "host_permissions" is unsupported in Manifest Version 2
-  FF112, Ch92: Added Background script module, removed "content/background.html"
-  FF115: Deprecate browser_style in MV3 defaults to false
-  FF115, Ch102: storage.session 10mb (Ch102-Ch114 1mb)
-  FF121, Ch105: :has()
-  FF126, Ch108: webRequestAuthProvider
-
-  FF117, Ch112 (2023-04-04): CSS nesting ?
--->
 
       <dt>8.10</dt>
       <dd>Added console log for Save file errors (#144)</dd>
@@ -178,7 +184,7 @@
       <dd>Updated Global Exclude process</dd>
 
       <dt>8.0</dt>
-      <dd>Added complete Light/Dark Theme</dd>
+      <dd>Added complete light/dark theme</dd>
       <dd>Added Exclude host feature</dd>
       <dd>Added Firefox on Android support (experimental) (#21)</dd>
       <dd>Added Get Location feature</dd>
@@ -213,7 +219,7 @@
       <dd>pl: Grzegorz Koryga</dd>
       <dd>pt_BR: </dd>
       <dd>ru: <a href="https://github.com/sosiska" target="_blank">Kirill Motkov</a>, <a href="https://github.com/krolchonok" target="_blank">krolchonok</a></dd>
-      <dd>uk: <a href="https://github.com/sponsors/webknjaz" target="_blank">Sviatoslav Sydorenko</a></dd>
+      <dd>uk: <a href="https://github.com/sponsors/webknjaz" target="_blank">Sviatoslav Sydorenko</a>, <a href="https://github.com/OnyxOracle" target="_blank">OnyxOracle</a></dd>
       <dd>zh_CN: <a href="https://github.com/wsxy162" target="_blank">FeralMeow </a></dd>
       <dd>zh_TW: <a href="https://github.com/samuikaze" target="_blank">samuikaze</a></dd>
 
@@ -233,6 +239,8 @@
 
     <p style="font: 1.5em cursive;">Thank you for using FoxyProxy!</p>
     <img src="../image/logo.svg" style="width: 5em;" alt="">
+
+    </section>
   </article>
   </body>
 </html>

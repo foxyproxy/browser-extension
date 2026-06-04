@@ -5,11 +5,12 @@
 // Add tab parameter to commands.onCommand (fixed in Firefox 126)
 
 import {App} from './app.js';
-import {Proxy} from './proxy.js';
-import {OnRequest} from './on-request.js';
 
-// ---------- Commands (Side Effect) ------------------------
-class Commands {
+// ---------- commands -------------------------------------
+export class Commands {
+
+  // cant runtime.sendMessage to the same context
+  static callback = () => {};
 
   static {
     // commands is not supported on Android
@@ -27,7 +28,6 @@ class Commands {
     if (pref.managed && !tabProxy) { return; }
 
     const host = pref.commands[name];
-    let proxy;
 
     switch (name) {
       case 'proxyByPatterns':
@@ -44,21 +44,20 @@ class Commands {
 
       case 'includeHost':
       case 'excludeHost':
-        if (!host) { break; }
-
-        proxy = this.findProxy(pref, host);
-        proxy && Proxy.includeHost(pref, proxy, tab, name);
+        // proxy object reference to pref is lost in chrome in sendMessage
+        host && this.callback({update: name, pref, host, tab});
         break;
 
       case 'setTabProxy':
         if (!host) { break; }
 
-        proxy = this.findProxy(pref, host);
-        proxy && OnRequest.setTabProxy(tab, proxy);
+        const proxy = this.findProxy(pref, host);
+        // proxy && OnRequest.setTabProxy(tab, proxy);
+        this.callback({update: 'setTabProxy', proxy, tab});
         break;
 
       case 'unsetTabProxy':
-        OnRequest.setTabProxy(tab);
+        this.callback({update: 'setTabProxy', tab});
         break;
     }
   }
@@ -72,6 +71,6 @@ class Commands {
     // save mode
     browser.storage.local.set({mode});
     // set proxy without menus update
-    Proxy.set(pref, true);
+    this.callback({update: 'setProxy', pref});
   }
 }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Help</title>
-    <link href="iframe.css" rel="stylesheet">
+    <link href="help.css" rel="stylesheet">
   </head>
   <body>
 
@@ -272,7 +272,7 @@
         <option value="sk">Slovak</option>
         <option value="sl">Slovenian</option>
         <option value="so">Somali</option>
-        <option value="es">Spanish(recently used language)</option>
+        <option value="es">Spanish</option>
         <option value="su">Sundanese</option>
         <option value="sw">Swahili</option>
         <option value="sv">Swedish</option>
@@ -283,7 +283,7 @@
         <option value="th">Thai</option>
         <option value="ti">Tigrinya</option>
         <option value="ts">Tsonga</option>
-        <option value="tr">Turkish(recently used language)</option>
+        <option value="tr">Turkish</option>
         <option value="tk">Turkmen</option>
         <option value="ak">Twi</option>
         <option value="uk">Ukrainian</option>
@@ -314,11 +314,6 @@
 
     <p>If you have upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
-
-    <h3>Unified Code</h3>
-    <p>FoxyProxy 8 code has been unified for Chrome and Firefox, and Standard and Basic versions.<br>
-      Unified code for FoxyProxy and FoxyProxy Basic, on both on Chrome and Firefox, enables users to share their preferences.</p>
-
     <!--
       Inconsistency: incognito in proxy.settings
       https://github.com/w3c/webextensions/issues/429
@@ -326,27 +321,22 @@
     -->
 
     <h3>Private Browsing Permission</h3>
-    <dl class="warning">
+    <dl>
       <dt>Chrome <span class="chrome-extension">🔗</span></dt>
       <dd>On Chrome, users must enable "Allow in Incognito", if proxying in incognito mode is required</dd>
-      <dd class="footnote">How to: <a href="https://support.google.com/chrome/a/answer/13130396" target="_blank">Extensions in Incognito mode</a></dd>
+      <dd class="footnote">See also: <a href="https://support.google.com/chrome/a/answer/13130396" target="_blank">Extensions in Incognito mode</a></dd>
 
       <dt>Firefox <span class="moz-extension">🔗</span></dt>
       <dd>On Firefox, users must enable "Run in Private Windows", as it is required by Firefox for proxy settings</dd>
-      <dd class="footnote">How to: <a href="https://support.mozilla.org/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></dd>
-
+      <dd class="footnote">See also: <a href="https://support.mozilla.org/kb/extensions-private-browsing#w_enabling-or-disabling-extensions-in-private-windows" target="_blank">Enabling or disabling extensions in private windows</a></dd>
     </dl>
-
-    <h3>Non-Destructive Editing</h3>
-    <p>Editing and importing are non-destructive. Click SAVE to apply the changes.</p>
-    <p class="footnote">See also: <a href="https://github.com/foxyproxy/browser-extension/issues/25" target="_blank">Destructive vs Nondestructive Editing</a></p>
 
     <h3>Proxy Authentication</h3>
     <ul>
-      <li>HTTP/HTTPS proxy servers authentication <span>(Chrome/Firefox)</span></li>
-      <li>SOCKS5 proxy servers authentication <span>(Firefox only)</span><br>
+      <li>HTTP/HTTPS proxy servers authentication <em>(Chrome/Firefox)</em></li>
+      <li>SOCKS5 proxy servers authentication <em>(Firefox only)</em><br>
         Chrome does not support SOCKS authentication <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#SOCKSv5-proxy-scheme" title="SOCKSv5 proxy scheme" target="_blank">ⓘ</a></li>
-      <li>Port-specific authentication<br>There can be different user/pass for <code>example.com:3128</code> and <code>example.com:443</code></li>
+      <li>Port-specific authentication<br>There can be different user/pass for <code>example.com:1080</code> and <code>example.com:443</code></li>
     </ul>
 
     <h3>Proxying Order</h3>
@@ -354,32 +344,41 @@
     <ol>
       <!-- <li>localhost passthrough</li> -->
       <li>Global Exclude</li>
-      <li>Tab Proxy <span>(Firefox only)</span></li>
-      <li>Tab Proxy by patterns<span>(Firefox only) (v9.0)</span></li>
+      <li>Tab Proxy <em>(Firefox only)</em></li>
+      <li>Tab Proxy by patterns <em>(Firefox only) (v9.0)</em></li>
       <li>Incognito Proxy</li>
-      <li>Container Proxy <span>(Firefox only)</span></li>
+      <li>Container Proxy <em>(Firefox only)</em></li>
       <li>Individual Proxy or Proxy by Patterns</li>
     </ol>
 
     <h3>Proxy by Patterns Order</h3>
     <ul>
       <li>Active proxies are checked in order</li>
-      <li class="experimental">If it is a tab URL and one of Tab Proxy patterns matches, then that proxy is used  <span>(Firefox only)</span></li>
+      <li class="experimental">If it is a tab URL and one of Tab Proxy patterns matches, then that proxy is used  <em>(Firefox only)</em></li>
       <li>If one of exclude patterns matches, then that proxy is skipped</li>
       <li>If one of include patterns matches, then that proxy is used, otherwise the next proxy is checked</li>
     </ul>
-
-
-    <h3>Light/Dark Theme</h3>
-    <p>FoxyProxy's theme is based on the browser's default light/dark theme.</p>
-
-    <h3 class="experimental">Firefox on Android</h3>
-    <p>Support is experimental and based on user feedback.</p>
 
     <h3>Show Hidden Elements</h3>
     <p>Some elements on the Toolbar Popup and Options page are disabled or hidden in FoxyProxy Basic and/or on Chrome.<br>
     You can toggle to view/enable them by clicking the FoxyProxy icon (on the top of the page).</p>
 
+    <h3>Unified Code</h3>
+    <p>FoxyProxy's code has been unified for Chrome and Firefox, and Standard and Basic versions, since version 8.<br>
+      Unified code enables users to share their preferences between all instances.</p>
+
+    <h3>Non-Destructive Editing</h3>
+    <p>Editing and importing are non-destructive. Click "Save" to apply the changes.</p>
+    <p class="footnote">See also: <a href="https://github.com/foxyproxy/browser-extension/issues/25" target="_blank">Destructive vs Nondestructive Editing</a></p>
+
+    <h3>Light/Dark Theme</h3>
+    <p>Theme is based on the browser's default light/dark theme.</p>
+
+    <h3 class="experimental">Firefox on Android</h3>
+    <p>Support is experimental and based on user feedback.</p>
+
+    <h3>File access becomes opt-in</h3>
+    <p>Extensions requesting <code>file://*/</code> or <code>&lt;all_urls&gt;</code> currently trigger the “Access your data for all websites” permission message, and when granted, can run content scripts in file:-URLs. From Firefox 153, file access in extensions requires an opt-in for all extensions, including those already installed (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=2034168">bug 2034168</a>). <a href="https://blog.mozilla.org/addons/2026/04/23/webextensions-api-changes-firefox-149-152/" title="WebExtensions API Changes (Firefox 149-152)" target="_blank">ⓘ</a></p>
 
 
     <h2 id="how-to-use">How to Use</h2>
@@ -404,31 +403,43 @@
       <dd>Patterns are not applicable in remote PAC type (but apply to <a href="#store-locally">Store Locally</a>)</dd>
 
       <dt>Disable</dt>
-      <dd>Proxying is set to system and handled by the browser</dd>
+      <dd>Proxying is handled by the browser</dd>
 
       <dt>Individual Proxy</dt>
       <dd>All connections are passed through the selected proxy (or PAC)</dd>
       <dd>Patterns are not applicable in this case</dd>
 
+
       <dt>▶ More</dt>
       <dd>Show or hide additional options</dd>
       <dd>User choice is temporarily stored in localStorage (not available in Private/Incognito)</dd>
+      <dd>
+        <dl>
+          <dt>Search Filter</dt>
+          <dd>Proxy <i>Title</i>, <i>Hostname</i>, and <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
+          <dd>Use <code>:port-number</code> to filter by port</dd>
 
-      <dt>Include Host and Exclude Host <span>(not available on managed storage or FoxyProxy Basic)</span></dt>
-      <dd>Add current page's host pattern to the selected proxy's include/exclude</dd>
-      <dd>Only top 10 active proxies are listed</dd>
-      <dd>Only HTTP/HTTPS are processed</dd>
+          <dt>Tab Proxy <em>(Firefox only)</em></dt>
+          <dd>Select a proxy from the drop-down list for the current tab</dd>
+          <dd>Select the blank option to unset</dd>
+          <dd>Tab Proxy is processed before normal proxy settings</dd>
+          <dd>Only top 100 active proxies are listed</dd>
+          <dd>Toolbar badge shows the proxy and mouse-over title displays the selection details</dd>
 
-      <dt>Tab Proxy <span>(Firefox only)</span></dt>
-      <dd>Select a proxy from the drop-down list for the current tab</dd>
-      <dd>Select the blank option to unset</dd>
-      <dd>Tab Proxy is processed before normal proxy settings</dd>
-      <dd>Only top 10 active proxies are listed</dd>
-      <dd>Toolbar badge shows the proxy and mouse-over title displays the selection details</dd>
+          <dt>Container Proxy <em>(Firefox only)</em></dt>
+          <dd>Set the current container to a proxy</dd>
+          <dd>Similar function as <a href="#container">Incognito and Container</a> in Options</dd>
+          <dd>Not available for the default container</dd>
+          <dd>Not available on managed storage</dd>
 
-      <dt>Search Filter</dt>
-      <dd>Proxy <i>Title</i>, <i>Hostname</i>, and <i>Port</i> are searched and display filtered based on the input value (case-insensitive)</dd>
-      <dd>Use <code>:port-number</code> to filter by port</dd>
+          <dt>Include Host and Exclude Host</dt>
+          <dd>Add current page's host pattern to the selected proxy's include/exclude</dd>
+          <dd>Only top 100 active proxies are listed</dd>
+          <dd>Only HTTP/HTTPS are processed</dd>
+          <dd>Not available on managed storage</dd>
+          <dd>Not available on FoxyProxy Basic</dd>
+        </dl>
+      </dd>
 
       <dt>Options</dt>
       <dd>Open the Options page</dd>
@@ -447,21 +458,24 @@
     <h3 id="context-menu">Context Menu</h3>
     <p>Context Menu is available on page and toolbar icon</p>
     <dl>
-      <dt>Include Host and Exclude Host <span>(not available on managed storage or FoxyProxy Basic)</span></dt>
+      <dt>Include Host and Exclude Host</dt>
       <dd><i>Same as Toolbar Popup</i></dd>
 
-      <dt>Tab Proxy <span>(Firefox only)</span></dt>
+      <dt>Tab Proxy <em>(Firefox only)</em></dt>
       <dd><i>Same as Toolbar Popup</i></dd>
 
-      <dt>Open Link in New Tab Proxy</dt>
+      <dt>Container Proxy <em>(Firefox only)</em></dt>
+      <dd><i>Same as Toolbar Popup</i></dd>
+
+      <dt>Open Link in New Tab Proxy <em>(page only)</em></dt>
       <dd>Open the link in a new Tab Proxy set to the selected proxy</dd>
 
     </dl>
 
 
-    <h3>Keyboard Shortcut <span>(not available on Android)</span></h3>
+    <h3>Keyboard Shortcut <em>(not available on Android)</em></h3>
 
-    <p>You can change/set keyboard shortcuts.</p>
+    <p>You can set keyboard shortcuts.</p>
     <p>Click 🔗 on Options page to open the keyboard shortcuts page in Chrome and Firefox 137+.</p>
 
     <dl>
@@ -482,8 +496,8 @@
 
     <p>Some options are not available in Chrome, but have been left for when sharing preferences between Chrome and Firefox.</p>
 
-    <h3 id="storage-sync">Storage Sync</h3>
-    <p>Enable to sync storage if it is under 100KB. If the storage is over 100KB, there will be a notification and the Sync will be turned off automatically to avoid repeated errors.</p>
+    <h3 id="enable-sync">Enable Sync</h3>
+    <p>Enable sync storage, if it is under 100KB. If the storage is over 100KB, there will be a notification and Sync will be turned off automatically to avoid repeated errors.</p>
 
     <ul>
       <li>Sync is disabled on managed storage</li>
@@ -504,13 +518,23 @@
           target="_blank">storage.sync</a></cite>
     </blockquote>
 
-    <h5>Storage quotas for sync data</h5>
-
-    <ul>
-      <li>Maximum total size 102,400 bytes (100KB)</li>
-      <li>Maximum item size 8,192 bytes (8KB)</li>
-      <li>Maximum number of items 512</li>
-    </ul>
+    <table>
+      <caption>Storage quotas for sync data</caption>
+      <tbody>
+        <tr>
+          <td>Maximum total size</td>
+          <td>102,400 bytes (100KB)</td>
+        </tr>
+        <tr>
+          <td>Maximum item size</td>
+          <td>8,192 bytes (8KB)</td>
+        </tr>
+        <tr>
+          <td>Maximum number of items</td>
+          <td>512</td>
+        </tr>
+      </tbody>
+    </table>
 
     <div class="footnote">
       There is a discussion to increase the storage sync quota to 1MB.<br>
@@ -523,13 +547,24 @@
     </div>
 
     <h3 id="auto-backup">Auto Backup</h3>
-    <p>Automatically backup settings to the browser configured downloads folder on SAVE</p>
+    <p>Automatically backup settings to the browser configured downloads folder on "Save"</p>
+
+    <h3 id="theme">Theme</h3>
+    <p>Change to alternative themes</p>
+
+    <h3 id="toggle-WebRTC">Toggle WebRTC <em>(Firefox only) (requires "privacy" permission)</em></h3>
+    <p>Enable/disable WebRTC support</p>
+    <ul>
+      <li>Chrome currently does not have the option</li>
+      <li>Disabling WebRTC can break sites that depend on it</li>
+      <li>Option changes the browser preferences and does not require "Save"</li>
+    </ul>
 
 
-    <h3 id="limit-webrtc">Limit WebRTC <span>(requires "privacy" permission)</span></h3>
+    <h3 id="limit-WebRTC">Limit WebRTC <em>(requires "privacy" permission)</em></h3>
     <p>Change <a href="https://developer.mozilla.org/docs/Web/API/WebRTC_API" target="_blank">WebRTC</a> browser settings as it has been known to leak real IP</p>
     <p>This setting allows users to specify the media performance/privacy tradeoffs which affect how WebRTC traffic will be routed and how much local address information is exposed.</p>
-    <p class="note">Option changes the browser preferences and does not require SAVE.</p>
+    <p>Option changes the browser preferences and does not require "Save".</p>
     <!-- https://www.electronjs.org/docs/latest/api/web-contents -->
     <dl>
       <dt>default</dt>
@@ -544,12 +579,9 @@
       <dt>Disable Non-Proxied</dt>
       <dd>Does not expose public or local IPs. When this policy is used, WebRTC should only use TCP to contact peers or servers unless the proxy server supports UDP.</dd>
 
-      <dt>Proxy Only <span>(Firefox only)</span></dt>
+      <dt>Proxy Only <em>(Firefox only)</em></dt>
       <dd>Only connections using TURN on a TCP connection through a proxy are allowed.</dd>
     </dl>
-
-    <h3 id="theme">Theme</h3>
-    <p>Change to alternative themes</p>
 
 
     <h3 id="container">Incognito and Container</h3>
@@ -578,7 +610,7 @@
     </dl>
 
 
-    <h3 id="keyboard-shortcut">Keyboard Shortcut <span>(not available on Android)</span></h3>
+    <h3 id="keyboard-shortcut">Keyboard Shortcut <em>(not available on Android)</em></h3>
     <p>Preselect a proxy to associate with a keyboard shortcut action</p>
     <ul>
       <li>Only active proxies are listed</li>
@@ -595,7 +627,7 @@
           Chrome: <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#bypass-rule_subtract-implicit-rules" target="_blank">Bypass rule: Subtract implicit rules</a><br>
           Edge and Firefox: <a href="https://learn.microsoft.com/en-us/microsoft-cloud/dev/dev-proxy/how-to/intercept-localhost-requests" target="_blank">Intercept requests to localhost</a></p>
       </li>
-      <li>Firefox will not proxy values set in <code>Settings ➤ Network Settings ➤ Connection Settings ➤ No proxy for</code> <i>(Firefox 137)</i></li>
+      <li>Firefox will not proxy values set in <i>Settings ➔ Network Settings ➔ Connection Settings ➔ No proxy for</i> <i>(Firefox 137)</i></li>
       <li>The passthrough implementation is slightly different in Chrome and Firefox</li>
       <li>Entries can be separated by comma (as in Firefox), or space, or new line</li>
       <li>The following table shows if the process is handled by the browser or FoxyProxy</li>
@@ -733,17 +765,21 @@
       </ul>
     </div>
 
-    <h3>Delete Browser Data <span>(requires "browsingData" permission)</span></h3>
+    <h3>Delete Browser Data <em>(requires "browsingData" permission)</em></h3>
     <p>Delete cookies, indexedDB storage, DOM local storage</p>
 
 
     <h3>Restore Defaults</h3>
     <p>Restore all FoxyProxy settings to default values</p>
-    <p class="note">Browser settings are not changed (e.g. previously set proxy values or Limit WebRTC).</p>
+    <ul>
+      <li>Browser settings are not changed (e.g. previously set proxy values or Limit WebRTC).</li>
+      <li>Restore Defaults is non-destructive. Click "Save" to apply the changes.</li>
+    </ul>
 
-    <h3 id="import-export">Preferences: Import/Export</h3>
-    <p>You can import/export Preferences (for backup or sharing) from/to a local file on your computer.</p>
-    <p class="note">Import is non-destructive. Click SAVE to apply the changes.</p>
+
+    <h3 id="import-export">Settings: Import/Export</h3>
+    <p>You can import/export preferences (for backup or sharing) from/to a local file on your computer.</p>
+    <p>Import is non-destructive. Click "Save" to apply the changes.</p>
 
     <h3 id="save">Save</h3>
     <p>Please note that changes will not take effect until they are saved.</p>
@@ -789,10 +825,10 @@
 
 
       <dt class="experimental">Ping</dt>
-      <dd>Check server response <span>(active, http/https only)</span></dd>
+      <dd>Check server response <em>(active, http/https only)</em></dd>
       <dd>The method only provides an indication, as it is affected by many other factors</dd>
 
-      <dt>Get Location <span>(optional)</span></dt>
+      <dt>Get Location <em>(optional)</em></dt>
       <dd>Get location details for proxies from FoxyProxy Servers</dd>
   </dl>
 
@@ -800,17 +836,17 @@
     <p class="warning">If FoxyProxy is to set to use an Individual Proxy/PAC, editing proxy's hostname, port, or PAC URL, may result in a mismatch until it is set again.</p>
 
     <dl>
-      <dt>Toggle Button</dt>
-      <dd>Toggle proxy active or inactive</dd>
-      <dd>Inactive proxies do not show in the toolbar popup select</dd>
+      <dt><input type="checkbox" class="toggle" checked> Enable</dt>
+      <dd>Enable/disable the proxy</dd>
+      <dd>Inactive proxies are not shown in the toolbar popup</dd>
 
-      <dt>⎘ Duplicate Proxy</dt>
-      <dd>Click to duplicate proxy and its patterns</dd>
+      <dt><img src="../image/edit-copy.svg" alt=""> Duplicate Proxy</dt>
+      <dd>Click to duplicate the proxy and its patterns</dd>
 
-      <dt>Delete</dt>
+      <dt><img src="../image/delete.svg" alt=""> Delete</dt>
       <dd>Delete the proxy and its patterns</dd>
 
-      <dt>Up/Down ▲ ▼</dt>
+      <dt>▲▼ Up/Down</dt>
       <dd>Move the proxy up or down</dd>
 
       <dt>Title</dt>
@@ -839,11 +875,11 @@
       <dd>If not set, HTTP/HTTPS authentication will be handled by the browser</dd>
       <dd>Username and Password are port specific and different ones can be set for different ports</dd>
 
-      <dt id="proxydns">Proxy DNS <span>(Firefox only)</span></dt>
+      <dt id="proxydns">Proxy DNS <em>(Firefox only)</em></dt>
       <dd>Option to pass DNS to the SOCKS proxy when using SOCKS <i>(defaults to true)</i></dd>
       <dd class="footnote">See also
         <ul>
-          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1741375" target="_blank">Proxy DNS by default when using SOCKS v5</a> <span>(Firefox 123)</span></li>
+          <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1741375" target="_blank">Proxy DNS by default when using SOCKS v5</a> <em>(Firefox 123)</em></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1799411" target="_blank">DNS leaks with proxy extension</a></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1791243" target="_blank">Firefox queries DNS of Proxy destination</a></li>
           <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1867562" target="_blank">Despite the fact that DNS over HTTPS is switched off on Privacy and Security bar in Settings it still leaks my DNS</a></li>
@@ -854,14 +890,14 @@
       </dd>
 
 
-      <dt>PAC URL <span>(not available on Android)</span></dt>
+      <dt>PAC URL <em>(not available on Android)</em></dt>
       <dd>Required for PAC type</dd>
       <dd>Proxy Auto-Configuration file (PAC) can be used to handle all proxying configurations</dd>
       <dd>PAC is a configuration file, not a proxy server</dd>
       <dd>Patterns are not applicable in PAC type</dd>
       <dd class="footnote">See also: <a href="https://developer.mozilla.org/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file" target="_blank">Proxy Auto-Configuration (PAC) file</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1725981" target="_blank">Support proxy.settings API on Android</a></dd>
 
-      <dt id="store-locally" class="experimental">Store Locally <span>(Chrome only)</span></dt>
+      <dt id="store-locally" class="experimental">Store Locally <em>(Chrome only)</em></dt>
       <dd>Option to store PAC locally</dd>
       <dd>Option should only be used for altering remote PAC rules</dd>
       <dd>Storing large or many PACs locally is not recommended and can prevent browser sync</dd>
@@ -896,7 +932,7 @@
           <th>Scheme</th>
           <th style="min-width: 30%;">Chrome</th>
           <th style="min-width: 30%;">Firefox</th>
-          <th style="min-width: 30%;">DoH <span>(DNS over HTTPS)</span></th>
+          <th style="min-width: 30%;">DoH <em>(DNS over HTTPS)</em></th>
         </tr>
       </thead>
       <tbody class="">
@@ -939,7 +975,7 @@
     <p>FoxyProxy can be used with local proxy servers. Few auto-fill options are added for convenience.</p>
 
     <ul>
-      <li>Go to Proxy tab ➤ Add a new proxy</li>
+      <li>Go to Proxy tab ➔ Add a new proxy</li>
       <li>Fill the details according to own preference</li>
       <li>Add patterns to limit to some URLs only</li>
     </ul>
@@ -956,7 +992,7 @@
       <dt>📤 Export</dt>
       <dd>Export patterns to import later</dd>
 
-      <dt>➕ Add Pattern</dt>
+      <dt>✚ Add Pattern</dt>
       <dd>Click to add a new pattern at the end</dd>
       <dd>Ctrl-Click to add a new pattern at the start</dd>
 
@@ -966,7 +1002,7 @@
 
       <dt>Include, Exclude, and Tab Proxy</dt>
       <dd>Select to include or exclude URLs that match the pattern</dd>
-      <dd class="experimental">Select Tab Proxy to set for URLs that match the pattern <span>(Firefox only)</span></dd>
+      <dd class="experimental">Select Tab Proxy to set for URLs that match the pattern <em>(Firefox only)</em></dd>
 
       <dt>Type</dt>
       <dd>Select Wildcard (Glob), Match (Pattern), or Reg Exp (Regular Expression)</dd>
@@ -977,11 +1013,14 @@
       <dt>Pattern</dt>
       <dd>Set the pattern</dd>
 
-      <dt>Enable</dt>
+      <dt><input type="checkbox" class="toggle" checked> Enable</dt>
       <dd>Enable/disable the pattern</dd>
       <dd>Selectors only show enabled patterns</dd>
 
-      <dt>Delete</dt>
+      <dt><img src="../image/beaker.svg" alt=""> Test</dt>
+      <dd>Test the pattern in <a href="#pattern-tester">Pattern Tester</a></dd>
+
+      <dt><img src="../image/delete.svg" alt=""> Delete</dt>
       <dd>Delete the pattern</dd>
     </dl>
 
@@ -1007,7 +1046,7 @@
       <dd>Include <code>://</code> to ensure it matches the host</dd>
       <dd>Leading or trailing <code>*</code> is not necessary</dd>
 
-      <dt>Match <span>(v9.0)</span></dt>
+      <dt>Match <em>(v9.0)</em></dt>
       <dd>Match patterns are a way to specify groups of URLs and have strict rules</dd>
       <dd>Match pattern matches the entire URL</dd>
       <dd>Scheme, host, and path must be included</dd>
@@ -1104,9 +1143,9 @@
 
 
     <h3 id="bulk-edit">Bulk Edit</h3>
-    <p class="note">Bulk Edit is non-destructive. Click SAVE to apply the changes.</p>
+    <p>Bulk Edit is non-destructive. Click "Save" to apply the changes.</p>
 
-    <h5>Bulk Edit User Interface <span>(v9.0)</span></h5>
+    <h4>Bulk Edit User Interface <em>(v9.0)</em></h4>
 
     <ul>
       <li>Numbers are positions, starting from 1</li>
@@ -1250,15 +1289,16 @@
     </table>
 
 
-    <h5>Developer Tools</h5>
-    <dl>
-      <dd>Bulk edit examples for the advanced users</dd>
-      <dd>Go to the Options ➢ Proxies</dd>
-      <dd>Open Developer Tools (F12) or (Ctrl+Shift+I)</dd>
-      <dd>Go to the Console tab</dd>
-      <dd>Paste the following Code (edit as required)</dd>
-      <dd>Hit Enter</dd>
-      <dd>
+    <h4>Developer Tools</h4>
+    <p>Bulk edit examples for the advanced users</p>
+
+    <ul>
+      <li>Go to the Options ➔ Proxies</li>
+      <li>Open Developer Tools (F12) or (Ctrl+Shift+I)</li>
+      <li>Go to the Console tab</li>
+      <li>Paste the following Code (edit as required)</li>
+      <li>Hit Enter</li>
+      <li>
         <details>
         <summary>Code Examples</summary>
         <table style="margin-top: 0.5em;">
@@ -1300,17 +1340,13 @@
 
           </tbody>
         </table>
-      </details></dd>
-      <dd></dd>
-
-    </dl>
-
-
+      </details></li>
+    </ul>
 
 
 
     <h2 id="import">Import</h2>
-    <p class="note">Import is non-destructive. Click SAVE to apply the changes.</p>
+    <p>Import is non-destructive. Click "Save" to apply the changes.</p>
 
     <dl>
       <dt>FoxyProxy Account</dt>
@@ -1331,7 +1367,7 @@
           <dd>
 <pre>1.2.3.4:1080
 example.com:443
-example.com:3128:user:pass</pre>
+example.com:1080:user:pass</pre>
           </dd>
 
 
@@ -1415,7 +1451,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <p><a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/managed" target="_blank">storage.managed</a> is not supported on Firefox for Android.</p>
 
     <ul>
-      <li>FoxyProxy checks for enterprise policy and managed storage at start-up, and when background script is reloaded in MV3 <span>(v8.2)</span></li>
+      <li>FoxyProxy checks for enterprise policy and managed storage at start-up, and when background script is reloaded in MV3 <em>(v8.2)</em></li>
       <li>If managed data is found:
         <ul>
           <li>Managed data will be used</li>
@@ -1427,7 +1463,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       </li>
     </ul>
 
-    <h5>Default Options <span>(v8.9)</span></h5>
+    <h3>Default Options <em>(v8.9)</em></h3>
 <pre>
 {
   "mode": "disable",          // mandatory: current option, necessary to enable
@@ -1571,7 +1607,7 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
     <h2 id="support">Support</h2>
     <ul>
       <li>GitHub Community <a href="https://github.com/foxyproxy/browser-extension" target="_blank">Source Code and Support</a></li>
-      <li><a href="https://support.getfoxyproxy.org/" target="_blank">Open a Support Ticket</a> <span>(no registration required)</span></li>
+      <li><a href="https://support.getfoxyproxy.org/" target="_blank">Open a Support Ticket</a> <em>(no registration required)</em></li>
       <!-- <li><a href="mailto:support@getfoxyproxy.org">Email Support</a></li> -->
     </ul>
 

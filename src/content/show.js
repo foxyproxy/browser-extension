@@ -1,6 +1,6 @@
 import {App} from './app.js';
 
-// ---------- Show (Side Effect) ---------------------------
+// ---------- show (side effect) ---------------------------
 class Show {
 
   static {
@@ -8,8 +8,7 @@ class Show {
     basic && document.body.classList.add('basic');
     !firefox && document.body.classList.add('chrome');
 
-    const elem = document.querySelector('img[src="../image/icon.svg"]');
-    elem?.addEventListener('click', () => {
+    document.querySelector('img[src="../image/icon.svg"]')?.addEventListener('click', () => {
       basic && document.body.classList.toggle('basic');
       !firefox && document.body.classList.toggle('chrome');
     });

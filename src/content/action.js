@@ -3,15 +3,13 @@ import {Location} from './location.js';
 
 export class Action {
 
-  // https://github.com/w3c/webextensions/issues/72#issuecomment-1848874359
-  // 'prefers-color-scheme' detection in Chrome background service worker
-  static dark = false;
-
   static set(pref) {
     // --- set action/browserAction
     let title = '';
     let text = '';
-    let color = this.dark ? '#444' : '#fff';
+    // keep white background as default
+    let color = '#fff';
+
     switch (pref.mode) {
       case 'disable':
         title = browser.i18n.getMessage('disable');
@@ -25,7 +23,7 @@ export class Action {
 
       case 'pattern':
         title = browser.i18n.getMessage('proxyByPatterns');
-        text = '🌐';
+        text = '< >';
         break;
 
       default:

@@ -1,7 +1,7 @@
 import {Proxies} from './options-proxies.js';
 import {Nav} from './nav.js';
 
-// ---------- Import List (Side Effect) --------------------
+// ---------- import list (side effect) --------------------
 class ImportList {
 
   static {
@@ -19,7 +19,6 @@ class ImportList {
    for (const item of this.textarea.value.split(/\n+/)) {
       // simple vs Extended format
       const pxy = item.includes('://') ? this.parseExtended(item) : this.parseSimple(item);
-      // end on error
       if (!pxy) { return; }
 
       docFrag.append(Proxies.addProxy(pxy));
@@ -62,13 +61,13 @@ class ImportList {
     return pxy;
   }
 
-  static parseExtended(item) {
+  static parseExtended(str) {
     // https://user:password@78.205.12.1:21?color=ff00bc&title=work%20proxy
     // https://example.com:443?active=false&title=Work&username=abcd&password=1234&cc=US&city=Miami
     let url;
-    try { url = new URL(item); }
-    catch (error) {
-      alert(`${error}\n\n${item}`);
+    try { url = new URL(str); }
+    catch (e) {
+      alert(`${str}: ${e}`);
       return;
     }
 
@@ -85,16 +84,14 @@ class ImportList {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1603699
     // Enable DefaultURI use for unknown schemes (fixed in Firefox 122)
     // missing hostname, port with socks protocol (#120)
-    !url.hostname && (url = new URL('http:' + item.substring(url.protocol.length)));
+    !url.hostname && (url = new URL('http:' + str.substring(url.protocol.length)));
 
     const {hostname, port, username, password} = url;
     // set to pram, can be overridden in searchParams
     const pram = {type, hostname, port, username, password};
 
     // prepare object, make parameter keys case-insensitive
-    for (const [key, value] of url.searchParams) {
-      pram[key.toLowerCase()] = value;
-    }
+    [...url.searchParams].forEach(([key, value]) => pram[key.toLowerCase()] = value);
 
     // fix missing default port
     const defaultPort = {

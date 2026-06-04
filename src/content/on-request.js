@@ -49,19 +49,7 @@ export class OnRequest {
       browser.tabs.onRemoved.addListener(tabId => delete this.tabProxy[tabId]);
       // mark incognito/container
       browser.tabs.onCreated.addListener(e => this.checkPageAction(e));
-
-      // prevent proxy.onRequest.addListener unloading in MV3 (default 30s)
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1771203
-      // it can trigger DNS leak on reloading under limited circumstances
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1882276
-      this.persist();
     }
-  }
-
-  static persist() {
-    // clear the previous interval & set a new one
-    clearInterval(this.interval);
-    this.interval = setInterval(() => browser.runtime.getPlatformInfo(), 25_000);
   }
 
   static init(pref) {
@@ -112,11 +100,9 @@ export class OnRequest {
   }
 
   static process(e) {
-    // reset interval
-    this.persist();
-
     const tabId = e.tabId;
-    const fromTab = tabId !== -1;
+    // https://github.com/foxyproxy/browser-extension/issues/218
+    // some (not all) XHR from context JS are passed with tabId: -1
 
     // --- check Tab Proxy Pattern
     this.processTabProxy(tabId, e.url, e);
@@ -128,15 +114,15 @@ export class OnRequest {
         return {type: 'direct'};
 
       // --- tab proxy
-      case fromTab && !!this.tabProxy[tabId]:
+      case !!this.tabProxy[tabId]:
         return this.processProxy(tabId, this.tabProxy[tabId]);
 
       // --- incognito proxy
-      case fromTab && e.incognito && !!this.container.incognito:
+      case e.incognito && !!this.container.incognito:
         return this.processProxy(tabId, this.container.incognito);
 
       // --- container proxy
-      case fromTab && e.cookieStoreId && !!this.container[e.cookieStoreId]:
+      case e.cookieStoreId && !!this.container[e.cookieStoreId]:
         return this.processProxy(tabId, this.container[e.cookieStoreId]);
 
       // --- standard operation
@@ -268,7 +254,7 @@ export class OnRequest {
     return this.net.some(([st, end]) => ip >= st && ip <= end);
   }
 
-  // ---------- Tab Proxy ----------------------------------
+  // ---------- tab proxy ----------------------------------
   static setTabProxy(tab, pxy) {
     switch (true) {
       // unacceptable URLs
@@ -286,7 +272,7 @@ export class OnRequest {
     browser.storage.session.set({'tabProxy': this.tabProxy});
   }
 
-  // ---------- Update Page Action -------------------------
+  // ---------- update page action -------------------------
   static onUpdated(tabId, changeInfo, tab) {
     if (changeInfo.status !== 'complete') { return; }
 
@@ -294,7 +280,7 @@ export class OnRequest {
     pxy ? this.setAction(tab.id, pxy) : this.checkPageAction(tab);
   }
 
-  // ---------- Incognito/Container ------------------------
+  // ---------- incognito/container ------------------------
   static checkPageAction(tab) {
     // not if tab proxy is set
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; }

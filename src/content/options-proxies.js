@@ -1,5 +1,5 @@
 import {App} from './app.js';
-import {ImportExport} from './import-export.js';
+import {FS} from './fs.js';
 import {Pattern} from './pattern.js';
 import {Flag} from './flag.js';
 import {Color} from './color.js';
@@ -7,21 +7,20 @@ import {PAC} from './pac.js';
 import {Toggle} from './toggle.js';
 import {Tester} from './tester.js';
 import {Log} from './log.js';
+import {CustomValidity} from './custom-validity.js';
 import {Nav} from './nav.js';
 
 export class Proxies {
 
   static {
     this.proxyDiv = document.querySelector('div.proxy-div');
-    [this.proxyTemplate, this.patternTemplate] =
-      document.querySelector('.proxy-section template').content.children;
+    [this.proxyTemplate, this.patternTemplate] = document.querySelector('.proxy-section template').content.children;
 
-    // firefox only, disabling Tab Proxy in the template for chrome
-    !App.firefox && (this.patternTemplate.children[1].lastElementChild.disabled = true);
+    // firefox only, disabling Tab Proxy option in the template for chrome
+    App.firefox || (this.patternTemplate.children[1].lastElementChild.disabled = true);
 
     // --- buttons
-    document.querySelector('.proxy-top button[data-i18n="add"]').addEventListener('click', e => {
-      // this.addProxy(null, e.ctrlKey)
+    document.querySelector('.proxy-head button[data-i18n="add"]').addEventListener('click', e => {
       const [pxy, title] = this.addProxy();
       e.ctrlKey ? this.proxyDiv.prepend(pxy) : this.proxyDiv.append(pxy);
       pxy.open = true;
@@ -33,23 +32,23 @@ export class Proxies {
     this.proxyCache = {};
     // used to get the details for the log
     Log.proxyCache = this.proxyCache;
-    // this.process();
 
     // import pattern from log.js
-    window.addEventListener('importPatternCustom', (e) => this.importPatternCustom(e));
+    window.addEventListener('importPatternCustom', e => this.importPatternCustom(e));
   }
 
   // pref references the same object in the memory and its value gets updated
   static process(pref) {
     Log.mode = pref.mode;
     // reset
-    this.proxyDiv.textContent = '';
+    this.proxyDiv.replaceChildren();
+
     const docFrag = document.createDocumentFragment();
     pref.data.forEach(i => docFrag.append(this.addProxy(i)));
     this.proxyDiv.append(docFrag);
   }
 
-  static addProxy(item, modifier) {
+  static addProxy(item) {
     // --- details: make a blank proxy with all event listeners
     const pxy = this.proxyTemplate.cloneNode(true);
     const summary = pxy.children[0];
@@ -62,7 +61,7 @@ export class Proxies {
     // --- summary
     const [flag, sumTitle, active, dup, del, up, down] = summary.children;
     dup.addEventListener('click', () => this.duplicateProxy(pxy));
-    del.addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && pxy.remove());
+    del.addEventListener('click', () => pxy.remove());
     up.addEventListener('click', () => pxy.previousElementSibling?.before(pxy));
     down.addEventListener('click', () => pxy.nextElementSibling?.after(pxy));
 
@@ -83,7 +82,7 @@ export class Proxies {
       switch (true) {
         case ['flag', 'hostname', 'port'].some(i => data[i]):
           sumTitle.textContent = elem.textContent;
-          title.value = elem.textContent;
+          title.value ||= elem.textContent;                                         // check feature requests
           data.flag && (flag.textContent = data.flag);
           data.hostname && (hostname.value = data.hostname);
           data.port && (port.value = data.port);
@@ -110,13 +109,9 @@ export class Proxies {
     });
 
     pac.addEventListener('change', e => {
-      const {hostname: h, port: p} = App.parseURL(e.target.value);
-      if (!h) {
-        e.target.classList.add('invalid');
-        return;
-      }
-      hostname.value = h;
-      port.value = p;
+      const {hostname: h, port: p} = URL.parse(e.target.value) || {};
+      h && (hostname.value ||= h);
+      p && (port.value ||= p);
       type.value = 'pac';
       title.value ||= 'PAC';
       sumTitle.textContent ||= 'PAC';
@@ -205,7 +200,6 @@ export class Proxies {
       Nav.get('tester');
     });
 
-    // del.addEventListener('click', () => confirm(browser.i18n.getMessage('deleteConfirm')) && div.remove());
     del.addEventListener('click', () => div.remove());
 
     if (item) {
@@ -244,32 +238,14 @@ export class Proxies {
     patternBox.lastElementChild.children[4].focus();
   }
 
-  static importPattern(e, patternBox) {
-    const file = e.target.files[0];
-    switch (true) {
-      case !file: App.notify(browser.i18n.getMessage('error'));
-        return;
-      // check file MIME type
-      case !['text/plain', 'application/json'].includes(file.type):
-        App.notify(browser.i18n.getMessage('fileTypeError'));
-        return;
-    }
-
-    ImportExport.fileReader(file, data => {
-      try { data = JSON.parse(data); }
-      catch {
-        // display the error
-        App.notify(browser.i18n.getMessage('fileParseError'));
-        return;
-      }
-
-      Array.isArray(data) && data.forEach(i => patternBox.append(this.addPattern(i, i.include)));
-    });
+  static async importPattern(e, patternBox) {
+    const data = await FS.import(e);
+    Array.isArray(data) && data.forEach(i => patternBox.append(this.addPattern(i, i.include)));
   }
 
   static exportPattern(patternBox, title = '') {
-    const arr = [...patternBox.children].map(item => {
-      const elem = item.children;
+    const arr = [...patternBox.children].map(i => {
+      const elem = i.children;
       return {
         include: elem[1].value,
         type: elem[2].value,
@@ -285,9 +261,10 @@ export class Proxies {
     title &&= '_' + title;
     const data = JSON.stringify(arr, null, 2);
     const filename = `${browser.i18n.getMessage('pattern')}${title}_${new Date().toISOString().substring(0, 10)}.json`;
-    ImportExport.saveFile({data, filename, type: 'application/json'});
+    FS.writeFile({data, filename, saveAs: true, type: 'application/json'});
   }
 
+  // rebuild proxy data from DOM
   static async getProxyDetails(elem) {
     // proxy template
     const obj = {
@@ -311,8 +288,6 @@ export class Proxies {
 
     // --- populate values
     elem.querySelectorAll('[data-id]').forEach(i => {
-      // reset
-      i.classList.remove('invalid');
       Object.hasOwn(obj, i.dataset.id) && (obj[i.dataset.id] = i.type === 'checkbox' ? i.checked : i.value.trim());
     });
 
@@ -325,25 +300,23 @@ export class Proxies {
 
       // PAC
       case obj.type === 'pac':
-        const {hostname, port} = App.parseURL(obj.pac);
-        if (!hostname) {
-          this.setInvalid(elem, 'pac');
-          // alert(browser.i18n.getMessage('pacUrlError'));
+        if (!obj.pac) {
+          this.setRequired(elem, 'pac');
           return;
         }
-        obj.hostname = hostname;
-        obj.port = port;
+
+        const {hostname, port} = URL.parse(obj.pac) || {};
+        hostname && (obj.hostname ||= hostname);
+        port && (obj.port ||= port);
         break;
 
       // http | https | socks4 | socks5 | quic
       case !obj.hostname:
-        this.setInvalid(elem, 'hostname');
-        alert(browser.i18n.getMessage('hostnamePortError'));
+        this.setRequired(elem, 'hostname');
         return;
 
       case !obj.port:
-        this.setInvalid(elem, 'port');
-        alert(browser.i18n.getMessage('hostnamePortError'));
+        this.setRequired(elem, 'port');
         return;
     }
 
@@ -366,8 +339,8 @@ export class Proxies {
     const cache = [];
     for (const item of elem.querySelectorAll('.pattern-box .pattern-row')) {
       const [, inc, type, title, pattern, active] = item.children;
-      // reset
-      pattern.classList.remove('invalid');
+      // clear setCustomValidity
+      CustomValidity.clear(pattern);
       const pat = {
         type: type.value,
         title: title.value.trim(),
@@ -379,14 +352,14 @@ export class Proxies {
       // blank pattern
       if (!pat.pattern) { continue; }
 
-      if (!Pattern.validate(pat.pattern, pat.type, true)) {
+      const r = Pattern.validate(pat.pattern, pat.type, true);
+      if (r !== true) {
         // show Proxy tab
         Nav.get('proxies');
-        const details = item.closest('details');
+        const details = pattern.closest('details');
         // open proxy
         details.open = true;
-        pattern.classList.add('invalid');
-        pattern.scrollIntoView({behavior: 'smooth'});
+        r && CustomValidity.set(pattern, r);
         return;
       }
 
@@ -404,10 +377,10 @@ export class Proxies {
     return obj;
   }
 
-  static setInvalid(parent, id) {
+  static setRequired(parent, id) {
     parent.open = true;
     const elem = parent.querySelector(`[data-id="${id}"]`);
-    elem.classList.add('invalid');
-    parent.scrollIntoView({behavior: 'smooth'});
+    elem.required = true;
+    parent.scrollIntoView({block: 'center'});
   }
 }

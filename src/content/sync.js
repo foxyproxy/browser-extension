@@ -1,13 +1,12 @@
 import {App} from './app.js';
 
-// ---------- Storage Sync ---------------------------------
+// ---------- storage sync ---------------------------------
 export class Sync {
 
   static init(pref) {
     // not for storage.managed
     if (pref.managed) { return; }
 
-    // Firefox 101 (2022-05-31), Chrome 73
     browser.storage.sync.onChanged.addListener(e => this.onChanged(e));
   }
 

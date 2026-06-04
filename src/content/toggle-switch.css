@@ -1,10 +1,10 @@
-/* ----- Toggle Switch ----- */
+/* ----- toggle switch ----- */
 /* round() FF118, Ch125 */
 .toggle {
-  --toggle-dot: 12px;
-  --toggle-dot-margin: 1px;
+  --toggle-dot: 10px;
+  --toggle-dot-margin: 2px;
   --toggle-wh-ratio: 2.4;
-  --toggle-w: calc(var(--toggle-dot) * var(--toggle-wh-ratio) + var(--toggle-dot-margin) * 2);
+  --toggle-w: calc(round(var(--toggle-dot) * var(--toggle-wh-ratio), 1px) + var(--toggle-dot-margin) * 2);
   --toggle-h: calc(var(--toggle-dot) + var(--toggle-dot-margin) * 2);
   --toggle-trans: calc(var(--toggle-w) - var(--toggle-h));
 
@@ -14,30 +14,25 @@
   position: relative;
   border-radius: 50px;
   background-color: #ccc;
-  transition: background-color 0.5s;
-}
+  margin: 0;
 
-.toggle::before {
-  content: '';
-  display: block;
-  margin: var(--toggle-dot-margin);
-  width: var(--toggle-dot);
-  height: var(--toggle-dot);
-  background-color: #fff;
-  border-radius: 50%;
-  color: #fff;
-  transition: 0.5s;
-}
+  &::before {
+    content: '';
+    display: block;
+    margin: var(--toggle-dot-margin);
+    width: var(--toggle-dot);
+    height: var(--toggle-dot);
+    background-color: #fff;
+    border-radius: 50%;
+    color: #fff;
+    transition: 0.3s;
+  }
 
-.toggle:checked {
-  background-color: var(--btn-bg);
-}
+  &:checked {
+    background-color: var(--btn-bg);
 
-.toggle:checked::before {
-  transform: translateX(var(--toggle-trans));
-}
-
-/* smaller toggle switch for patterns */
-.pattern-row .toggle {
-  --toggle-dot: 10px;
+    &::before {
+      transform: translateX(var(--toggle-trans));
+    }
+  }
 }

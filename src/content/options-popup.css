@@ -1,4 +1,4 @@
-/* ----- Popup ----- */
+/* ----- popup ----- */
 .popup {
   display: none;
   background-color: #0003;
@@ -10,43 +10,43 @@
   left: 0;
   z-index: 10;
   transition: all 0.5s ease-in-out;
-}
 
-.popup.on {
-  display: grid;
-  place-content: center;
-  animation: fade-in 0.5s ease-in-out;
-}
+  &.on {
+    display: grid;
+    place-content: center;
+    animation: fade-in 0.5s ease-in-out;
+  }
 
-.popup span {
-  background-color: var(--alt-bg);
-  display: grid;
-  place-content: center end;
-  padding: 0 0.8em;
-  cursor: pointer;
-  font-size: 0.9em;
-  border-radius: 0.5em 0.5em 0 0;
-  /* set height to maintain the same result in chrome/firefox */
-  height: 2em;
-}
+  span {
+    background-color: var(--bg-alt);
+    display: grid;
+    place-content: center end;
+    padding: 0 0.8em;
+    cursor: pointer;
+    font-size: 0.9em;
+    border-radius: 0.5em 0.5em 0 0;
+    /* set height to maintain the same result in chrome/firefox */
+    height: 2em;
 
-.popup span:hover {
-  background-color: var(--hover);
-}
+    &:hover {
+      background-color: var(--hover);
+    }
+  }
 
-.popup textarea {
-  width: 50vw;
-  height: 50vh;
-  resize: both;
-  padding: 0.5em;
-}
+  textarea {
+    width: 50vw;
+    height: 50vh;
+    resize: both;
+    padding: 0.5em;
+  }
 
-.popup select {
-  display: none;
-}
+  select {
+    display: none;
 
-.popup select.on {
-  display: unset;
+    &.on {
+      display: unset;
+    }
+  }
 }
 
 @keyframes fade-in {

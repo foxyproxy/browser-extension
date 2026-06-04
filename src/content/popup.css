@@ -1,179 +1,150 @@
 @import 'default.css';
 @import 'theme.css';
 
-/* ----- Light Theme ----- */
+/* ----- light theme ----- */
 :root {
-  --filter: opacity(0.4) grayscale(1);
-  --selected: #fec8;
-}
+  --width: 25em;
 
-/* for the default theme */
-:root:not([class]) {
-  --nav-bg: #630;
-}
-
-/* ----- Dark Theme ----- */
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --filter: opacity(1) grayscale(1);
-    --selected: #222;
+   /* for the default theme */
+  &:not([class]) {
+    --nav-bg: #630;
   }
 }
 
-/* ----- General ----- */
+/* ----- general ----- */
 body {
-  opacity: 0;
-  font-size: 12px;
-  width: 25em;
   background-color: var(--bg);
+  font-size: 12px;
+  opacity: 0;
   transition: opacity 0.5s;
+  width: var(--width);
 }
 
-/*
-  https://bugzilla.mozilla.org/show_bug.cgi?id=1883896
-  Remove UA styles for :is(article, aside, nav, section) h1 (Nightly only) Firefox 125
-
-  https://bugzilla.mozilla.org/show_bug.cgi?id=1885509
-  Remove UA styles for :is(article, aside, nav, section) h1 (staged rollout)
-*/
-h1 {
+header {
+  display: grid;
+  grid-template-columns: 1.5em 1fr;
+  column-gap: 0.5em;
+  align-items: center;
   color: var(--nav-color);
   background-color: var(--nav-bg);
-  margin: 0;
   padding: 0.5em;
-  font-size: 1.2em;
+
+  img {
+    width: 1.5em;
+  }
+
+  h1 {
+    font-size: 1.2em;
+    margin: 0;
+  }
 }
 
-h1 img {
-  width: 1.5em;
-  vertical-align: text-bottom;
-}
-
-/* ----- Buttons ----- */
-div.popup-buttons {
-  display: grid;
-  grid-auto-flow: column;
-  column-gap: 0.1em;
-}
-
-button {
-  color: #fff;
-  border: none;
-  padding: 0.8em;
-  /* font-weight: bold; */
-}
-
-button:hover {
-  background-color: var(--btn-hover);
-}
-/* ----- /Buttons ----- */
-
-/* ----- Main Display ----- */
-div.list {
+/* ----- main display ----- */
+.list {
   padding-top: 0.5em;
   min-height: 15em;
   max-height: 30em;
   overflow-y: auto;
-  scrollbar-width: thin;
-}
 
-div.list label {
-  display: grid;
-  grid-template-columns: 2.5em auto 1fr;
-  column-gap: 0.5em;
-  padding: 0.2em 0.5em;
-  cursor: pointer;
-}
+  label {
+    display: grid;
+    grid-template-columns: 2.5em auto 1fr;
+    column-gap: 0.5em;
+    padding: 0.2em 0.5em;
 
-div.list label:hover {
-  background-color: var(--hover);
-}
+    &:hover {
+      background-color: var(--hover);
+    }
 
-div.list label.off {
-  display: none;
-}
+    &.off {
+      display: none;
+    }
 
-div.list label:has(input[name="server"]:checked) {
-  background-color: var(--selected);
-}
+    &:has(input[name="server"]:checked) {
+      background-color: var(--selected);
+    }
 
-.flag img {
-  width: 1.2em;
-}
+    .flag {
+      grid-row: span 2;
+      font-size: 1.8em;
+      line-height: 1;
+      place-self: start center;
 
-.flag img.off {
-  filter: var(--filter);
-}
+      img {
+        width: 1.2em;
+      }
+    }
 
-.flag {
-  grid-row: span 2;
-  font-size: 1.8em;
-  line-height: 1em;
-  place-self: start center;
-}
+    .title {
+      color: var(--header);
+      font-size: 1.2em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-.title {
-  color: var(--header);
-  font-size: 1.2em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+    .port {
+      color: var(--dim);
+      place-self: end start;
+    }
 
-.port {
-  color: var(--dim);
-  place-self: end start;
-}
+    .data {
+      grid-column: span 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: pre;
+      color: var(--dim);
+    }
 
-.data {
-  grid-column: span 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre;
-  color: var(--dim);
-}
+    input[name="server"] {
+      display: none;
+    }
 
-.data.off {
-  display: none;
-}
-
-input[name="server"] {
-  display: none;
+    &:is(.pattern, .disable) span {
+      grid-row: span 1;
+      align-self: center;
+    }
+  }
 }
 
 /* --- more section --- */
-summary {
-  background-color: var(--alt-bg);
-  padding: 0.2em 0.5em;
-  margin-bottom: 0.1em;
+details {
+  summary {
+    background-color: var(--bg-alt);
+    padding: 0.2em 0.5em;
+    margin-bottom: 0.1em;
+  }
+
+  div.host {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0.5em;
+    gap: 0.3em 0.5em;
+    align-items: center;
+
+    input {
+      grid-column: span 2;
+    }
+
+    input.filter {
+      background: url('../image/filter.svg') no-repeat left 0.5em center/1em;
+      padding-left: 2em;
+    }
+  }
 }
 
-div.host {
+/* ----- buttons ----- */
+footer {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 0.5em;
-  gap: 0.3em 0.5em;
-  align-items: center;
+  grid-auto-flow: column;
+  column-gap: 1px;
 }
 
-div.host input.filter {
-  background: url('../image/filter.svg') no-repeat left 0.5em center/1em;
-  padding-left: 2em;
+button {
+  color: #fff;
+  padding: 0.8em 0.1em;
 }
-
-div.host button {
-  background-color: unset;
-  border-radius: 5px;
-  border: 1px solid var(--border);
-  color: var(--color);
-  font-weight: normal;
-  padding: 0.2em;
-}
-
-div.host button:hover {
-  background-color: var(--hover);
-}
-
+/* ----- /buttons ----- */
 
 /* ----- show/hide elements ----- */
 /* --- Chrome --- */
@@ -201,5 +172,10 @@ div.host button:hover {
   opacity: 0.3;
   pointer-events: none;
   user-select: none;
+}
+
+/* --- no patterns --- */
+.no-pattern label.pattern {
+  display: none;
 }
 /* ----- /show/hide elements ----- */

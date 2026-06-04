@@ -1,11 +1,11 @@
 import {App} from './app.js';
 import {Popup} from './options-popup.js';
 
-// ---------- Proxy Text (Side Effect) ---------------------------
+// ---------- proxy text (side effect) ---------------------------
 class ProxyTest {
 
   static {
-    document.querySelector('.proxy-top button[data-i18n="test"]').addEventListener('click', () => this.selectOptions());
+    document.querySelector('.proxy-head button[data-i18n="test"]').addEventListener('click', () => this.selectOptions());
     this.popupProxy = document.querySelector('.popup select.popup-test-proxy');
     this.popupServer = document.querySelector('.popup select.popup-server');
     this.popupServer.addEventListener('change', () => this.process());
@@ -30,9 +30,6 @@ class ProxyTest {
     if (!this.server) { return; }
 
     Popup.show('Starting the proxy Test\n');
-
-    // check 'prefers-color-scheme' since it is not available in background service worker
-    this.dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // --- get the IP check server
     const serverText = this.popupServer.selectedOptions[0].textContent;
@@ -83,13 +80,16 @@ class ProxyTest {
     this.reset();
   }
 
+  // Chrome: cant use Promise response of sendMessage to background script
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=1185241
+  // Issue 1185241: Support Promise as return value from runtime.onMessage callback
   static async setProxy(pref) {
     // await runtime.sendMessage resolves early on Chrome
     App.firefox ? await this.sendMessage(pref) : await this.chromeSendMessage(pref);
   }
 
   static sendMessage(pref) {
-    return browser.runtime.sendMessage({id: 'setProxy', pref, dark: this.dark, noDataChange: true});
+    return browser.runtime.sendMessage({update: 'setProxy', pref});
   }
 
   static async chromeSendMessage(pref) {
@@ -106,7 +106,7 @@ class ProxyTest {
   static async tabProxy(pxy, realIP) {
     Popup.show('Setting Tab Proxy with mode "Disable"');
     const tab = await browser.tabs.create({active: false});
-    await browser.runtime.sendMessage({id: 'setTabProxy', proxy: pxy, tab});
+    await browser.runtime.sendMessage({update: 'setTabProxy', proxy: pxy, tab});
     await new Promise(resolve => {
       const listener = e => {
         browser.tabs.remove(tab.id);
@@ -141,7 +141,7 @@ class ProxyTest {
       Popup.show(`Your IP: ${ip}\n`);
       return ip;
     })
-    .catch(e => Popup.show(`Your IP: undefined\nStatus: ${e.message}\n`));
+    .catch(e => Popup.show(`Your IP: undefined\nStatus: ${e}\n`));
   }
 
   static response(r) {

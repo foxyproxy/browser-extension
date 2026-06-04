@@ -1,4 +1,4 @@
-// ---------- Spinner --------------------------------------
+// ---------- spinner --------------------------------------
 export class Spinner {
 
   static spinner = document.querySelector('.spinner');

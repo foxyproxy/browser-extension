@@ -5,19 +5,20 @@ import './popup-filter.js';
 import './show.js';
 import './i18n.js';
 
-// ---------- User Preferences -----------------------------
+// ---------- user preferences -----------------------------
 await App.getPref();
 
-// ---------- Popup ----------------------------------------
+// ---------- popup ----------------------------------------
 class Popup {
 
   static {
+    document.querySelectorAll('button').forEach(i =>
+      i.addEventListener('click', e => this.processButtons(e)));
+
     // --- theme
     pref.theme && (document.documentElement.className = pref.theme);
-    // show after
+    // show after theme
     document.body.style.opacity = 1;
-
-    document.querySelectorAll('button').forEach(i => i.addEventListener('click', e => this.processButtons(e)));
 
     this.list = document.querySelector('div.list');
 
@@ -34,7 +35,18 @@ class Popup {
 
       const {value, selectedOptions} = e.target;
       const proxy = value && this.proxyCache[selectedOptions[0].dataset.index];
-      browser.runtime.sendMessage({id: 'setTabProxy', proxy, tab: this.tab});
+      browser.runtime.sendMessage({update: 'setTabProxy', proxy, tab: this.tab});
+    });
+
+    // --- Container Proxy (firefox only)
+    this.containerProxy = document.querySelector('select#containerProxy');
+    App.firefox && this.containerProxy.addEventListener('change', e => {
+      if (!this.tab) { return; }
+
+      const {value} = e.target;
+      const id = this.tab.cookieStoreId.substring(8);
+      value ? pref.container[id] = value : delete pref.container[id];
+      browser.runtime.sendMessage({update: 'setContainerProxy', pref});
     });
 
     // disable buttons on storage.managed
@@ -52,17 +64,17 @@ class Popup {
   static includeExclude(e) {
     const {id, value} = e.target;
     if (!value) { return; }
-    // proxy object reference to pref is lost in chrome when sent from popup.js
-    browser.runtime.sendMessage({id, pref, host: value, tab: this.tab});
+    // proxy object reference to pref is lost in chrome in sendMessage
+    browser.runtime.sendMessage({update: id, pref, host: value, tab: this.tab});
     // reset select option
     e.target.selectedIndex = 0;
   }
 
   static checkProxyByPatterns() {
     // check if there are patterns
-    if (!pref.data.some(i => i.active && (i.include[0] || i.tabProxy?.[0]))) {
+    if (!pref.data.some(i => i.active && (i.include[0] || i.exclude[0] || i.tabProxy?.[0]))) {
       // hide option if there are no patterns
-      this.list.children[0].style.display = 'none';
+      this.list.classList.add('no-pattern');
       // show as disable
       pref.mode === 'pattern' && (pref.mode = 'disable');
     }
@@ -79,13 +91,13 @@ class Popup {
     pref.data.filter(i => i.active).forEach(i => {
       const id = i.type === 'pac' ? i.pac : `${i.hostname}:${i.port}`;
       const label = labelTemplate.cloneNode(true);
-      const [flag, title, port, radio, data] = label.children;
+      const [flag, title, port, data, radio] = label.children;
       flag.textContent = Flag.show(i);
       title.textContent = i.title || i.hostname;
       port.textContent = !i.title ? i.port : '';
+      data.textContent = [i.city, Location.get(i.cc)].filter(Boolean).join(', ') || ' ';
       radio.value = i.type === 'direct' ? 'direct' : id;
       radio.checked = id === pref.mode;
-      data.textContent = [i.city, Location.get(i.cc)].filter(Boolean).join(', ') || ' ';
       docFrag.append(label);
     });
 
@@ -96,8 +108,8 @@ class Popup {
     );
 
     // --- Add Hosts to select
-    // used to find proxy, filter out PAC, limit to 10
-    this.proxyCache = pref.data.filter(i => i.active && i.type !== 'pac').slice(0, 10);
+    // used to find proxy, filter out PAC, limit to 100
+    this.proxyCache = pref.data.filter(i => i.active && i.type !== 'pac').slice(0, 100);
 
     this.proxyCache.forEach((i, index) => {
       const flag = Flag.show(i);
@@ -109,9 +121,10 @@ class Popup {
       docFrag.append(opt);
     });
 
+    this.containerProxy.append(docFrag.cloneNode(true));
+    this.tabProxy.append(docFrag.cloneNode(true));
     this.includeHost.append(docFrag.cloneNode(true));
-    this.excludeHost.append(docFrag.cloneNode(true));
-    this.tabProxy.append(docFrag);
+    this.excludeHost.append(docFrag);
 
     // get active tab
     [this.tab] = await browser.tabs.query({currentWindow: true, active: true});
@@ -120,13 +133,22 @@ class Popup {
     document.body.classList.toggle('not-http', !this.tab.url.startsWith('http'));
 
     // Check Tab proxy (Firefox only)
-    const allowedTabProxy = App.firefox && App.allowedTabProxy(this.tab.url);
-    allowedTabProxy && this.checkTabProxy();
-    document.body.classList.toggle('not-tab-proxy', !allowedTabProxy);
+    if (App.firefox) {
+      const allowedTabProxy = App.allowedTabProxy(this.tab.url);
+      allowedTabProxy && this.checkTabProxy();
+      document.body.classList.toggle('not-tab-proxy', !allowedTabProxy);
+    }
+
+    // Check Container proxy (Firefox only)
+    if (App.firefox) {
+      const cookieStoreId = this.tab.cookieStoreId.substring(8);
+      const host = pref.container[cookieStoreId];
+      host && (this.containerProxy.value = host);
+    }
   }
 
   static checkTabProxy() {
-    browser.runtime.sendMessage({id: 'getTabProxy', tab: this.tab})
+    browser.runtime.sendMessage({update: 'getTabProxy', tab: this.tab})
     .then(i => i && (this.tabProxy.value = `${i.hostname}:${i.port}`));
   }
 
@@ -136,13 +158,10 @@ class Popup {
     // not for storage.managed
     if (pref.managed) { return; }
 
-    // check 'prefers-color-scheme' since it is not available in background service worker
-    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
     // save mode
     pref.mode = mode;
     browser.storage.local.set({mode});
-    browser.runtime.sendMessage({id: 'setProxy', pref, dark, noDataChange: true});
+    browser.runtime.sendMessage({update: 'setProxy', pref});
   }
 
   static processButtons(e) {
@@ -157,7 +176,7 @@ class Popup {
 
       case 'ip':
         // sending message to the background script to complete even if popup gets closed
-        browser.runtime.sendMessage({id: 'getIP'});
+        browser.runtime.sendMessage({update: 'getIP'});
         break;
 
       case 'log':

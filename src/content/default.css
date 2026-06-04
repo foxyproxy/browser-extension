@@ -1,51 +1,33 @@
-/* ----- Light Theme ----- */
+/* ----- theme ----- */
 :root {
-  --color: #000;
-  --bg: #fff;
-  --alt-bg: #f5f5f5;
-  --hover: #eaeaea;
-  --highlight: #f90;
+  /* FF120 (2023-11-), Ch123 ?? check */
+  color-scheme: light dark;
 
-  --body-bg: #630;
-  --header: #c60;
+  --color: light-dark(#000, #fff);
+  --link: light-dark(#e70, #f90);
+  --dim: light-dark(#777, #ccc);
 
-  --nav-bg: #420;
-  --nav-hover: #851;
-  --nav-color: cornsilk;
+  --bg: light-dark(#fff, #420);
+  --bg-alt: light-dark(#f5f5f5, #666);
+
+  --hover: light-dark(#eaeaea, #444);
+  --border: light-dark(#ddd, #777);
+  --selected: light-dark(#fec8, #222);
 
   --btn-bg: #f90;
   --btn-hover: #e70;
 
-  --link: #e70;
-  --border: #ddd;
-  /* --shadow: #0004; */
-  --dim: #777;
-  --tr: #f5f5f5;
+  --body-bg: #630;
+  --header: light-dark(#c60, #e70);
+
+  --nav-bg: #420;
+  --nav-hover:#851;
+  --nav-color: cornsilk;
+
+  --highlight: #f90;
 }
 
-/* ----- Dark Theme ----- */
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --color: #fff;
-    --bg: #420;
-    --alt-bg: #666;
-    --hover: #444;
-
-    /* --body-bg: #630; */
-    --header: #e70;
-
-    --btn-bg: #f90;
-    --btn-hover: #e70;
-
-    --link: #f90;
-    --border: #777;
-    /* --shadow: #fff8; */
-    --dim: #ccc;
-    --tr: #531;
-  }
-}
-
-/* ----- General ----- */
+/* ----- general ----- */
 body {
   color: var(--color);
   background-color: var(--body-bg);
@@ -72,90 +54,116 @@ a {
   text-decoration: none;
 }
 
-select,
-textarea,
+code {
+  font-size: 1.3em;
+  padding: 0 0.3em;
+  background-color: var(--bg-alt);
+  white-space: break-spaces;
+}
+
+img {
+  vertical-align: middle;
+}
+
+/* ----- input ----- */
 input[type="number"],
-input[type="text"],
 input[type="password"],
-input[type="url"] {
+input[type="text"],
+input[type="url"],
+select,
+textarea {
   width: 100%;
   color: inherit;
-  background-color: var(--alt-bg);
+  background-color: var(--bg-alt);
   border: 1px solid var(--border);
   border-radius: 0.3em;
+
+  &:hover {
+    background-color: var(--hover);
+  }
 }
 
-:is(select,
-input[type="number"],
-input[type="text"],
-input[type="password"],
-input[type="url"]):hover {
-  background-color: var(--hover);
-}
-
-label[for],
+/* pointer */
+button,
 input[type="checkbox"],
+input[type="number"],
+input[type="password"],
+input[type="text"],
+input[type="url"],
+label:has(input),
+label.button,
+label[for],
+select,
 summary,
 .pointer {
   cursor: pointer;
 }
 
 ::placeholder {
-  opacity: 0.5;
-  color: inherit;
   font-style: italic;
 }
 
-.invalid,
-input:invalid {
+:invalid {
   box-shadow: 1px 1px 4px #f20, -1px -1px 4px #f20;
 }
 
-/* ----- Buttons ----- */
-button,
-label.flat {
-  background-color: var(--btn-bg);
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  text-align: center;
-  white-space: nowrap;
+/* ----- import/export ----- */
+input[type="file"] {
+  display: none;
 }
 
-button.flat,
-label.flat {
-  display: inline-block;
-  font-size: 0.9em;
-  color: #fff;
-  border-radius: 5px;
-  padding: 0.4em 1em;
-  min-width: 8em;
+/* ----- navigation ----- */
+input[name="nav"],
+input[type="checkbox"].control {
+  display: none;
+}
+/* ----- /input ----- */
+
+/* ----- buttons ----- */
+button > * {
+  pointer-events: none;
 }
 
-button:hover,
-label.flat:hover {
-  background-color: var(--btn-hover);
-}
-
-button:disabled,
-select:disabled {
+:is(button, input, select):disabled {
   cursor: not-allowed;
   opacity: 0.4;
 }
 
+:is(button, label) img {
+  width: 1em;
+}
+
+/* default button */
+button,
+label.button {
+  background-color: var(--btn-bg);
+  border: none;
+  line-height: 1;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--btn-hover);
+  }
+}
+
+label.button {
+  display: inline-block;
+  text-align: center;
+}
+
 button.plain {
-  background-color: unset;
-  padding: 0;
+  background-color: unset !important;
+  border: none;
+  color: inherit;
   margin: 0;
-  min-width: 1em;
+  min-width: unset;
+  padding: 0;
 }
 
 button[type="submit"] {
-  display: table;
   color: #fff;
-  font-size:0.9em;
-  border-radius: 5px;
-  padding: 0.5em 5em;
+  display: table;
   margin: 1em auto 0;
+  min-width: 8em;
 }
-/* ----- /Buttons ----- */
+/* ----- /buttons ----- */

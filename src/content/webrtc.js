@@ -1,13 +1,19 @@
 import {App} from './app.js';
 
-// ---------- WebRTC (Side Effect) -------------------------
+// ---------- WebRTC (side effect) -------------------------
 class WebRTC {
 
   static {
-    this.webRTC = document.querySelector('#limitWebRTC');
+    this.limitWebRTC = document.querySelector('#limitWebRTC');
+
+    // firefox only
+    this.toggleWebRTC = document.querySelector('#toggleWebRTC');
+    App.firefox && this.toggleWebRTC.addEventListener('change', () => this.toggle());
+
     // firefox only option
-    !App.firefox && (this.webRTC.lastElementChild.disabled = true);
-    this.webRTC.addEventListener('change', () => this.process());
+    App.firefox || (this.limitWebRTC.lastElementChild.disabled = true);
+    this.limitWebRTC.addEventListener('change', () => this.limit());
+
     this.init();
   }
 
@@ -15,25 +21,36 @@ class WebRTC {
     // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request
     // Any permissions granted are retained by the extension, even over upgrade and disable/enable cycling.
     // check if permission is granted
-    this.permission = await browser.permissions.contains({permissions: ['privacy']});
+    const permission = await browser.permissions.contains({permissions: ['privacy']});
+    if (!permission) { return; }
+
+    // check peerConnectionEnabled
+    const res = App.firefox && await browser.privacy.network.peerConnectionEnabled.get({});
+    App.firefox && (this.toggleWebRTC.checked = res.value);
 
     // check webRTCIPHandlingPolicy
-    if (this.permission) {
-      const result = await browser.privacy.network.webRTCIPHandlingPolicy.get({});
-      this.webRTC.value = result.value;
-    }
+    const result = await browser.privacy.network.webRTCIPHandlingPolicy.get({});
+    this.limitWebRTC.value = result.value;
   }
 
-  static async process() {
-    if (!this.permission) {
-      // request permission, Firefox for Android version 102
-      this.permission = await browser.permissions.request({permissions: ['privacy']});
-      if (!this.permission) { return; }
-    }
+  // firefox only
+  static async toggle() {
+    // request permission, Firefox for Android version 102
+    const permission = await browser.permissions.request({permissions: ['privacy']});
+    if (!permission) { return; }
+
+    // { levelOfControl: "controllable_by_this_extension", value: true }
+    browser.privacy.network.peerConnectionEnabled.set({value: this.toggleWebRTC.checked});
+  }
+
+  static async limit() {
+    // request permission, Firefox for Android version 102
+    const permission = await browser.permissions.request({permissions: ['privacy']});
+    if (!permission) { return; }
 
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1790270
     // WebRTC bypasses Network settings & proxy.onRequest
     // {"levelOfControl": "controllable_by_this_extension", "value": "default"}
-    browser.privacy.network.webRTCIPHandlingPolicy.set({value: this.webRTC.value});
+    browser.privacy.network.webRTCIPHandlingPolicy.set({value: this.limitWebRTC.value});
   }
 }

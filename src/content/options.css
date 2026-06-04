@@ -1,56 +1,41 @@
 @import 'default.css';
-@import 'progress-bar.css';
-@import 'spinner.css';
 @import 'nav.css';
+@import 'progress-bar.css';
+@import 'toggle-switch.css';
+@import 'spinner.css';
 @import 'theme.css';
 @import 'options-show.css';
 @import 'options-popup.css';
-@import 'toggle-switch.css';
 @import 'tester.css';
 @import 'log.css';
 
-/* ----- Light Theme ----- */
+/* ----- general ----- */
 :root {
-  --nav-height: 3rem;
-  --max-width: 75rem;
-  --pass: #080;
-  --fail: #f00;
-}
-
-/* ----- Dark Theme ----- */
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --pass: #0c0;
-    --fail: #f90;
-  }
-}
-
-/* ----- General ----- */
-html {
-  scroll-padding-top: var(--nav-height);
+  --max-width: 60rem;
 }
 
 body {
+  /* show body after page is populated */
   opacity: 0;
   margin: 0;
   overflow: hidden;
   transition: opacity 0.5s;
   font-size: initial;
-}
 
-body::after {
-  content: '';
-  background-image: url('../image/logo.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  bottom: 0.5em;
-  right: 0;
-  display: inline-block;
-  width: 128px;
-  height: 128px;
-  opacity: 0.3;
-  z-index: -1;
+  &::after {
+    content: '';
+    background-image: url('../image/logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    bottom: 0.5em;
+    right: 0;
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    opacity: 0.3;
+    z-index: -1;
+  }
 }
 
 article {
@@ -58,7 +43,6 @@ article {
 }
 
 section {
-  display: none;
   margin: 0 auto;
   max-width: var(--max-width);
   height: calc(100vh - var(--nav-height) - 2rem);
@@ -72,16 +56,8 @@ iframe {
   height: 99%;
 }
 
-/* img {
-  vertical-align: text-bottom;
-} */
-
-label:has(input[type="checkbox"]) {
-  cursor: pointer;
-}
-
-label > input[type="checkbox"] {
-  margin-right: 0.5em;
+label input[type="checkbox"] {
+  margin: 0 0.5em 0 0;
 }
 
 /*
@@ -90,11 +66,6 @@ input[type="number"] {
 }
 */
 
-textarea {
-  min-height: 6em;
-  resize: vertical;
-}
-
 fieldset {
   background-color: var(--bg);
   border-radius: 0.5em;
@@ -102,295 +73,250 @@ fieldset {
   padding: 1.5em;
 }
 
-/* fieldset label img {
-  width: 1em;
-} */
-
 .description {
   border-left: 2px solid #abc;
+  color: var(--dim);
   font-size: 0.9em;
   font-style: italic;
   margin-left: 0.5em;
   margin-top: 0;
   padding-left: 0.3em;
+
+  &:has(+ textarea) {
+    margin-bottom: 0.5em;
+  }
+}
+
+textarea {
+  min-height: 6em;
+  resize: vertical;
 }
 
 details {
   padding: 0;
-  background-color: var(--alt-bg);
+  background-color: var(--bg-alt);
   border-radius: 5px;
   margin-bottom: 0.5em;
+
+  > summary {
+    border-radius: 5px;
+    padding: 0.5em;
+
+    &:hover,
+    details[open] & {
+      background-color: var(--hover);
+    }
+  }
 }
 
-details > summary {
+/* ----- button ----- */
+button,
+label.button {
   border-radius: 5px;
-  padding: 0.5em;
+  color: inherit;
+  font-size: 0.9em;
+  /* min-width: 8em; */
+  padding: 0.4em 1em;
 }
 
-details > summary:hover,
-details[open] > summary {
-  background-color: var(--hover);
-}
-
-summary ~ * {
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-
-details[open] summary ~ * {
-  opacity: 1;
-}
-
-/* ----- Import/Export ----- */
-input[type="file"] {
-  display: none;
-}
-/* ----- /Import/Export ----- */
-
-/* ----- Submit Button ----- */
-/* button[type="submit"] {
-  display: table;
+button.flat,
+label.button {
   color: #fff;
-  background-color: var(--btn-bg);
-  font-size:0.9em;
-  margin: 1em auto 0;
-  padding: 0.5em 5em;
-  border-radius: 5px;
-}
-
-button[type="submit"]:hover {
-  background-color: var(--btn-hover);
-} */
-/* ----- /Submit Button ----- */
-
-/* ----- Button ----- */
-button.bin,
-button.test,
-button.close {
-  width: 1.5em;
-  border: 0;
-}
-
-button.bin::before,
-button.test::before {
-  content: '';
-  width: 1em;
-  height: 1em;
   display: inline-block;
-  vertical-align: text-bottom;
-  background: url('../image/bin.svg') no-repeat center / contain;
-}
-
-button.test::before {
-  background: url('../image/beaker.svg') no-repeat center / contain;
-}
-
-button.close::before {
-  content: '❌';
-}
-
-.up:hover, .down:hover {
-  color: #080;
-}
-
-button.random {
-  font-size: 1.3em;
+  min-width: 8em;
 }
 
 button.slim {
   padding: 0.2em 1em;
   min-width: unset;
 }
-/* ----- /Button ----- */
+/* ----- /button ----- */
 
 /* ----- data-link ----- */
-[data-link] {
+[data-link]:not(img) {
   cursor: pointer;
+
+  &::before {
+    content: '#';
+    display: inline-block;
+    width: 0.8em;
+    margin-left: -0.8em;
+    opacity: 0.5;
+    visibility: hidden;
+  }
+
+  &:hover {
+    text-decoration: underline;
+
+    &::before {
+      visibility: visible;
+    }
+  }
 }
 
-[data-link]:hover {
-  text-decoration: underline;
+img[data-link] {
+  cursor: pointer;
+  display: table;
+  width: 1em;
+  margin-left: auto;
 }
 
-[data-link]::before {
-  content: '#';
-  display: inline-block;
-  width: 0.8em;
-  margin-left: -0.8em;
-  opacity: 0.5;
-  visibility: hidden;
-}
-
-[data-link]:hover::before {
-  visibility: visible;
-}
-
-footer {
-  display: grid;
-}
-
-footer span[data-link] {
-  font-size: 0.9em;
-  place-self: end;
-}
 /* ----- /data-link ----- */
 
-/* ----- Options ----- */
-/*
-input[type="text"],
-input[type="password"],
-input[type="url"],
-select,
-textarea {
-  font-size: 1em;
-} */
-
-section.options fieldset * {
-  transition: opacity 0.5s;
+/* ----- options ----- */
+button[type="submit"] {
+  font-weight: bold;
 }
 
-input[type="color"] {
-  border: 0;
-  width: 4em;
-  height: 1.7em;
+button:is(.up, .down) {
+  color: #ccc;
+  text-shadow: 0 -1px 1px #555, 0 1px 0 #fff;
+
+  &:hover {
+    color: #080;
+  }
 }
 
-.options .buttons {
-  display: grid;
-  grid-auto-flow: column;
-  justify-content: end;
-  column-gap: 0.2em;
-  margin-bottom: 1em;
+button.random {
+  font-size: 1.3em;
 }
 
-.options .theme,
-.options .container,
-.options .commands {
-  display: grid;
-  grid-template-columns: minmax(10em, max-content) max-content;
-  gap: 0.2em 1em;
-  margin-bottom: 1em;
+section.options {
+  fieldset * {
+    transition: opacity 0.5s;
+  }
+
+  .buttons {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: end;
+    gap: 0.2em;
+    margin-bottom: 1em;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 0.5em;
+
+    input {
+      place-self: start;
+    }
+
+    select {
+      place-self: start;
+      width: auto;
+    }
+
+    p {
+      grid-column: span 2;
+    }
+  }
+
+  :is(.container, .commands) label {
+    margin-left: 1em;
+  }
+
+  .container button {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .commands {
+    margin-bottom: 1em;
+  }
 }
+/* ----- /options ----- */
 
-.options .container label,
-.options .commands label {
-  margin-left: 1em;
-}
-
-.container button {
-  grid-column: span 2;
-  justify-self: right;
-  /* padding: 0.2em;
-  min-width: 6em; */
-}
-
-/* button strip */
-/* .options .buttons {
-  padding: 0 1.5em;
-  margin: 0 -1.5em 1em;
-  background-color: var(--btn-bg);
-}
-
-.options .buttons > * {
-  border-left: 2px solid var(--bg);
-  border-radius: 0;
-}
-
-.options .buttons > *:last-child {
-  border-right: 2px solid var(--bg);
-} */
-
-
-
-/* ----- /Options ----- */
 details .content {
   padding: 0.5em;
 }
 
-/* ----- Proxy ----- */
-.proxy-top {
+/* ----- proxy ----- */
+.proxy-head {
   display: grid;
   grid-template-columns: auto 1fr auto auto auto;
   gap: 0.2em;
   margin-bottom: 0.5em;
+
+  input.filter {
+    background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
+    padding-left: 2em;
+    justify-self: start;
+  }
 }
 
-.proxy-top input.filter {
-  background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
-  padding-left: 2em;
-  justify-self: start;
+details.proxy {
+  &.off {
+    display: none;
+  }
+
+  summary {
+    list-style: none;
+    border-left: 1.5em solid var(--btn-bg);
+    display: grid;
+    grid-template-columns: auto 1fr repeat(5, auto);
+    gap: 0.2em;
+    align-items: center;
+
+    span:first-of-type {
+      margin-right: 0.3em;
+    }
+
+    span:nth-of-type(2):empty::before {
+      content: 'title ...';
+      font-style: italic;
+      opacity: 0.2;
+    }
+
+    .toggle {
+      margin-right: 0.2em;
+    }
+  }
 }
 
-details.proxy .content * {
-  transition: opacity 0.5s;
-}
-
-details.proxy.off {
-  display: none;
-}
-
-details.proxy > summary {
-  list-style: none;
-  border-left: 1.5em solid var(--btn-bg);
+div.proxy-box {
   display: grid;
-  grid-template-columns: auto 1fr repeat(5, auto);
-  gap: 0.2em;
-  align-items: center;
-}
-
-details.proxy > summary button.plain {
-  line-height: 1em;
-}
-
-details.proxy > summary span:first-of-type {
-  margin-right: 0.3em;
-}
-
-details.proxy > summary span:nth-of-type(2):empty::before {
-  content: 'title ...';
-  font-style: italic;
-  opacity: 0.2;
-}
-
-.proxy-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 2fr;
-  /* grid-auto-rows: min-content; */
-  gap: 0.5em;
-  padding-bottom: 0.5em;
-}
-
-.password {
-  display: grid;
-  grid-template-columns: 1fr 1em;
-  gap: 0.5em;
-}
-
-.proxy-box button.random {
-  line-height: 1em;
-}
-
-.pac {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1.5fr;
   gap: 0.2em 0.5em;
-  font-size: 0.9em;
-  grid-row: span 2;
+  padding-bottom: 0.5em;
+
+  .password {
+    display: grid;
+    grid-template-columns: 1fr 1em;
+    gap: 0.5em;
+  }
+
+  input[type="color"] {
+    border: 0;
+    width: 4em;
+    height: 1.7em;
+  }
+
+  button.random {
+    line-height: 1;
+  }
+
+  .pac {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.2em 0.5em;
+    font-size: 0.9em;
+    grid-row: span 2;
+
+    [type="url"] {
+      grid-column: span 2;
+    }
+
+    button {
+      place-self: center end;
+    }
+  }
 }
 
-.pac [type="url"] {
-  grid-column: span 2;
-}
-
-.pac button {
-  /* padding: 0.2em 1em;
-  min-width: unset; */
-  place-self: center end;
-}
-
-
-/* ----- Pattern ----- */
+/* ----- pattern ----- */
 .pattern-box {
+  /* padding space for scrollbar */
   padding: 0.2em;
   max-height: 20em;
   overflow-y: auto;
@@ -403,41 +329,28 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   gap: 0.2em;
   place-items: center;
   font-size: 0.9em;
+  line-height: 1;
 }
 
 .pattern-head {
   background-color: var(--bg);
   padding: 0.2em;
-}
-
-.pattern-head button {
-  /* padding: 0.2em 1em;
-  min-width: unset; */
-  font-size: 0.8em;
-}
-
-/* .pattern-head button[data-i18n="add|title"] {
-  grid-column: span 3;
-} */
-
-.pattern-head button span.plus {
-  filter: brightness(0) invert(1);
-}
-
-.pattern-head :nth-child(2) {
-  grid-column: span 2;
-}
 
 
-/* import & export (label & button) */
-.pattern-head .plain {
-  font-size: 1em;
-  line-height: 1em;
-  cursor: pointer;
-}
 
-.pattern-head :last-child {
-  grid-column: span 2;
+  .plus {
+    font-size: 1.2em;
+    padding: 0.1em 0.8em;
+  }
+
+  :nth-child(2) {
+    grid-column: span 2;
+  }
+
+  :last-child {
+    font-size: 1em;
+    grid-column: span 2;
+  }
 }
 
 /* hide when there are no patterns */
@@ -449,24 +362,7 @@ details.proxy > summary span:nth-of-type(2):empty::before {
   margin-top: 0.2em;
   padding: 0 0.4em;
 }
-
-/* .pattern-row input:nth-of-type(2) {
-  grid-column: span 3;
-} */
-
-.proxy summary button,
-.pattern-box button.test,
-.pattern-box button.bin {
-  padding: 0;
-  background-color: transparent;
-  /* border: none; */
-  font-size: 1em;
-  transition: 0.5s;
-  color: #ccc;
-  font-weight: 900;
-  text-shadow: 0 -1px 1px #555, 0 1px 0 #fff;
-}
-/* ----- /Pattern ----- */
+/* ----- /pattern ----- */
 
 /* ----- bulk edit ----- */
 .bulk-edit {
@@ -496,54 +392,42 @@ details.proxy.s1 {
 }
 /* ----- /bulk-edit ----- */
 
-/* ----- Import ----- */
-.import textarea {
-  height: 10em;
+/* ----- import ----- */
+section.import {
+  textarea {
+    height: 10em;
+  }
+
+  summary::marker {
+    color: var(--header);
+  }
+
+  details button.flat {
+    margin-top: 0.5em;
+  }
+
+  details.import-account {
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 3fr 1em;
+      gap: 0.5em;
+    }
+
+    input#username {
+      grid-column: span 2;
+    }
+
+    button.flat {
+      justify-self: start;
+    }
+
+    .account-options {
+      display: grid;
+      grid-auto-flow: column;
+      grid-column: span 2;
+      justify-content: start;
+      gap: 0.5em;
+    }
+  }
 }
-
-.import summary::marker {
-  color: var(--header);
-}
-
-.import details.import-account .content {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1em;
-  gap: 0.5em;
-}
-
-.import details.import-account input#username {
-  grid-column: span 2;
-}
-
-.import .import-account .account-options {
-  display: grid;
-  grid-auto-flow: column;
-  grid-column: span 2;
-  justify-content: start;
-  gap: 0.5em;
-}
-
-.import details button.flat {
-  margin-top: 0.5em;
-}
-
-.import details.import-account button.flat {
-  justify-self: start;
-}
-
-
 /* ----- /import ----- */
-
-/* ----- Counter ----- */
-/* .proxy-section {
-  counter-reset: n;
-}
-
-.proxy-section details summary :first-child::before {
-  counter-increment: n;
-  content: counter(n);
-  display: inline-block;
-  margin-right: 0.5em;
-  color: var(--dim);
-} */
-/* ----- /Counter ----- */

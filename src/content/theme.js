@@ -1,4 +1,4 @@
-// ---------- Theme (Side Effect) --------------------------
+// ---------- theme (side effect) --------------------------
 class Theme {
 
   static {

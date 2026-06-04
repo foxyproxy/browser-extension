@@ -1,6 +1,6 @@
 import {App} from './app.js';
 
-// ---------- Incognito Access (Side Effect) ---------------
+// ---------- incognito access (side effect) ---------------
 class IncognitoAccess {
 
   static {
@@ -11,6 +11,6 @@ class IncognitoAccess {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1725981
     // proxy.settings is not supported on Android
     App.firefox && !App.android && browser.extension.isAllowedIncognitoAccess()
-    .then(response => !response && alert(browser.i18n.getMessage('incognitoAccessError')));
+    .then(r => !r && alert(browser.i18n.getMessage('incognitoAccessError')));
   }
 }

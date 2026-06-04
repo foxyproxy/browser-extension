@@ -1,10 +1,10 @@
-// ---------- Progress Bar ---------------------------------
+// ---------- progress bar ---------------------------------
 export class ProgressBar {
 
   static bar = document.querySelector('.progress-bar');
 
   static show() {
-    this.bar.classList.toggle('on');
-    setTimeout(() => this.bar.classList.toggle('on'), 2000);
+    this.bar.classList.add('on');
+    setTimeout(() => this.bar.classList.remove('on'), 2000);
   }
 }

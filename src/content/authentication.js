@@ -28,9 +28,6 @@ export class Authentication {
     // true for Proxy-Authenticate, false for WWW-Authenticate
     if (!e.isProxy) { return; }
 
-    // sending message to log.js
-    browser.runtime.sendMessage({id: 'onAuthRequired', e});
-
     // already sent once and pending
     if (this.pending[e.requestId]) {
       return {cancel: true};

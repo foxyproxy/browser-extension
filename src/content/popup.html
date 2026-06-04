@@ -5,24 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Popup</title>
     <link href="popup.css" rel="stylesheet">
-    <script type="module" src="popup.js"></script>
+    <script src="popup.js" type="module"></script>
   </head>
   <body>
     <article>
+      <header>
+        <img src="../image/icon.svg" alt="">
+        <h1 data-i18n="extensionName"></h1>
+      </header>
+
       <section>
-        <h1 data-i18n="extensionName"><img src="../image/icon.svg" alt=""> </h1>
-
         <div class="list">
-          <label class="pattern not-basic">
-            <span class="flag"><img src="../image/power.svg" alt=""></span>
-            <span class="title" data-i18n="proxyByPatterns"></span>
-            <input type="radio" name="server" value="pattern">
-          </label>
-
           <label class="disable">
             <span class="flag"><img class="off" src="../image/power.svg" alt=""></span>
             <span class="title" data-i18n="disable"></span>
             <input type="radio" name="server" value="disable" checked>
+          </label>
+
+          <label class="pattern not-basic">
+            <span class="flag"><img class="off" src="../image/code.svg" alt=""></span>
+            <span class="title" data-i18n="proxyByPatterns"></span>
+            <input type="radio" name="server" value="pattern">
           </label>
         </div>
 
@@ -36,6 +39,11 @@
               <option value="">&nbsp;</option>
             </select>
 
+            <select id="containerProxy" class="firefox tab-proxy">
+              <option value="" data-i18n="containerProxy" disabled selected></option>
+              <option value="">&nbsp;</option>
+            </select>
+
             <select id="includeHost" class="local http not-basic">
               <option value="" data-i18n="includeHost" disabled selected></option>
             </select>
@@ -46,26 +54,25 @@
           </div>
         </details>
 
-        <div class="popup-buttons">
-          <button type="button" data-i18n="options"></button>
-          <button type="button" data-i18n="log"></button>
-          <button type="button" data-i18n="ip"></button>
-          <button type="button" data-i18n="location"></button>
-        </div>
-
-
         <!-- template -->
         <template>
           <label>
             <span class="flag"></span>
             <span class="title"></span>
             <span class="port"></span>
-            <input type="radio" name="server">
             <span class="data"></span>
+            <input type="radio" name="server">
           </label>
         </template>
         <!-- /template -->
       </section>
+
+      <footer>
+        <button type="button" data-i18n="options"></button>
+        <button type="button" data-i18n="log"></button>
+        <button type="button" data-i18n="ip"></button>
+        <button type="button" data-i18n="location"></button>
+      </footer>
     </article>
   </body>
 </html>

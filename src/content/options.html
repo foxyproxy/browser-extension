@@ -7,30 +7,22 @@
   <title data-i18n="options">FoxyProxy </title>
   <link href="../image/icon.svg" rel="icon" type="image/png">
   <link href="options.css" rel="stylesheet">
-  <script type="module" src="options.js"></script>
+  <script src="options.js" type="module"></script>
 </head>
 
 <body>
 
   <!-- Navigation -->
-  <input type="radio" name="nav" id="nav1">
-  <input type="radio" name="nav" id="nav2">
-  <input type="radio" name="nav" id="nav3" checked>
-  <input type="radio" name="nav" id="nav4">
-  <input type="radio" name="nav" id="nav5">
-  <input type="radio" name="nav" id="nav6">
-  <input type="radio" name="nav" id="nav7">
-
   <div class="nav">
     <nav>
       <img src="../image/icon.svg" alt="">
-      <label for="nav3" data-i18n="options"></label>
-      <label for="nav4" data-i18n="proxies"></label>
-      <label for="nav5" data-i18n="import"></label>
-      <label for="nav6" data-i18n="tester"></label>
-      <label for="nav7" data-i18n="log"></label>
-      <label for="nav1" data-i18n="help"></label>
-      <label for="nav2" data-i18n="about"></label>
+      <label data-i18n="options"><input type="radio" name="nav" id="nav3" checked></label>
+      <label data-i18n="proxies"><input type="radio" name="nav" id="nav4"></label>
+      <label data-i18n="import"><input type="radio" name="nav" id="nav5"></label>
+      <label data-i18n="tester"><input type="radio" name="nav" id="nav6"></label>
+      <label data-i18n="log"><input type="radio" name="nav" id="nav7"></label>
+      <label data-i18n="help"><input type="radio" name="nav" id="nav1"></label>
+      <label data-i18n="about"><input type="radio" name="nav" id="nav2"></label>
     </nav>
   </div>
 
@@ -77,7 +69,7 @@
     <section class="options">
       <fieldset>
         <div class="buttons">
-          <label class="flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
+          <label class="button flat" data-i18n="import"><input type="file" id="file" accept=".json"></label>
           <button type="button" id="export" class="flat" data-i18n="export"></button>
           <button type="button" class="flat" data-i18n="deleteBrowsingData" id="deleteBrowsingData"></button>
           <button type="button" class="flat" data-i18n="restoreDefaults"></button>
@@ -89,8 +81,20 @@
         <label data-i18n="autoBackup"><input type="checkbox" id="autoBackup"></label>
         <p class="description" data-i18n="autoBackupDescription"></p>
 
-        <div class="theme" style="margin-bottom: 0;">
-          <label data-i18n="limitWebRTC" data-link="#limit-webrtc"></label>
+        <div class="columns">
+          <label data-i18n="theme" data-link="#theme"></label>
+          <select id="theme">
+            <option value="" data-i18n="default"></option>
+            <option>moonlight</option>
+            <option>moonlight alt</option>
+          </select>
+          <p class="description" data-i18n="themeDescription"></p>
+
+          <!-- default is true (checked) -->
+          <label class="firefox" data-i18n="toggleWebRTC"><input type="checkbox" id="toggleWebRTC" checked></label>
+          <p class="description firefox" data-i18n="toggleWebRTCDescription"></p>
+
+          <label data-i18n="limitWebRTC" data-link="#limit-WebRTC"></label>
           <select id="limitWebRTC">
             <option value="default" data-i18n="default"></option>
             <option value="default_public_interface_only" data-i18n="publicInterfaceOnly"></option>
@@ -98,28 +102,21 @@
             <option value="disable_non_proxied_udp" data-i18n="disableNonProxied"></option>
             <option value="proxy_only" data-i18n="proxyOnly"></option>
           </select>
-        </div>
-        <p class="description" data-i18n="limitWebRTCDescription"></p>
-
-        <!-- <label class="firefox" data-i18n="showPatternProxy"><input type="checkbox" id="showPatternProxy"></label>
-        <p class="description firefox" data-i18n="showPatternProxyDescription"></p> -->
-
-        <div class="theme">
-          <label data-i18n="theme" data-link="#theme"></label>
-          <select id="theme">
-            <option value="" data-i18n="default"></option>
-            <option>moonlight</option>
-            <option>moonlight alt</option>
-          </select>
+          <p class="description" data-i18n="limitWebRTCDescription"></p>
         </div>
 
         <label data-i18n="container" data-link="#container"></label>
         <p class="description" data-i18n="containerDescription"></p>
 
-        <div class="container">
+        <div class="container columns">
 
           <label data-i18n="incognito"></label>
           <select name="incognito">
+            <option value="">&nbsp;</option>
+          </select>
+
+          <label class="firefox" data-i18n="default"></label>
+          <select class="firefox" name="default">
             <option value="">&nbsp;</option>
           </select>
 
@@ -148,7 +145,7 @@
         <label data-i18n="shortcut" data-link="#keyboard-shortcut"></label> <button type="button" class="plain shortcut-link" style="margin-left: 0.5em; display: none;">🔗</button>
         <p class="description" data-i18n="shortcutDescription"></p>
 
-        <div class="commands">
+        <div class="commands columns">
 
           <label data-i18n="setProxy"></label>
           <select name="setProxy">
@@ -176,22 +173,21 @@
         <p class="description" data-i18n="globalExcludeDescription"></p>
         <textarea id="passthrough"></textarea>
 
+        <button type="submit" data-i18n="save"></button>
 
-        <button type="submit" data-i18n="saveOptions"></button>
+        <img src="../image/help.svg" data-i18n="help|title" data-link="#options" alt="">
       </fieldset>
-
-
     </section>
     <!-- /user options -->
 
     <!-- proxy -->
     <section class="proxy-section">
       <fieldset>
-        <div class="proxy-top">
+        <div class="proxy-head">
           <button type="button" class="flat" data-i18n="add"></button>
           <input type="text" class="filter" autocomplete="off" spellcheck="false" placeholder="filter">
 
-          <button type="button" class="flat" data-i18n="ping">🛜 </button>
+          <button type="button" class="flat" data-i18n="ping"></button>
           <button type="button" class="flat" data-i18n="test"></button>
           <button type="button" class="flat" data-i18n="getLocation"></button>
         </div>
@@ -222,11 +218,9 @@
           </select>
         </div>
 
-        <button type="submit" data-i18n="saveOptions"></button>
+        <button type="submit" data-i18n="save"></button>
 
-        <footer>
-          <span data-i18n="help" data-link="#proxies"></span>
-        </footer>
+        <img src="../image/help.svg" data-i18n="help|title" data-link="#proxies" alt="">
       </fieldset>
 
       <!-- template -->
@@ -236,10 +230,10 @@
             <span>🌎</span>
             <span></span>
             <input type="checkbox" class="toggle" data-id="active" checked>
-            <button type="button" class="plain" data-i18n="duplicate|title">⎘</button>
-            <button type="button" class="bin" data-i18n="delete|title"></button>
-            <button type="button" class="up">▲</button>
-            <button type="button" class="down">▼</button>
+            <button type="button" class="plain" data-i18n="duplicate|title"><img src="../image/edit-copy.svg" alt=""></button>
+            <button type="button" class="plain" data-i18n="delete|title"><img src="../image/delete.svg" alt=""></button>
+            <button type="button" class="up plain">▲</button>
+            <button type="button" class="down plain">▼</button>
           </summary>
 
           <div class="content">
@@ -572,11 +566,11 @@
             </div>
 
             <div class="pattern-head">
-              <button type="button" class="flat slim" data-i18n="add|title"><span class="plus">➕</span></button>
+              <button type="button" class="flat slim plus" data-i18n="add|title">✚</button>
               <span data-i18n="proxyByPatterns"></span>
               <span data-i18n="title"></span>
               <span data-i18n="pattern"></span>
-              <label class="plain" data-i18n="import|title"><input type="file" accept=".json">📥</label>
+              <label data-i18n="import|title"><input type="file" accept=".json">📥</label>
               <button type="button" class="plain" data-i18n="export|title">📤</button>
             </div>
 
@@ -609,8 +603,8 @@
           <input type="text" spellcheck="false" placeholder="title">
           <input type="text" spellcheck="false" placeholder="://example.com/">
           <input type="checkbox" class="toggle" checked>
-          <button type="button" class="test" data-i18n="test|title"></button>
-          <button type="button" class="bin" data-i18n="delete|title"></button>
+          <button type="button" class="plain" data-i18n="test|title"><img src="../image/beaker.svg" alt=""></button>
+          <button type="button" class="plain" data-i18n="delete|title"><img src="../image/delete.svg" alt=""></button>
         </div>
       </template>
       <!-- /template -->
@@ -671,17 +665,14 @@
         <details class="import-from-older">
           <summary data-i18n="importFromOlderVersions"></summary>
           <div class="content">
-            <label class="flat" data-i18n="import"><input type="file" accept=".json, .xml"></label>
+            <label class="button flat" data-i18n="import"><input type="file" accept=".json, .xml"></label>
           </div>
         </details>
 
-        <footer>
-          <span data-i18n="help" data-link="#import"></span>
-        </footer>
 
-
+        <img src="../image/help.svg" data-i18n="help|title" data-link="#import" alt="">
         <!-- no need for submit SAVE button as all imports forward to Proxies Tab -->
-        <!-- <button type="submit" data-i18n="saveOptions"></button> -->
+        <!-- <button type="submit" data-i18n="save"></button> -->
       </fieldset>
     </section>
     <!-- /import -->
@@ -718,10 +709,7 @@ https://google.com/ref=help.example.com</pre>
         <pre></pre>
         <button type="button" class="flat proxyByPatterns" data-i18n="test"></button>
 
-        <footer>
-          <span data-i18n="help" data-link="#pattern-tester"></span>
-        </footer>
-
+        <img src="../image/help.svg" data-i18n="help|title" data-link="#pattern-tester" alt="">
       </fieldset>
     </section>
     <!-- /tester -->

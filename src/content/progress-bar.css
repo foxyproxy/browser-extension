@@ -7,12 +7,12 @@
   background-size: 900% 900%;
   transition: opacity 1s ease-in-out, width 0s ease-in-out 1s;
   animation: rainbow 3s ease infinite;
-}
 
-.progress-bar.on {
-  width: 100%;
-  opacity: 1;
-  transition: opacity 1s ease-in-out, width 2s ease-in-out;
+  &.on {
+    width: 100%;
+    opacity: 1;
+    transition: opacity 1s ease-in-out, width 2s ease-in-out;
+  }
 }
 
 @keyframes rainbow {

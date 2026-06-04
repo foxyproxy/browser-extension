@@ -4,7 +4,7 @@ import {Spinner} from './spinner.js';
 import {Toggle} from './toggle.js';
 import {Nav} from './nav.js';
 
-// ---------- Import FoxyProxy Account (Side Effect) -------
+// ---------- import FoxyProxy account (side effect) -------
 class ImportAccount {
 
   static {
@@ -17,13 +17,16 @@ class ImportAccount {
   static async process() {
     // --- check username/password
     const username = this.username.value.trim();
-    const password = this.password.value.trim();
-    if (!username || !password) {
-      alert(browser.i18n.getMessage('userPassError'));
+    if (!username) {
+      this.username.required = true;
       return;
     }
 
-    Spinner.show();
+    const password = this.password.value.trim();
+    if (!password) {
+      this.password.required = true;
+      return;
+    }
 
     const options = [...document.querySelectorAll('.import-account .account-options select')].map(i => i.value);
     // Array(3) [ "https", "hostname", "alt" ]
@@ -38,6 +41,7 @@ class ImportAccount {
     const docFrag = document.createDocumentFragment();
 
     // --- fetch data
+    Spinner.show();
     const data = await this.getAccount(url, username, password);
     if (data) {
       data.forEach(i => {
@@ -78,9 +82,9 @@ class ImportAccount {
     return fetch(url, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+      body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
     })
-    .then(response => response.json())
+    .then(r => r.json())
     .then(data => {
       if (!Array.isArray(data) || !data[0]?.hostname) {
         App.notify(browser.i18n.getMessage('error'));
@@ -93,6 +97,6 @@ class ImportAccount {
       data.sort((a, b) => a.country.localeCompare(b.country));
       return data;
     })
-    .catch(error => App.notify(browser.i18n.getMessage('error') + '\n\n' + error.message));
+    .catch(e => App.notify(`fetch: ${e}`));
   }
 }

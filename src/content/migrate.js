@@ -28,6 +28,7 @@
 import {App} from './app.js';
 import {Pattern} from './pattern.js';
 import {Color} from './color.js';
+// import {FS} from './fs.js';
 
 /*
   Chrome v3 (old) encrypts username/passwords using CryptoJS 3.1.2

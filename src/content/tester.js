@@ -59,7 +59,7 @@ export class Tester {
     // go to target proxy
     const details = this.target.closest('details');
     details.open = true;
-    this.target.scrollIntoView({behavior: 'smooth'});
+    this.target.scrollIntoView({block: 'center'});
     this.target.focus();
 
     // reset

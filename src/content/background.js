@@ -1,9 +1,10 @@
+import {pref, App} from './app.js';
 import {Sync} from "./sync.js";
 import {Migrate} from './migrate.js';
 import {Proxy} from './proxy.js';
-import './commands.js';
+import './persist.js';
 
-// ---------- Process Preferences --------------------------
+// ---------- process preferences --------------------------
 class ProcessPref {
 
   static {
@@ -11,7 +12,9 @@ class ProcessPref {
   }
 
   static async init() {
-    const pref = await browser.storage.local.get();
+    // Chrome: Top-level await is disallowed in service workers
+    // user preference
+    await App.getPref();
 
     // storage sync -> local update
     await Sync.get(pref);
@@ -19,16 +22,16 @@ class ProcessPref {
     // migrate after storage sync check
     await Migrate.init(pref);
 
-    // set proxy
-    Proxy.set(pref);
+    // set proxy, dataChange
+    Proxy.set(pref, true);
 
     // add listener after migrate
     Sync.init(pref);
   }
 }
-// ---------- /Process Preferences -------------------------
+// ---------- /process preferences -------------------------
 
-// ---------- Initialisation -------------------------------
+// ---------- initialisation -------------------------------
 // browser.runtime.onInstalled.addListener(e => {
 //   // show help
 //   ['install', 'update'].includes(e.reason) && browser.tabs.create({url: '/content/help.html'});

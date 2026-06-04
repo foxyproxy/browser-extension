@@ -1,4 +1,4 @@
-// ---------- Bulk Edit (Side Effect) ----------------------
+// ---------- bulk edit (side effect) ----------------------
 class BulkEdit {
 
   static {
@@ -95,7 +95,6 @@ class BulkEdit {
   static reset() {
     document.querySelectorAll('details.proxy:is(.t1, .s1), .pattern-row.t2').forEach(i =>
       i.classList.remove('t1', 't2', 's1'));
-    // ['t1', 't2', 's1'].forEach(i => this[i].value = '');
   }
 
   static getProxies() {

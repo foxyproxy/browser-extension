@@ -1,11 +1,11 @@
 import {Spinner} from './spinner.js';
 
-// ---------- Get Location (Side Effect) -------------------
+// ---------- get location (side effect) -------------------
 class GetLocation {
 
   static {
     this.proxyDiv = document.querySelector('div.proxy-div');
-    document.querySelector('.proxy-top button[data-i18n="getLocation"]').addEventListener('click', () => this.process());
+    document.querySelector('.proxy-head button[data-i18n="getLocation"]').addEventListener('click', () => this.process());
   }
 
   static async process() {
@@ -19,14 +19,10 @@ class GetLocation {
     const hosts = [...new Set(data)];
 
     Spinner.show();
-
-    fetch('https://getfoxyproxy.org/webservices/lookup.php?' + hosts.join('&'))
-    .then(response => response.json())
-    .then(json => this.updateLocation(json))
-    .catch(error => {
-      Spinner.hide();
-      alert(error);
-    });
+    const url = 'https://getfoxyproxy.org/webservices/lookup.php?' + hosts.join('&');
+    const json = await fetch(url).then(r => r.json()).catch(e => alert(`fetch: ${e}`));
+    json && this.updateLocation(json);
+    Spinner.hide();
   }
 
   static updateLocation(json) {
@@ -39,7 +35,5 @@ class GetLocation {
       // dispatch change event
       id === 'cc' && i.value !== value && i.dispatchEvent(new Event('change'));
     });
-
-    Spinner.hide();
   }
 }

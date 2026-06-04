@@ -13,9 +13,7 @@ export class Log {
     this.mode = 'disable';
 
     browser.webRequest.onBeforeRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
-
-    // onAuthRequired message from authentication.js
-    browser.runtime.onMessage.addListener((...e) => this.onMessage(...e));
+    browser.webRequest.onAuthRequired.addListener(e => this.onMessage(e), {urls: ['<all_urls>']});
 
     // Get Associated Domains
     this.input = document.querySelector('.log input');
@@ -24,10 +22,7 @@ export class Log {
     this.select.addEventListener('change', () => this.addPatterns());
   }
 
-  static onMessage(message) {
-    const {id, e} = message;
-    if (id !== 'onAuthRequired') { return; }
-
+  static onMessage(e) {
     const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
     const [, time, container, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
 
