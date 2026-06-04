@@ -5,13 +5,13 @@
 
   "proxyByPatterns": { "message": "Proxy by Patterns" },
   "disable": { "message": "Disable" },
-  "ip": { "message": "IP" },
-  "location": { "message": "Location" },
-  "quickAdd": { "message": "Quick Add" },
+  "more": { "message": "More" },
+  "tabProxy": { "message": "Tab Proxy" },
+  "containerProxy": { "message": "Container Proxy" },
   "includeHost": { "message": "Include Host" },
   "excludeHost": { "message": "Exclude Host" },
-  "tabProxy": { "message": "Tab Proxy" },
-  "more": { "message": "More" },
+  "ip": { "message": "IP" },
+  "location": { "message": "Location" },
 
   "setTabProxy": { "message": "Set Tab Proxy" },
   "unsetTabProxy": { "message": "Unset Tab Proxy" },
@@ -22,11 +22,24 @@
 
   "enableSync": { "message": "Enable Sync" },
   "enableSyncDescription": { "message": "Synchronise global exclude, proxies & patterns" },
-  "syncError": { "message": "Sync Error" },
+
   "autoBackup": { "message": "Auto Backup" },
   "autoBackupDescription": { "message": "Automatically backup settings to the Downloads folder on save" },
+
   "theme": { "message": "Theme" },
+  "themeDescription": { "message": "Select an alternative theme" },
+
+  "toggleWebRTC": { "message": "Toggle WebRTC" },
+  "toggleWebRTCDescription": { "message": "Toggle WebRTC (Firefox Only)" },
+
+  "limitWebRTC": { "message": "Limit WebRTC" },
   "default": { "message": "Default" },
+  "limitWebRTCDescription": { "message": "Change WebRTC browser settings" },
+  "publicInterfaceOnly": { "message": "Public Interface Only" },
+  "publicPrivateInterfaces": { "message": "Public and Private Interfaces" },
+  "disableNonProxied": { "message": "Disable Non-Proxied" },
+  "proxyOnly": { "message": "Proxy Only" },
+
 
   "globalExclude": { "message": "Global Exclude" },
   "globalExcludeDescription": { "message": "List of hosts that should not be proxied" },
@@ -42,16 +55,9 @@
 
 
   "deleteBrowsingData": { "message": "Delete Browsing Data" },
-  "deleteBrowsingDataConfirm": { "message": "Are you sure you want to delete cookies, indexedDB storage, DOM local storage?" },
-  "restoreDefaults": { "message": "Restore Defaults" },
-  "restoreDefaultsConfirm": { "message": "Are you sure you want to restore all settings to Defaults?" },
+  "deleteBrowsingDataConfirm": { "message": "Are you sure you want to delete cookies, indexedDB storage, and DOM local storage?" },
 
-  "limitWebRTC": { "message": "Limit WebRTC" },
-  "limitWebRTCDescription": { "message": "Change WebRTC browser settings" },
-  "publicInterfaceOnly": { "message": "Public Interface Only" },
-  "publicPrivateInterfaces": { "message": "Public and Private Interfaces" },
-  "disableNonProxied": { "message": "Disable Non-Proxied" },
-  "proxyOnly": { "message": "Proxy Only" },
+  "restoreDefaults": { "message": "Restore Defaults" },
 
   "proxies": { "message": "Proxies" },
   "add": { "message": "Add" },
@@ -59,36 +65,33 @@
   "ping": { "message": "Ping" },
 
   "duplicate": { "message": "Duplicate" },
+  "delete": { "message": "Delete" },
 
   "title": { "message": "Title" },
   "type": { "message": "Type" },
   "server": { "message": "Server" },
+  "city": { "message": "City" },
+  "country": { "message": "Country" },
+  "color": { "message": "Color" },
+  "random": { "message": "Random" },
+  "proxyDNS": { "message": "Proxy DNS" },
+
+  "hostname": { "message": "Hostname" },
+  "port": { "message": "Port" },
   "username": { "message": "Username" },
   "password": { "message": "Password" },
   "togglePassword": { "message": "Toggle Password" },
-  "userPassError": { "message": "Missing Username or Password" },
-  "view": { "message": "View" },
-  "color": { "message": "Color" },
-  "random": { "message": "Random" },
-  "hostname": { "message": "Hostname" },
-  "port": { "message": "Port" },
-  "hostnamePortError": { "message": "Missing Hostname - Port" },
-  "city": { "message": "City" },
-  "country": { "message": "Country" },
-  "proxyDNS": { "message": "Proxy DNS" },
   "storeLocally": { "message": "Store Locally" },
+  "view": { "message": "View" },
+
 
   "pattern": { "message": "Pattern" },
-  "patterns": { "message": "Patterns" },
   "include": { "message": "Include" },
   "exclude": { "message": "Exclude" },
   "all": { "message": "All" },
   "plainHost": { "message": "Plain Host" },
   "wildcard": { "message": "Wildcard" },
-  "regexError": { "message": "Error creating RegExp for pattern" },
 
-  "delete": { "message": "Delete" },
-  "deleteConfirm": { "message": "Are you sure you want to delete?" },
 
   "bulkEdit": { "message": "Bulk Edit" },
   "openAll": { "message": "Open All" },
@@ -106,7 +109,6 @@
   "importFoxyProxyAccount": { "message": "Import FoxyProxy Account" },
   "mainServer": { "message": "Main Server" },
   "altServer": { "message": "Alt Server" },
-
 
   "importProxyList": { "message": "Import Proxy List" },
   "importFromURL": { "message": "Import from URL" },
@@ -126,22 +128,20 @@
   "proxyByPatternsDescription": { "message": "Test a URL against active proxy patterns" },
 
   "log": { "message": "Log" },
+  "notAvailable": { "message": "Proxy data is not available on Chrome (Firefox Only)" },
+  "getAssociatedDomains": { "message": "Get Associated Domains" },
   "documentUrl": { "message": "Document URL" },
   "url": { "message": "URL" },
   "method": { "message": "Method" },
   "proxy": { "message": "Proxy" },
   "time": { "message": "Time" },
-  "notAvailable": { "message": "Proxy data is not available on Chrome (Firefox Only)" },
-  "getAssociatedDomains": { "message": "Get Associated Domains" },
 
   "about": { "message": "About" },
   "error": { "message": "There was an error with the operation" },
   "export": { "message": "Export" },
-  "fileParseError": { "message": "There was an error parsing the file" },
-  "fileReadError": { "message": "There was an error with reading the file" },
   "fileTypeError": { "message": "Unsupported File Format" },
   "help": { "message": "Help" },
   "import": { "message": "Import" },
   "options": { "message": "Options" },
-  "saveOptions": { "message": "Save" }
+  "save": { "message": "Save" }
 }
