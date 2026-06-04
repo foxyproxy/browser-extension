@@ -17,19 +17,16 @@ Source code for [older versions](https://github.com/foxyproxy/firefox-extension)
 
 ## Permissions
 
-- **downloads**: Used to save/export user preferences to file, for backup or sharing
-- **notifications**: Used to inform users (e.g. for errors)
-- **proxy**: Used to set proxies (core function of the extension)
-- **storage**: Used to store user preferences
-- **tabs**: Used to get tab details (e.g. for "Quick Add", "Tab Proxy", & "Incognito/Container Proxy")
-- **webRequest**: Used to provide proxy authentication
-- **webRequestAuthProvider**: Used to provide proxy authentication
-- **host permission**: Used to provide proxy authentication (to any URL `"&lt;all_urls&gt;"`)
+- **Download files and read and modify the browser’s download history**: Used to save/export user preferences to file, for backup or sharing
+- **Display notifications to you**: Used to inform users (e.g. for errors)
+- **Control browser proxy settings**: Used to set proxies (core function of the extension)
+- **Access browser tabs**: Used to get tab details (e.g. for "Tab Proxy")
 
 ### Optional Permissions
 
-- **browsingData**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user
-- **privacy**: Used for "Limit WebRTC" button to toggle `privacy.network.webRTCIPHandlingPolicy`, only if requested by the user
+- **Clear recent browsing history, cookies, and related data**: Used for "Delete Browsing Data" button to delete cookies, indexedDB, and localStorage, only if requested by the user
+- **Read and modify privacy settings**: Used for Limit/Toggle WebRTC, only if requested by the user
+- **Access your data for all websites**: Used to provide proxy authentication
 
 
 ### Remote Code
