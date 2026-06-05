@@ -339,7 +339,7 @@
       <li>Port-specific authentication<br>There can be different user/pass for <code>example.com:1080</code> and <code>example.com:443</code></li>
     </ul>
 
-    <h3>Proxying Order</h3>
+    <h3 id="proxying-order">Proxying Order</h3>
 
     <ol>
       <!-- <li>localhost passthrough</li> -->
@@ -1000,6 +1000,8 @@
       <dt>Include, Exclude, and Tab Proxy</dt>
       <dd>Select to include or exclude URLs that match the pattern</dd>
       <dd class="experimental">Select Tab Proxy to set for URLs that match the pattern <em>(Firefox only)</em></dd>
+      <dd class="note">Due to <a href="#proxying-order">Proxying Order</a>, Tab Proxy by pattern only affects tabs that do not already have a Tab Proxy.</dd>
+
 
       <dt>Type</dt>
       <dd>Select Wildcard (Glob), Match (Pattern), or Reg Exp (Regular Expression)</dd>
