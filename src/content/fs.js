@@ -39,7 +39,11 @@ export class FS {
 
   // ----- write file
   static writeFile({data, filename, saveAs, type = 'text/plain'}) {
-    if (!browser.downloads) {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1538348
+    // [meta] Implement the |downloads| extension API
+    // browser.downloads is defined on Android but not working
+    const android = navigator.userAgent.includes('Android');
+    if (android || !browser.downloads) {
       const a = document.createElement('a');
       a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(data);
       a.setAttribute('download', filename);
@@ -47,7 +51,6 @@ export class FS {
       return;
     }
 
-    const android = navigator.userAgent.includes('Android');
     const blob = new Blob([data], {type});
     browser.downloads.download({
       url: URL.createObjectURL(blob),

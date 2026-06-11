@@ -9,6 +9,7 @@ export class Menus {
 
   static data = [];
   // cant runtime.sendMessage to the same context
+  // callback is set in proxy.js
   static callback = () => {};
 
   static {

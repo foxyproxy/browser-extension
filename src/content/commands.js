@@ -10,6 +10,7 @@ import {App} from './app.js';
 export class Commands {
 
   // cant runtime.sendMessage to the same context
+  // callback is set in proxy.js
   static callback = () => {};
 
   static {
@@ -44,7 +45,6 @@ export class Commands {
 
       case 'includeHost':
       case 'excludeHost':
-        // proxy object reference to pref is lost in chrome in sendMessage
         host && this.callback({update: name, pref, host, tab});
         break;
 
@@ -52,7 +52,6 @@ export class Commands {
         if (!host) { break; }
 
         const proxy = this.findProxy(pref, host);
-        // proxy && OnRequest.setTabProxy(tab, proxy);
         this.callback({update: 'setTabProxy', proxy, tab});
         break;
 
