@@ -69,6 +69,14 @@ section.log {
         background: url('../image/privateBrowsing.svg') no-repeat center / contain;
       }
 
+      &:nth-of-type(4) {
+        text-align: center;
+
+        &.minus {
+          color: #f00;
+        }
+      }
+
       &:nth-of-type(7),
       &:nth-of-type(8),
       &:nth-of-type(13) {

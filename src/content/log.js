@@ -30,6 +30,7 @@ export class Log {
     time.textContent = new Date(e.timeStamp).toLocaleTimeString();
     container.classList.toggle('incognito', !!e.incognito);
     tabID.textContent = e.tabId;
+    tabID.classList.toggle('minus', e.tabId === -1);
     container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
     method.textContent = e.method;
     reqType.textContent = e.statusCode;
@@ -70,6 +71,7 @@ export class Log {
     container.classList.toggle('incognito', !!e.incognito);
     container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
     tabID.textContent = e.tabId;
+    tabID.classList.toggle('minus', e.tabId === -1);
     method.textContent = e.method;
     reqType.textContent = shortType[e.type] || e.type;
     // For a top-level document, documentUrl is undefined, chrome uses e.initiator
