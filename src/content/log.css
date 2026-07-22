@@ -12,9 +12,13 @@ section.log {
 
   .domain {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto auto;
     gap: 0.5em;
     place-content: end;
+
+    span {
+      color: var(--nav-color);
+    }
   }
 
   table {
@@ -65,24 +69,24 @@ section.log {
         background: url('../image/privateBrowsing.svg') no-repeat center / contain;
       }
 
-      &:nth-of-type(6),
       &:nth-of-type(7),
-      &:nth-of-type(12) {
+      &:nth-of-type(8),
+      &:nth-of-type(13) {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         max-width: 20em;
       }
 
-      &:nth-of-type(7) {
+      &:nth-of-type(8) {
         max-width: 40em;
       }
 
-      &:nth-of-type(8) {
+      &:nth-of-type(9) {
         border-left: 2px solid var(--border);
       }
 
-      &:nth-of-type(12) {
+      &:nth-of-type(13) {
         max-width: 5em;
       }
     }

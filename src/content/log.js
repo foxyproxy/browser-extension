@@ -8,6 +8,7 @@ export class Log {
   static {
     this.trTemplate = document.querySelector('.log template').content.firstElementChild;
     this.tbody = document.querySelector('.log tbody');
+    this.logSize = document.getElementById('log-size');
     // used to find proxy
     this.proxyCache = {};
     this.mode = 'disable';
@@ -24,10 +25,11 @@ export class Log {
 
   static onMessage(e) {
     const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
-    const [, time, container, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
+    const [, time, container, tabID, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
 
     time.textContent = new Date(e.timeStamp).toLocaleTimeString();
     container.classList.toggle('incognito', !!e.incognito);
+    tabID.textContent = e.tabId;
     container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
     method.textContent = e.method;
     reqType.textContent = e.statusCode;
@@ -49,8 +51,9 @@ export class Log {
   }
 
   static process(e) {
-    const tr = this.tbody.children[199] || this.trTemplate.cloneNode(true);
-    const [, time, container, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
+    const n = this.logSize.value - 1;
+    const tr = this.tbody.children[n] || this.trTemplate.cloneNode(true);
+    const [, time, container, tabID, method, reqType, doc, url, title, type, host, port, pattern] = tr.children;
 
     // shortened forms similar to Developer Tools
     const shortType = {
@@ -66,6 +69,7 @@ export class Log {
     time.textContent = new Date(e.timeStamp).toLocaleTimeString();
     container.classList.toggle('incognito', !!e.incognito);
     container.textContent = e.cookieStoreId?.startsWith('firefox-container-') ? 'C' + e.cookieStoreId.substring(18) : '';
+    tabID.textContent = e.tabId;
     method.textContent = e.method;
     reqType.textContent = shortType[e.type] || e.type;
     // For a top-level document, documentUrl is undefined, chrome uses e.initiator

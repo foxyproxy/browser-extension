@@ -720,6 +720,8 @@ https://google.com/ref=help.example.com</pre>
       <div class="domain">
         <input type="text" autocomplete="off" spellcheck="false" placeholder="example.com">
         <button type="button" class="flat slim" data-i18n="getAssociatedDomains"></button>
+        <span data-i18n="log"></span>
+        <input type="number" id="log-size" min="100" max="1000" step="100" value="100">
       </div>
 
       <table>
@@ -729,6 +731,7 @@ https://google.com/ref=help.example.com</pre>
             <th style="width: 1.5em;"></th>
             <th style="width: 5em;" data-i18n="time"></th>
             <th style="width: 1em;"><img src="../image/container.svg" alt=""></th>
+            <th style="width: 1em;">ID</th>
             <th style="width: 3em;" data-i18n="method"></th>
             <th style="width: 3em;" data-i18n="type"></th>
             <th data-i18n="documentURL" data-link="#log"></th>
@@ -747,6 +750,7 @@ https://google.com/ref=help.example.com</pre>
       <!-- template -->
       <template>
         <tr>
+          <td></td>
           <td></td>
           <td></td>
           <td></td>

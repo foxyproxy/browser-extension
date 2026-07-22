@@ -336,7 +336,6 @@ export class Proxies {
     }
 
     // --- check & build patterns
-    const cache = [];
     for (const item of elem.querySelectorAll('.pattern-box .pattern-row')) {
       const [, inc, type, title, pattern, active] = item.children;
       // clear setCustomValidity
@@ -363,14 +362,6 @@ export class Proxies {
         return;
       }
 
-      // check for duplicate
-      if (cache.includes(pat.pattern)) {
-        item.remove();
-        continue;
-      }
-
-      // cache to check for duplicates
-      cache.push(pat.pattern);
       obj[inc.value].push(pat);
     }
 
