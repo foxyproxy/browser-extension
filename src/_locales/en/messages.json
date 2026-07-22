@@ -135,6 +135,7 @@
   "method": { "message": "Method" },
   "proxy": { "message": "Proxy" },
   "time": { "message": "Time" },
+  "id": { "message": "ID" },
 
   "about": { "message": "About" },
   "error": { "message": "There was an error with the operation" },
