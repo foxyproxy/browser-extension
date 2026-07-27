@@ -128,14 +128,12 @@ No remote code is used in this extension.
     <tr>
       <td>9.3 - </td>
       <td>version 126<br><i>(released 2024-06-11)</i></td>
-      <td>version 128<br><i>(released 2024-07-09)</i></td>
-      <td>version 128<br><i>(released 2024-07-09)</i></td>
+      <td colspan="2">version 128<br><i>(released 2024-07-09)</i></td>
     </tr>
     <tr>
       <td>9.0 - 9.2</td>
       <td>version 108<br><i>(released 2022-11-29)</i></td>
-      <td>version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
-      <td>version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry</i><br><i>2025-03-14</i></td>
+      <td colspan="2">version 128<br><i>(released 2024-07-09)</i><br><i>due to root certificate expiry 2025-03-14</i></td>
     </tr>
     <tr>
       <td>8.0 - 8.10</td>
