@@ -312,14 +312,15 @@ document.querySelector('.import-from-older input').addEventListener('change', as
 
 // ---------- import/export preferences --------------------
 document.getElementById('export').addEventListener('click', () => FS.export(pref, true));
-document.getElementById('file').addEventListener('change', async e => {
-  const data = FS.import(e);
-  if (!data) { return; }
+document.getElementById('file').addEventListener('change', e => {
+  FS.import(e).then(data => {
+    if (!data) { return; }
 
-  // set options after the pref update, update page display
-  Object.assign(pref, data);
-  Options.process();
-  Proxies.process(pref);
+    // set options after the pref update, update page display
+    Object.assign(pref, data);
+    Options.process();
+    Proxies.process(pref);
+  });
 });
 // ---------- /import/export preferences -------------------
 

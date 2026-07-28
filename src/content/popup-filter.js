@@ -1,4 +1,4 @@
-// ---------- Filter Proxy (Side Effect) -------------------
+// ---------- filter proxy (side effect) -------------------
 class Filter {
 
   static {
@@ -9,7 +9,8 @@ class Filter {
 
   static filterProxy(e) {
     const str = e.target.value.toLowerCase().trim();
-    const elem = [...this.list.children].slice(2);          // not the first 2
+    // not the first 2
+    const elem = [...this.list.children].slice(2);
     if (!str) {
       elem.forEach(i => i.classList.remove('off'));
       return;
@@ -17,7 +18,8 @@ class Filter {
 
     elem.forEach(item => {
       const title = item.children[1].textContent;
-      const host = item.children[3].value;                  // input radio
+      // input radio
+      const host = item.children[4].value;
       item.classList.toggle('off', ![title, host].some(i => i.toLowerCase().includes(str)));
     });
   }
