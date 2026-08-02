@@ -30,7 +30,7 @@ export class Pattern {
   static convertWildcard(str) {
     // no need to add scheme as search parameters are encoded url=https%3A%2F%2F
     // escape regular expression special characters, minus * ?
-    return str.replace(/[-\\^$+.()|[\]{}]/g, '\\$&')
+    return str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
               .replaceAll('*', '.*')
               .replaceAll('?', '.');
   }
@@ -41,7 +41,7 @@ export class Pattern {
     if (str === '<all_urls>') { return '\\w+'; }
 
     // escape regular expression special characters, minus *
-    str = str.replace(/[-\\^$+?.()|[\]{}]/g, '\\$&')
+    str = str.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
               .replace('*://', '[^:]+://')                  // convert * scheme
               .replace('://*\\.', '://(.+\\.)?')            // match domains & subdomains
               .replaceAll('*', '.*');
@@ -51,9 +51,6 @@ export class Pattern {
   }
 
   static checkMatchPattern(str) {
-    // catch all
-    // if (str === '<all_urls>') { return; }
-
     const [, scheme, host] = str.match(/^(.+):\/\/([^/]+)\/(.*)$/) || [];
 
     switch (true) {
@@ -100,7 +97,7 @@ export class Pattern {
     str.split(/[\s,;]+/).forEach(i => {
       // The literal string <local> matches simple hostnames (no dots)
       if (i === '<local>') {
-        regex.push('[^:]+://[^.]+/');
+        regex.push('^[^:]+://[^.]+/');
         return;
       }
 
@@ -118,11 +115,10 @@ export class Pattern {
             .replaceAll('*', '.*');                         // wildcard
 
       // starting with '.'
-      i.startsWith('\\.') && (i = '[^:]+://.+' + i);
+      i.startsWith('\\.') && (i = '^[^:]+://.+' + i);
       // add scheme
-      !i.includes('://') && (i = '[^:]+://' + i);
-      // add start assertion
-      // !i.startsWith('^') && (i = '^' + i);
+      !i.includes('://') && (i = '^[^:]+://' + i);
+
       // add pathname
       i += '/';
       regex.push(i);

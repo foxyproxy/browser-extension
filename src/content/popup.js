@@ -79,7 +79,7 @@ class Popup {
       pref.mode === 'pattern' && (pref.mode = 'disable');
     }
 
-    pref.mode === 'pattern' && (this.list.children[0].children[2].checked = true);
+    pref.mode === 'pattern' && (this.list.children[1].children[2].checked = true);
   }
 
   static async process() {
