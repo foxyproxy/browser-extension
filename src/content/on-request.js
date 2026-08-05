@@ -77,7 +77,7 @@ export class OnRequest {
         exclude: item.exclude.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
         tabProxy: item.tabProxy.filter(i => i.active).map(i => Pattern.get(i.pattern, i.type)),
 
-        // used for showPatternProxy
+        // used for setAction
         title: item.title,
         cc: item.cc,
         city: item.city,
@@ -100,30 +100,32 @@ export class OnRequest {
   }
 
   static process(e) {
-    const tabId = e.tabId;
     // https://github.com/foxyproxy/browser-extension/issues/218
-    // some (not all) XHR from context JS are passed with tabId: -1
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=2056961
+    // Service worker requests from a tab have tabId of -1
+    const tabId = e.tabId;
+    const fromTab = tabId !== -1;
 
-    // --- check Tab Proxy Pattern
-    this.processTabProxy(tabId, e.url, e);
+    // --- check Tab Proxy Pattern (not for tabId -1)
+    fromTab && this.processTabProxy(tabId, e.url, e);
 
     switch (true) {
       // --- check local & global passthrough
       case this.bypass(e.url):
-        this.setAction(tabId);
+        this.setAction(e);
         return {type: 'direct'};
 
       // --- tab proxy
-      case !!this.tabProxy[tabId]:
-        return this.processProxy(tabId, this.tabProxy[tabId]);
+      case fromTab && !!this.tabProxy[tabId]:
+        return this.processProxy(e, this.tabProxy[tabId]);
 
       // --- incognito proxy
       case e.incognito && !!this.container.incognito:
-        return this.processProxy(tabId, this.container.incognito);
+        return this.processProxy(e, this.container.incognito);
 
       // --- container proxy
       case e.cookieStoreId && !!this.container[e.cookieStoreId]:
-        return this.processProxy(tabId, this.container[e.cookieStoreId]);
+        return this.processProxy(e, this.container[e.cookieStoreId]);
 
       // --- standard operation
       // pass direct
@@ -131,16 +133,16 @@ export class OnRequest {
       case this.mode === 'direct':
       // PAC URL is set
       case this.mode.includes('://') && !/:\d+$/.test(this.mode):
-        this.setAction(tabId);
+        this.setAction(e);
         return {type: 'direct'};
 
       // check if url matches patterns
       case this.mode === 'pattern':
-        return this.processPattern(tabId, e.url);
+        return this.processPattern(e);
 
       // get the proxy for all
       default:
-        return this.processProxy(tabId, this.proxy);
+        return this.processProxy(e, this.proxy);
     }
   }
 
@@ -152,20 +154,21 @@ export class OnRequest {
     proxy && (this.tabProxy[tabId] = proxy);
   }
 
-  static processPattern(tabId, url) {
+  static processPattern(e) {
+    const url = e.url;
     const match = arr => arr.some(i => new RegExp(i, 'i').test(url));
     const proxy = this.data.find(i => !match(i.exclude) && match(i.include));
     if (proxy) {
-      return this.processProxy(tabId, proxy);
+      return this.processProxy(e, proxy);
     }
 
     // no match
-    this.setAction(tabId);
+    this.setAction(e);
     return {type: 'direct'};
   }
 
-  static processProxy(tabId, proxy) {
-    this.setAction(tabId, proxy);
+  static processProxy(e, proxy) {
+    this.setAction(e, proxy);
     const {type, hostname: host, port, username, password, proxyDNS} = proxy || {};
     if (!type || type === 'direct') { return {type: 'direct'}; }
 
@@ -203,10 +206,17 @@ export class OnRequest {
     return response;
   }
 
-  // browser.action here only relates to showPatternProxy from proxy.onRequest
-  static setAction(tabId, item) {
+  // browser.action here only relates to proxy.onRequest
+  static setAction(e, item) {
+    const tabId = e.tabId;
     // Set to -1 if the request isn't related to a tab
     if (tabId === -1) { return; }
+
+    // e.type is only set in proxy.onRequest, not from tabs listeners
+    // 'beacon', 'csp_report', 'font', 'image', 'imageset', 'json', 'main_frame',
+    // 'media', 'object', 'other', 'ping', 'script', 'speculative', 'stylesheet',
+    // 'sub_frame', 'web_manifest', 'websocket', 'xml_dtd', 'xmlhttprequest', 'xslt'
+    if (e.type && !['main_frame', 'sub_frame', 'script', 'stylesheet'].includes(e.type)) { return; }
 
     // --- reset values
     let title = '';
@@ -255,6 +265,7 @@ export class OnRequest {
   }
 
   // ---------- tab proxy ----------------------------------
+  // from proxy.js
   static setTabProxy(tab, pxy) {
     switch (true) {
       // unacceptable URLs
@@ -266,7 +277,7 @@ export class OnRequest {
 
     // set or unset
     pxy ? this.tabProxy[tab.id] = pxy : delete this.tabProxy[tab.id];
-    this.setAction(tab.id, pxy);
+    this.setAction({tabId: tab.id}, pxy);
 
     // mirror as this.tabProxy is lost in MV3 background unloading
     browser.storage.session.set({'tabProxy': this.tabProxy});
@@ -277,7 +288,7 @@ export class OnRequest {
     if (changeInfo.status !== 'complete') { return; }
 
     const pxy = this.tabProxy[tabId];
-    pxy ? this.setAction(tab.id, pxy) : this.checkPageAction(tab);
+    pxy ? this.setAction({tabId}, pxy) : this.checkPageAction(tab);
   }
 
   // ---------- incognito/container ------------------------
@@ -286,6 +297,6 @@ export class OnRequest {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; }
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
-    pxy && this.setAction(tab.id, pxy);
+    pxy && this.setAction({tabId: tab.id}, pxy);
   }
 }

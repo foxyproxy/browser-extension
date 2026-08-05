@@ -28,9 +28,13 @@ export class Pattern {
 
   // convert wildcard to regex string
   static convertWildcard(str) {
+    // catch all
+    if (str === '*') { return '\\w+'; }
+
     // no need to add scheme as search parameters are encoded url=https%3A%2F%2F
     // escape regular expression special characters, minus * ?
     return str.replace(/[.+^${}()|[\]\\]/g, '\\$&')
+              .replace(/^\*|\*$/g, '')                      // trim start/end *
               .replaceAll('*', '.*')
               .replaceAll('?', '.');
   }

@@ -21,6 +21,7 @@ class Popup {
     document.body.style.opacity = 1;
 
     this.list = document.querySelector('div.list');
+    this.pattern = document.querySelector('div.list .pattern input');
 
     // --- Include/Exclude Host (not for storage.managed)
     this.includeHost = document.querySelector('select#includeHost');
@@ -79,7 +80,7 @@ class Popup {
       pref.mode === 'pattern' && (pref.mode = 'disable');
     }
 
-    pref.mode === 'pattern' && (this.list.children[1].children[2].checked = true);
+    pref.mode === 'pattern' && (this.pattern.checked = true);
   }
 
   static async process() {
