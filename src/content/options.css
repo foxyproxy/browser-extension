@@ -199,6 +199,7 @@ section.options {
     grid-template-columns: 1fr 2fr;
     column-gap: 0.5em;
 
+    label,
     input {
       place-self: start;
     }
@@ -354,7 +355,7 @@ div.proxy-box {
 }
 
 /* hide when there are no patterns */
-.pattern-head:has(+ .pattern-box:empty) :nth-child(n+3) {
+.pattern-head:has(+ .pattern-box:empty) :nth-child(n+3):not(label) {
   opacity: 0;
 }
 

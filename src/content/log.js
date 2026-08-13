@@ -18,7 +18,7 @@ export class Log {
 
     // Get Associated Domains
     this.input = document.querySelector('.log input');
-    document.querySelector('.log button').addEventListener('click', () => this.getDomains());
+    document.querySelector('.log button[data-i18n="getAssociatedDomains"]').addEventListener('click', () => this.getDomains());
     this.select = document.querySelector('.popup select.popup-log-proxy');
     this.select.addEventListener('change', () => this.addPatterns());
   }
@@ -112,7 +112,7 @@ export class Log {
     }
 
     // search Document URL column
-    let list = document.querySelectorAll(`.log table td:nth-child(6)[title*="${input}" i]`);
+    let list = document.querySelectorAll(`.log table td:nth-child(7)[title*="${input}" i]`);
     list = [...list].map(i => i.nextElementSibling.title.split(/\/+/)[1]);
     list = [...new Set(list)].sort();
 

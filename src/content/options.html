@@ -33,7 +33,7 @@
     <div class="spinner"></div>
 
     <!-- popup -->
-    <div class="popup">
+    <dialog class="popup">
       <span>✕</span>
       <textarea autocomplete="off" spellcheck="false"></textarea>
       <select class="popup-log-proxy" autocomplete="off">
@@ -59,7 +59,7 @@
         <option value="https://whatismyip.akamai.com/">akamai.com</option>
         <option value="https://myexternalip.com/raw">myexternalip.com</option>
       </select>
-    </div>
+    </dialog>
 
     <!-- Help/About -->
     <section><iframe src="help.html"></iframe></section>
@@ -717,9 +717,10 @@ https://google.com/ref=help.example.com</pre>
 
     <!-- log -->
     <section class="log">
-      <div class="domain">
+      <div class="log-head">
         <input type="text" autocomplete="off" spellcheck="false" placeholder="example.com">
         <button type="button" class="flat slim" data-i18n="getAssociatedDomains"></button>
+        <span></span>
         <span data-i18n="log"></span>
         <input type="number" id="log-size" min="100" max="1000" step="100" value="100">
       </div>

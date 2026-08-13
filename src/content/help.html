@@ -315,9 +315,18 @@
     <p>If you have upgraded from a previous version, and your proxy settings are missing, please import them.</p>
 
     <!--
-      Inconsistency: incognito in proxy.settings
       https://github.com/w3c/webextensions/issues/429
+      Inconsistency: incognito in proxy.settings
       Error: proxy.settings requires private browsing permission.
+
+      https://github.com/w3c/webextensions/issues/1058
+      Inconsistency: proxy.settings
+
+      https://github.com/w3c/webextensions/issues/573
+      Inconsistency: proxy API
+
+      https://github.com/w3c/webextensions/issues/339
+      Inconsistency: Proxy Bypass list
     -->
 
     <h3>Private Browsing Permission</h3>
@@ -1044,7 +1053,7 @@
       </dd>
       <dd>Pattern can match the entire URL or only part of it</dd>
       <dd>Include <code>://</code> to ensure it matches the host</dd>
-      <dd>Leading or trailing <code>*</code> is not necessary</dd>
+      <dd class="note">Leading or trailing <code>*</code> is not necessary and deteriorates performance</dd>
 
       <dt>Match <em>(v9.0)</em></dt>
       <dd>Match patterns are a way to specify groups of URLs and have strict rules</dd>
@@ -1427,6 +1436,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dd>Enter a Document URL string (e.g. domain) and get all the associated domains displayed in the log that were requested by that Document URL</dd>
       <dd>Select a proxy from the drop-down to add generated patterns</dd>
       <dd>As a side-effect, you can click the button which opens an empty popup, enter a list of domains and generate include patterns</dd>
+
+      <dt>Log Size</dt>
+      <dd>Change the log size</dd>
 
       <dt>Log Table</dt>
       <dd>Live Log displays the web requests in reverse order (new one on top)</dd>

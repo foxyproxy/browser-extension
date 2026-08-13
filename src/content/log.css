@@ -10,11 +10,10 @@ section.log {
   padding: 0 0.5em;
   max-width: unset;
 
-  .domain {
+  .log-head {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto 1fr auto auto;
     gap: 0.5em;
-    place-content: end;
 
     span {
       color: var(--nav-color);

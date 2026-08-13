@@ -1,20 +1,10 @@
 /* ----- popup ----- */
-.popup {
-  display: none;
-  background-color: #0003;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  transition: all 0.5s ease-in-out;
+dialog.popup {
+  border-width: 1px;
+  padding: 0;
 
-  &.on {
+  &:open {
     display: grid;
-    place-content: center;
-    animation: fade-in 0.5s ease-in-out;
   }
 
   span {
@@ -36,8 +26,13 @@
   textarea {
     width: 50vw;
     height: 50vh;
-    resize: both;
+    outline: none;
     padding: 0.5em;
+    resize: both;
+
+    &:hover {
+      background-color: var(--bg-alt) !important;
+    }
   }
 
   select {

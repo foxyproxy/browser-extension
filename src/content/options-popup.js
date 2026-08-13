@@ -4,15 +4,19 @@ export class Popup {
     this.popup = document.querySelector('.popup');
     [this.close, this.textarea] = this.popup.children;
     this.close.addEventListener('click', () => this.hide());
+
+    this.popup.addEventListener('cancel', () => {
+      this.textarea.value = '';
+    });
   }
 
   static show(text) {
-    this.textarea.value += text + '\n';
-    this.popup.classList.add('on');
+    text && (this.textarea.value += text + '\n');
+    this.popup.showModal();
   }
 
   static hide() {
-    this.popup.classList.remove('on');
+    this.popup.close();
     this.textarea.value = '';
     [...this.popup.children].forEach(i => {
       if (i.nodeName === 'SELECT') {

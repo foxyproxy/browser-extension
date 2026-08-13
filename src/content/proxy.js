@@ -118,9 +118,12 @@ export class Proxy {
     // the global icon will be reset to the manifest icon
     // Chrome -> Error: Either the path or imageData property must be specified.
 
+    const icon = App.firefox ? '/image/icon.svg' : '/image/icon.png';
+    const iconOff = App.firefox ? '/image/icon-off.svg' : '/image/icon-off.png';
+
     // check if proxy.settings is controlled_by_this_extension
     const control = ['controlled_by_this_extension', 'controllable_by_this_extension'].includes(conf.levelOfControl);
-    const path = control ? `/image/icon.png` : `/image/icon-off.png`;
+    const path = control ? icon : iconOff;
     browser.action.setIcon({path});
     !control && browser.action.setTitle({title: browser.i18n.getMessage('controlledByOtherExtensions')});
 
