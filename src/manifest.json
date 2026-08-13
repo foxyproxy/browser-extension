@@ -3,7 +3,7 @@
 
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "9.6",
+  "version": "9.7",
   "default_locale": "en",
   "homepage_url": "https://getfoxyproxy.org/",
   "author": "Eric Jung",
@@ -12,15 +12,14 @@
     "16": "image/icon.png",
     "32": "image/icon32.png",
     "48": "image/icon48.png",
+    "64": "image/icon64.png",
     "128": "image/icon128.png"
   },
 
   "action": {
     "default_icon": {
       "16": "image/icon.png",
-      "32": "image/icon32.png",
-      "48": "image/icon48.png",
-      "128": "image/icon128.png"
+      "32": "image/icon32.png"
     },
     "default_popup": "content/popup.html",
     "default_title": "__MSG_extensionName__"
