@@ -44,7 +44,7 @@ details.proxy {
     }
   }
 
-  &:not([data-type="socks5"]) {
+  &:not([data-type^="socks"]) {
     [data-i18n="proxyDNS"], [data-id="proxyDNS"] {
       opacity: 0.3;
       pointer-events: none;
