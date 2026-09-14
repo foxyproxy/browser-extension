@@ -149,8 +149,11 @@ class Popup {
   }
 
   static checkTabProxy() {
-    browser.runtime.sendMessage({update: 'getTabProxy', tab: this.tab})
-    .then(i => i && (this.tabProxy.value = `${i.hostname}:${i.port}`));
+    // check storage.session
+    browser.storage.session.get().then(i => {
+      i = i.tabProxy?.[this.tab.id] || i.tabProxyPattern?.[this.tab.id];
+      i && (this.tabProxy.value = `${i.hostname}:${i.port}`);
+    });
   }
 
   static processSelect(mode, e) {

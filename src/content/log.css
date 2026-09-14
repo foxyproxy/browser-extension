@@ -12,7 +12,7 @@ section.log {
 
   .log-head {
     display: grid;
-    grid-template-columns: auto auto 1fr auto auto;
+    grid-template-columns: auto auto 1fr auto auto auto;
     gap: 0.5em;
 
     span {

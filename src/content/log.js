@@ -2,6 +2,7 @@ import {Flag} from './flag.js';
 import {Pattern} from './pattern.js';
 import {Popup} from './options-popup.js';
 import {Nav} from './nav.js';
+import {FS} from './fs.js';
 
 export class Log {
 
@@ -21,6 +22,9 @@ export class Log {
     document.querySelector('.log button[data-i18n="getAssociatedDomains"]').addEventListener('click', () => this.getDomains());
     this.select = document.querySelector('.popup select.popup-log-proxy');
     this.select.addEventListener('change', () => this.addPatterns());
+
+    // export
+    document.querySelector('.log button[data-i18n="export"]').addEventListener('click', () => this.export());
   }
 
   static onMessage(e) {
@@ -143,5 +147,14 @@ export class Log {
       detail: {host, data}
     });
     window.dispatchEvent(ev);
+  }
+
+  static export() {
+    // export to csv
+    const data = [...document.querySelectorAll('.log tr')]
+      .map(i => [...i.children].slice(1)
+      .map(i => i.textContent).join(',')).join('\n');
+    const filename = `${browser.i18n.getMessage('log')}_${new Date().toISOString().substring(0, 10)}.csv`;
+    FS.writeFile({data, filename, saveAs: true, type: 'text/csv'});
   }
 }

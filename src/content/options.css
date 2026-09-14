@@ -356,7 +356,7 @@ div.proxy-box {
 
 /* hide when there are no patterns */
 .pattern-head:has(+ .pattern-box:empty) :nth-child(n+3):not(label) {
-  opacity: 0;
+  visibility: hidden;
 }
 
 .pattern-row {

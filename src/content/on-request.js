@@ -37,6 +37,8 @@ export class OnRequest {
     this.net = [];
     // tab proxy, will be lost in MV3 background unloading
     this.tabProxy = {};
+    // tab proxy by pattern (separate from tab proxy)
+    this.tabProxyPattern = {};
     // incognito/container proxy
     this.container = {};
 
@@ -45,8 +47,8 @@ export class OnRequest {
       browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
       // check Tab for tab proxy
       browser.tabs.onUpdated.addListener((...e) => this.onUpdated(...e));
-      // remove redundant data from this.tabProxy cache
-      browser.tabs.onRemoved.addListener(tabId => delete this.tabProxy[tabId]);
+      // remove redundant data from this.tabProxy and this.tabProxyPattern cache
+      browser.tabs.onRemoved.addListener((...e) => this.onRemoved(...e));
       // mark incognito/container
       browser.tabs.onCreated.addListener(e => this.checkPageAction(e));
     }
@@ -95,8 +97,10 @@ export class OnRequest {
     });
 
     // mirror as this.tabProxy is lost in MV3 background unloading
-    browser.storage.session.get('tabProxy')
-    .then(i => this.tabProxy = i.tabProxy || {});
+    browser.storage.session.get().then(i => {
+      this.tabProxy = i.tabProxy || {};
+      this.tabProxyPattern = i.tabProxyPattern || {};
+    });
   }
 
   static process(e) {
@@ -107,7 +111,7 @@ export class OnRequest {
     const fromTab = tabId !== -1;
 
     // --- check Tab Proxy Pattern (not for tabId -1)
-    fromTab && this.processTabProxy(tabId, e.url, e);
+    fromTab && this.processTabProxyPattern(tabId, e.url, e);
 
     switch (true) {
       // --- check local & global passthrough
@@ -118,6 +122,10 @@ export class OnRequest {
       // --- tab proxy
       case fromTab && !!this.tabProxy[tabId]:
         return this.processProxy(e, this.tabProxy[tabId]);
+
+      // --- tab proxy by pattern
+      case fromTab && !!this.tabProxyPattern[tabId]:
+        return this.processProxy(e, this.tabProxyPattern[tabId]);
 
       // --- incognito proxy
       case e.incognito && !!this.container.incognito:
@@ -146,12 +154,16 @@ export class OnRequest {
     }
   }
 
-  static processTabProxy(tabId, url, e) {
-    if (this.mode !== 'pattern' || e.type !== 'main_frame' || this.tabProxy[tabId]) { return; }
+  static processTabProxyPattern(tabId, url, e) {
+    // this.tabProxy has priority over this.tabProxyPattern
+    if (e.type !== 'main_frame' || this.tabProxy[tabId]) { return; }
 
     const match = arr => arr.some(i => new RegExp(i, 'i').test(url));
-    const proxy = this.data.find(i => match(i.tabProxy));
-    proxy && (this.tabProxy[tabId] = proxy);
+    const proxy = this.mode === 'pattern' && this.data.find(i => match(i.tabProxy));
+    proxy ? this.tabProxyPattern[tabId] = proxy : delete this.tabProxyPattern[tabId];
+
+    // also used in popup.js
+    browser.storage.session.set({tabProxyPattern: this.tabProxyPattern});
   }
 
   static processPattern(e) {
@@ -279,8 +291,26 @@ export class OnRequest {
     pxy ? this.tabProxy[tab.id] = pxy : delete this.tabProxy[tab.id];
     this.setAction({tabId: tab.id}, pxy);
 
-    // mirror as this.tabProxy is lost in MV3 background unloading
-    browser.storage.session.set({'tabProxy': this.tabProxy});
+    // also used in popup.js
+    browser.storage.session.set({tabProxy: this.tabProxy});
+  }
+
+  // ---------- update page action -------------------------
+  static onRemoved(tabId) {
+    const obj = {};
+
+    if (this.tabProxy[tabId]) {
+      delete this.tabProxy[tabId];
+      obj.tabProxy = this.tabProxy;
+    }
+
+    if (this.tabProxyPattern[tabId]) {
+      delete this.tabProxyPattern[tabId];
+      obj.tabProxyPattern = this.tabProxyPattern;
+    }
+
+    // update session storage
+    Object.keys(obj) && browser.storage.session.set(obj);
   }
 
   // ---------- update page action -------------------------

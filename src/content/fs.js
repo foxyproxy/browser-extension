@@ -1,7 +1,7 @@
 // ---------- import export --------------------------------
 export class FS {
 
-  // ----- import
+  // --- import
   static async import(e) {
     const file = e.target.files[0];
     switch (true) {
@@ -19,7 +19,7 @@ export class FS {
     catch (e) { alert(e); }
   }
 
-  // ----- export
+  // --- export
   static async export(dt, saveAs) {
     const data = JSON.stringify(dt, null, 2);
     const extensionName = browser.runtime.getManifest().name;
@@ -37,7 +37,7 @@ export class FS {
     });
   }
 
-  // ----- write file
+  // --- write file
   static writeFile({data, filename, saveAs, type = 'text/plain'}) {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1538348
     // [meta] Implement the |downloads| extension API

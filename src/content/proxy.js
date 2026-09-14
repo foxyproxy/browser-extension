@@ -65,10 +65,6 @@ export class Proxy {
         OnRequest.setTabProxy(tab, proxy);
         break;
 
-      case 'getTabProxy':
-        // need to return a promise for 'getTabProxy' from popup.js
-        return Promise.resolve(OnRequest.tabProxy[tab.id]);
-
       case 'getIP':
         this.getIP();
         break;
@@ -165,7 +161,7 @@ export class Proxy {
   // from popup.js
   static getIP() {
     fetch('https://getfoxyproxy.org/webservices/lookup.php')
-    .then(response => response.json())
+    .then(r => r.json())
     .then(data => {
       if (!Object.keys(data)) {
         App.notify(browser.i18n.getMessage('error'));

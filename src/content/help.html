@@ -386,6 +386,14 @@
     <h3 class="experimental">Firefox on Android</h3>
     <p>Support is experimental and based on user feedback.</p>
 
+    <dl>
+      <dt>Android 17+</dt>
+      <dd>On Android 17 devices one of the NEARBY_DEVICES (Identify Nearby devices) or ACCESS_LOCAL_NETWORK permissions needs to be granted in order to allow traffic to and from a local network address. <a href="https://bugzil.la/2053432" title="LNA prompt does not show on Android 17 devices when ACCESS_LOCAL_NETWORK or NEARBY_DEVICES is not already granted" target="_blank"></a></dd>
+    </dl>
+
+
+    <h3>File access becomes opt-in <em>(Firefox 153)</em></h3>
+    <p>Extensions requesting <code>file://*/</code> or <code>&lt;all_urls&gt;</code> currently trigger the “Access your data for all websites” permission message, and when granted, can run content scripts in file:-URLs. From Firefox 153, file access in extensions requires an opt-in for all extensions, including those already installed (<a href="https://bugzil.la/2034168">bug 2034168</a>). <a href="https://blog.mozilla.org/addons/2026/04/23/webextensions-api-changes-firefox-149-152/" title="WebExtensions API Changes (Firefox 149-152)" target="_blank">ⓘ</a></p>
 
     <h2 id="how-to-use">How to Use</h2>
 
@@ -1007,10 +1015,16 @@
       <dd>Add ready-made patterns</dd>
       <dd><code>Plain Host</code> matches hostnames that contain no dots, e.g. <code>http://intranet/</code></dd>
 
-      <dt>Include, Exclude, and Tab Proxy</dt>
+      <dt>Include, Exclude</dt>
       <dd>Select to include or exclude URLs that match the pattern</dd>
-      <dd class="experimental">Select Tab Proxy to set for URLs that match the pattern <em>(Firefox only)</em></dd>
-      <dd class="note">Due to <a href="#proxying-order">Proxying Order</a>, Tab Proxy by pattern only affects tabs that do not already have a Tab Proxy.</dd>
+
+      <dt>Tab Proxy <em>(Firefox only)</em></dt>
+      <dd>Select Tab Proxy to set for URLs that match the pattern</dd>
+      <dd>Tab Proxy by patterns resets with URL change <em>(v9.8)</em></dd>
+      <dd>Tab Proxy and Tab proxy by patterns are cleared on browser/extension restart/upgrade</dd>
+      <dd>Tab proxy by patterns is cleared when mode is changed from "Proxy by Patterns"</dd>
+      <dd class="note">Due to <a href="#proxying-order">Proxying Order</a>, Tab Proxy by pattern only affects tabs that do not already have a Tab Proxy</dd>
+      <dd class="warning">Service Worker requests bypass Tab Proxy due to tabId -1 <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=2056961" title="Service worker requests from a tab have tabId of -1" target="_blank"></a></dd>
 
 
       <dt>Type</dt>
@@ -1436,6 +1450,9 @@ http://pac-url.com/etc?type=pac&title=Work PAC&color=663300</pre>
       <dd>Enter a Document URL string (e.g. domain) and get all the associated domains displayed in the log that were requested by that Document URL</dd>
       <dd>Select a proxy from the drop-down to add generated patterns</dd>
       <dd>As a side-effect, you can click the button which opens an empty popup, enter a list of domains and generate include patterns</dd>
+
+      <dt>Export</dt>
+      <dd>Export the current Log data as CSV</dd>
 
       <dt>Log Size</dt>
       <dd>Change the log size</dd>
