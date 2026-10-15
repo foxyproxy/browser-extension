@@ -53,8 +53,8 @@ export class Tester {
   static back() {
     if (!this.target) { return; }
 
-    // show Proxy tab
-    Nav.get('proxies');
+    // container patterns are edited on the Options tab, proxy patterns on the Proxies tab
+    this.target.closest('.proxy-div') ? Nav.get('proxies') : Nav.get('options');
 
     // go to target proxy
     const details = this.target.closest('details');

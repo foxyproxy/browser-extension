@@ -107,37 +107,138 @@
 
         <label data-i18n="container" data-link="#container"></label>
         <p class="description" data-i18n="containerDescription"></p>
+        <p class="description" data-i18n="containerPatternDescription"></p>
 
         <div class="container columns">
 
           <label data-i18n="incognito"></label>
-          <select name="incognito">
-            <option value="">&nbsp;</option>
-          </select>
+          <span class="cell">
+            <select name="incognito">
+              <option value="">&nbsp;</option>
+            </select>
+            <select class="mode" data-key="incognito">
+              <option value="all" data-i18n="containerAllURLs"></option>
+              <option value="pattern" data-i18n="containerPatternOnly"></option>
+            </select>
+          </span>
+          <details class="container-patterns" data-key="incognito" hidden>
+            <summary data-i18n="containerPatterns"></summary>
+            <div class="content">
+              <div class="pattern-head">
+                <button type="button" class="flat slim plus" data-i18n="add|title">✚</button>
+                <span data-i18n="containerPatterns"></span>
+                <span data-i18n="title"></span>
+                <span data-i18n="pattern"></span>
+                <label data-i18n="import|title"><input type="file" accept=".json">📥</label>
+                <button type="button" class="plain" data-i18n="export|title">📤</button>
+              </div>
+              <div class="pattern-box"></div>
+            </div>
+          </details>
 
           <label class="firefox" data-i18n="default"></label>
-          <select class="firefox" name="default">
-            <option value="">&nbsp;</option>
-          </select>
+          <span class="cell firefox">
+            <select name="default">
+              <option value="">&nbsp;</option>
+            </select>
+            <select class="mode" data-key="default">
+              <option value="all" data-i18n="containerAllURLs"></option>
+              <option value="pattern" data-i18n="containerPatternOnly"></option>
+            </select>
+          </span>
+          <details class="container-patterns firefox" data-key="default" hidden>
+            <summary data-i18n="containerPatterns"></summary>
+            <div class="content">
+              <div class="pattern-head">
+                <button type="button" class="flat slim plus" data-i18n="add|title">✚</button>
+                <span data-i18n="containerPatterns"></span>
+                <span data-i18n="title"></span>
+                <span data-i18n="pattern"></span>
+                <label data-i18n="import|title"><input type="file" accept=".json">📥</label>
+                <button type="button" class="plain" data-i18n="export|title">📤</button>
+              </div>
+              <div class="pattern-box"></div>
+            </div>
+          </details>
 
           <label class="firefox"><span data-i18n="container"></span> 1</label>
-          <select class="firefox" name="container-1">
-            <option value="">&nbsp;</option>
-          </select>
+          <span class="cell firefox">
+            <select name="container-1">
+              <option value="">&nbsp;</option>
+            </select>
+            <select class="mode" data-key="container-1">
+              <option value="all" data-i18n="containerAllURLs"></option>
+              <option value="pattern" data-i18n="containerPatternOnly"></option>
+            </select>
+          </span>
+          <details class="container-patterns firefox" data-key="container-1" hidden>
+            <summary data-i18n="containerPatterns"></summary>
+            <div class="content">
+              <div class="pattern-head">
+                <button type="button" class="flat slim plus" data-i18n="add|title">✚</button>
+                <span data-i18n="containerPatterns"></span>
+                <span data-i18n="title"></span>
+                <span data-i18n="pattern"></span>
+                <label data-i18n="import|title"><input type="file" accept=".json">📥</label>
+                <button type="button" class="plain" data-i18n="export|title">📤</button>
+              </div>
+              <div class="pattern-box"></div>
+            </div>
+          </details>
 
           <label class="firefox"><span data-i18n="container"></span> 2</label>
-          <select class="firefox" name="container-2">
-            <option value="">&nbsp;</option>
-          </select>
+          <span class="cell firefox">
+            <select name="container-2">
+              <option value="">&nbsp;</option>
+            </select>
+            <select class="mode" data-key="container-2">
+              <option value="all" data-i18n="containerAllURLs"></option>
+              <option value="pattern" data-i18n="containerPatternOnly"></option>
+            </select>
+          </span>
+          <details class="container-patterns firefox" data-key="container-2" hidden>
+            <summary data-i18n="containerPatterns"></summary>
+            <div class="content">
+              <div class="pattern-head">
+                <button type="button" class="flat slim plus" data-i18n="add|title">✚</button>
+                <span data-i18n="containerPatterns"></span>
+                <span data-i18n="title"></span>
+                <span data-i18n="pattern"></span>
+                <label data-i18n="import|title"><input type="file" accept=".json">📥</label>
+                <button type="button" class="plain" data-i18n="export|title">📤</button>
+              </div>
+              <div class="pattern-box"></div>
+            </div>
+          </details>
 
           <button type="button" class="flat slim firefox" data-i18n="add"></button>
 
           <!-- container template -->
           <template>
             <label class="firefox"><span data-i18n="container"></span> </label>
-            <select class="firefox" name="container-">
-              <option value="">&nbsp;</option>
-            </select>
+            <span class="cell firefox">
+              <select name="container-">
+                <option value="">&nbsp;</option>
+              </select>
+              <select class="mode" data-key="container-">
+                <option value="all" data-i18n="containerAllURLs"></option>
+                <option value="pattern" data-i18n="containerPatternOnly"></option>
+              </select>
+            </span>
+            <details class="container-patterns firefox" data-key="container-" hidden>
+              <summary data-i18n="containerPatterns"></summary>
+              <div class="content">
+                <div class="pattern-head">
+                  <button type="button" class="flat slim plus" data-i18n="add|title">✚</button>
+                  <span data-i18n="containerPatterns"></span>
+                  <span data-i18n="title"></span>
+                  <span data-i18n="pattern"></span>
+                  <label data-i18n="import|title"><input type="file" accept=".json">📥</label>
+                  <button type="button" class="plain" data-i18n="export|title">📤</button>
+                </div>
+                <div class="pattern-box"></div>
+              </div>
+            </details>
           </template>
         </div>
 

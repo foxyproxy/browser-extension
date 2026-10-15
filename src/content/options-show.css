@@ -75,6 +75,6 @@ caption.firefox {
 }
 
 /* --- Basic --- */
-.basic :is(.pattern-head, .pattern-box) {
+.basic :is(.pattern-head, .pattern-box, .container select.mode, .container details.container-patterns) {
   display: none;
 }

@@ -100,7 +100,9 @@ export class Menus {
       // --- firefox only
       case 'containerProxy':
         const c = tab.cookieStoreId.substring(8);
-        value ? pref.container[c] = value : delete pref.container[c];
+        // keep the patterns if the container is restricted to matching URLs
+        pref.container ||= {};
+        App.containerSetProxy(pref.container, c, value);
         this.callback({update: 'setContainerProxy', pref});
         break;
 

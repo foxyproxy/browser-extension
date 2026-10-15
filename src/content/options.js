@@ -6,6 +6,8 @@ import {Spinner} from './spinner.js';
 import {Migrate} from './migrate.js';
 import {Flag} from './flag.js';
 import {Nav} from './nav.js';
+import {Pattern} from './pattern.js';
+import {CustomValidity} from './custom-validity.js';
 import './get-location.js';
 import './incognito-access.js';
 import './browsing-data.js';
@@ -105,12 +107,27 @@ class Options {
     const checkSelect = i => i.value && !cache[i.value]?.active && (i.value = '');
 
     // --- container proxy
-    const containerList = document.querySelectorAll('.options .container select');
+    const containerList = document.querySelectorAll('.options .container select[name]');
     const container = {};
-    containerList.forEach(i => {
+    // using for loop to be able to break early
+    for (const i of containerList) {
       checkSelect(i);
-      i.value && (container[i.name] = i.value);
-    });
+      // unset (or proxy deleted/deactivated) -> also removes its patterns
+      if (!i.value) { continue; }
+
+      const mode = document.querySelector(`.options .container select.mode[data-key="${i.name}"]`);
+      // --- All URLs
+      if (mode?.value !== 'pattern') {
+        container[i.name] = i.value;
+        continue;
+      }
+
+      // --- Only matching URLs (container-scoped allowlist)
+      const include = this.getContainerPatterns(i.name);
+      // pattern error, abort save
+      if (!include) { return; }
+      container[i.name] = {proxy: i.value, include};
+    }
     // set to pref
     pref.container = container;
 
@@ -215,12 +232,12 @@ class Options {
       this.containerSelect.append(docFrag.cloneNode(true));
 
       // add custom containers, sort by number
-      const list = [...document.querySelectorAll('.options .container select')].map(i => i.name);
+      const list = [...document.querySelectorAll('.options .container select[name]')].map(i => i.name);
       Object.keys(pref.container).filter(i => !list.includes(i)).sort()
         .forEach(i => this.addContainer(i.substring(10)));
     }
 
-    const containerList = document.querySelectorAll('.options .container select');
+    const containerList = document.querySelectorAll('.options .container select[name]');
 
     // reset
     this.clearSelect(containerList);
@@ -228,7 +245,11 @@ class Options {
 
     containerList.forEach(i => {
       i.append(docFrag.cloneNode(true));
-      pref.container[i.name] && (i.value = pref.container[i.name]);
+      // val: 'hostname:port' (All URLs) | {proxy, include} (Only matching URLs)
+      const val = pref.container[i.name];
+      const host = App.containerHost(val);
+      host && (i.value = host);
+      this.fillContainerItem(i.name, val);
     });
 
     this.commands.forEach(i => {
@@ -252,10 +273,14 @@ class Options {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1947602
     // Allow limited read-only access to contextualIdentities.query without permission
 
-    [this.containerLabel, this.containerSelect] =
-      document.querySelector('.options .container template').content.children;
+    // event listeners for the static container items
+    this.initContainerItems();
 
-    this.containerButton = document.querySelector('.options .container button');
+    [this.containerLabel, this.containerCell, this.containerPatterns] =
+      document.querySelector('.options .container template').content.children;
+    this.containerSelect = this.containerCell.querySelector('select[name]');
+
+    this.containerButton = document.querySelector('.options .container > button');
     this.containerButton.addEventListener('click', () => this.addContainer(prompt(browser.i18n.getMessage('addContainerPrompt'))));
   }
 
@@ -263,16 +288,115 @@ class Options {
     n *= 1;
     if (!n || this.hasContainer(n)) { return; }
 
+    const key = `container-${n}`;
     const label = this.containerLabel.cloneNode(true);
-    const select = this.containerSelect.cloneNode(true);
+    const cell = this.containerCell.cloneNode(true);
+    const patterns = this.containerPatterns.cloneNode(true);
 
     label.append(n);
-    select.name = `container-${n}`;
-    this.containerButton.before(label, select);
+    cell.querySelector('select[name]').name = key;
+    cell.querySelector('select.mode').dataset.key = key;
+    patterns.dataset.key = key;
+
+    this.containerButton.before(label, cell, patterns);
+    this.initContainerItem(key);
   }
 
   static hasContainer(n) {
     return document.querySelector(`.options .container select[name="container-${n}"]`);
+  }
+
+  // ---------- container items (mode select & patterns) ----
+  static initContainerItems() {
+    // only once for the static items (custom items are initialised in addContainer)
+    if (this.containerItemsInit) { return; }
+    this.containerItemsInit = true;
+    document.querySelectorAll('.options .container select.mode')
+      .forEach(i => this.initContainerItem(i.dataset.key));
+  }
+
+  static initContainerItem(key) {
+    const details = document.querySelector(`.options .container details[data-key="${key}"]`);
+    const mode = document.querySelector(`.options .container select.mode[data-key="${key}"]`);
+    if (!details || !mode) { return; }
+
+    // show/hide the patterns editor
+    mode.addEventListener('change', () => {
+      details.hidden = mode.value !== 'pattern';
+      mode.value === 'pattern' && (details.open = true);
+    });
+
+    const box = details.querySelector('.pattern-box');
+    details.querySelector('button[data-i18n="add|title"]').addEventListener('click', e => {
+      const elem = this.addContainerPattern();
+      e.ctrlKey ? box.prepend(elem) : box.append(elem);
+      elem.children[4].focus();
+    });
+    details.querySelector('input[type="file"]').addEventListener('change', e => this.importContainerPattern(e, box));
+    details.querySelector('button[data-i18n^="export"]').addEventListener('click', () =>
+      Proxies.exportPattern(box, key));
+  }
+
+  // container patterns are an allowlist (include only)
+  static addContainerPattern(item) {
+    const div = Proxies.addPattern(item, 'include');
+    const inc = div.children[1];
+    inc.value = 'include';
+    [...inc.options].forEach(o => o.value !== 'include' && (o.disabled = true));
+    return div;
+  }
+
+  static async importContainerPattern(e, box) {
+    const data = await FS.import(e);
+    Array.isArray(data) && data.forEach(i => box.append(this.addContainerPattern(i)));
+  }
+
+  // populate the mode select and the patterns editor of a container item
+  static fillContainerItem(key, val) {
+    const details = document.querySelector(`.options .container details[data-key="${key}"]`);
+    const mode = document.querySelector(`.options .container select.mode[data-key="${key}"]`);
+    if (!details || !mode) { return; }
+
+    const restricted = !!val && typeof val === 'object';
+    mode.value = restricted ? 'pattern' : 'all';
+    details.hidden = !restricted;
+
+    const box = details.querySelector('.pattern-box');
+    box.replaceChildren();
+    restricted && (Array.isArray(val.include) ? val.include : [])
+      .forEach(i => box.append(this.addContainerPattern(i)));
+  }
+
+  // check & build the patterns of a container item
+  // returns undefined on error (to abort save), otherwise the patterns array
+  static getContainerPatterns(key) {
+    const include = [];
+    for (const item of document.querySelectorAll(`.options .container details[data-key="${key}"] .pattern-row`)) {
+      const [, , type, title, pattern, active] = item.children;
+      // clear setCustomValidity
+      CustomValidity.clear(pattern);
+      const pat = {
+        type: type.value,
+        title: title.value.trim(),
+        pattern: pattern.value.trim(),
+        active: active.checked,
+      };
+
+      // blank pattern
+      if (!pat.pattern) { continue; }
+
+      const r = Pattern.validate(pat.pattern, pat.type, true);
+      if (r !== true) {
+        // open the patterns editor to display the error
+        pattern.closest('details').open = true;
+        r && CustomValidity.set(pattern, r);
+        return;
+      }
+
+      include.push(pat);
+    }
+
+    return include;
   }
 }
 // ---------- /options -------------------------------------

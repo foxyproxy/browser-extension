@@ -46,6 +46,10 @@
 
   "container": { "message": "Container" },
   "containerDescription": { "message": "Incognito and Container proxy (Firefox only)" },
+  "containerPatternDescription": { "message": "'Only matching URLs': the selected proxy is used only for URLs matching the patterns of that Incognito/Container, and any other URL connects directly (DIRECT); with no patterns, every URL connects directly. These patterns apply only to the selected Incognito/Container and not globally. Global Exclude, Tab Proxy, and Tab Proxy by patterns are still processed first." },
+  "containerAllURLs": { "message": "All URLs" },
+  "containerPatternOnly": { "message": "Only matching URLs" },
+  "containerPatterns": { "message": "Patterns" },
   "incognito": { "message": "Incognito" },
   "addContainerPrompt": { "message": "Please enter the Container ID number." },
 

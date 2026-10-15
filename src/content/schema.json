@@ -48,9 +48,17 @@
     "container": {
       "type": "object",
       "properties": {
-        "incognito": {"type": "string"},
-        "container-1": {"type": "string"},
-        "container-2": {"type": "string"}
+        "incognito": {
+          "id": "containerProxy",
+          "type": ["string", "object"],
+          "properties": {
+            "proxy": {"type": "string"},
+            "include": {"$ref": "include"}
+          }
+        },
+        "default": {"$ref": "containerProxy"},
+        "container-1": {"$ref": "containerProxy"},
+        "container-2": {"$ref": "containerProxy"}
       }
     },
     "commands": {

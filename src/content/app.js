@@ -64,4 +64,26 @@ export class App {
   static allowedTabProxy(url) {
     return /^https?:\/\/.+|^about:(blank|newtab|privatebrowsing|home)$/.test(url);
   }
+
+  // ---------- incognito/container proxy ------------------
+  // pref.container[key] has two forms:
+  //  - 'hostname:port'  -> All URLs in the container use the proxy (legacy format)
+  //  - {proxy: 'hostname:port', include: [{type, title, pattern, active}, ...]}
+  //                      -> Only matching URLs use the proxy (container-scoped allowlist),
+  //                         unmatched URLs go DIRECT
+  // get the 'hostname:port' string from either form
+  static containerHost(val) {
+    return val && typeof val === 'object' ? val.proxy : val;
+  }
+
+  // set/clear the proxy of a container key, keeping its patterns (if any)
+  static containerSetProxy(container, key, host) {
+    if (!host) {
+      delete container[key];
+      return;
+    }
+
+    const val = container[key];
+    container[key] = val && typeof val === 'object' ? {...val, proxy: host} : host;
+  }
 }

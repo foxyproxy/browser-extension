@@ -214,13 +214,27 @@ section.options {
     }
   }
 
-  :is(.container, .commands) label {
+  :is(.container, .commands) > label {
     margin-left: 1em;
   }
 
-  .container button {
+  .container > button {
     grid-column: 2;
     justify-self: start;
+  }
+
+  /* proxy select + mode select */
+  .container .cell {
+    display: flex;
+    gap: 0.5em;
+    place-self: start;
+  }
+
+  /* patterns of a container item (Only matching URLs) */
+  .container details.container-patterns {
+    grid-column: 2;
+    justify-self: stretch;
+    margin: 0.2em 0 0.5em;
   }
 
   .commands {

@@ -46,7 +46,8 @@ class Popup {
 
       const {value} = e.target;
       const id = this.tab.cookieStoreId.substring(8);
-      value ? pref.container[id] = value : delete pref.container[id];
+      // keep the patterns if the container is restricted to matching URLs
+      App.containerSetProxy(pref.container, id, value);
       browser.runtime.sendMessage({update: 'setContainerProxy', pref});
     });
 
@@ -143,8 +144,12 @@ class Popup {
     // Check Container proxy (Firefox only)
     if (App.firefox) {
       const cookieStoreId = this.tab.cookieStoreId.substring(8);
-      const host = pref.container[cookieStoreId];
+      const val = pref.container[cookieStoreId];
+      const host = App.containerHost(val);
       host && (this.containerProxy.value = host);
+      // indicate the "Only matching URLs" mode
+      val && typeof val === 'object' && (this.containerProxy.title =
+        `${browser.i18n.getMessage('containerProxy')}: ${browser.i18n.getMessage('containerPatternOnly')}`);
     }
   }
 

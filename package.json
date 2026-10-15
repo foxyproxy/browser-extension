@@ -1,5 +1,8 @@
 {
   "name": "browser-extension",
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\""
+  },
   "devDependencies": {
     "grunt": "1.6.1",
     "grunt-cli": "^1.4.3",

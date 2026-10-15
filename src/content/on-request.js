@@ -91,9 +91,34 @@ export class OnRequest {
     // reset container
     this.container = {};
     pref.container && Object.entries(pref.container).forEach(([key, val]) => {
-      // prefix key
-      key.startsWith('container-') && (key = 'firefox-' + key);
-      this.container[key] = val && data.find(i => val === `${i.hostname}:${i.port}`);
+      // prefix key to match the tab/request cookieStoreId
+      // e.g. container-1 -> firefox-container-1, default -> firefox-default
+      key !== 'incognito' && (key = 'firefox-' + key);
+
+      // val: 'hostname:port' (All URLs) | {proxy, include} (Only matching URLs)
+      const host = App.containerHost(val);
+      const pxy = host && data.find(i => host === `${i.hostname}:${i.port}`);
+      // proxy not found (deleted, disabled, or PAC)
+      if (!pxy) { return; }
+
+      // --- All URLs (legacy string format)
+      if (typeof val !== 'object') {
+        this.container[key] = pxy;
+        return;
+      }
+
+      // --- Only matching URLs (container-scoped allowlist)
+      // compile the patterns once; inactive or invalid patterns are dropped,
+      // i.e. they can only reduce matches (fail closed -> DIRECT)
+      const containerInclude = [];
+      (Array.isArray(val.include) ? val.include : []).forEach(i => {
+        if (!i?.active || !i.pattern) { return; }
+        try { containerInclude.push(new RegExp(Pattern.get(i.pattern, i.type), 'i')); }
+        catch { /* invalid pattern -> ignored, will never match */ }
+      });
+
+      // shallow copy to avoid modifying the proxy data in pref
+      this.container[key] = {...pxy, containerInclude};
     });
 
     // mirror as this.tabProxy is lost in MV3 background unloading
@@ -129,11 +154,11 @@ export class OnRequest {
 
       // --- incognito proxy
       case e.incognito && !!this.container.incognito:
-        return this.processProxy(e, this.container.incognito);
+        return this.processContainer(e, this.container.incognito);
 
       // --- container proxy
       case e.cookieStoreId && !!this.container[e.cookieStoreId]:
-        return this.processProxy(e, this.container[e.cookieStoreId]);
+        return this.processContainer(e, this.container[e.cookieStoreId]);
 
       // --- standard operation
       // pass direct
@@ -177,6 +202,24 @@ export class OnRequest {
     // no match
     this.setAction(e);
     return {type: 'direct'};
+  }
+
+  // ---------- incognito/container proxy ------------------
+  // All URLs (no containerInclude): the assigned proxy is used for every URL
+  // Only matching URLs (containerInclude): explicit container-scoped allowlist,
+  // the assigned proxy is used only for matching URLs; unmatched URLs go DIRECT
+  // (no fallback to the assigned proxy, and no global pattern processing)
+  static processContainer(e, item) {
+    // not restricted to patterns
+    if (!item.containerInclude) { return this.processProxy(e, item); }
+
+    // no match (also when the allowlist is empty) -> DIRECT
+    if (!item.containerInclude.some(i => i.test(e.url))) {
+      this.setAction(e);
+      return {type: 'direct'};
+    }
+
+    return this.processProxy(e, item);
   }
 
   static processProxy(e, proxy) {
@@ -327,6 +370,10 @@ export class OnRequest {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; }
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
-    pxy && this.setAction({tabId: tab.id}, pxy);
+    if (!pxy) { return; }
+
+    // restricted to matching URLs: show the badge only for matching URLs
+    const match = !pxy.containerInclude || pxy.containerInclude.some(i => i.test(tab.url || ''));
+    this.setAction({tabId: tab.id}, match ? pxy : undefined);
   }
 }

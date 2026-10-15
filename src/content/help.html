@@ -356,7 +356,7 @@
       <li>Tab Proxy <em>(Firefox only)</em></li>
       <li>Tab Proxy by patterns <em>(Firefox only) (v9.0)</em></li>
       <li>Incognito Proxy</li>
-      <li>Container Proxy <em>(Firefox only)</em></li>
+      <li>Container Proxy <em>(Firefox only)</em> — can be restricted to <a href="#container">Only matching URLs</a> <em>(v9.9)</em></li>
       <li>Individual Proxy or Proxy by Patterns</li>
     </ol>
 
@@ -444,7 +444,7 @@
           <dt>Container Proxy <em>(Firefox only)</em></dt>
           <dd>Set the current container to a proxy</dd>
           <dd>Similar function as <a href="#container">Incognito and Container</a> in Options</dd>
-          <dd>Not available for the default container</dd>
+          <dd>Only the proxy is changed; the patterns of a container restricted to "Only matching URLs" are kept</dd>
           <dd>Not available on managed storage</dd>
 
           <dt>Include Host and Exclude Host</dt>
@@ -605,14 +605,41 @@
 
     <ul>
       <li>Only active proxies are listed</li>
-      <li>Set proxy will clear if it is deleted or deactivated</li>
-      <li>Patterns are not applicable in incognito/container settings</li>
+      <li>Set proxy will clear if it is deleted or deactivated (its patterns are removed as well)</li>
       <li>Incognito/Container are processed independently, therefore they function even with normal operation set to "Disable"</li>
       <li>Click "Add" for a new custom container option</li>
       <li>Custom containers without a proxy will be deleted</li>
     </ul>
 
     <dl>
+      <dt>Routing Mode <em>(next to the proxy selection)</em></dt>
+      <dd><b>All URLs</b> <em>(default)</em>: every URL opened in the selected Incognito/Container uses the assigned proxy</dd>
+      <dd><b>Only matching URLs</b> <em>(v9.9)</em>: the assigned proxy is used <b>only</b> for URLs matching the patterns of that Incognito/Container (container-scoped allowlist)</dd>
+      <dd>In "Only matching URLs" mode, any unmatched URL connects directly (DIRECT); it does not fall back to the assigned proxy, and the standard proxy settings (Individual Proxy/Proxy by Patterns) are not applied inside that Incognito/Container</dd>
+      <dd class="warning">In "Only matching URLs" mode with an empty pattern list, every URL in that Incognito/Container connects directly (DIRECT)</dd>
+      <dd>Unlike <a href="#patterns">Proxy by Patterns</a> (which applies globally), these patterns are scoped to the selected Incognito/Container only: a matching URL opened in another container or in a normal tab is <b>not</b> routed through this proxy by these patterns</dd>
+      <dd><a href="#proxying-order">Proxying Order</a> still applies: Global Exclude, Tab Proxy, and Tab Proxy by patterns are processed before the Incognito/Container proxy</dd>
+
+      <dt>Patterns <em>(Only matching URLs mode)</em></dt>
+      <dd>Select "Only matching URLs" to expand the pattern editor for that Incognito/Container</dd>
+      <dd>Patterns support the same Wildcard/Match/Reg Exp types as <a href="#pattern-guide">Proxy by Patterns</a>, can be tested with the <a href="#pattern-tester">Pattern Tester</a>, and can be imported/exported</dd>
+      <dd>Deactivated or invalid patterns are ignored, i.e. they can only reduce the matched URLs (never enlarge them)</dd>
+
+      <dt>Settings format</dt>
+      <dd>
+<pre>
+"container": {
+  "container-1": "hostname:port",  // All URLs
+  "container-2": {                 // Only matching URLs (v9.9)
+    "proxy": "hostname:port",
+    "include": [
+      {"type": "wildcard", "title": "", "pattern": "*://*.example.com/*", "active": true}
+    ]
+  }
+}
+</pre>
+      </dd>
+
       <dt>Chrome</dt>
       <dd>Only Incognito option is available</dd>
       <dd>If incognito is not set, normal settings apply to both regular and incognito windows</dd>

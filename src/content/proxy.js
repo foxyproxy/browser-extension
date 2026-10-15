@@ -270,7 +270,10 @@ class Chrome {
       return;
     }
 
-    const pxy = pref.container?.incognito && this.findProxy(pref, pref.container?.incognito);
+    // val: 'hostname:port' (All URLs) | {proxy, include} (Only matching URLs)
+    const val = pref.container?.incognito;
+    const host = App.containerHost(val);
+    const pxy = host && this.findProxy(pref, host);
     if (!pxy) {
       // unset incognito
       browser.proxy.settings.clear({scope: 'incognito_persistent'});
@@ -278,9 +281,46 @@ class Chrome {
     }
 
     const config = {value: {}, scope: 'incognito_persistent'};
-    config.value.mode = 'fixed_servers';
-    config.value.rules = this.getSingleProxyRule(pref, pxy);
+
+    // restricted to matching URLs: fixed_servers cannot filter by URL -> use PAC
+    if (val && typeof val === 'object') {
+      config.value.mode = 'pac_script';
+      config.value.pacScript = {mandatory: true};
+      config.value.pacScript.data = this.getContainerPacString(pref, pxy);
+    }
+    else {
+      config.value.mode = 'fixed_servers';
+      config.value.rules = this.getSingleProxyRule(pref, pxy);
+    }
     browser.proxy.settings.set(config);
+  }
+
+  // PAC for incognito restricted to matching URLs (container-style allowlist)
+  static getContainerPacString(pref, pxy) {
+    const [passthrough, net] = Pattern.getPassthrough(pref.passthrough);
+
+    // compile the allowlist, drop invalid patterns (fail closed -> DIRECT)
+    const include = [];
+    const list = Array.isArray(pref.container?.incognito?.include) ? pref.container.incognito.include : [];
+    list.filter(i => i?.active && i.pattern).forEach(i => {
+      const str = Pattern.get(i.pattern, i.type);
+      try { new RegExp(str, 'i'); include.push(str); }
+      catch { /* invalid pattern -> ignored, will never match */ }
+    });
+
+    const proxyString = this.getProxyString(pxy);
+
+    return String.raw`function FindProxyForURL(url, host) {
+  const include = ${JSON.stringify(include)};
+  const passthrough = ${JSON.stringify(passthrough)};
+  const net = ${JSON.stringify(net)};
+  const proxy = ${JSON.stringify(proxyString)};
+  const match = array => array.some(i => new RegExp(i, 'i').test(url));
+  const inNet = () => net[0] && /^[\d.]+$/.test(host) && net.some(([ip, mask]) => isInNet(host, ip, mask));
+
+  if (match(passthrough) || inNet()) { return 'DIRECT'; }
+  return match(include) ? proxy : 'DIRECT';
+}`;
   }
 
   static getSingleProxyRule(pref, pxy) {
