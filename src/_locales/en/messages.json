@@ -61,6 +61,7 @@
 
   "proxies": { "message": "Proxies" },
   "add": { "message": "Add" },
+  "addNotice": { "message": "Start by adding a proxy server" },
   "getLocation": { "message": "Get Location" },
   "ping": { "message": "Ping" },
 
@@ -96,14 +97,11 @@
   "bulkEdit": { "message": "Bulk Edit" },
   "openAll": { "message": "Open All" },
   "closeAll": { "message": "Close All" },
-  "setType": { "message": "Set Type" },
-  "setPort": { "message": "Set Port" },
-  "setTitle": { "message": "Set Title" },
-  "setUsername": { "message": "Set Username" },
-  "setPassword": { "message": "Set Password" },
   "moveProxy": { "message": "Move Proxy" },
   "movePattern": { "message": "Move Pattern" },
   "deleteProxy": { "message": "Delete Proxy" },
+  "sort": { "message": "Sort" },
+  "set": { "message": "Set" },
 
 
   "importFoxyProxyAccount": { "message": "Import FoxyProxy Account" },
