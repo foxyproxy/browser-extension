@@ -54,15 +54,15 @@ class BulkEdit {
         this.getProxies().forEach(i => i.open = id === 'openAll');
         break;
 
-      case 'setType':
-      case 'setPort':
-      case 'setTitle':
-      case 'setUsername':
-      case 'setPassword':
+      case 'set-type':
+      case 'set-port':
+      case 'set-title':
+      case 'set-username':
+      case 'set-password':
         let s2 = this.s2.value.trim();
         if (!s2) { break; }
 
-        const ref = id.substring(3).toLowerCase();
+        const ref = id.substring(4);
         if (ref === 'type') {
           s2 = s2.toLowerCase();
           if (!['http', 'https', 'socks4', 'socks5', 'quic', 'pac', 'direct'].includes(s2)) { break; }
@@ -86,10 +86,26 @@ class BulkEdit {
         this.movePattern();
         this.reset();
         break;
+
+      case 'sort-title':
+      case 'sort-hostname':
+      case 'sort-cc':
+        this.sortProxies(id.substring(5));
+        break;
+
       }
 
     // --- reset
     this.select.selectedIndex = 0;
+  }
+
+  static sortProxies(ref) {
+    const elem = [...document.querySelectorAll(`[data-id="${ref}"]`)];
+    if (!elem.length) { return; }
+
+    const div = document.querySelector('.proxy-div');
+    elem.sort((a, b) => a.value.toLowerCase().localeCompare(b.value.toLowerCase()))
+    .forEach(i => div.appendChild(i.closest('details')));
   }
 
   static reset() {

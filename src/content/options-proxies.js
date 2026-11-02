@@ -295,7 +295,8 @@ export class Proxies {
     switch (true) {
       // DIRECT
       case obj.type === 'direct':
-        obj.hostname = 'DIRECT';
+        // allow other values
+        obj.hostname ||= 'DIRECT';
         break;
 
       // PAC

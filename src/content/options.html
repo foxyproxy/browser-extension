@@ -190,6 +190,7 @@
           <button type="button" class="flat" data-i18n="ping"></button>
           <button type="button" class="flat" data-i18n="test"></button>
           <button type="button" class="flat" data-i18n="getLocation"></button>
+          <span data-i18n="addNotice"></span>
         </div>
 
         <div class="proxy-div"></div>
@@ -201,7 +202,7 @@
           <input type="text" autocomplete="off" spellcheck="false">
 
           <select autocomplete="off">
-            <option value="" disabled selected data-i18n="bulkEdit"></option>
+            <option value="" data-i18n="bulkEdit" disabled selected></option>
             <option value="openAll" data-i18n="openAll"></option>
             <option value="closeAll" data-i18n="closeAll"></option>
             <hr>
@@ -209,12 +210,19 @@
             <option value="moveProxy" data-i18n="moveProxy"></option>
             <option value="movePattern" data-i18n="movePattern"></option>
             <hr>
-            <option value="setTitle" data-i18n="setTitle"></option>
-            <option value="setType" data-i18n="setType"></option>
-            <option value="setPort" data-i18n="setPort"></option>
-            <option value="setUsername" data-i18n="setUsername"></option>
-            <option value="setPassword" data-i18n="setPassword"></option>
-
+            <optgroup data-i18n="sort|label">
+              <option value="sort-title" data-i18n="title"></option>
+              <option value="sort-hostname" data-i18n="hostname"></option>
+              <option value="sort-cc" data-i18n="country"></option>
+            </optgroup>
+            <hr>
+            <optgroup data-i18n="set|label">
+              <option value="set-title" data-i18n="title"></option>
+              <option value="set-type" data-i18n="type"></option>
+              <option value="set-port" data-i18n="port"></option>
+              <option value="set-username" data-i18n="username"></option>
+              <option value="set-password" data-i18n="password"></option>
+            </optgroup>
           </select>
         </div>
 

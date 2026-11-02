@@ -236,7 +236,7 @@ details .content {
 /* ----- proxy ----- */
 .proxy-head {
   display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
+  grid-template-columns: auto 1fr repeat(4, auto);
   gap: 0.2em;
   margin-bottom: 0.5em;
 
@@ -244,6 +244,29 @@ details .content {
     background: url('../image/filter.svg') no-repeat left 0.5em center / 1em;
     padding-left: 2em;
     justify-self: start;
+  }
+
+  /* show notice when there are no proxies */
+  span {
+    display: none;
+    border-radius: 5px;
+    align-content: center;
+    justify-self: start;
+    margin-left: 0.3em;
+    padding: 0 0.5em 0 1em;
+    color: var(--nav-color);
+    background-color: var(--nav-hover);
+    clip-path: polygon(0% 50%, 1em 0%, 100% 0%, 100% 100%, 1em 100%);
+  }
+
+  &:has(+ .proxy-div:empty) {
+    :nth-child(n+2):not(span) {
+      display: none;
+    }
+
+    span {
+      display: block;
+    }
   }
 }
 

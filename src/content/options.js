@@ -182,7 +182,7 @@ class Options {
     const db = App.getDefaultPref();
     Object.keys(db).forEach(i => pref[i] = db[i]);
     this.process();
-    Proxies.process();
+    Proxies.process(pref);
   }
 
   static makeProxyOption() {

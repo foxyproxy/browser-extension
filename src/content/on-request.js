@@ -91,8 +91,8 @@ export class OnRequest {
     // reset container
     this.container = {};
     pref.container && Object.entries(pref.container).forEach(([key, val]) => {
-      // prefix key
-      key.startsWith('container-') && (key = 'firefox-' + key);
+      // prefix key: firefox-default | firefox-container-* | firefox-private (incognito key is used instead)
+      (key === 'default' || key.startsWith('container-')) && (key = 'firefox-' + key);
       this.container[key] = val && data.find(i => val === `${i.hostname}:${i.port}`);
     });
 
