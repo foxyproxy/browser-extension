@@ -42,9 +42,21 @@ export class OnRequest {
     // incognito/container proxy
     this.container = {};
 
+    // --- start-up gate
+    // The listener below is registered synchronously, so Firefox persists it. When the
+    // background script is (re)started by a network request (browser start-up, e.g. a
+    // link opened from another app on Android, or MV3 wake-up), Firefox holds that request
+    // and delivers it as soon as addListener() runs, before preferences are loaded.
+    // Answering then would use the default values above, i.e. DIRECT.
+    // Requests are held until the first init() instead. After that, processing is synchronous.
+    this.ready = false;
+    this.readyPromise = new Promise(resolve => this.resolveReady = resolve);
+    // fail-safe: if start-up fails, stop holding requests after 5s (falls back to defaults, as before)
+    setTimeout(() => this.setReady(), 5000);
+
     // --- Firefox only
     if (browser.proxy.onRequest) {
-      browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
+      browser.proxy.onRequest.addListener(e => this.onRequest(e), {urls: ['<all_urls>']});
       // check Tab for tab proxy
       browser.tabs.onUpdated.addListener((...e) => this.onUpdated(...e));
       // remove redundant data from this.tabProxy and this.tabProxyPattern cache
@@ -100,7 +112,24 @@ export class OnRequest {
     browser.storage.session.get().then(i => {
       this.tabProxy = i.tabProxy || {};
       this.tabProxyPattern = i.tabProxyPattern || {};
-    });
+    })
+    .catch(() => {})
+    // release requests held during start-up (only the first init() matters)
+    .finally(() => this.setReady());
+  }
+
+  static setReady() {
+    if (this.ready) { return; }
+
+    this.ready = true;
+    this.resolveReady();
+  }
+
+  // proxy.onRequest listener
+  static onRequest(e) {
+    // normal operation: synchronous
+    // start-up: wait for preferences (Firefox accepts a Promise from proxy.onRequest)
+    return this.ready ? this.process(e) : this.readyPromise.then(() => this.process(e));
   }
 
   static process(e) {
