@@ -72,6 +72,11 @@ export class Proxy {
   }
 
   static async set(pref, dataChange) {
+    // persist settings from the background context: storage.local writes made
+    // by popup & options pages opened in private-browsing windows go to a
+    // separate origin partition, which is invisible to this context (#286)
+    dataChange && browser.storage.local.set(pref);
+
     // check if proxy.settings is controlled_by_this_extension
     const conf = await this.getSettings();
     // not controlled_by_this_extension

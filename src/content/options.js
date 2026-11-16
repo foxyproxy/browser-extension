@@ -61,10 +61,12 @@ class Options {
       save ? pref[node.id] = node[attr] : node[attr] = pref[node.id];
     });
 
-    // update saved pref
+    // the saved pref is persisted by the background context when it receives
+    // {update: 'setProxy', dataChange: true} below: storage.local writes made
+    // by this page while opened in a private-browsing window go to a separate
+    // origin partition, which is invisible to the background (#286)
     if (save) {
       ProgressBar.show();
-      browser.storage.local.set(pref);
     }
 
     this.fillContainerCommands(save);

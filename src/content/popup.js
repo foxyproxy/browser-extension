@@ -164,8 +164,10 @@ class Popup {
 
     // save mode
     pref.mode = mode;
-    browser.storage.local.set({mode});
-    browser.runtime.sendMessage({update: 'setProxy', pref});
+    // persist via the background context: storage.local writes made by pages
+    // opened in private-browsing windows go to a separate origin partition,
+    // which is invisible to the background (#286)
+    browser.runtime.sendMessage({update: 'setProxy', pref, dataChange: true});
   }
 
   static processButtons(e) {
