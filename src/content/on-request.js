@@ -44,7 +44,7 @@ export class OnRequest {
 
     // --- readiness gate (pre-init DNS-leak race)
     // proxy.onRequest is a persistent event: on browser start, session restore,
-    // temporary add-on reload, extension update or event-page wake this module
+    // add-on reload, extension update or event-page wake this module
     // re-evaluates and the listener below is registered synchronously, but
     // OnRequest.init(pref) only runs after background.js has awaited storage.
     // Until then the defaults above (mode 'disable', container {}) would answer
@@ -53,9 +53,14 @@ export class OnRequest {
     this.ready = false;
     this.initFailed = false;
     this.waiters = new Set();
-    // upper bound for waiting on init; kept below the MV3 30s idle timeout so
-    // the answer always settles before the event page could be suspended
+    // upper bound for waiting on init; kept below the MV3 30s idle timeout
     this.initTimeout = 15_000;
+    // monotonic id so a stale init() can never open the gate
+    this.initToken = 0;
+    // A single ProxyInfo falls back to the browser-defined proxy (DIRECT) when
+    // it is unreachable. An array ending in null disables that failover.
+    // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/proxy/onRequest
+    this.BLOCK = () => [{type: 'socks', host: '127.0.0.1', port: 1, proxyDNS: true}, null];
 
     // --- Firefox only
     if (browser.proxy.onRequest) {
@@ -70,12 +75,11 @@ export class OnRequest {
   }
 
   static init(pref) {
-    // (re)initialising (startup, settings change, Proxy.set -> Firefox.set):
-    // close the gate until the new state is fully loaded. load() is synchronous,
-    // so no request can be served mid-init; on success the gate (re)opens and
-    // every waiting request is released, on failure they fail closed instead of
-    // being answered from partial state. The error is re-thrown as before.
+    // (re)initialising: close the gate until the new state is FULLY loaded,
+    // including the async storage.session tab-proxy restore.
     this.ready = false;
+    const token = ++this.initToken;
+
     try {
       this.load(pref);
     } catch (e) {
@@ -83,9 +87,26 @@ export class OnRequest {
       this.flushWaiters(false);
       throw e;
     }
-    this.initFailed = false;
-    this.ready = true;
-    this.flushWaiters(true);
+
+    return this.restoreSession().then(() => {
+      // a newer init() superseded this one: it owns the gate now
+      if (token !== this.initToken) { return; }
+      this.initFailed = false;
+      this.ready = true;
+      this.flushWaiters(true);
+    }).catch(e => {
+      if (token !== this.initToken) { return; }
+      console.error('FoxyProxy: session restore failed, failing closed', e);
+      this.initFailed = true;
+      this.flushWaiters(false);
+    });
+  }
+
+  // mirror as this.tabProxy is lost in MV3 background unloading
+  static async restoreSession() {
+    const i = await browser.storage.session.get();
+    this.tabProxy = i.tabProxy || {};
+    this.tabProxyPattern = i.tabProxyPattern || {};
   }
 
   static load(pref) {
@@ -125,40 +146,9 @@ export class OnRequest {
     // reset container
     this.container = {};
     pref.container && Object.entries(pref.container).forEach(([key, val]) => {
-      // prefix key to match the tab/request cookieStoreId
-      // e.g. container-1 -> firefox-container-1, default -> firefox-default
-      key !== 'incognito' && (key = 'firefox-' + key);
-
-      // val: 'hostname:port' (All URLs) | {proxy, include} (Only matching URLs)
-      const host = App.containerHost(val);
-      const pxy = host && data.find(i => host === `${i.hostname}:${i.port}`);
-      // proxy not found (deleted, disabled, or PAC)
-      if (!pxy) { return; }
-
-      // --- All URLs (legacy string format)
-      if (typeof val !== 'object') {
-        this.container[key] = pxy;
-        return;
-      }
-
-      // --- Only matching URLs (container-scoped allowlist)
-      // compile the patterns once; inactive or invalid patterns are dropped,
-      // i.e. they can only reduce matches (fail closed -> DIRECT)
-      const containerInclude = [];
-      (Array.isArray(val.include) ? val.include : []).forEach(i => {
-        if (!i?.active || !i.pattern) { return; }
-        try { containerInclude.push(new RegExp(Pattern.get(i.pattern, i.type), 'i')); }
-        catch { /* invalid pattern -> ignored, will never match */ }
-      });
-
-      // shallow copy to avoid modifying the proxy data in pref
-      this.container[key] = {...pxy, containerInclude};
-    });
-
-    // mirror as this.tabProxy is lost in MV3 background unloading
-    browser.storage.session.get().then(i => {
-      this.tabProxy = i.tabProxy || {};
-      this.tabProxyPattern = i.tabProxyPattern || {};
+      // prefix key: firefox-default | firefox-container-* | firefox-private (incognito key is used instead)
+      (key === 'default' || key.startsWith('container-')) && (key = 'firefox-' + key);
+      this.container[key] = val && data.find(i => val === `${i.hostname}:${i.port}`);
     });
   }
 
@@ -169,6 +159,17 @@ export class OnRequest {
     // Once ready this is a plain synchronous call, identical to before.
     if (!this.ready) { return this.processWhenReady(e); }
 
+    // A throwing listener (e.g. an invalid RegExp in a user pattern) makes
+    // Firefox fall back to DIRECT (bug 1528873). Fail closed instead.
+    try {
+      return this.route(e);
+    } catch (err) {
+      console.error(`FoxyProxy: routing error, failing closed: ${e.url}`, err);
+      return this.BLOCK();
+    }
+  }
+
+  static route(e) {
     // https://github.com/foxyproxy/browser-extension/issues/218
     // https://bugzilla.mozilla.org/show_bug.cgi?id=2056961
     // Service worker requests from a tab have tabId of -1
@@ -194,11 +195,11 @@ export class OnRequest {
 
       // --- incognito proxy
       case e.incognito && !!this.container.incognito:
-        return this.processContainer(e, this.container.incognito);
+        return this.processProxy(e, this.container.incognito);
 
       // --- container proxy
       case e.cookieStoreId && !!this.container[e.cookieStoreId]:
-        return this.processContainer(e, this.container[e.cookieStoreId]);
+        return this.processProxy(e, this.container[e.cookieStoreId]);
 
       // --- standard operation
       // pass direct
@@ -215,7 +216,8 @@ export class OnRequest {
 
       // get the proxy for all
       default:
-        return this.processProxy(e, this.proxy);
+        // single-proxy mode but the proxy is missing/inactive: do not go direct
+        return this.proxy ? this.processProxy(e, this.proxy) : this.BLOCK();
     }
   }
 
@@ -226,15 +228,14 @@ export class OnRequest {
 
     // Fail closed. Returning {type: 'direct'}, undefined/null, or rejecting
     // would all make ProxyChannelFilter.applyFilter fall through to the
-    // default proxy info (DIRECT here, since proxy.settings is cleared),
-    // leaking DNS via the OS resolver. Instead return a valid ProxyInfo that
-    // cannot connect and cannot resolve DNS locally:
+    // default proxy info (DIRECT when proxy.settings is cleared), leaking DNS
+    // via the OS resolver. Return a valid ProxyInfo that cannot connect and
+    // cannot resolve DNS locally:
     // - IP-literal loopback host: no resolver involved
     // - proxyDNS: true: hostname resolution stays on the (dead) SOCKS proxy
     // - port 1: valid (ProxyInfoData requires 1..65535), nothing listens there
-    // - network.proxy.failover_direct=false: no DIRECT fallback on failure
     console.error(`FoxyProxy: not initialised, failing closed: ${e.url}`);
-    return {type: 'socks', host: '127.0.0.1', port: 1, proxyDNS: true};
+    return this.BLOCK();
   }
 
   static waitReady() {
@@ -243,8 +244,7 @@ export class OnRequest {
 
     return new Promise(resolve => {
       const waiter = {resolve};
-      // init may never run (e.g. background init threw before Proxy.set):
-      // do not hang the request forever, fail closed after the timeout
+      // init may never run: do not hang the request forever
       waiter.timer = setTimeout(() => {
         this.waiters.delete(waiter);
         resolve(false);
@@ -286,24 +286,6 @@ export class OnRequest {
     return {type: 'direct'};
   }
 
-  // ---------- incognito/container proxy ------------------
-  // All URLs (no containerInclude): the assigned proxy is used for every URL
-  // Only matching URLs (containerInclude): explicit container-scoped allowlist,
-  // the assigned proxy is used only for matching URLs; unmatched URLs go DIRECT
-  // (no fallback to the assigned proxy, and no global pattern processing)
-  static processContainer(e, item) {
-    // not restricted to patterns
-    if (!item.containerInclude) { return this.processProxy(e, item); }
-
-    // no match (also when the allowlist is empty) -> DIRECT
-    if (!item.containerInclude.some(i => i.test(e.url))) {
-      this.setAction(e);
-      return {type: 'direct'};
-    }
-
-    return this.processProxy(e, item);
-  }
-
   static processProxy(e, proxy) {
     this.setAction(e, proxy);
     const {type, hostname: host, port, username, password, proxyDNS} = proxy || {};
@@ -324,7 +306,7 @@ export class OnRequest {
       type: type === 'socks5' ? 'socks' : type,
 
       // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#135
-      ...(type.startsWith('socks') && {proxyDNS: !!proxyDNS}),
+      ...(type.startsWith('socks') && {proxyDNS: proxyDNS ?? true}),
 
       // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#117
       // https://searchfox.org/mozilla-central/source/toolkit/components/extensions/ProxyChannelFilter.sys.mjs#126
@@ -340,7 +322,9 @@ export class OnRequest {
       ...(auth && {proxyAuthorizationHeader: 'Basic ' + btoa(username + ':' + password)}),
     };
 
-    return response;
+    // trailing null: if this proxy is unreachable, fail instead of falling
+    // back to the browser-defined proxy / DIRECT
+    return [response, null];
   }
 
   // browser.action here only relates to proxy.onRequest
@@ -452,10 +436,6 @@ export class OnRequest {
     if (tab.id === -1 || this.tabProxy[tab.id]) { return; }
 
     const pxy = tab.incognito ? this.container.incognito : this.container[tab.cookieStoreId];
-    if (!pxy) { return; }
-
-    // restricted to matching URLs: show the badge only for matching URLs
-    const match = !pxy.containerInclude || pxy.containerInclude.some(i => i.test(tab.url || ''));
-    this.setAction({tabId: tab.id}, match ? pxy : undefined);
+    pxy && this.setAction({tabId: tab.id}, pxy);
   }
 }
