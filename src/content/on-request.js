@@ -42,6 +42,20 @@ export class OnRequest {
     // incognito/container proxy
     this.container = {};
 
+    // --- readiness gate (pre-init DNS-leak race)
+    // proxy.onRequest is a persistent event: on browser start, session restore,
+    // add-on reload, extension update or event-page wake this module
+    // re-evaluates and the listener below is registered synchronously, but
+    // OnRequest.init(pref) only runs after background.js has awaited storage.
+    // Until then the defaults above (mode 'disable', container {}) would answer
+    // {type: 'direct'} and Firefox would resolve the hostname with the OS
+    // resolver (DNS leak). Requests arriving in that gap wait for init instead.
+    this.ready = false;
+    this.initFailed = false;
+    this.waiters = new Set();
+    // upper bound for waiting on init; kept below the MV3 30s idle timeout
+    this.initTimeout = 15_000;
+
     // --- Firefox only
     if (browser.proxy.onRequest) {
       browser.proxy.onRequest.addListener(e => this.process(e), {urls: ['<all_urls>']});
@@ -55,6 +69,24 @@ export class OnRequest {
   }
 
   static init(pref) {
+    // (re)initialising: close the gate until the new state is fully loaded.
+    // load() is synchronous, so no request can be served mid-init. On success
+    // the gate (re)opens and waiting requests are released; on failure they
+    // fail closed instead of being answered from partial state.
+    this.ready = false;
+    try {
+      this.load(pref);
+    } catch (e) {
+      this.initFailed = true;
+      this.flushWaiters(false);
+      throw e;
+    }
+    this.initFailed = false;
+    this.ready = true;
+    this.flushWaiters(true);
+  }
+
+  static load(pref) {
     this.mode = pref.mode;
     [this.passthrough, , this.net] = Pattern.getPassthrough(pref.passthrough);
 
@@ -104,6 +136,12 @@ export class OnRequest {
   }
 
   static process(e) {
+    // --- readiness gate: never evaluate rules from uninitialised state.
+    // Before init completes, hold the request on a Promise; Gecko awaits it
+    // (ProxyChannelFilter.applyFilter: `let ret = await this.listener(data)`).
+    // Once ready this is a plain synchronous call, identical to before.
+    if (!this.ready) { return this.processWhenReady(e); }
+
     // https://github.com/foxyproxy/browser-extension/issues/218
     // https://bugzilla.mozilla.org/show_bug.cgi?id=2056961
     // Service worker requests from a tab have tabId of -1
@@ -152,6 +190,46 @@ export class OnRequest {
       default:
         return this.processProxy(e, this.proxy);
     }
+  }
+
+  // ---------- readiness gate -----------------------------
+  static async processWhenReady(e) {
+    const ok = await this.waitReady();
+    if (ok) { return this.process(e); }
+
+    // Fail closed. Returning {type: 'direct'}, undefined/null, or rejecting
+    // would all make ProxyChannelFilter.applyFilter fall through to the
+    // default proxy info (DIRECT when proxy.settings is cleared), leaking DNS
+    // via the OS resolver. Return a valid ProxyInfo that cannot connect and
+    // cannot resolve DNS locally:
+    // - IP-literal loopback host: no resolver involved
+    // - proxyDNS: true: hostname resolution stays on the (dead) SOCKS proxy
+    // - port 1: valid (ProxyInfoData requires 1..65535), nothing listens there
+    console.error(`FoxyProxy: not initialised, failing closed: ${e.url}`);
+    return {type: 'socks', host: '127.0.0.1', port: 1, proxyDNS: true};
+  }
+
+  static waitReady() {
+    if (this.ready) { return Promise.resolve(true); }
+    if (this.initFailed) { return Promise.resolve(false); }
+
+    return new Promise(resolve => {
+      const waiter = {resolve};
+      // init may never run: do not hang the request forever
+      waiter.timer = setTimeout(() => {
+        this.waiters.delete(waiter);
+        resolve(false);
+      }, this.initTimeout);
+      this.waiters.add(waiter);
+    });
+  }
+
+  static flushWaiters(ok) {
+    for (const {resolve, timer} of this.waiters) {
+      clearTimeout(timer);
+      resolve(ok);
+    }
+    this.waiters.clear();
   }
 
   static processTabProxyPattern(tabId, url, e) {
