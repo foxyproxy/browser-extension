@@ -67,6 +67,17 @@ export class OnRequest {
   }
 
   static init(pref) {
+    // mirror as this.tabProxy is lost in MV3 background unloading
+    // started first, so that requests held during start-up are released even if processing pref below throws
+    // (callbacks run after init() has returned, so held requests are processed with the new pref)
+    browser.storage.session.get().then(i => {
+      this.tabProxy = i.tabProxy || {};
+      this.tabProxyPattern = i.tabProxyPattern || {};
+    })
+    .catch(() => {})
+    // release requests held during start-up (only the first init() matters)
+    .finally(() => this.setReady());
+
     this.mode = pref.mode;
     [this.passthrough, , this.net] = Pattern.getPassthrough(pref.passthrough);
 
@@ -107,15 +118,6 @@ export class OnRequest {
       (key === 'default' || key.startsWith('container-')) && (key = 'firefox-' + key);
       this.container[key] = val && data.find(i => val === `${i.hostname}:${i.port}`);
     });
-
-    // mirror as this.tabProxy is lost in MV3 background unloading
-    browser.storage.session.get().then(i => {
-      this.tabProxy = i.tabProxy || {};
-      this.tabProxyPattern = i.tabProxyPattern || {};
-    })
-    .catch(() => {})
-    // release requests held during start-up (only the first init() matters)
-    .finally(() => this.setReady());
   }
 
   static setReady() {
